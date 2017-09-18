@@ -1,0 +1,45 @@
+@import 'variables.less';
+
+* {
+	//-webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+html{
+	-webkit-backface-visibility: hidden;
+}
+body {
+	-webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+	-webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+	-webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+	-webkit-backface-visibility: hidden;
+	background-attachment:fixed;
+	font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-size:14px;	
+	margin:0px;
+	padding:0px;
+	height:100%;
+	width:100%;
+}
+
+.snap-content {
+	background: @mainBgColor;
+	min-height: 100%;
+}
+
+.nav-bar-icon{
+	font-size: 180%;
+}
+
+.topcoat-list{
+	.nav-list{
+		.topcoat-list__item{
+			padding: 0;			
+			a{
+				display: block;
+				padding: 1.25rem;
+				height: inherit;
+				color: @navListAColor;
+			}
+		} 
+	}
+}

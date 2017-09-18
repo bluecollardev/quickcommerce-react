@@ -1,0 +1,97 @@
+.CFP_popover {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 13px;
+	line-height: 1.428571429;
+	color: #333;
+	z-index: 999999;
+	text-align: left;
+	white-space: normal;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0,0,0,0.2);
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+	box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	box-sizing: border-box;
+	margin: 35px 12px 12px 12px;
+	position:absolute;
+}
+.CFP_popover.bottom .arrow {
+	top: -11px;
+	left: 50%;
+	margin-left: -11px;
+	border-bottom-color: #999;
+	border-bottom-color: rgba(0,0,0,0.25);
+	border-top-width: 0;
+}
+.CFP_popover .arrow {
+	border-width: 11px;
+}
+.CFP_popover.bottom .arrow:after {
+	top: 1px;
+	margin-left: -10px;
+	border-bottom-color: #fff;
+	border-top-width: 0;
+	content: " ";
+}
+.CFP_popover .arrow:after {
+	border-width: 10px;
+	content: "";
+}
+.CFP_popover .arrow, .CFP_popover .arrow:after {
+	position: absolute;
+	display: block;
+	width: 0;
+	height: 0;
+	border-color: transparent;
+	border-style: solid;
+}
+.CFP_popover-title {
+	padding: 8px 5px;
+	margin: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.3em;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ebebeb;
+	border-radius: 5px 5px 0 0;
+}
+h3.CFP_popover-title {
+	display: block;
+	font-size: 1.17em;
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0.3em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	font-weight: bold;
+}
+.CFP_popover-content {
+	padding: 9px 9px 0px 10px;
+}
+input.CFP_popover_field_error {
+	border: #F59393 1px solid;
+	background: #FFF0F0;	
+}
+.CFPError {
+	color: #E62020;
+	font-size: 11px;	
+}
+input#CFPYourName, input#CFPYourPhone, input#CFPYourNotes {
+	outline: none;
+}
+.CFP_loading {
+	margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    background:transparent url('../../../javascript/callforprice/callforprice-loader.gif') no-repeat 0 0;
+    font-size: 0px;
+    display: inline-block;
+}
+.CFP_loader {
+	width:100%;
+	text-align: center;
+	margin: 0 auto;
+	padding-bottom:10px;
+	display:none;
+}
