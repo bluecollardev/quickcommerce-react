@@ -1,1 +1,0 @@
-jQuery('.pp_time').timePicker();

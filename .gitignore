@@ -1,14 +1,1 @@
-# Grunt
-!bower_components
-img
-js
-scss
 node_modules
-upload/admin
-vendor
-!vendor/quickcommerce
-upload/install
-upload/image
-vqmod
-!vqmod/xml
-quickcommerce/app/build
