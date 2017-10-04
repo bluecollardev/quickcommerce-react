@@ -124,12 +124,13 @@ const Cart = React.createClass({
             quantity   : quantity
         })
     },
-    addOption(key, quantity, item) {
+    addOption(key, quantity, item, product) {
         CartDispatcher.dispatch({
             actionType : 'cart-add-option',
             key        : key,
             quantity   : quantity,
-            item       : item
+            item       : item,
+            product    : product
         })
     },
     emptyCart() {

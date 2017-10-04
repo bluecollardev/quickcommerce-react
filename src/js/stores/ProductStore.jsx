@@ -28,6 +28,7 @@ class ProductStore extends BaseStore {
                 break
             case ProductConstants.UPDATE_PRODUCT:
                 this.product = action.product
+                
                 this.emitChange()
                 break
             case ProductConstants.DELETE_PRODUCT:
@@ -37,8 +38,6 @@ class ProductStore extends BaseStore {
                 this.product = action.product
                 sessionStorage.setItem('selectedProduct', JSON.stringify(this.product))
                 
-                console.log('setting product')
-                console.log(action.product)
                 this.emitChange()
                 break
             default:

@@ -22,11 +22,11 @@ export default class DragDropCustomerContainer {
 	}
 	
 	componentDidMount() {
-        CheckoutStore.on('order-fetched', this.forceUpdate)
+        CheckoutStore.on('set-order', this.forceUpdate)
     } 
     
 	componentWillUnmount() {
-        CheckoutStore.removeListener('order-fetched', this.forceUpdate)
+        CheckoutStore.removeListener('set-order', this.forceUpdate)
     }
 	
     renderTotals() {

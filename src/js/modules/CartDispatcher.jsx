@@ -27,7 +27,7 @@ CartDispatcher.register(payload => {
             CartStore.updateQuantity(payload.index, payload.quantity)
             break
         case 'cart-add-option':
-            CartStore.addOption(payload.key, payload.quantity, payload.item)
+            CartStore.addOption(payload.key, payload.quantity, payload.item, payload.product)
             break
         case 'cart-reset':
             CartStore.reset()

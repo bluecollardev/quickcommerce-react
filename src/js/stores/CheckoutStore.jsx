@@ -4,7 +4,6 @@ import axios from 'axios'
 import { normalize, denormalize, schema } from 'normalizr'
 
 import BaseStore from './BaseStore.jsx'
-import SettingStore from './SettingStore.jsx'
 import CustomerStore from './CustomerStore.jsx'
 import LoginStore from './LoginStore.jsx'
 import CartStore from '../modules/CartStore.jsx'
@@ -12,6 +11,8 @@ import CartStore from '../modules/CartStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
 import SettingActions from '../actions/SettingActions.jsx'
+import SettingStore from './SettingStore.jsx'
+
 import CustomerActions from '../actions/CustomerActions.jsx'
 import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 
@@ -81,523 +82,51 @@ class CheckoutStore extends BaseStore {
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
 
-        // TODO: Move these into the root consuming components
-        // Having stores listen to stores is an anti-pattern in Flux 
-        // architecture as it violates unidirectional data flow
-        // I'm leaving this here for now because I'm still deciding on
-        // whether or not to use Flux / Redux, and their implementations
-        // are different
-        SettingActions.fetchStore(8)
-        
-        SettingStore.on('store-info-loaded', (id, payload) => {
-            this.stores[id] = payload
-        }) // Load ACE bar store data so we don't have to later
-
-        // Maybe we should make this some kind of configuration option?
-
-        SettingActions.fetchSettings()
-        
-        SettingStore.on('settings-loaded', (payload) => {
-            this.settings = payload
-
-            // We only wanna do this once, so stick 'er right up top
-            this.createOrder({
-                action: 'insert'
-                //orderTaxRates: this.orderTaxRates
-            })
-        })
-        
-        CustomerStore.on('CHANGE', () => {
-            console.log('customer change detected')
-            console.log(CustomerStore.customer)
-            console.log(CustomerStore.billingAddress)
-            console.log(CustomerStore.shippingAddress)
-            
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to CheckoutStore
-                this.setExistingCustomer()
-                
-                let customerId = 0
-                if (CustomerStore.customer.hasOwnProperty('customer_id') && !isNaN(CustomerStore.customer['customer_id'])) {
-                    let storeCustomerId = parseInt(CustomerStore.customer['customer_id'])
-                    if (storeCustomerId > 0) {
-                        customerId = storeCustomerId
-                    }
-                }
-                
-                // Payloard order exists
-                if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
-                    // Do we update?
-                    if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId) &&
-                        this.payload.order.orderId > 0) {
-                        
-                        // TODO: Fix me! I'm hardcoded
-                        // Change country and zone to customer default address
-                        this.updateOrder(this.payload.order.orderId, assign({}, this.payload.order, {
-                            action: 'update',
-                            defaultSettings: {
-                                POS_a_country_id: this.payload.order.paymentCountryId,
-                                config_country_id: 38, // Hard-code to Canada
-                                POS_a_zone_id: this.payload.order.paymentZoneId,
-                                config_zone_id: 602, // Hard-code to Alberta
-                                POS_initial_status_id: 1,
-                                POS_c_id: customerId,
-                                config_customer_id: customerId,
-                                POS_customer_group_id: 1,
-                                config_customer_group_id: 1,
-                                // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
-                                POS_c_type: (customerId > 0) ? 3 : 1,
-                                config_customer_type: (customerId > 0) ? 3 : 1
-                            }
-                        }), (payload) => {
-                            this.fetchOrder(this.payload.order.orderId)
-                        })
-                        // No orderId detected in the payload order, let's try create instead
-                    } else {
-                        // TODO: Fix me! I'm hardcoded
-                        // Change country and zone to customer default address
-                        this.createOrder(assign({}, this.payload.order, {
-                            action: 'insert',
-                            defaultSettings: {
-                                POS_a_country_id: this.payload.order.paymentCountryId,
-                                config_country_id: 38, // Hard-code to Canada
-                                POS_a_zone_id: this.payload.order.paymentZoneId,
-                                config_zone_id: 602, // Hard-code to Alberta
-                                POS_initial_status_id: 1,
-                                POS_c_id: customerId,
-                                config_customer_id: customerId,
-                                POS_customer_group_id: 1,
-                                config_customer_group_id: 1,
-                                // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
-                                POS_c_type: (customerId > 0) ? 3 : 1,
-                                config_customer_type: (customerId > 0) ? 3 : 1
-                            }
-                        }), (payload) => {
-                            this.fetchOrder(this.payload.order.orderId)
-                        })
-                    }
-                // Payload order doesn't exist, we're gonna have to create it
-                } else {
-                    // TODO: Fix me! I'm hardcoded
-                    // Change country and zone to customer default address
-                    this.createOrder(assign({}, {
-                        action: 'insert',
-                        defaultSettings: {
-                            POS_a_country_id: this.payload.order.paymentCountryId,
-                            config_country_id: 38, // Hard-code to Canada
-                            POS_a_zone_id: this.payload.order.paymentZoneId,
-                            config_zone_id: 602, // Hard-code to Alberta
-                            POS_initial_status_id: 1,
-                            POS_c_id: customerId,
-                            config_customer_id: customerId,
-                            POS_customer_group_id: 1,
-                            config_customer_group_id: 1,
-                            // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
-                            POS_c_type: (customerId > 0) ? 3 : 1,
-                            config_customer_type: (customerId > 0) ? 3 : 1
-                        }
-                    }), (payload) => {
-                        this.fetchOrder(this.payload.order.orderId)
-                    })
-                }
-            }
-        })
-
-        // We call this data because it's not a complete item, just a POJO
-        CartStore.on('item-added', (itemId, quantity, data) => {
-            console.log('item added to order')
-            console.log(data)
-
-            if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
-                if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
-                    let lineTotal = data['price'] * quantity
-                    let lineTotalWithTax = this.calculateWithTaxes(lineTotal, data['tax_class_id'])
-                    let lineTax = this.calculateTaxes(lineTotal, data['tax_class_id'])
-
-                    // We're mutating the supplied data object by design
-                    let orderProduct = assign(data, {
-                        product_id: parseInt(itemId),
-                        quantity: quantity, // TODO: Inject quantity
-                        total: lineTotal,
-                        tax: lineTax
-                    })
-
-                    let orderTaxRates = this.getOrderTaxRates()
-                    let orderOptions = this.getOrderOptions()
-                    
-                    let customerId = 0
-                    if (CustomerStore.customer.hasOwnProperty('customer_id') && !isNaN(CustomerStore.customer['customer_id'])) {
-                        let storeCustomerId = parseInt(CustomerStore.customer['customer_id'])
-                        if (storeCustomerId > 0) {
-                            customerId = storeCustomerId
-                        }
-                    }
-
-                    this.updateOrder(this.payload.order.orderId, {
-                        action: 'insert',
-                        orderProduct: orderProduct,
-                        orderProductId: 0,
-                        orderOptions: orderOptions,
-                        productId: data['product_id'],
-                        orderTaxRates: orderTaxRates,
-                        defaultSettings: {
-                            POS_a_country_id: this.payload.order.paymentCountryId,
-                            config_country_id: 38, // Hard-code to Canada
-                            POS_a_zone_id: this.payload.order.paymentZoneId,
-                            config_zone_id: 602, // Hard-code to Alberta
-                            POS_initial_status_id: 1,
-                            POS_c_id: customerId,
-                            config_customer_id: customerId,
-                            POS_customer_group_id: 1,
-                            config_customer_group_id: 1,
-                            // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
-                            POS_c_type: (customerId > 0) ? 3 : 1,
-                            config_customer_type: (customerId > 0) ? 3 : 1
-                        }
-                    }, (payload) => {
-                        this.fetchOrder(this.payload.order.orderId)
-                    })
-                }
-            }
-        })
-
-        CartStore.on('item-changed', (item, quantity, oldQuantity) => {
-            console.log('item quantity changed')
-            console.log(item)
-            console.log('qty: ' + quantity)
-            console.log('old qty: ' + oldQuantity)
-
-            if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
-                if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
-                    let lineTotal = item['price'] * quantity
-                    let lineTotalWithTax = this.calculateWithTaxes(lineTotal, item['tax_class_id'])
-                    let lineTax = this.calculateTaxes(lineTotal, item['tax_class_id'])
-
-                    let orderProductId = 0
-                    for (let idx = 0; idx < this.payload.orderProducts.length; idx++) {
-                        if (parseInt(this.payload.orderProducts[idx].productId) === parseInt(parseInt(item['product_id']))) {
-                            orderProductId = this.payload.orderProducts[idx].orderProductId
-                        }
-                    }
-
-                    let orderProduct = assign({}, item, {
-                        product_id: parseInt(item['product_id']),
-                        quantity: quantity, // TODO: Inject quantity
-                        total: lineTotal,
-                        tax: lineTax
-                    })
-
-                    let orderTaxRates = this.getOrderTaxRates()
-                    let orderOptions = this.getOrderOptions()
-
-                    this.updateOrder(this.payload.order.orderId, {
-                        action: 'modifyQuantity',
-                        orderProduct: orderProduct,
-                        orderProductId: orderProductId,
-                        orderOptions: orderOptions,
-                        quantityBefore: oldQuantity,
-                        quantityAfter: quantity,
-                        orderTaxRates: orderTaxRates
-                    }, (payload) => {
-                        this.fetchOrder(this.payload.order.orderId)
-                    })
-                }
-            }
-        })
-        
-        CartStore.on('product-options-changed', (item, quantity, oldQuantity) => {
-            console.log('product options changed')
-            console.log(item)
-            console.log('qty: ' + quantity)
-            console.log('old qty: ' + oldQuantity)
-
-            if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
-                if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
-                    let lineTotal = item['price'] * quantity
-                    let lineTotalWithTax = this.calculateWithTaxes(lineTotal, item['tax_class_id'])
-                    let lineTax = this.calculateTaxes(lineTotal, item['tax_class_id'])
-
-                    let customerId = 0
-                    if (CustomerStore.customer.hasOwnProperty('customer_id') && !isNaN(CustomerStore.customer['customer_id'])) {
-                        let storeCustomerId = parseInt(CustomerStore.customer['customer_id'])
-                        if (storeCustomerId > 0) {
-                            customerId = storeCustomerId
-                        }
-                    }
-                    let orderProductId = 0
-                    for (let idx = 0; idx < this.payload.orderProducts.length; idx++) {
-                        if (parseInt(this.payload.orderProducts[idx].productId) === parseInt(parseInt(item['product_id']))) {
-                            orderProductId = this.payload.orderProducts[idx].orderProductId
-                        }
-                    }
-
-                    /*let orderProduct = assign({}, item, {
-                        product_id: parseInt(item['product_id']),
-                        quantity: quantity, // TODO: Inject quantity
-                        total: lineTotal,
-                        tax: lineTax
-                    })*/
-
-                    let orderTaxRates = this.getOrderTaxRates()
-                    let orderOptions = this.getOrderOptions()
-
-                    this.updateOrder(this.payload.order.orderId, {
-                        action: 'update',
-                        //orderProduct: orderProduct,
-                        orderProductId: orderProductId,
-                        orderOptions: orderOptions,
-                        //quantityBefore: oldQuantity,
-                        //quantityAfter: quantity,
-                        orderTaxRates: orderTaxRates,
-                        defaultSettings: {
-                            POS_a_country_id: this.payload.order.paymentCountryId,
-                            config_country_id: 38, // Hard-code to Canada
-                            POS_a_zone_id: this.payload.order.paymentZoneId,
-                            config_zone_id: 602, // Hard-code to Alberta
-                            POS_initial_status_id: 1,
-                            POS_c_id: customerId,
-                            config_customer_id: customerId,
-                            POS_customer_group_id: 1,
-                            config_customer_group_id: 1,
-                            // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
-                            POS_c_type: (customerId > 0) ? 3 : 1,
-                            config_customer_type: (customerId > 0) ? 3 : 1
-                        }
-                    }, (payload) => {
-                        this.fetchOrder(this.payload.order.orderId)
-                    })
-                }
-            }
-        })
-
-        CartStore.on('item-removed', (item) => {
-            console.log('item removed')
-            console.log(item)
-
-            if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
-                if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
-                    let orderProductId = 0
-                    for (let idx = 0; idx < this.payload.orderProducts.length; idx++) {
-                        if (parseInt(this.payload.orderProducts[idx].productId) === parseInt(parseInt(item['product_id']))) {
-                            orderProductId = this.payload.orderProducts[idx].orderProductId
-                        }
-                    }
-
-                    let data = assign({}, item, {
-                        product_id: parseInt(item['product_id']),
-                        quantity: 0
-                    })
-
-                    let orderTaxRates = this.getOrderTaxRates()
-                    let orderOptions = this.getOrderOptions()
-
-                    this.updateOrder(this.payload.order.orderId, {
-                        action: 'modifyQuantity',
-                        orderProduct: data,
-                        orderProductId: orderProductId,
-                        quantityAfter: 0,
-                        orderTaxRates: orderTaxRates,
-                        orderOptions: orderOptions
-                    }, (payload) => {
-                        this.fetchOrder(this.payload.order.orderId)
-                    })
-                }
-            }
-        })
-
-        CartStore.on('cart-reset', () => {
-            console.log('reset checkout store - cart was reset') // TODO: Have clear and reset, they aren't really the same thing
-
-            this.clearOrder()
-        })
-
-        CartStore.on('cart-cleared', () => {
-            console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
-
-            // Don't reset, which deletes order, just create a new order
-            this.createOrder({
-                action: 'insert'
-            })
-        })
-
-        document.addEventListener('deviceready', () => {
-            this.connectToStarPrinter()
-        }, false)
-
         // Easy access while developing app
         window.CheckoutStore = instance = this
     }
 
-    connectToStarPrinter(onSuccess, onError) {
-        this.discoverStarPrinterPorts(printerList => {
-			printerList = printerList || false
-
-			if (!printerList) {
-				return
-			}
-
-			// Connect and listen for hardware events (mPOP on iOS only)
-			window.plugins.starMicronics.connect(printerList[0].portName, (error, result) => {
-				if (error) {
-					console.log(error)
-					//alert(JSON.stringify(error))
-				} else {
-					this.starPrinter.name = printerList[0].name
-					this.starPrinter.portName = printerList[0].portName
-					this.starPrinter.macAddress = printerList[0].macAddress
-					this.starPrinter.isConnected = true
-
-					//alert(JSON.stringify(that.starPrinter))
-					// Connect and listen for hardware events (mPOP on iOS only)
-					window.addEventListener('starIOPluginData', (e) => {
-						switch (e.dataType) {
-							case 'printerCoverOpen':
-								break
-							case 'printerCoverClose':
-								break
-							case 'printerImpossible':
-								break
-							case 'printerOnline':
-								break
-							case 'printerOffline':
-								break
-							case 'printerPaperEmpty':
-								break
-							case 'printerPaperNearEmpty':
-								break
-							case 'printerPaperReady':
-								break
-							case 'barcodeReaderConnect':
-								break
-							case 'barcodeDataReceive':
-								break
-							case 'barcodeReaderImpossible':
-								break
-							case 'cashDrawerOpen':
-								break
-							case 'cashDrawerClose':
-								break
-						}
-					}) // TODO: Unbind event listener on destruct
-				}
-			})
-        })
-    }
-
-    discoverStarPrinterPorts(onSuccess) {
-        // Make sure Cordova is initialized
-        if (!window.hasOwnProperty('plugins')) {
-            throw new Error('Cordova was not detected')
-        }
-
-        // Make sure the Star Micronics Cordova plugin is installed and working
-        if (!window.plugins.hasOwnProperty('starMicronics')) {
-            throw new Error('Star Micronics plugin was not detected')
-        }
-
-        window.plugins.starMicronics.portDiscovery('All', (error, printerList) => {
-            if (error) {
-                console.error(error);
-                alert(JSON.stringify(error))
-            } else {
-				// TODO: Check to make sure it's a function!
-                onSuccess(printerList) // Trigger our onSuccess callback
-            }
-        })
-    }
-
-    openDrawer() {
-        if (!this.starPrinter.isConnected) return
-		
-		window.plugins.starMicronics.openCashDrawer(this.starPrinter.portName, (error, result) => {
-			if (error) {
-				console.log(error)
-			} else {
-				console.log('Cash drawer opened')
-			}
-		})
-    }
-
-    printOrder(output) {
-        if (!this.starPrinter.isConnected) return
-		
-		this.discoverStarPrinterPorts(printerList => {
-			if (!this.starPrinter.isConnected) return
-			
-			window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
-				if (error) {
-					console.log(error)
-					alert(JSON.stringify(error))
-				} else {
-					console.log('Receipt printed')
-				}
-			})
-		})
-    }
-
-    printReceipt(output) {
-        if (!this.starPrinter.isConnected) return
-		
-		this.discoverStarPrinterPorts(printerList => {
-			if (!this.starPrinter.isConnected) return
-			
-			window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
-				if (error) {
-					console.log(error)
-					alert(JSON.stringify(error))
-				} else {
-					console.log('Receipt printed')
-				}
-			})
-		})
-    }
-
-    printReport(output) {
-        if (!this.starPrinter.isConnected) return
-		
-		this.discoverStarPrinterPorts(printerList => {
-			if (!this.starPrinter.isConnected) return
-			
-			window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
-				if (error) {
-					console.log(error)
-					alert(JSON.stringify(error))
-				} else {
-					console.log('Receipt printed')
-				}
-			})
-		})
-    }
-
     registerToActions(action) {
         switch (action.actionType) {
-            case CheckoutConstants.SET_CUSTOMER:
-                this.customer = action.customer
-                this.emitChange()
+            case CheckoutConstants.NEW_ORDER:
+                this.newOrder()
                 break
             case CheckoutConstants.SET_ORDER:
-                this.order = action.order
-                this.emitChange()
+                // This doesn't do anything right now
+                this.payload = action.order
+                break
+            case CheckoutConstants.SET_BUILTIN_CUSTOMER:
+                this.setBuiltInCustomer(action.customer)
+                this.emit('set-customer', 'builtin')
+                break
+            case CheckoutConstants.SET_CUSTOM_CUSTOMER:
+                this.setCustomCustomer(action.customer)
+                this.emit('set-customer', 'custom')
+                break
+            case CheckoutConstants.SET_EXISTING_CUSTOMER:
+                this.setExistingCustomer(action.customer)
+                this.emit('set-customer', 'existing')
                 break
             case CheckoutConstants.SET_BILLING_ADDRESS:
-                this.billingAddress = action.billingAddress
-                this.emitChange()
+                this.setBillingAddress(action.address)
                 break
             case CheckoutConstants.SET_SHIPPING_ADDRESS:
-                this.shippingAddress = action.shippingAddress
-                this.emitChange()
+                this.setShippingAddress(action.address)
                 break
             case CheckoutConstants.SET_PAYMENT_METHOD:
-                this.paymentMethod = action.paymentMethod
-                this.emitChange()
-                break
-            case CheckoutConstants.SET_PAYMENT_TYPE:
-                this.paymentType = action.paymentType
-                this.emitChange()
+                this.setPaymentMethod(action.code, action.method)
                 break
             case CheckoutConstants.SET_SHIPPING_METHOD:
-                this.shippingMethod = action.shippingMethod
-                this.emitChange()
+                this.setShippingMethod(action.code, action.method)
+                break
+            case CheckoutConstants.SET_PAYMENT_TYPE:
+                this.setPaymentType(action.paymentType)
+                break
+            case CheckoutConstants.SET_ORDER_STATUS:
+                this.setOrderStatus(action.status)
+                break
+            case CheckoutConstants.SET_NOTES:
+                this.setNotes(action.notes)
                 break
             default:
                 break
@@ -606,28 +135,6 @@ class CheckoutStore extends BaseStore {
 
     isLoggedIn() {
         return !!this.checkout
-    }
-
-    registerEventListeners() {
-        // TODO: Need a proper auth module for this stuff...
-        cartEventHandler.addEventListener('beforeCheckout', () => {
-            this.beforeCheckout()
-        })
-
-        // TODO: Need a proper auth module for this stuff...
-        cartEventHandler.addEventListener('checkoutSuccess', () => {
-            this.onCheckoutSuccess()
-        })
-
-        // TODO: Need a proper auth module for this stuff...
-        cartEventHandler.addEventListener('checkoutError', () => {
-            this.onCheckoutError()
-        })
-
-        // TODO: Need a proper auth module for this stuff...
-        cartEventHandler.addEventListener('checkoutComplete', () => {
-            this.onCheckoutComplete()
-        })
     }
 
     // Mirror API methods
@@ -726,124 +233,37 @@ class CheckoutStore extends BaseStore {
 
     // From here down list utility methods that invoke our mirrored API methods
     fetchOrder(id, onSuccess, onError) {
-        console.log('attempting to push product to cart')
-        //console.log(JSON.stringify(cartProduct))
-        //this.buildDataStore()
-
-        // Emit block ui event
-        this.emit('block-ui')
-
-        axios({
-            url: QC_API + 'order/' + id,
-            method: 'GET',
-            dataType: 'json',
-            contentType: 'application/json'
-        })
-        .then(response => {
-            let payload = response.data
-            this.payload = payload
-
-            if (typeof onSuccess === 'function') {
-                onSuccess(payload)
-            }
-
-            this.emit('order-fetched')
-            this.emit('unblock-ui')
-        }).catch(err => {
-            if (typeof onError === 'function') {
-                onError()
-            }
-
-            this.emit('order-fetch-error')
-            this.emit('unblock-ui')
-        })
     }
 
     // privately invoked
     doCheckout(orderAction) {
         orderAction = orderAction || null
 
-        // only accept 'insert' action to create a new order
+        // Only accept 'insert' action to create a new order
 		if (orderAction.action !== 'insert') {
-			//throw APIException::orderCannotBeCreated(orderAction)
+			// Do something
 		}
-
-		// Create an new order
-		//let orderId = this.newOrder(orderAction.getDefaultSettings())
+        
 		let orderId = this.newOrder()
     }
 
-    createOrder(orderAction, onSuccess, onError) {
-        orderAction = orderAction || null
-
-        // only accept 'insert' action to create a new order
-		if (orderAction.action !== 'insert') {
-			//throw APIException::orderCannotBeCreated(orderAction)
-		}
-
-		// Create an new order
-		//let orderId = this.newOrder(orderAction.getDefaultSettings())
-		let orderId = this.newOrder(orderAction, onSuccess, onError)
-
-
-		// Add the product to the order
-		//this.addItem(orderId, orderAction)
-		//this.addItem(orderId)
-
-		// re-calculate totals
-		//orderDriver = this.adapter.getOrderDriver()
-		//let orderDetails = orderDriver.getOrderDetails(orderId, orderAction.orderTaxRates, orderAction.shipping)
-
-		//return orderDetails
-    }
-
     // privately invoked
-    newOrder(settings, onSuccess, onError) {
-        settings = assign({
-            POS_a_country_id: 38,
-            config_country_id: 38, // Canada
-            POS_a_zone_id: 602,
-            config_zone_id: 602, // Alberta
-            POS_c_id: 0,
-            config_customer_group_id: 1,
-            POS_initial_status_id: 1,
-            POS_c_type: 1
-        }, settings)
+    newOrder() {
+        let settings = SettingStore.getSettings().posSettings
 
-        // create a new empty order with all default settings and return the newly created order id
-		this.payload.order = {} //new PosOrder()
-
-		this.payload.order.orderId = 0 // Set to zero to trigger create on server
-		this.payload.order.storeId = 0
-
-		let defaultCountryId = this._isset(settings, 'POS_a_country_id') ? settings['POS_a_country_id'] : settings['config_country_id']
-		let defaultZoneId = this._isset(settings, 'POS_a_zone_id') ? settings['POS_a_zone_id'] : settings['config_zone_id']
-
-        let customerId = this._isset(settings, 'POS_c_id') ? settings['POS_c_id'] : 0
-		let customerGroupId = this._isset(settings, 'POS_c_group_id') ? settings['POS_c_group_id'] : this._isset(settings, 'config_customer_group_id') ? settings['config_customer_group_id'] : 1
-
-        let initialStatusId = this._isset(settings, 'POS_initial_status_id') ? parseInt(settings['POS_initial_status_id']) : 1
-
-		this.payload.order.shippingCountryId = defaultCountryId
-		this.payload.order.shippingZoneId = defaultZoneId
-
-        this.payload.order.paymentCountryId = defaultCountryId
-		this.payload.order.paymentZoneId = defaultZoneId
-		this.payload.order.customerId = customerId
-		this.payload.order.customerGroupId = customerGroupId
-
-		let customerType = this._isset(settings, 'POS_c_type') ? parseInt(settings['POS_c_type']) : 1
+        this.payload.order = {}
+		
+		let customerType = parseInt(settings['POS_c_type'])
 
         switch (customerType) {
 			case 1:
 				// Use built-in customer
-                // TODO: Make this configurable
-				this.setBuiltInCustomer(defaultCountryId, defaultZoneId)
+				this.setBuiltInCustomer()
 				break
 
 			case 2:
 				// Use customized customer
-				this.setCustomCustomer(settings)
+				//this.setCustomCustomer(customer)
 				break
 
 			case 3:
@@ -873,273 +293,72 @@ class CheckoutStore extends BaseStore {
 			//storeUrl = HTTP_SERVER
 		}
 
-		let defaultCurrencyCode = !(typeof settings['config_currency'] === 'undefined') ? settings['config_currency'] : 'USD'
-		/** @var currency PosCurrency */
-		//currency = em.getRepository(PosCurrency::class).findOneBy(array('code' => defaultCurrencyCode))
-		let currency = { currencyId: 5 } // 5 = CAD
-        let currencyId = currency.currencyId ? currency.currencyId : 5
-
         // Specify PATCH action
 		this.payload.order.action = 'insert'
+        
+        this.payload.order.orderId = 0 // Set to zero to trigger create on server
+		this.payload.order.storeId = 0
+		this.payload.order.orderStatusId = parseInt(settings['POS_initial_status_id'])
+		this.payload.order.invoicePrefix = settings['config_invoice_prefix']
+
+        //let customerId = parseInt(settings['POS_c_id'])
+		//let customerGroupId = parseInt(settings['POS_c_group_id'])
 
         this.payload.order.storeName = storeName
 		this.payload.order.storeUrl = storeUrl
-		this.payload.order.invoicePrefix = 'pos'
-		this.payload.order.shippingMethod = 'instore'
-		this.payload.order.shippingCode = 'instore.instore'
-		this.payload.order.paymentMethod = 'In Store'
-		this.payload.order.paymentCode = 'in_store'
+        
+		this.payload.order.shippingMethod = settings['config_shipping_method']
+		this.payload.order.shippingCode = settings['config_shipping_code']
+        
+		this.payload.order.paymentMethod = settings['config_payment_method']
+		this.payload.order.paymentCode = settings['config_payment_code']
 		this.payload.order.comment = ''
-		this.payload.order.orderStatusId = initialStatusId
-		this.payload.order.customerId = customerId
-		this.payload.order.customerGroupId = customerGroupId
-		this.payload.order.paymentCountry = 'Canada' //countryName
-		this.payload.order.paymentZone = 'Alberta' //zoneName
-		this.payload.order.shippingCountry = 'Canada' //countryName
-		this.payload.order.shippingZone = 'Alberta' //zoneName
-		this.payload.order.currencyCode = 'CAD'
-		this.payload.order.currencyId = currencyId
-		this.payload.order.dateAdded = new Date() //new \DateTime()
-		this.payload.order.dateModified = new Date() //new \DateTime()
+		
+        this.payload.order.customerId = parseInt(settings['default_customer_id'])
+		this.payload.order.customerGroupId = parseInt(settings['default_customer_group_id'])
+		
+        this.payload.order.paymentCountryId = parseInt(settings['default_customer_country_id'])
+        this.payload.order.paymentCountry = settings['default_customer_country']
+		this.payload.order.paymentZoneId = parseInt(settings['default_customer_zone_id'])
+		this.payload.order.paymentZone = settings['default_customer_zone']
+        
+        this.payload.order.shippingCountryId = parseInt(settings['default_customer_country_id'])
+        this.payload.order.shippingCountry = settings['default_customer_country']
+		this.payload.order.shippingZoneId = parseInt(settings['default_customer_zone_id'])
+		this.payload.order.shippingZone = settings['default_customer_zone']
+		
+        this.payload.order.currencyCode = settings['config_currency']
+		this.payload.order.currencyId = parseInt(settings['config_currency_id'])
+		
+        this.payload.order.dateAdded = new Date()
+		this.payload.order.dateModified = new Date()
 
         this.payload.order.defaultSettings = settings
         // END PATCH
-
-		//em.persist(order)
-		//em.flush()
-		//orderId = order.orderId
-
+        
 		this.payload.total = {} //new PosOrderTotal()
 		//this.payload.total.orderId = 0
 		this.payload.total.code = 'total'
 		this.payload.total.value = 0
-		this.payload.total.sortOrder = settings['total_sort_order']
+		this.payload.total.sortOrder = 0 //settings['total_sort_order']
 		this.payload.total.title = 'Total'
 
-		//em.persist(total)
-		//em.flush()
-
 		//return orderId
-
-        axios({
-            url: QC_API + 'order/0', // Set ID to 0 to create new...
-            data: this.payload.order, //JSON.stringify(cartProduct),
-            method: 'PATCH',
-            //dataType: 'json',
-            contentType: 'application/json'
-        })
-        .then(response => {
-            let payload = response.data
-
-            this.payload = assign(this.payload, payload)
-
-            if (typeof onSuccess === 'function') {
-                onSuccess(payload)
-            }
-        }).catch(err => {
-            if (typeof onError === 'function') {
-                onError()
-            }
-        })
+        this.emit('new-order')
     }
-
-    /**
-     * Used privately by CheckoutStore.patch
-     */
-    modifyOrder(orderId, posOrderAction) {
-        let orderDetails = null
-
-		try {
-			// in case orderId is 0, create an order, otherwise, update the order
-			if (orderId == 0) {
-				orderDetails = this.doCheckout(orderAction)
-			} else if (orderId > 0) {
-				orderDetails = this.updateOrder(orderId, orderAction)
-			} else {
-				//throw APIException::orderNotExists(orderId)
-			}
-
-			let productId = 0
-			if (orderAction.productId) {
-				productId = orderAction.productId
-			} else if (orderAction.orderProduct) {
-				productId = orderAction.orderProduct.productId
-			}
-
-            /*result = query.setParameter(1, productId).getArrayResult()
-
-			if (result && count(result) > 0) {
-				orderDetails.setLeftStock([(productId => result[0]['quantity'])])
-			}*/
-
-			return orderDetails
-		} catch (exception) {
-			log = this.adapter.getLogger()
-			log.debug(exception.getMessage())
-			log.debug(exception.getTraceAsString())
-		}
-
-		return orderDetails
+    
+    setOrder(orderPayload) {
+        this.payload = orderPayload
+        this.emit('set-order')
     }
-
-    /**
-     * Used privately by event handlers (item-added, item-changed, item-removed)
-     * and invoked by modifyOrder
-     */
-    updateOrder(orderId, orderAction, onSuccess, onError) {
-		let action = orderAction.action
-
-		if (action === 'insert') {
-			// add a new order product
-			this.addItem(orderId, orderAction, onSuccess)
-		} else if (action === 'update') {
-            axios({
-                url: QC_API + 'order/' + orderId, // Set ID to 0 to create new...
-                data: orderAction,
-                method: 'PATCH',
-                contentType: 'application/json'
-            })
-            .then(response => {
-                let payload = response.data
-
-                //this.payload = assign(this.payload, payload)
-                console.log('order patched')
-                console.log(this.payload)
-
-                if (typeof onSuccess === 'function') {
-                    onSuccess(payload)
-                }
-            }).catch(err => {
-                console.log('error patching order')
-                if (typeof onError === 'function') {
-                    onError()
-                }
-            })
-        } else {
-			let after = orderAction.quantityAfter
-			let quantityChange = after - orderAction.quantityBefore
-
-			let productOptionValueIds = []
-			//sql = "SELECT oo.productOptionValueId FROM " . PosOrderOption::class . " oo WHERE oo.orderProductId = ?1"
-			//foreach (result as record) {
-			//	productOptionValueIds[] = record['productOptionValueId']
-			//}
-
-			if (action === 'modifyQuantity') {
-				if (after > 0) {
-					// update the quantity for the given order product id
-					//sql = "UPDATE " . PosOrderProduct::class . " op SET op.quantity = " . after . ", op.total = op.price * " . after . " WHERE op.orderProductId = ?1"
-				} else {
-					// Delete the given order product id and options
-					//sql = "DELETE FROM " . PosOrderProduct::class . " op WHERE op.orderProductId = ?1"
-					//sql = "DELETE FROM " . PosOrderOption::class . " op WHERE op.orderProductId = ?1"
-				}
-
-                this.addItem(orderId, orderAction, onSuccess)
-
-				//this.updateRealStock(orderAction.productId, productOptionValueIds, quantityChange)
-			}
-		}
-
-		// re-calculate totals
-		//orderDriver = this.adapter.getOrderDriver()
-		//orderDetails = orderDriver.add(orderId, orderAction.getOrderTaxRates(), orderAction.getShipping())
-	}
-
+    
 	clearOrder(onSuccess, onError) {
 		let	that = this
 
         if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
             if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
-                axios({
-                    //url: QC_RESOURCE_API + 'cart/empty',
-                    url: QC_API + 'order/' + this.payload.order.orderId,
-                    method: 'DELETE',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                })
-                .then(response => {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(payload)
-                    }
-
-                    that.createOrder({
-                        action: 'insert'
-                    })
-                }).catch(err => {
-                    console.log('error patching item to order')
-                    if (typeof onError === 'function') {
-                        onError()
-                    }
-
-                    that.createOrder({
-                        action: 'insert'
-                    })
-                })
             }
         }
-	}
-
-    /**
-     * Public method
-     */
-    patch(data, id, attribute) {
-        if (attribute === null) {
-			// For pattern "PATCH /order/orderId"
-			// convert from data to PosOrderAction
-			// create a new order if id is 0, otherwise update the order
-			let orderAction = {} //new PosOrderAction()
-
-			return this.modifyOrder(id, orderAction)
-		} else {
-			// For pattern "PATCH /order/orderId/{attribute}"
-			// update the attribute for the order only
-
-			let value = data[attribute]
-
-			let result = [] //array(attribute => value)
-			if (attribute == 'orderStatusId') {
-				let close = false
-
-				let statuses = {} //query.getArrayResult()
-				for (let status in statuses) {
-					if (parseInt(status['value']) === parseInt(value)) {
-						close = true
-						break
-					}
-				}
-
-				result['close'] = close
-			}
-
-			return result
-		}
-    }
-
-    // TODO: Rename this method, it actually handles all updates
-    addItem(orderId, orderAction, onSuccess) {
-        axios({
-            url: QC_API + 'order/' + orderId, // Set ID to 0 to create new...
-            data: orderAction,
-            method: 'PATCH',
-            contentType: 'application/json'
-        })
-        .then(response => {
-            let payload = response.data
-
-            //this.payload = assign(this.payload, payload)
-            console.log('item successfully patched to order')
-            console.log(this.payload)
-
-            if (typeof onSuccess === 'function') {
-                onSuccess(payload)
-            }
-        }).catch(err => {
-            console.log('error patching item to order')
-            if (typeof onError === 'function') {
-                onError()
-            }
-        })
 	}
 
     /**
@@ -1211,125 +430,90 @@ class CheckoutStore extends BaseStore {
 		}
 	}
 
-    // From here down list utility methods that invoke our mirrored API methods
-    doCheckout(onSuccess, onError, id) { // ID is last because we only use it when testing, otherwise grab ID from 'model'
-        id = id || 0 // Demo
-        console.log('attempting to push product to cart')
+    setBuiltInCustomer(customer) {
+        customer = customer || null
+        let settings = SettingStore.getSettings().posSettings
+        
+        if (customer !== null) {
+            this.payload.order.firstname = customer['firstname']
+            this.payload.order.lastname = customer['lastname']
+            this.payload.order.email =  customer['email']
+            this.payload.order.telephone = customer['telephone']
+            this.payload.order.fax = customer['fax']
 
-        // Grab the order
-        this.fetchOrder(id, (data) => {
-            axios({
-                url: QC_API + 'order/' + id,
-                data: data, //JSON.stringify(cartProduct),
-                method: 'PATCH',
-                dataType: 'json',
-                contentType: 'application/json',
-            })
-            .then(response => {
-                let payload = response.data
+            this.payload.order.paymentFirstname = customer['firstname']
+            this.payload.order.paymentLastname = customer['lastname']
+            this.payload.order.paymentCompany = customer['company']
+            this.payload.order.paymentAddress1 = customer['address1']
+            this.payload.order.paymentAddress2 = customer['address2']
+            this.payload.order.paymentCity = customer['city']
+            this.payload.order.paymentPostcode = customer['postcode']
+            this.payload.order.paymentCountryId = parseInt(customer['country_id'])
+            this.payload.order.paymentZoneId = parseInt(customer['zone_id'])
 
-                if (typeof onSuccess === 'function') {
-                    onSuccess(payload)
-                }
+            this.payload.order.shippingFirstname = customer['firstname']
+            this.payload.order.shippingLastname = customer['lastname']
+            this.payload.order.shippingCompany = customer['company']
+            this.payload.order.shippingAddress1 = customer['address1']
+            this.payload.order.shippingAddress2 = customer['address2']
+            this.payload.order.shippingCity = customer['city']
+            this.payload.order.shippingPostcode = customer['postcode']
+            this.payload.order.shippingCountryId = parseInt(customer['country_id'])
+            this.payload.order.shippingZoneId = parseInt(customer['zone_id'])
+        } else {
+            this.payload.order.firstname = settings['default_customer_firstname']
+            this.payload.order.lastname = settings['default_customer_lastname']
+            this.payload.order.email =  settings['default_customer_email']
+            this.payload.order.telephone = settings['default_customer_telephone']
+            this.payload.order.fax = settings['default_customer_fax']
 
-                this.openDrawer()
+            this.payload.order.paymentFirstname = settings['default_customer_firstname']
+            this.payload.order.paymentLastname = settings['default_customer_lastname']
+            this.payload.order.paymentCompany = settings['default_customer_company']
+            this.payload.order.paymentAddress1 = settings['default_customer_address1']
+            this.payload.order.paymentAddress2 = settings['default_customer_address2']
+            this.payload.order.paymentCity = settings['default_customer_city']
+            this.payload.order.paymentPostcode = settings['default_customer_postcode']
+            this.payload.order.paymentCountryId = parseInt(settings['default_customer_country_id'])
+            this.payload.order.paymentZoneId = parseInt(settings['default_customer_zone_id'])
 
-                this.createOrder({
-                    action: 'insert'
-                })
-            }).catch(err => {
-                if (typeof onError === 'function') {
-                    onError()
-                }
-            })
-        })
+            this.payload.order.shippingFirstname = settings['default_customer_firstname']
+            this.payload.order.shippingLastname = settings['default_customer_lastname']
+            this.payload.order.shippingCompany = settings['default_customer_company']
+            this.payload.order.shippingAddress1 = settings['default_customer_address1']
+            this.payload.order.shippingAddress2 = settings['default_customer_address2']
+            this.payload.order.shippingCity = settings['default_customer_city']
+            this.payload.order.shippingPostcode = settings['default_customer_postcode']
+            this.payload.order.shippingCountryId = parseInt(settings['default_customer_country_id'])
+            this.payload.order.shippingZoneId = parseInt(settings['default_customer_zone_id'])
+        }
     }
 
-    setHeaders(request) {
-		let	that = this,
-			customer = null //dataSources.get('customer.entity') || null
+    setCustomCustomer(customer) {
+        this.payload.order.firstname = customer['POS_c_firstname']
+		this.payload.order.lastname = customer['POS_c_lastname']
+		this.payload.order.email = customer['POS_c_email']
+		this.payload.order.telephone = customer['POS_c_telephone']
+		this.payload.order.fax = customer['POS_c_fax']
 
-		//page.setHeaders(request)
-		request.setRequestHeader('X-Oc-Merchant-Language', 'en')
-
-		return request
-	}
-
-    getCustomers() {
-        axios({
-            url: QC_API + 'order/0', // Set ID to 0 to create new...
-            data: this.payload.order, //JSON.stringify(cartProduct),
-            method: 'PATCH',
-            //dataType: 'json',
-            contentType: 'application/json'
-        })
-        .then(response => {
-            let payload = response.data
-
-            this.payload = assign(this.payload, payload)
-
-            if (typeof onSuccess === 'function') {
-                onSuccess(payload)
-            }
-        }).catch(err => {
-            if (typeof onError === 'function') {
-                onError()
-            }
-        })
-    }
-
-    setBuiltInCustomer(defaultCountryId, defaultZoneId) {
-        this.payload.order.firstname = 'In-Store'
-		this.payload.order.lastname = 'Customer'
-		this.payload.order.email = 'sales@caffetech.com'
-		this.payload.order.telephone = '780-414-1200'
-		this.payload.order.fax = ''
-
-		this.payload.order.paymentFirstname = 'In-Store'
-		this.payload.order.paymentLastname = 'Customer'
+		this.payload.order.paymentFirstname = customer['POS_a_firstname']
+		this.payload.order.paymentLastname = customer['POS_a_lastname']
 		this.payload.order.paymentCompany = ''
-		this.payload.order.paymentAddress1 = 'In-Store'
-		this.payload.order.paymentAddress2 = ''
-		this.payload.order.paymentCity = 'Edmonton'
-		this.payload.order.paymentPostcode = ''
-		this.payload.order.paymentCountryId = defaultCountryId
-		this.payload.order.paymentZoneId = defaultZoneId
+		this.payload.order.paymentAddress1 = customer['POS_a_address1']
+		this.payload.order.paymentAddress2 = customer['POS_a_address2']
+		this.payload.order.paymentCity = customer['POS_a_city']
+		this.payload.order.paymentPostcode = customer['POS_a_postcode']
+		this.payload.order.paymentCountryId = customer['POS_a_country_id']
+		this.payload.order.paymentZoneId = customer['POS_a_zone_id']
 
-		this.payload.order.shippingFirstname = 'In-Store'
-		this.payload.order.shippingLastname = 'Customer'
-		this.payload.order.shippingAddress1 = 'In-Store'
-		this.payload.order.shippingAddress2 = ''
-		this.payload.order.shippingCity = 'Edmonton'
-		this.payload.order.shippingPostcode = ''
-		this.payload.order.shippingCountryId = defaultCountryId
-		this.payload.order.shippingZoneId = defaultZoneId
-    }
-
-    setCustomCustomer(settings) {
-        this.payload.order.firstname = settings['POS_c_firstname']
-		this.payload.order.lastname = settings['POS_c_lastname']
-		this.payload.order.email = settings['POS_c_email']
-		this.payload.order.telephone = settings['POS_c_telephone']
-		this.payload.order.fax = settings['POS_c_fax']
-
-		this.payload.order.paymentFirstname = settings['POS_a_firstname']
-		this.payload.order.paymentLastname = settings['POS_a_lastname']
-		this.payload.order.paymentCompany = ''
-		this.payload.order.paymentAddress1 = settings['POS_a_address1']
-		this.payload.order.paymentAddress2 = settings['POS_a_address2']
-		this.payload.order.paymentCity = settings['POS_a_city']
-		this.payload.order.paymentPostcode = settings['POS_a_postcode']
-		this.payload.order.paymentCountryId = settings['POS_a_country_id']
-		this.payload.order.paymentZoneId = settings['POS_a_zone_id']
-
-		this.payload.order.shippingFirstname = settings['POS_a_firstname']
-		this.payload.order.shippingLastname = settings['POS_a_lastname']
-		this.payload.order.shippingAddress1 = settings['POS_a_address1']
-		this.payload.order.shippingAddress2 = settings['POS_a_address2']
-		this.payload.order.shippingCity = settings['POS_a_city']
-		this.payload.order.shippingPostcode = settings['POS_a_postcode']
-		this.payload.order.shippingCountryId = settings['POS_a_country_id']
-		this.payload.order.shippingZoneId = settings['POS_a_zone_id']
+		this.payload.order.shippingFirstname = customer['POS_a_firstname']
+		this.payload.order.shippingLastname = customer['POS_a_lastname']
+		this.payload.order.shippingAddress1 = customer['POS_a_address1']
+		this.payload.order.shippingAddress2 = customer['POS_a_address2']
+		this.payload.order.shippingCity = customer['POS_a_city']
+		this.payload.order.shippingPostcode = customer['POS_a_postcode']
+		this.payload.order.shippingCountryId = customer['POS_a_country_id']
+		this.payload.order.shippingZoneId = customer['POS_a_zone_id']
     }
 
     setExistingCustomer(customer) {
@@ -1449,17 +633,31 @@ class CheckoutStore extends BaseStore {
         this.payload.order.shippingZone = zone
         this.payload.order.shippingZoneId = zoneId
         this.payload.order.shippingZone = zone
-        this.payload.order.shippingZoneId = zoneId
-        
-        
+        this.payload.order.shippingZoneId = zoneId   
     }
 
-    setPaymentMethod(method) {
-        this.paymentMethod = method
+    setPaymentMethod(code, method) {
+        this.paymentMethod = { code: code, method: method }
+        this.payload.order.paymentMethod = method
+        this.payload.order.paymentCode = code
+        this.emit('set-payment-method')
     }
 
-    setShippingMethod(method) {
-        this.shippingMethod = method
+    setShippingMethod(code, method) {
+        this.shippingMethod = { code: code, method: method }
+        this.payload.order.shippingMethod = method
+        this.payload.order.shippingCode = code
+        this.emit('set-shipping-method')
+    }
+    
+    setOrderStatus(status) {
+        this.orderStatus = status
+        this.emit('set-order-status')
+    }
+    
+    setNotes(notes) {
+        this.payload.order.comment = notes // TODO: Clean and sanitize!
+        this.emit('set-notes', notes)
     }
 
     getTotals() {
@@ -1467,12 +665,14 @@ class CheckoutStore extends BaseStore {
         let data = []
 
         // If there's no total, output zero
-        if (typeof totals !== 'undefinied' && totals !== null) {
+        if (typeof totals !== 'undefined' && totals !== null) {
+            
             if (!(totals instanceof Array || totals.length > 0)) return data //0.00
 
             // Sort the totals
             for (let idx = 0; idx < totals.length; idx++) {
-                data[parseInt(totals[idx].sortOrder)] = totals[idx]
+                //data[parseInt(totals[idx].sortOrder)] = totals[idx] // No sort order right now
+                data[idx] = totals[idx]
 
                 /* Format:
                 orderTotalId": 49,
@@ -1502,30 +702,193 @@ class CheckoutStore extends BaseStore {
         return total
     }
     
+    processSelectionOptions(item, callback) {
+        // Process selected item options
+        if (item.options instanceof Array) {
+            let selected = item.options
+            
+            // Just a simple loop over selected options 
+            // Don't worry about performance there won't be a million of these
+            for (let idx = 0; idx < selected.length; idx++) {
+                let fn = callback
+                fn.call(this, selected[idx], item._key, parseInt(item.id))
+            }
+        }
+    }
+    
+    createPayloadOption(selection, data) {
+        // Grab the name and option value
+        let name = selection.data.option.name
+        let type = selection.data.option.type
+        let value = selection.data.name
+        
+        // Grab any server generated IDs related to the orderOption
+        // Update using cart info if undefined or null for any required fields
+        let productOptionId = selection.data.option['product_option_id']
+        let productOptionValueId = selection.data['product_option_value_id']
+        let quantity = quantity || selection.quantity // Always use the selected quantity? Yeah, I think so...
+        
+        // Map the object
+        return assign({
+            productOptionId: parseInt(productOptionId),
+            productOptionValueId: parseInt(productOptionValueId),
+            quantity: parseFloat(quantity),
+            name: name,
+            type: type,
+            value: value
+        }, data)
+    }
+    
+    updatePayloadOption(selectionOption, payloadOption) {
+        // TODO: Multiple option types - see my note in method description referring to TS and future complexity
+        // The selected product option value
+        // Note that we're using the name returned on the data node of the selectionOption
+        // I should probably rename that property to 'value'
+        
+        // Grab the name and option value
+        let name = selectionOption.data.option.name
+        let type = selectionOption.data.option.type
+        let value = selectionOption.data.name
+        
+        // Grab any server generated IDs related to the orderOption
+        let orderOptionId = payloadOption.orderOptionId || 0 // Required for update
+        let orderId = payloadOption.orderId || 0 // Required for update
+        let orderProductId = payloadOption.orderProductId || 0 // Required for update
+        
+        // Update using cart info if undefined or null for any required fields
+        let productOptionId = payloadOption.productOptionId || selectionOption.data.option['product_option_id']
+        let productOptionValueId = payloadOption.productOptionValueId ||  selectionOption.data['product_option_value_id']
+        let quantity = quantity || selectionOption.quantity // Always use the selected quantity? Yeah, I think so...
+        // TODO: Double check the line above...
+        //let quantity = quantity || selectionOption.quantity
+        
+        return {
+            orderOptionId: parseInt(orderOptionId),
+            orderId: parseInt(orderId),
+            orderProductId: parseInt(orderProductId),
+            productOptionId: parseInt(productOptionId),
+            productOptionValueId: parseInt(productOptionValueId),
+            quantity: parseFloat(quantity),
+            name: name,
+            type: type,
+            value: value
+        }
+    }
+    
     /**
-     * Builds an array of order options which we will send to the server later
+     * Builds an array of order options which we will send to the server later.
+     * This method returns an object that we store to this.payload.orderOptions,
+     * which correlates to the server DTO.
+     *
+     * Formatted object will look like the array item below:
+     * 
+		{
+			"orderOptionId": 2,
+			"orderId": 198,
+			"orderProductId": 4,
+			"productOptionId": "249",
+			"productOptionValueId": "514",
+			"name": "Coffee Package Size",
+			"value": "340g",
+			"type": "select"
+		}
+	],
+     * TODO: I may start employing TypeScript in a limited capacity... 
+     * static typed objects would be useful for standardizing my data objects; 
+     * I like flexible code, but this is something I can see getting out of hand in future versions
+        "orderProducts": [
+            {
+                "orderProductId": 4,
+                "orderId": 198,
+                "productId": 3381,
+                "name": "Ceni Subscription",
+                "model": "Ceni Subscription",
+                "quantity": 1,
+                "price": "111.1100",
+                "total": "111.1100",
+                "tax": "5.5555",
+                "reward": 0
+            }
+        ],
+        "orderOptions": [
+            {
+                "orderOptionId": 2,
+                "orderId": 198,
+                "orderProductId": 4,
+                "productOptionId": "249",
+                "productOptionValueId": "514",
+                "name": "Coffee Package Size",
+                "value": "340g",
+                "type": "select"
+            }
+        ]
      */
-    getOrderOptions() {
-        let items = CartStore.getSelection()
+    getOrderOptions(productId, orderProductId) {
+        orderProductId = orderProductId || null
+        let cartProducts = CartStore.getSelection()
         let data = []
-
-    	// Loop over active items in cart (the current selection)
-        for (let idx in items) {
-            let item = items[idx]
-            if (items[idx].options instanceof Array) {
-                let selectedOptions = item.options
+        
+        // Get the orderProduct that corresponds to the provided orderProductId
+        let orderProduct = null
+        orderProduct = this.payload.orderProducts.filter(op => { 
+            return op.orderProductId === orderProductId
+        })[0] || null
+        
+        // Get the orderOptions that correspond to the provided orderProductId
+        let orderOptions = this.payload.orderOptions.filter(oo => {
+            return oo.orderProductId === orderProductId
+        })
+        
+        // Get the cart product that we're looking to update
+        // A product ID must be provide
+        if (!productId) {
+            throw new Error('No productId provided')
+        }
+        
+        // Get all matching products
+        cartProducts = cartProducts.filter(p => { return parseInt(p.id) === productId })
+        
+        // For each matching product in the shopping cart
+        for (let idx = 0; idx < cartProducts.length; idx++) {
+            // Process selected item options
+            let selected = cartProducts[idx].options
+            
+            // Just a simple loop over selected options 
+            // Don't worry about performance there won't be a million of these
+            for (let idx = 0; idx < selected.length; idx++) {
+                let selectionOption = selected[idx]
+                let selectionKey = selected._key
+                let selectionProductId = parseInt(selected.id)
                 
-                for (let idxOpt in selectedOptions) { 
-                    let value = selectedOptions[idxOpt].data.name
-                    let name = selectedOptions[idxOpt].data.option.name
-                    //data[selectedOptions[idxOpt].id] = selectedOptions[idxOpt].data
-                    // Normalize option value into a flat structure for our request
-                    data.push(assign({}, selectedOptions[idxOpt].data.option, selectedOptions[idxOpt].data, {
-                        name: name, value: value
-                    }))
+                if (orderProduct !== null && orderOptions.length > 0) {
+                    let selectionProductOptionId = parseInt(selectionOption.data.option['product_option_id'])
+                    
+                    if (!isNaN(selectionProductOptionId)) {
+                        orderOptions = orderOptions.filter(oo => {
+                            return oo.productOptionId === selectionProductOptionId
+                        })
+                        
+                        if (orderOptions.length === 1) {
+                            // Found option, update
+                            data.push(this.updatePayloadOption(selectionOption, orderOptions[0]))
+                        } else {
+                            data.push(this.createPayloadOption(selectionOption, {
+                                orderProductId: orderProduct.orderProductId,
+                                orderId: orderProduct.orderId,
+                                productId: orderProduct.productId
+                            }))
+                        }
+                    }
+                    
+                    console.log(selectionOption)
+                } else {
+                    // Create new item
+                    data.push(this.createPayloadOption(selectionOption))
+                    console.log(selectionOption)
                 }
             }
         }
+        
         // TODO: Make this configurable
         // Data keys will be underscored as result of the API used to retrieve products from the server
         // In this case we're using the legacy API, but the new resource API also defaults to underscores
@@ -1666,81 +1029,6 @@ class CheckoutStore extends BaseStore {
 
 		return rateData
 	}
-
-    applyRewardPoints(points) {
-		let	isSuccess = false
-
-		if (typeof points === 'undefined' || points === null || !(points > 0)) return false
-
-		axios({
-			url: QC_RESOURCE_API + 'reward',
-			method: 'POST',
-			async: false,
-			dataType: 'json',
-			data: JSON.stringify({
-				reward: points
-			}),
-			contentType: 'application/json',
-			beforeSend: (request) => {
-				this.setHeaders(request)
-			},
-			success: (response, status, xhr) => {
-				if (response.success) {
-					isSuccess = true
-				} else {
-					if (response.hasOwnProperty('error') && response.error.hasOwnProperty('warning')) {
-						if (response.error.warning === 'error_points') {
-							loader.setMessage('Sorry, you don\'t have enough credits to make this purchase').open()
-
-							setTimeout(() => {
-								loader.close()
-							}, 3000)
-
-							throw new Error('Not enough credits')
-						} else {
-							loader.setMessage(response.error.warning)
-
-							setTimeout(() => {
-								loader.close()
-							}, 3000)
-
-							throw new Error(response.error.warning)
-						}
-					}
-
-					if (eventHandler.hasEvent('checkoutError')) {
-						event = eventHandler.getEvent('checkoutError')
-						// Not sure about the vars...
-						event.dispatch({
-							xhr: xhr,
-							status: status,
-							error: error
-						})
-					}
-				}
-			},
-			complete: () => {
-			}
-		})
-
-		return isSuccess
-	}
-
-    onCheckoutSuccess() {
-    }
-
-    onCheckoutComplete() {
-    }
-
-    onCheckoutError() {
-    }
-
-    /**
-     * TODO: I am a utility method move me out of here!
-     */
-    _isset(array, value) {
-        return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
-    }
 }
 
 export default new CheckoutStore()

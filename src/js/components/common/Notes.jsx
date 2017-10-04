@@ -25,6 +25,7 @@ export default FormComponent(class Notes extends Component {
         this.getNotesString = this.getNotesString.bind(this)
         this.showNotesModal = this.showNotesModal.bind(this)
         this.hideNotesModal = this.hideNotesModal.bind(this)
+        this.clear = this.clear.bind(this)
         this.toggleNotes = this.toggleNotes.bind(this)
         
         this.onSave = this.onSave.bind(this)
@@ -34,8 +35,14 @@ export default FormComponent(class Notes extends Component {
         let defaultProps = Notes.defaultProps
         
         this.state = {
-            text: 'Testing testing 123'
+            text: ''
         }
+    }
+    
+    clear() {
+        this.setState({
+            text: ''
+        })
     }
 
     toggleNotes() {
@@ -77,17 +84,16 @@ export default FormComponent(class Notes extends Component {
         
         this.setState({
             text: this.notes.value
+        }, () => {
+            console.log('executing onSaveSuccess')
+            if (typeof this.props.onSaveSuccess === 'function') {
+                console.log('execute handler')
+                let fn = this.props.onSaveSuccess
+                fn(this.getNotesString())
+            }
+            
+            this.hideNotesModal()        
         })
-        
-        
-        console.log('executing onSaveSuccess')
-        if (typeof this.props.onSaveSuccess === 'function') {
-            console.log('execute handler')
-            let fn = this.props.onSaveSuccess
-            fn.call(this)
-        }
-        
-        this.hideNotesModal()
     }
     
     onCancel(e) {
@@ -98,7 +104,7 @@ export default FormComponent(class Notes extends Component {
         if (typeof this.props.onCancel === 'function') {
             console.log('execute handler')
             let fn = this.props.onCancel
-            fn.call(this, e)
+            fn()
         }
         
         this.hideNotesModal()
@@ -109,7 +115,7 @@ export default FormComponent(class Notes extends Component {
         if (typeof this.props.onError === 'function') {
             console.log('execute handler')
             let fn = this.props.onError
-            fn.call(this)
+            fn()
         }
     }
     
@@ -118,7 +124,7 @@ export default FormComponent(class Notes extends Component {
         
         return (
             <div>
-                <h4>{this.props.title}</h4>
+                <h5>{this.props.title}</h5>
                 {this.props.displaySummary && (
                 <form>
                     <FormGroup>
@@ -126,7 +132,8 @@ export default FormComponent(class Notes extends Component {
                         <FormControl 
                             componentClass = 'textarea' 
                             value = {notesString} 
-                            rows = {4} 
+                            placeholder = 'Click or tap to enter a note...'
+                            rows = {1} 
                             onClick = {this.showNotesModal}
                             readOnly />
                     </FormGroup>

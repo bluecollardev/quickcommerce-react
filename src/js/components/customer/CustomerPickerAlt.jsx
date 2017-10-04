@@ -6,11 +6,12 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import ToggleDisplay from 'react-toggle-display'
 import Autocomplete from 'react-autocomplete'
 
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
 import CustomerListStore from '../../stores/CustomerListStore.jsx'
+
+import CheckoutActions from '../../actions/CheckoutActions.jsx'
 import CheckoutStore from '../../stores/CheckoutStore.jsx'
 
 export default class CustomerPicker extends Component {
@@ -76,7 +77,7 @@ export default class CustomerPicker extends Component {
         
         // Update the order customer using the selected item
         // Fetch addresses and assign them to the order too
-        CheckoutStore.setExistingCustomer({ customer: this.state.selectedCustomer })
+        CheckoutActions.setExistingCustomer({ customer: this.state.selectedCustomer })
 
         console.log('executing onSelectClicked callback')
         if (typeof this.props.onSelect === 'function') {
@@ -110,7 +111,7 @@ export default class CustomerPicker extends Component {
                 selectedCustomer: customers[0]
             })
 
-            CheckoutStore.setBuiltInCustomer()
+            CheckoutActions.setBuiltInCustomer()
         }
     }
 

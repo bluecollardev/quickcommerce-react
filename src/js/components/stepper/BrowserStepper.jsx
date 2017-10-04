@@ -212,7 +212,7 @@ class BrowserStepper extends Stepper {
                                     
                                     this.emit('change')
                                     this.emit('item-changed', data.product)
-                                    this.emit('product-options-changed', data)
+                                    this.emit('product-options-changed', data, Number(quantity))
                                     
                                     return
                                 }

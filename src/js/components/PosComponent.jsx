@@ -39,7 +39,13 @@ import Stepper from './stepper/BrowserStepper.jsx'
 import BrowserActions from '../actions/BrowserActions.jsx'
 import BrowserStore from '../stores/BrowserStore.jsx'
 
+import CheckoutActions from '../actions/CheckoutActions.jsx'
+import CheckoutService from '../services/CheckoutService.jsx'
+
 import CustomerActions from '../actions/CustomerActions.jsx'
+import CustomerService from '../services/CustomerService.jsx'
+
+import SettingActions from '../actions/SettingActions.jsx'
 import ProductActions from '../actions/ProductActions.jsx'
 import ProductBrowser from './browser/ProductBrowser.jsx'
 import BrowserMenu from './browser/BrowserMenu.jsx'
@@ -60,8 +66,9 @@ window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore
 
 let CartStore = window.CartStore
 
+import StarMicronicsStore from '../stores/StarMicronicsStore.jsx'
 import CheckoutStore from '../stores/CheckoutStore.jsx' // Will need for totals and stuff
-import ProductStore from '../stores/ProductStore.jsx' // Will need for totals and stuff
+import ProductStore from '../stores/ProductStore.jsx'
 import SettingStore from '../stores/SettingStore.jsx'
 
 import ToggleDisplay from 'react-toggle-display'
@@ -118,12 +125,16 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.setStep = this.setStep.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.onComplete = this.onComplete.bind(this)
+        this.updateNotes = this.updateNotes.bind(this)
+        this.updatePaymentMethod = this.updatePaymentMethod.bind(this)
+        this.updateShippingMethod = this.updateShippingMethod.bind(this)
         this.continueShopping = this.continueShopping.bind(this)
         this.refresh = this.refresh.bind(this)
         this.showNewCustomerForm = this.showNewCustomerForm.bind(this)
         this.hideNewCustomerForm = this.hideNewCustomerForm.bind(this)
         this.showEditCustomerForm = this.showEditCustomerForm.bind(this)
         this.hideEditCustomerForm = this.hideEditCustomerForm.bind(this)
+        this.changeCustomer = this.changeCustomer.bind(this)
         this.showLoginForm = this.showLoginForm.bind(this)
         this.hideLoginForm = this.hideLoginForm.bind(this)
         this.showOrder = this.showOrder.bind(this)
@@ -148,11 +159,14 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.optionClicked = this.optionClicked.bind(this)
         this.itemDropped = this.itemDropped.bind(this)
         this.stepClicked = this.stepClicked.bind(this)
+        this.selectPaymentMethod = this.selectPaymentMethod.bind(this)
+        this.toggleCustomPaymentAmount = this.toggleCustomPaymentAmount.bind(this)
         this.getChangeAmounts = this.getChangeAmounts.bind(this)
         this.getTotal = this.getTotal.bind(this)
         this.categoryFilterSelected = this.categoryFilterSelected.bind(this)
         this.openDrawer = this.openDrawer.bind(this)
         this.calculateChange = this.calculateChange.bind(this)
+        this.selectChangePreset = this.selectChangePreset.bind(this)
         this.renderOptions = this.renderOptions.bind(this)
         this.renderPlainTxtOptions = this.renderPlainTxtOptions.bind(this)
         this.renderCashOptions = this.renderCashOptions.bind(this)
@@ -160,6 +174,26 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.renderEndOfDayReport = this.renderEndOfDayReport.bind(this)
         this.renderPlainTxtOrder = this.renderPlainTxtOrder.bind(this)
         this.renderPlainTxtReceipt = this.renderPlainTxtReceipt.bind(this)
+        
+        this.getDefaultSettings = this.getDefaultSettings.bind(this)
+        
+        SettingActions.fetchStore(8)
+        
+        SettingStore.on('store-info-loaded', (id, payload) => {
+            CheckoutStore.stores[id] = payload
+        }) // Load ACE bar store data so we don't have to later
+        
+        SettingActions.fetchSettings()
+        
+        SettingStore.on('settings-loaded', (payload) => {
+            CheckoutStore.settings = payload
+
+            // We only wanna do this once, so stick 'er right up top
+           CheckoutService.createOrder({
+                action: 'insert'
+                //orderTaxRates: this.orderTaxRates
+            })
+        })
         
         // Subscribe to checkout block ui events
         CheckoutStore.on('block-ui', () => {
@@ -171,6 +205,425 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         CheckoutStore.on('unblock-ui', () => {
             this.setState({
                 blockUi: false
+            })
+        })
+        
+        CheckoutStore.on('set-customer', () => {
+            console.log('checkout customer change detected')
+            console.log(CustomerStore.customer)
+            console.log(CustomerStore.billingAddress)
+            console.log(CustomerStore.shippingAddress)
+            
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && 
+                    CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'update',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                        // No orderId detected in the payload order, let's try create instead
+                    } else {
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.createOrder(assign({}, CheckoutStore.payload.order, {
+                            action: 'insert',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                    }
+                // Payload order doesn't exist, we're gonna have to create it
+                } else {
+                    // TODO: Fix me! I'm hardcoded
+                    // Change country and zone to customer default address
+                    CheckoutService.createOrder(assign({}, {
+                        action: 'insert',
+                        defaultSettings: this.getDefaultSettings()
+                    }), (payload) => {
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                    })
+                }
+            }
+        })
+
+        CheckoutStore.on('set-order-status', () => {
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'updateOrderStatus',
+                            defaultSettings: this.getDefaultSettings(),
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                        // No orderId detected in the payload order, let's try create instead
+                    }
+                }
+            }
+        })
+        
+        CheckoutStore.on('set-payment-method', () => {
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'updatePaymentMethod',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                        // No orderId detected in the payload order, let's try create instead
+                    }
+                }
+            }
+        })
+        
+        CheckoutStore.on('set-shipping-method', () => {
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'updateShippingMethod',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                        // No orderId detected in the payload order, let's try create instead
+                    }
+                }
+            }
+        })
+        
+        CheckoutStore.on('set-notes', () => {
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        
+                        // TODO: Fix me! I'm hardcoded
+                        // Change country and zone to customer default address
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'updateNotes',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                        // No orderId detected in the payload order, let's try create instead
+                    }
+                }
+            }
+        })  
+        
+        /*CheckoutStore.on('set-order', () => {
+            console.log('checkout change detected')
+            console.log(CustomerStore.customer)
+            console.log(CustomerStore.billingAddress)
+            console.log(CustomerStore.shippingAddress)
+            
+            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+                // Just handle, customer should be set to CheckoutStore
+                CheckoutStore.setExistingCustomer()
+                
+                // Payloard order exists
+                if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                    // Do we update?
+                    if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(CheckoutStore.payload.order.orderId) &&
+                        CheckoutStore.payload.order.orderId > 0) {
+                        CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, assign({}, CheckoutStore.payload.order, {
+                            action: 'update',
+                            defaultSettings: this.getDefaultSettings()
+                        }), (payload) => {
+                            CheckoutStore.setOrder(payload)
+                            //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                        })
+                    }
+                }
+            }
+        })*/
+        
+        // We call this data because it's not a complete item, just a POJO
+        CartStore.on('item-added', (itemId, quantity, data) => {
+            console.log('item added to order')
+            console.log(data)
+            
+            // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
+            if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(CheckoutStore.payload.order.orderId)) {
+                    let lineTotal = data['price'] * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, data['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, data['tax_class_id'])
+
+                    // We're mutating the supplied data object by design
+                    let orderProduct = assign(data, {
+                        product_id: parseInt(itemId),
+                        quantity: quantity, // TODO: Inject quantity
+                        total: lineTotal,
+                        tax: lineTax
+                    })
+
+                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
+                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(data['id']))
+
+                    CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
+                        action: 'insert',
+                        orderProduct: orderProduct,
+                        orderProductId: 0,
+                        orderOptions: orderOptions, // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
+                        productId: parseInt(data['id']),
+                        orderTaxRates: orderTaxRates,
+                        defaultSettings: this.getDefaultSettings()
+                    }, (payload) => {
+                        let onSuccess = (payload) => {
+                            // Format the return payload
+                            /* Returned JSON payload
+                            "orderProducts": [
+                                {
+                                    "orderProductId": 4,
+                                    "orderId": 198,
+                                    "productId": 3381,
+                                    "name": "Ceni Subscription",
+                                    "model": "Ceni Subscription",
+                                    "quantity": 1,
+                                    "price": "111.1100",
+                                    "total": "111.1100",
+                                    "tax": "5.5555",
+                                    "reward": 0
+                                }
+                            ],
+                            "orderOptions": [
+                                {
+                                    "orderOptionId": 2,
+                                    "orderId": 198,
+                                    "orderProductId": 4,
+                                    "productOptionId": "249",
+                                    "productOptionValueId": "514",
+                                    "name": "Coffee Package Size",
+                                    "value": "340g",
+                                    "type": "select"
+                                }
+                            ]*/
+                            
+                            orderProducts.reduce((list, item, index) => {
+                                
+                            })
+                            
+                            // Update our CartStore
+                            CartStore.updateItem()
+                        }
+                        
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId, onSuccess)
+                    })
+                } else {
+                    // Create a new order
+                }
+            }
+        })
+        
+        CartStore.on('item-changed', (item, quantity, oldQuantity) => {
+            console.log('item quantity changed')
+            console.log(item)
+            console.log('qty: ' + quantity)
+            console.log('old qty: ' + oldQuantity)
+            
+            // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
+            if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(CheckoutStore.payload.order.orderId)) {
+                    let lineTotal = item['price'] * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
+
+                    let orderProductId = 0
+                    for (let idx = 0; idx < CheckoutStore.payload.orderProducts.length; idx++) {
+                        if (parseInt(CheckoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+                            orderProductId = CheckoutStore.payload.orderProducts[idx].orderProductId
+                        }
+                    }
+                    
+                    let orderProduct = assign({}, item, {
+                        product_id: parseInt(item['id']),
+                        quantity: quantity, // TODO: Inject quantity
+                        total: lineTotal,
+                        tax: lineTax
+                    })
+
+                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
+                    //let orderOptions = CheckoutStore.getOrderOptions()
+
+                    CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
+                        action: 'modifyQuantity',
+                        orderProduct: orderProduct,
+                        orderProductId: orderProductId,
+                        //orderOptions: orderOptions,
+                        quantityBefore: oldQuantity,
+                        quantityAfter: quantity,
+                        orderTaxRates: orderTaxRates
+                    }, (payload) => {
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                    })
+                }
+            }
+        })
+        
+        CartStore.on('product-options-changed', (item, quantity, product) => {
+            console.log('product options changed')
+            console.log(item)
+            console.log('qty: ' + quantity)
+
+            if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(CheckoutStore.payload.order.orderId)) {
+                    let lineTotal = item['price'] * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
+                    
+                    let orderProductId = 0
+                    // Grab associated orderProduct
+                    let orderProduct = CheckoutStore.payload.orderProducts.filter(orderProduct => {
+                        return orderProduct.productId === parseInt(product['id'])
+                    })
+                    
+                    if (orderProduct instanceof Array && orderProduct.length === 1) {
+                        orderProductId = orderProduct[0].orderProductId
+                    }
+
+                    /*let orderProduct = assign({}, item, {
+                        product_id: parseInt(item['id']),
+                        quantity: quantity, // TODO: Inject quantity
+                        total: lineTotal,
+                        tax: lineTax
+                    })*/
+                    
+                    // TODO: Promises would probably work better here
+                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
+                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(product['id']), orderProductId)
+
+                    CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
+                        action: 'update',
+                        //orderProduct: orderProduct,
+                        orderProductId: orderProductId,
+                        orderOptions: orderOptions,
+                        //quantityBefore: oldQuantity,
+                        //quantityAfter: quantity,
+                        orderTaxRates: orderTaxRates,
+                        defaultSettings: this.getDefaultSettings()
+                    }, (payload) => {
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                    })
+                }
+            }
+        })
+
+        CartStore.on('item-removed', (item) => {
+            console.log('item removed')
+            console.log(item)
+
+            if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(CheckoutStore.payload.order.orderId)) {
+                    let orderProductId = 0
+                    for (let idx = 0; idx < CheckoutStore.payload.orderProducts.length; idx++) {
+                        if (parseInt(CheckoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+                            orderProductId = CheckoutStore.payload.orderProducts[idx].orderProductId
+                        }
+                    }
+
+                    let data = assign({}, item, {
+                        product_id: parseInt(item['id']),
+                        quantity: 0
+                    })
+
+                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
+                    //let orderOptions = CheckoutStore.getOrderOptions()
+
+                    CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
+                        action: 'modifyQuantity',
+                        orderProduct: data,
+                        orderProductId: orderProductId,
+                        quantityAfter: 0,
+                        orderTaxRates: orderTaxRates,
+                        //orderOptions: orderOptions
+                    }, (payload) => {
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                    })
+                }
+            }
+        })
+
+        CartStore.on('cart-reset', () => {
+            console.log('reset checkout store - cart was reset') // TODO: Have clear and reset, they aren't really the same thing
+
+            CheckoutService.clearOrder()
+        })
+
+        CartStore.on('cart-cleared', () => {
+            console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
+
+            // Don't reset, which deletes order, just create a new order
+            CheckoutService.createOrder({
+                action: 'insert'
             })
         })
 
@@ -216,7 +669,36 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             cart: 0,
             changeAmount: 0.00,
             cashAmount: 0.00,
+            paymentMethod: 'In Store', // TODO: Don't hardcode
+            paymentCode: 'in_store', // TODO: Don't hardcode
+            customPaymentAmount: null,
             settings: {}
+        }
+    }
+    
+    // TODO: Refactor me
+    getDefaultSettings() {
+        let customerId = 0
+        if (CustomerStore.customer.hasOwnProperty('customer_id') && !isNaN(CustomerStore.customer['customer_id'])) {
+            let storeCustomerId = parseInt(CustomerStore.customer['customer_id'])
+            if (storeCustomerId > 0) {
+                customerId = storeCustomerId
+            }
+        }
+        
+        return {
+            config_country_id: 38, // Hard-code to Canada
+            config_zone_id: 602, // Hard-code to Alberta
+            config_customer_id: customerId,
+            config_customer_type: (customerId > 0) ? 3 : 1,
+            POS_a_country_id: CheckoutStore.payload.order.paymentCountryId,
+            POS_a_zone_id: CheckoutStore.payload.order.paymentZoneId,
+            POS_initial_status_id: 1,
+            POS_c_id: customerId,
+            POS_customer_group_id: 1,
+            config_customer_group_id: 1,
+            // Codes are for existing (3) / built-in (1) customer types, 2 indicates custom customer
+            POS_c_type: (customerId > 0) ? 3 : 1
         }
     }
     
@@ -422,6 +904,27 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         }*/]
     }
     
+    changeCustomer(item) {
+        //CustomerService.setCustomer(item)
+        CheckoutActions.setExistingCustomer({ customer: item })
+    }
+    
+    updateNotes(notes) {
+        this.setState({
+            notes: notes
+        }, () => {
+            CheckoutStore.setNotes(notes)
+        })
+    }
+    
+    updatePaymentMethod(code, method) {
+        CheckoutStore.setPaymentMethod(code, method)
+    }
+    
+    updateShippingMethod(code, method) {
+        CheckoutStore.setShippingMethod(code, method)
+    }
+    
     onComplete() {
         /*var doCheckout = true,
             product = null,
@@ -477,16 +980,13 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     }
     
     onSaleComplete() {
-        let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-        cart.clearCart()
-
         // Make sure all modals are closed
         // Set state directly to avoid triggering any actions or processes associated with the show/hide modal methods
         this.setState({
             complete: null,
             charge: null
         })
-
+        
         let stepId = 'shop'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
 
@@ -499,6 +999,44 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
             // Update our component state
             this.setStep(stepId)
+        }
+        
+        console.log('checkout change detected')
+        console.log(CustomerStore.customer)
+        console.log(CustomerStore.billingAddress)
+        console.log(CustomerStore.shippingAddress)
+        
+        if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+            // Just handle, customer should be set to CheckoutStore
+            CheckoutStore.setExistingCustomer()
+            
+            // Payloard order exists
+            if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
+                // Do we update?
+                if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(CheckoutStore.payload.order.orderId) &&
+                    CheckoutStore.payload.order.orderId > 0) {
+                    // No orderId detected in the payload order, let's try create instead
+                } else {
+                    // TODO: Fix me! I'm hardcoded
+                    CheckoutService.createOrder(assign({}, CheckoutStore.payload.order, {
+                        action: 'insert',
+                        defaultSettings: this.getDefaultSettings()
+                    }), (payload) => {
+                        CheckoutStore.setOrder(payload)
+                        //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                    })
+                }
+            // Payload order doesn't exist, we're gonna have to create it
+            } else {
+                CheckoutService.createOrder(assign({}, {
+                    action: 'insert',
+                    defaultSettings: this.getDefaultSettings()
+                }), (payload) => {
+                    CheckoutStore.setOrder(payload)
+                    //CheckoutService.fetchOrder(CheckoutStore.payload.order.orderId)
+                })
+            }
         }
     }
     
@@ -587,19 +1125,53 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     }
     
     completeOrder() {
+        // Grab the total, by completing the order we're gonna wipe out the totals
+        let orderTotal = parseFloat(CheckoutStore.getTotal().value)
         // Create the order
-        CheckoutStore.doCheckout(
+        CheckoutService.doCheckout(
         (data) => {
             // onSuccess handler
-
-            this.setState({ charge: null })
-            //this.showCompleteModal()
+            if (this.state.customPaymentAmount) {
+                // Get amount
+                let cashAmount = null
+                if (typeof this.customPaymentAmount !== 'undefined' && 
+                    this.customPaymentAmount !== null) {
+                    cashAmount = parseFloat(this.customPaymentAmount.value)
+                    
+                    this.setState({
+                        charge: null,
+                        cashAmount: (cashAmount).toFixed(2),
+                        changeAmount: (cashAmount - orderTotal).toFixed(2),
+                        prevCheckout: assign({}, this.state.checkout)
+                    }, () => {
+                        let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+                        cart.clearCart()
+                        
+                        this.checkoutNotes.component.clear()
+                        
+                        this.showCompleteModal()
+                    })
+                } else {
+                    throw new Error('something went wrong with cash amount')
+                    // TODO: This is a kind of a stupid error message I can handle this better
+                }
+            } else {
+                this.setState({
+                    charge: null,
+                    prevCheckout: assign({}, this.state.checkout)
+                }, () => {
+                    let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+                    cart.clearCart()
+                    
+                    this.checkoutNotes.component.clear()
+                    
+                    this.showCompleteModal()
+                })
+            }
         },
         (data) => {
             // onError handler
-
             this.setState({ charge: null })
-            //this.showCompleteModal()
         })
     }
     
@@ -620,12 +1192,12 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     
     printReceipt() {
         // Send output as plain text string
-        CheckoutStore.printReceipt(this.renderPlainTxtReceipt())
+        StarMicronicsStore.printReceipt(this.renderPlainTxtReceipt())
     }
     
     printOrder() {
         // Send output as plain text string
-        CheckoutStore.printOrder(this.renderPlainTxtOrder())
+        StarMicronicsStore.printOrder(this.renderPlainTxtOrder())
     }
     
     printReport() {
@@ -639,7 +1211,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             let payload = response.data
 
             // Send output as plain text string
-            CheckoutStore.printReport(this.renderEndOfDayReport(payload))
+            StarMicronicsStore.printReport(this.renderEndOfDayReport(payload))
 
         }).catch(err => {
             // Do nothing
@@ -648,8 +1220,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     
     showCompleteModal() {
         // Hide the charge modal, if for any reason it is visible
-        this.completeOrder()
-
         this.setState({
             complete: 1,
             checkout: {
@@ -757,11 +1327,13 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         
         console.log('option clicked')
         console.log(item)
+        
+        let product = this.state.item
 
         //this.stepper.addOption(item['product_option_value_id'], 1, item) // TODO: Finish the options bit, products are already good, just hack in the options the old way for now
         // Note: I just looked again, and actually, it functions pretty good as is... maybe I'll leave the change for a later release, we're relatively good to go here
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-        cart.addOption(item['product_option_value_id'], 1, item)
+        cart.addOption(item['product_option_value_id'], 1, item, product)
     }
     
     categoryFilterSelected(categoryId, e) {
@@ -815,6 +1387,8 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         cart.emptyCart()
+        
+        this.checkoutNotes.clear()
 
         let stepId = 'shop'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
@@ -849,6 +1423,36 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                 total : Number(context.total) + Number(row.quantity) * price
             }
         }
+    }
+    
+    selectPaymentMethod(method) {
+        let methods = ['cash', 'credit', 'debit', 'cheque', 'giftcard']
+        
+        if (methods.indexOf(method) > -1) {
+            console.log('changing payment method to ' + StringHelper.capitalizeFirstLetter(method))
+            this.setState({
+                paymentMethod: StringHelper.capitalizeFirstLetter(method),
+                paymentCode: method
+            }, () => {
+                this.updatePaymentMethod(method, StringHelper.capitalizeFirstLetter(method))
+                this.forceUpdate() // Redraw receipt
+            })
+        } else {
+            console.log('clear payment method')
+            this.setState({
+                paymentMethod: 'In Store',
+                paymentCode: 'in_store'
+            }, () => {
+                this.updatePaymentMethod('in_store', 'In Store')
+                this.forceUpdate() // Redraw receipt
+            })
+        }
+    }
+    
+    toggleCustomPaymentAmount() {
+        this.setState({
+            customPaymentAmount: !this.state.customPaymentAmount
+        })
     }
     
     getChangeAmounts(price, cash, cid) {
@@ -908,14 +1512,64 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     calculateChange(e) {
         console.log(e)
         let orderTotal = parseFloat(CheckoutStore.getTotal().value)
-        let cashAmount = parseFloat(e.target.getAttribute('data-amount'))
+        
+        let cashAmount = e.target.getAttribute('data-amount')
+        
+        if (isNaN(cashAmount) && cashAmount === 'custom') {
+            if (typeof this.customPaymentAmount !== 'undefined' && 
+                this.customPaymentAmount !== null) {
+                cashAmount = parseFloat(this.customPaymentAmount.value)
+            } else {
+                throw new Error('something went wrong with cash amount')
+                // TODO: This is a kind of a stupid error message I can handle this better
+            }
+        } else if (!isNaN(cashAmount)) {
+            cashAmount = parseFloat(cashAmount)
+        }
+
+        this.setState({
+            cashAmount: (cashAmount).toFixed(2),
+            changeAmount: (cashAmount - orderTotal).toFixed(2)
+        })
+    }
+    
+    selectChangePreset(e) {
+        console.log(e)
+        let orderTotal = parseFloat(CheckoutStore.getTotal().value)
+        
+        let cashAmount = e.target.getAttribute('data-amount')
+        
+        if (isNaN(cashAmount) && cashAmount === 'custom') {
+            if (typeof this.customPaymentAmount !== 'undefined' && 
+                this.customPaymentAmount !== null) {
+                cashAmount = parseFloat(this.customPaymentAmount.value)
+            } else {
+                throw new Error('something went wrong with cash amount')
+                // TODO: This is a kind of a stupid error message I can handle this better
+            }
+        } else if (!isNaN(cashAmount)) {
+            cashAmount = parseFloat(cashAmount)
+        }
 
         this.setState({
             cashAmount: (cashAmount).toFixed(2),
             changeAmount: (cashAmount - orderTotal).toFixed(2)
         })
 
-        this.showCompleteModal()
+        this.completeOrder()
+    }
+    
+    renderPaymentOptions() {
+        return (
+            <div className='cash-options payment-options'>
+                <Button bsStyle='default' data-type='cash' onClick={this.selectPaymentMethod.bind(this, 'cash')}>Cash</Button>&nbsp;
+                <Button bsStyle='default' data-type='visa' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Visa</Button>&nbsp;
+                <Button bsStyle='default' data-type='mastercard' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Mastercard</Button>&nbsp;
+                <Button bsStyle='default' data-type={'debit'} onClick={this.selectPaymentMethod.bind(this, 'debit')}>Debit</Button>&nbsp;
+                <Button bsStyle='default' data-type={'cheque'} onClick={this.selectPaymentMethod.bind(this, 'cheque')}>Cheque</Button>&nbsp;
+                <Button bsStyle='default' data-type={'giftcard'} onClick={this.selectPaymentMethod.bind(this, 'giftcard')}>Gift Card</Button>
+            </div>
+        )
     }
     
     renderCashOptions() {
@@ -929,26 +1583,13 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
         return (
             <div className='cash-options'>
-                <Button bsStyle='default' data-amount={total} onClick={this.calculateChange}>${total.toFixed(2)}</Button>&nbsp;
-                <Button bsStyle='default' data-amount={options[0]} onClick={this.calculateChange}>${options[0].toFixed(2)}</Button>&nbsp;
-                <Button bsStyle='default' data-amount={options[1]} onClick={this.calculateChange}>${options[1].toFixed(2)}</Button>&nbsp;
-                <Button bsStyle='default' data-amount={options[2]} onClick={this.calculateChange}>${options[2].toFixed(2)}</Button>&nbsp;
-                <Button bsStyle='default' data-amount={options[3]} onClick={this.calculateChange}>${options[3].toFixed(2)}</Button>&nbsp;
+                <Button bsStyle='success' data-amount={total} onClick={this.selectChangePreset}>${total.toFixed(2)}</Button>&nbsp;
+                <Button bsStyle='success' data-amount={options[0]} onClick={this.selectChangePreset}>${options[0].toFixed(2)}</Button>&nbsp;
+                <Button bsStyle='success' data-amount={options[1]} onClick={this.selectChangePreset}>${options[1].toFixed(2)}</Button>&nbsp;
+                <Button bsStyle='success' data-amount={options[2]} onClick={this.selectChangePreset}>${options[2].toFixed(2)}</Button>&nbsp;
+                <Button bsStyle='success' data-amount={options[3]} onClick={this.selectChangePreset}>${options[3].toFixed(2)}</Button>&nbsp;
                 {/*<Button bsStyle='default' data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
-                <Button bsStyle='disabled' onClick={this.calculateChange}>Custom</Button>&nbsp;
-            </div>
-        )
-    }
-    
-    renderPaymentOptions() {
-        return (
-            <div className='cash-options payment-options'>
-                <Button bsStyle='default' data-type='cash'>Cash</Button>&nbsp;
-                <Button bsStyle='default' data-type='visa'>Visa</Button>&nbsp;
-                <Button bsStyle='default' data-type='mastercard'>Mastercard</Button>&nbsp;
-                <Button bsStyle='default' data-type={'debit'}>Debit</Button>&nbsp;
-                <Button bsStyle='default' data-type={'cheque'}>Cheque</Button>&nbsp;
-                <Button bsStyle='default' data-type={'giftcard'}>Gift Card</Button>
+                <Button bsStyle='disabled' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
             </div>
         )
     }
@@ -970,7 +1611,8 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         )
     }
     
-    renderReceipt() {
+    renderReceipt(cached = true) {
+        cached = cached || true
         let render = false
         
         if (this.state.hasOwnProperty('checkout') &&
@@ -998,9 +1640,9 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         output.push(<div className='receipt-header' style={{'text-align': 'center'}}>{headerLines}</div>)
 
         output.push(<hr />)
-        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>Sale</h4></span>)
+        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{[this.state.paymentMethod, 'Sale'].join(' ')}</h4></span>)
         output.push(<br />)
-        output.push(<span style={{'display': 'block'}} className='receipt-line-item'>SKU      Description      Total</span>)
+        //output.push(<span style={{'display': 'block'}} className='receipt-line-item'>SKU      Description      Total</span>)
 
         // We need a max line chars algo so we can make stuff line up
 
@@ -1031,10 +1673,126 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         }
 
         output.push(<br />)
+        
+        // Comments
+        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>Order Notes</h4></span>)
+        
+        output.push(
+            <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
+                <span style={{'font-size': '16px', 'font-weight': 'normal'}}>{this.state.notes}</span>
+            </span>
+        )
+        
+        output.push(<br />)
 
         // Totals
         let totals = this.state.checkout.totals || []
         let total = this.state.checkout.total || null
+
+        // Sub-totals
+        for (let idx = 0; idx < totals.length; idx++) {
+            if (totals[idx].code === total.code) continue // Ignore the final total OpenCart sux goat dick what a fucking dumb way to output totals!
+
+            output.push(
+                <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
+                    {totals[idx].title}
+                    <span style={{'float': 'right'}}>${parseFloat(totals[idx].value).toFixed(2)}</span>
+                </span>
+            )
+        }
+
+        if (total !== null) {
+            output.push(<br />)
+            output.push(<hr />)
+
+            // Final total
+            output.push(
+                <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
+                    <h4 style={{display: 'inline-block'}}>{total.title}</h4>
+                    <span style={{'float': 'right', 'font-size': '18px', 'font-weight': 'bold'}}>${parseFloat(total.value).toFixed(2)}</span>
+                </span>
+            )
+        }
+        
+        output.push(<br />)
+        
+        // Payment details
+        output.push(
+            <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
+                Payment Method
+                <span style={{'float': 'right', 'font-size': '16px', 'font-weight': 'bold'}}>{this.state.paymentMethod}</span>
+            </span>
+        )
+
+        return output
+    }
+    
+    renderCachedReceipt(cached = true) {
+        cached = cached || true
+        let render = false
+        
+        if (this.state.hasOwnProperty('prevCheckout') &&
+            this.state.prevCheckout.hasOwnProperty('order') &&
+            typeof this.state.prevCheckout.order !== 'undefined') {
+            render = true
+        }
+        
+        if (!render) return
+        
+        let output = []
+
+        // Build our receipt, line by line
+        // Store info
+        let store = this.state.prevCheckout.store
+        let datetime = new Date()
+
+        let headerLines = []
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{store.name}</h4></span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>10055 - 80 Ave NW</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>Edmonton, Alberta T6E 1T4</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>780.244.0ACE</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>{datetime.toString()}</span>)
+
+        output.push(<div className='receipt-header' style={{'text-align': 'center'}}>{headerLines}</div>)
+
+        output.push(<hr />)
+        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>Sale</h4></span>)
+        output.push(<br />)
+        output.push(<span style={{'display': 'block'}} className='receipt-line-item'>SKU      Description      Total</span>)
+
+        // We need a max line chars algo so we can make stuff line up
+
+        // Items
+        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        for (let idx = 0; idx < items.length; idx++) {
+            let price = parseFloat(items[idx].data['price']).toFixed(2)
+            let model = items[idx].data['model']
+            if (typeof items[idx].options !== 'undefined' && 
+                items[idx].options instanceof Array && 
+                items[idx].options.length > 0) {
+                    output.push(
+                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                            {model}
+                            <span style={{'float': 'right'}}>${price}</span>
+                            {this.renderOptions(items[idx].options)}
+                        </span>
+                    )
+                } else {
+                    output.push(
+                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                            {model}
+                            <span style={{'float': 'right'}}>${price}</span>
+                        </span>
+                    )
+                }
+            
+        }
+
+        output.push(<br />)
+
+        // Totals
+        let totals = this.state.prevCheckout.totals || []
+        let total = this.state.prevCheckout.total || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -1110,7 +1868,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
         // Build our receipt, line by line
         // Store info
-        //let store = this.state.checkout.store
+        //let store = this.state.prevCheckout.store
         let datetime = new Date()
 
         let headerLines = []
@@ -1120,13 +1878,13 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         output.push(...headerLines) // ES6 extend array
 
         output.push('\n')
-        output.push('Items')
+        output.push('ITEMS')
         output.push('\n')
 
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
+        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
             let line = [
                 items[idx].quantity + ' x ',
@@ -1134,9 +1892,20 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             ].join('  ')
 
             output.push(line)
+            
+            if (typeof items[idx].options !== 'undefined' && 
+                items[idx].options instanceof Array && 
+                items[idx].options.length > 0) {
+                output = output.concat(this.renderPlainTxtOptions(items[idx].options))
+            }
         }
-
-        output.push('\n')
+        
+        if (typeof this.state.notes === 'string' && this.state.notes !== '') {
+            output.push('\n')
+            output.push('NOTES')
+            output.push('\n')
+            output.push(this.state.notes)
+        }
 
         return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
     }
@@ -1146,7 +1915,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
         // Build our receipt, line by line
         // Store info
-        //let store = this.state.checkout.store
+        //let store = this.state.prevCheckout.store
         let datetime = new Date()
 
         let headerLines = []
@@ -1166,7 +1935,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
+        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
             let line = [
                 items[idx].quantity + ' x ',
@@ -1180,8 +1949,8 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         output.push('\n')
 
         // Totals
-        let totals = this.state.checkout.totals || []
-        let total = this.state.checkout.total || null
+        let totals = this.state.prevCheckout.totals || []
+        let total = this.state.prevCheckout.total || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -1220,30 +1989,27 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
             output.push(totalTitle + ': $' + parseFloat(total.value).toFixed(2))
         }
+        
+        output.push('\n')
+        output.push('Payment Method' + ': ' + this.state.paymentMethod)
 
         return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
     }
     
-    renderPlainTxtOptions() {
+    renderPlainTxtOptions(selectedOptions) {
         let options = []
         
         for (let idx in selectedOptions) {
-            options.push(<li>{selectedOptions[idx].data.option.name}: <b>{selectedOptions[idx].data.name}</b></li>)
+            options.push(selectedOptions[idx].data.option.name + ': ' + selectedOptions[idx].data.name)
+            options.push('\n')
         }
         
-        return (            
-            <ul style={{
-                paddingLeft: '1.5rem',
-                marginLeft: '0'
-            }}>
-            {options}
-            </ul>
-        )
+        return options
     }
     
     // Simply triggers CheckoutStore method
     openDrawer() {
-        CheckoutStore.openDrawer()
+        StarMicronicsStore.openDrawer()
     }
     
     render() {
@@ -1259,145 +2025,161 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                options = this.state.product.options
             }
         }
+        
+        let orderTotal = 0.00
+        if (CheckoutStore.payload.orderTotals instanceof Array && CheckoutStore.payload.orderTotals.length > 0) {
+            let orderTotalValue = parseFloat(CheckoutStore.getTotal().value)
+            if (!isNaN(orderTotalValue)) {
+                orderTotal = orderTotalValue.toFixed(2) 
+            }
+        }
 
         return (
             <div className='cart-ui'>
-                <Tabs activeKey={this.state.step} id='dev-tabs'>
-                    <Tab eventKey={'shop'} title='Browser'>
-                        <Row>
-                            <Col sm={12}>
-                                <BlockUi tag='div' blocking={this.state.blockUi}>
-                                    <ProductBrowser
-                                        activeStep = 'shop'
-                                        title = {this.state.title}
-                                        displayTitle = {false}
-                                        displayProductFilter = {false}
-                                        displayCategoryFilter = {false}
-                                        displayTextFilter = {true}
-                                        stepper = {this.stepper}
-                                        steps = {steps}
-                                        customRowComponent = {CatalogRow}
-                                        results = {this.state.data.categories}
-                                        fluxFactory = {fluxFactory}
-                                        onItemClicked = {this.categoryClicked}
-                                        onFilterSelected = {this.categoryFilterSelected}
-                                        onStepClicked = {this.stepClicked}
-                                        />
-                                </BlockUi>
-                            </Col>
-                        </Row>
-                    </Tab>
-                    
-                    <Tab eventKey={'cart'} title='Cart'>
-                        <Row>
-                            <Col sm={12}>
-                                <BlockUi tag='div' blocking={this.state.blockUi}>
-                                    <ProductBrowser
-                                        activeStep = 'cart'
-                                        displayTitle = {true}
-                                        title = {this.state.title}
-                                        displayProductFilter = {false}
-                                        displayCategoryFilter = {true}
-                                        displayTextFilter = {true}
-                                        stepper = {this.stepper}
-                                        steps = {steps}
-                                        customRowComponent = {CatalogRow}
-                                        results = {this.state.data.products}
-                                        fluxFactory = {fluxFactory}
-                                        onItemClicked = {this.itemClicked}
-                                        onFilterSelected = {this.categoryFilterSelected}
-                                        onStepClicked = {this.stepClicked}
-                                        />
-                                </BlockUi>
-                            </Col>
-                        </Row>
-                    </Tab>
-
-                    <Tab eventKey={'options'} title='Options'>
-                        <Row>
-                            <Col sm={12}>
-                                <BlockUi tag='div' blocking={this.state.blockUi}>
-                                    <ProductBrowser
-                                        activeStep = 'options'
-                                        displayTitle = {false}
-                                        title = {this.state.title}
-                                        price = {this.state.itemPrice}
-                                        item = {this.state.item}
-                                        displayProductFilter = {false}
-                                        displayCategoryFilter = {false}
-                                        displayTextFilter = {false}
-                                        stepper = {this.stepper}
-                                        steps = {steps}
-                                        customRowComponent = {ProductOptionRow}
-                                        results = {this.state.data.options}
-                                        fluxFactory = {fluxFactory}
-                                        onItemClicked = {this.optionClicked}
-                                        onFilterSelected = {this.categoryFilterSelected}
-                                        onStepClicked = {this.stepClicked}>
-                                        <Keypad ref = {(keypad) => this.keypad = keypad}/>
-                                        <FormGroup
-                                            style={{
-                                                    display: 'block'
-                                                }}>
-                                            <Button block bsStyle='success' onClick={this.addToCart}>
-                                                <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
-                                            </Button>
-                                        </FormGroup>
-                                    </ProductBrowser>
-                                </BlockUi>
-                            </Col>
-                        </Row>
-                    </Tab>
-
-                    <Tab eventKey={'checkout'} title='Checkout'>
-                        <Row>
-                            <Col sm={12}>
-                                <div className='browser-container'>
-                                    <div className='browser-menu-container'>
-                                        <BrowserMenu
-                                            activeStep = 'checkout'
+                <div id='browser'>
+                    <Tabs activeKey={this.state.step} id='dev-tabs'>
+                        <Tab eventKey={'shop'} title='Browser'>
+                            <Row>
+                                <Col sm={12}>
+                                    <BlockUi tag='div' blocking={this.state.blockUi}>
+                                        <ProductBrowser
+                                            activeStep = 'shop'
+                                            title = {this.state.title}
+                                            displayTitle = {false}
+                                            displayProductFilter = {false}
+                                            displayCategoryFilter = {false}
+                                            displayTextFilter = {true}
+                                            stepper = {this.stepper}
                                             steps = {steps}
+                                            customRowComponent = {CatalogRow}
+                                            results = {this.state.data.categories}
+                                            fluxFactory = {fluxFactory}
+                                            onItemClicked = {this.categoryClicked}
+                                            onFilterSelected = {this.categoryFilterSelected}
                                             onStepClicked = {this.stepClicked}
                                             />
-                                    </div>
-                                    <div className='browser-content'>
-                                        <div className='container-fluid'>
-                                            {/*<Row>
-                                                <Col sm={12}>
-                                                    <Header direction='row'
-                                                      pad={{horizontal: 'medium'}}>
-                                                      <Title>Customer Info</Title>
-                                                    </Header>
-                                                </Col>
-                                            </Row>*/}
-                                            <Row>
-                                            {/*<CustomerProfile
-                                                    customer = {CheckoutStore.customer}
-                                                    billingAddress = {CheckoutStore.billingAddress}
-                                                    shippingAddress = {CheckoutStore.shippingAddress}
-                                                    displayProfile = {false}
-                                                    displayBillingAddress = {true}
-                                                    displayShippingAddress = {true}
-                                                    />*/}
-                                            </Row>
+                                    </BlockUi>
+                                </Col>
+                            </Row>
+                        </Tab>
+                        
+                        <Tab eventKey={'cart'} title='Cart'>
+                            <Row>
+                                <Col sm={12}>
+                                    <BlockUi tag='div' blocking={this.state.blockUi}>
+                                        <ProductBrowser
+                                            activeStep = 'cart'
+                                            displayTitle = {true}
+                                            title = {this.state.title}
+                                            displayProductFilter = {false}
+                                            displayCategoryFilter = {true}
+                                            displayTextFilter = {true}
+                                            stepper = {this.stepper}
+                                            steps = {steps}
+                                            customRowComponent = {CatalogRow}
+                                            results = {this.state.data.products}
+                                            fluxFactory = {fluxFactory}
+                                            onItemClicked = {this.itemClicked}
+                                            onFilterSelected = {this.categoryFilterSelected}
+                                            onStepClicked = {this.stepClicked}
+                                            />
+                                    </BlockUi>
+                                </Col>
+                            </Row>
+                        </Tab>
+
+                        <Tab eventKey={'options'} title='Options'>
+                            <Row>
+                                <Col sm={12}>
+                                    <BlockUi tag='div' blocking={this.state.blockUi}>
+                                        <ProductBrowser
+                                            activeStep = 'options'
+                                            displayTitle = {false}
+                                            title = {this.state.title}
+                                            price = {this.state.itemPrice}
+                                            item = {this.state.item}
+                                            displayProductFilter = {false}
+                                            displayCategoryFilter = {false}
+                                            displayTextFilter = {false}
+                                            stepper = {this.stepper}
+                                            steps = {steps}
+                                            customRowComponent = {ProductOptionRow}
+                                            results = {this.state.data.options}
+                                            fluxFactory = {fluxFactory}
+                                            onItemClicked = {this.optionClicked}
+                                            onFilterSelected = {this.categoryFilterSelected}
+                                            onStepClicked = {this.stepClicked}>
+                                            <Keypad ref = {(keypad) => this.keypad = keypad}/>
+                                            <FormGroup
+                                                style={{
+                                                        display: 'block'
+                                                    }}>
+                                                <Button block bsStyle='success' onClick={this.addToCart}>
+                                                    <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
+                                                </Button>
+                                            </FormGroup>
+                                        </ProductBrowser>
+                                    </BlockUi>
+                                </Col>
+                            </Row>
+                        </Tab>
+
+                        <Tab eventKey={'checkout'} title='Checkout'>
+                            <Row>
+                                <Col sm={12}>
+                                    <div className='browser-container'>
+                                        <div className='browser-menu-container'>
+                                            <BrowserMenu
+                                                activeStep = 'checkout'
+                                                steps = {steps}
+                                                onStepClicked = {this.stepClicked}
+                                                />
+                                        </div>
+                                        <div className='browser-content'>
+                                            <div className='container-fluid'>
+                                                {/*<Row>
+                                                    <Col sm={12}>
+                                                        <Header direction='row'
+                                                          pad={{horizontal: 'medium'}}>
+                                                          <Title>Customer Info</Title>
+                                                        </Header>
+                                                    </Col>
+                                                </Row>*/}
+                                                <Row>
+                                                {/*<CustomerProfile
+                                                        customer = {CheckoutStore.customer}
+                                                        billingAddress = {CheckoutStore.billingAddress}
+                                                        shippingAddress = {CheckoutStore.shippingAddress}
+                                                        displayProfile = {false}
+                                                        displayBillingAddress = {true}
+                                                        displayShippingAddress = {true}
+                                                        />*/}
+                                                </Row>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Col>
-                        </Row>
-                    </Tab>
-                </Tabs>
+                                </Col>
+                            </Row>
+                        </Tab>
+                    </Tabs>
+                    
+                    <div id='checkout-notes'>
+                        <div className='container-fluid'>
+                            <Row>
+                                <Col xs={12}>
+                                <Notes 
+                                    ref = {(notes) => this.checkoutNotes = notes}
+                                    onSaveSuccess = {this.updateNotes}
+                                    displaySummary = {true}
+                                    modal = {true}
+                                    title = 'Order Notes' />
+                                </Col>
+                            </Row>
+                        </div>
+                    </div>
+                </div>
 
-                <div className='checkout' style={{
-                    zIndex        : '10',
-                    background    : '#fff',
-                    position      : 'static',
-                    bottom        : 0,
-                    left          : 0,
-                    width         : '100%',
-                    paddingBottom : '2em',
-                    overflowX     : 'hidden'
-                }}>
+                <div id='checkout'>
                     <Grid>
                         <Row className='account-parts'>
                             <Col xs={12}>
@@ -1426,6 +2208,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                         customer = {this.props.customer}
                                         onCreate = {this.showNewCustomerForm}
                                         onEdit = {this.showEditCustomerForm}
+                                        onSubmit = {this.changeCustomer}
                                         />
                                 </div>
                                 
@@ -1527,13 +2310,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                       containerComponent      = {DragDropContainer}
                                       rowComponent            = {DragDropCartRow}
                                       onItemDropped           = {this.itemDropped} />
-                                </div>
-                                <br />
-                                <div>
-                                    <Notes 
-                                        displaySummary = {true}
-                                        modal = {true}
-                                        title = 'Order Notes' />
                                 </div>
                             </Col>
                             <Col className='cart-buttons' xs={12}>
@@ -1674,7 +2450,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                     <Modal.Header>
                         <Modal.Title>
                             <span style={{ float: 'right', display: 'inline-block', marginTop: '5px' }}>Charge / Split</span>
-                            <span style={{ float: 'none' }} class='total-charge'>Total:<span style={{ display: 'inline-block', marginLeft: '1rem', fontSize: '1.5rem' }}>${parseFloat(CheckoutStore.getTotal().value).toFixed(2)}</span></span>
+                            <span style={{ float: 'none' }} class='total-charge'>Total:<span style={{ display: 'inline-block', marginLeft: '1rem', fontSize: '1.5rem' }}>${orderTotal}</span></span>
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -1699,44 +2475,66 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
                                     <hr />
                                     
+                                    {this.state.paymentCode === 'cash' && (
                                     <FormGroup>
                                         {this.renderCashOptions()}
                                         <input type='hidden' name='hid_cash' />
-                                        <br />
-                                        <i className='fa fa-dollar' /> <ControlLabel>Custom Amount</ControlLabel>
-                                        <FormControl type='text' name='custom_amount' />
                                     </FormGroup>
+                                    )}
                                     
-                                    <hr />
-
-                                    {/*
+                                    {this.state.paymentCode === 'cash' && this.state.customPaymentAmount && (
                                     <FormGroup>
-                                        <i className='fa fa-credit-card' /> <ControlLabel>Card</ControlLabel>
+                                        <i className='fa fa-dollar' /> <ControlLabel>Custom Amount</ControlLabel>
+                                        <FormControl type='text' name='custom_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
+                                    </FormGroup>
+                                    )}
+                                    
+                                    {this.state.paymentCode === 'credit' && (
+                                    <FormGroup>
+                                        <i className='fa fa-credit-card' /> <ControlLabel>Credit Card</ControlLabel>
                                         <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
                                         <input type='hidden' name='hid_card' />
                                     </FormGroup>
-
-                                    <hr />
-
+                                    )}
+                                    
+                                    {this.state.paymentCode === 'debit' && (
+                                    <FormGroup>
+                                        <i className='fa fa-credit-card' /> <ControlLabel>Debit Card</ControlLabel>
+                                        <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
+                                        <input type='hidden' name='hid_debit' />
+                                    </FormGroup>
+                                    )}
+                                    
+                                    {this.state.paymentCode === 'cheque' && (
+                                    <FormGroup>
+                                        <i className='fa fa-money' /> <ControlLabel>Cheque / Money Order</ControlLabel>
+                                        <FormControl type='text' name='cheque' placeholder='Reference Number' />
+                                        <input type='hidden' name='hid_cheque' />
+                                    </FormGroup>
+                                    )}
+                                    
+                                    {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (
+                                    <FormGroup>
+                                        <i className='fa fa-dollar' /> <ControlLabel>Amount</ControlLabel>
+                                        <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
+                                    </FormGroup>
+                                    )}
+                                    
+                                    {this.state.paymentCode === 'giftcard' && (
                                     <FormGroup>
                                         <i className='fa fa-gift' /> <ControlLabel>Gift Card</ControlLabel>
                                         <FormControl type='text' name='gift' placeholder='Card Number or Swipe' />
                                         <input type='hidden' name='hid_gift' />
                                     </FormGroup>
-
+                                    )}
+                                    
+                                    {/* TODO: Check if is a valid method */}
+                                    {this.state.paymentCode !== null && (
                                     <hr />
+                                    )}
 
                                     <FormGroup>
-                                        <i className='fa fa-ellipsis-h' /> <ControlLabel>Other (Processed using QuickCommerce)</ControlLabel>
-                                        <a style={{ display: 'block' }} href='#' name='other'>Other Payment Method</a>
-                                        <input type='hidden' name='hid_other' />
-                                    </FormGroup>
-
-                                    <hr />
-                                    */}
-
-                                    <FormGroup>
-                                        <Button bsStyle='success' block onClick={this.showCompleteModal}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
+                                        <Button bsStyle='success' block onClick={this.completeOrder}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
                                     </FormGroup>
                                     <FormGroup>
                                         <Button bsStyle='default' block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
@@ -1860,9 +2658,9 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {this.state.hasOwnProperty('checkout') &&
-                        this.state.checkout.hasOwnProperty('order') &&
-                        typeof this.state.checkout.order !== 'undefined' && (
+                        {this.state.hasOwnProperty('prevCheckout') &&
+                        this.state.prevCheckout.hasOwnProperty('order') &&
+                        typeof this.state.prevCheckout.order !== 'undefined' && (
                         <div className='receipt'
                             style={{
                                 margin: '0 auto',
@@ -1871,7 +2669,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                 padding: '18px',
                                 border: '1px solid black'
                             }}>
-                            {this.renderReceipt()}
+                            {this.renderCachedReceipt()}
                         </div>
                         )}
                     </Modal.Body>

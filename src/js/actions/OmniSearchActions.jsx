@@ -14,7 +14,7 @@ let result = new schema.Entity('data', {}, {
 export default {
     search: (params) => {
         AppDispatcher.dispatch({
-            actionType: OmniSearchConstants.SEARCH_CUSTOMERS,
+            actionType: OmniSearchConstants.SEARCH_GENERIC,
             config: assign({}, {
                 key: 'customers',
                 src: {

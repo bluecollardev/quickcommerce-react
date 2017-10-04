@@ -10,8 +10,71 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 
 import FormComponent from '../FormComponent.jsx'
 
+import SettingStore from '../../stores/SettingStore.jsx'
+
 import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
+
+import {
+	OccupationAutocomplete,
+	CountryAutocomplete,
+	ZoneAutocomplete,
+	CustomerAutocomplete,
+	CustomerGroupAutocomplete,
+	OrderStatusAutocomplete,
+	LanguageAutocomplete,
+	StoreAutocomplete
+} from '../form/Autocomplete.jsx'
+
+import {
+	SelectList,
+	ContactTypeDropdown,
+	IdTypeDropdown,
+	CustomerRelationDropdown,
+	SalutationDropdown,
+	SuffixDropdown,
+	GenderDropdown,
+	MaritalDropdown,
+	ResidenceTypeDropdown,
+	EmploymentTypeDropdown,
+	IncomeTypeDropdown,
+	FrequencyDropdown,
+	AssetTypeDropdown,
+	LiabilityTypeDropdown,
+	StreetTypeDropdown,
+	StreetDirDropdown
+} from '../form/Dropdown.jsx'
+
+import {
+	SelectButton,
+	ContactTypeButton,
+	IdTypeButton,
+	CustomerRelationButton,
+	SalutationButton,
+	SuffixButton,
+	GenderButton,
+	MaritalButton,
+	ResidenceTypeButton,
+	EmploymentTypeButton,
+	IncomeTypeButton,
+	FrequencyButton,
+	AssetTypeButton,
+	LiabilityTypeButton,
+	StreetTypeButton,
+	StreetDirButton
+} from '../form/Dropdown.jsx'
+
+import {
+	DateInput,
+	DateTimeInput,
+	TimeInput,
+	NumericInput,
+	TelephoneInput,
+	EmailInput,
+	PostalCodeInput,
+	SinNumberInput,
+	SsnInput
+} from '../form/Input.jsx'
 
 export default FormComponent(class CustomerIncome extends Component {
     static defaultProps = {        
@@ -108,32 +171,32 @@ export default FormComponent(class CustomerIncome extends Component {
         return (
             <div>
                 <form>
-                    <Col xs={12} className='col-md-flex col-lg-flex'>
+                    <Col xs={12} className='col-md-flex col-sm-flex'>
 						<h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
                         {/* Only display if purchaser is a company */}
-                        <FormGroup style={{ display: 'none' }}>
+                        <FormGroup>
                             <ControlLabel>Type</ControlLabel>
-                            <FormControl name='incomeType' componentClass='select' {...this.props.fields('incomeType', data.incomeType)} />
+                            <IncomeTypeDropdown componentClass='select' items={SettingStore.incomeTypes} name='incomeType' {...this.props.fields('incomeType', data.incomeType)} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-3 flex-md-25'>
+                        <FormGroup className='col-sm-3 flex-md-25'>
                             <ControlLabel>Gross Income</ControlLabel>
-                            <FormControl name='grossIncome' type='text' {...this.props.fields('grossIncome', data.grossIncome)} />
+                            <FormControl type='text' name='grossIncome' {...this.props.fields('grossIncome', data.grossIncome)} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-2 flex-md-12'>
-                            <ControlLabel>Per</ControlLabel>
-                            <FormControl name='per' componentClass='select' {...this.props.fields('per', data.per)} />
+                        <FormGroup className='col-sm-2 flex-md-12'>
+                            <ControlLabel>Frequency</ControlLabel>
+                            <FrequencyDropdown componentClass='select' items={SettingStore.paymentFrequencies} name='per' {...this.props.fields('per', data.per)} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-4 flex-md-37'>
+                        <FormGroup className='col-sm-4 flex-md-37'>
                             <ControlLabel>Notes</ControlLabel>
-                            <FormControl name='notes' type='text' {...this.props.fields('notes', data.notes)} />
+                            <FormControl type='text' name='notes' {...this.props.fields('notes', data.notes)} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-3 flex-md-25'>
+                        <FormGroup className='col-sm-3 flex-md-25'>
                             <ControlLabel>Total Annual</ControlLabel>
-                            <FormControl name='annualIncome' type='text' {...this.props.fields('annualIncome', data.annualIncome)} />
+                            <FormControl type='text' name='annualIncome' {...this.props.fields('annualIncome', data.annualIncome)} />
                         </FormGroup>
                     </Col>
 					

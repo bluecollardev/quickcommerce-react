@@ -48,7 +48,8 @@ const CartStore = assign({}, EventEmitter.prototype, {
         return this.selection[index]
     },
 
-    addItem(item, quantity, data) {
+    addItem(item, quantity, data, silent) {
+        silent = silent || false
         if (this.items.hasOwnProperty(item)) {
             data = this.items[item]
         } else {
@@ -59,8 +60,12 @@ const CartStore = assign({}, EventEmitter.prototype, {
             if (item === this.selection[key].id) {
                 const oldQty = this.selection[key].quantity
                 this.selection[key].quantity += Number(quantity)
-                this.emit('change')
-                this.emit('item-changed', this.items[item], this.selection[key].quantity, oldQty)
+                
+                if (!silent) {
+                    this.emit('change')
+                    this.emit('item-changed', this.items[item], this.selection[key].quantity, oldQty)
+                }
+                
                 return
             }
         }
@@ -74,18 +79,60 @@ const CartStore = assign({}, EventEmitter.prototype, {
                 _index   : this.selection.length,
                 _key     : this.nextKey++
             })
-            this.emit('change')
-            this.emit('item-added', item, Number(quantity), data)
+            
+            if (!silent) {
+                this.emit('change')
+                this.emit('item-added', item, Number(quantity), data)                
+            }
+        }
+    },
+    updateItem(item, quantity, data, silent) {
+        silent = silent || false
+        if (this.items.hasOwnProperty(item)) {
+            data = this.items[item]
+        } else {
+            this.items[item] = data
+        }
+
+        for (let key in this.selection) {
+            if (item === this.selection[key].id) {
+                const oldQty = this.selection[key].quantity
+                this.selection[key].quantity += Number(quantity)
+                
+                if (!silent) {
+                    this.emit('change')
+                    this.emit('item-changed', this.items[item], this.selection[key].quantity, oldQty)                    
+                }
+                
+                return
+            }
+        }
+
+        if (data) {
+            this.selection.push({
+                id       : item,
+                quantity : Number(quantity),
+                data     : data,
+                options  : [],
+                _index   : this.selection.length,
+                _key     : this.nextKey++
+            })
+            
+            if (!silent) {
+                this.emit('change')
+                this.emit('item-added', item, Number(quantity), data)                
+            }
         }
     },
     removeItem(index) {
         let id   = this.selection[index].id,
             item = this.selection.splice(index, 1)[0]
         this.reIndex()
+        
         this.emit('change')
         this.emit('item-removed', this.items[id])
     },
-    addOption(item, quantity, data) {
+    addOption(item, quantity, data, product) {
         // Product option sample
         /* "options": [
             { // The product option
@@ -150,9 +197,10 @@ const CartStore = assign({}, EventEmitter.prototype, {
         
         // Store item data if it doesn't exist
         if (createItem) {
-            this.addItem(data.product['id'], 1, data.product) 
+            this.addItem(data.product['id'], 1, data.product, true) // Silent add, don't trigger events
         }
         
+        // TODO: Update to use .map
         // Loop over active items in cart (the current selection)
         for (let idx in this.selection) {
             if (!(this.selection[idx].options instanceof Array)) {
@@ -180,8 +228,13 @@ const CartStore = assign({}, EventEmitter.prototype, {
                         const oldQty = selection.quantity
                         this.selection[idx].options[idxOpt].quantity += Number(quantity)
                         
-                        this.emit('change')
-                        this.emit('item-changed', data.product)
+                        if (createItem) {
+                            this.emit('change')
+                            this.emit('item-added', selection.id, selection.quantity, selection.data)                                   
+                        } else {
+                            this.emit('change')
+                            //this.emit('item-changed', data.product)                            
+                        }
                         
                         return
                     // What we do depends on the type 
@@ -198,9 +251,13 @@ const CartStore = assign({}, EventEmitter.prototype, {
                                         data     : data
                                     })
                                     
-                                    this.emit('change')
-                                    this.emit('item-changed', data.product)
-                                    this.emit('product-options-changed', data)
+                                    if (createItem) {
+                                        this.emit('change')
+                                        this.emit('item-added', selection.id, selection.quantity, selection.data)                                        
+                                    } else {
+                                        this.emit('change')
+                                        this.emit('product-options-changed', data, Number(quantity), product)
+                                    }
                                     
                                     return
                                 }
@@ -222,8 +279,13 @@ const CartStore = assign({}, EventEmitter.prototype, {
                         _key     : nextKey
                     })
                     
-                    this.emit('change')
-                    this.emit('product-options-changed', data, item)
+                    if (createItem) {
+                        this.emit('change')
+                        this.emit('item-added', selection.id, selection.quantity, selection.data)
+                    } else {
+                        this.emit('change')
+                        this.emit('product-options-changed', data, Number(quantity), product) // TODO: Provide OLD quantity as last emit param
+                    }
                 }
             }
         }
@@ -251,6 +313,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
         this.emit('change')
         this.emit('cart-cleared')
     }
+    
 })
 
 module.exports = CartStore

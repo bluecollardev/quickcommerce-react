@@ -6,7 +6,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import ToggleDisplay from 'react-toggle-display'
 
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import CustomerInfo from '../customer/CustomerInfo.jsx'
@@ -15,7 +14,8 @@ import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
 export default AuthenticatedComponent(class UserProfile extends Component {
-    static defaultProps = {
+    // TODO: Invalid default props here...
+	static defaultProps = {
 		pk: 'customer_id',
 		mode: 'edit',
 		displayProfile: true,
@@ -27,9 +27,9 @@ export default AuthenticatedComponent(class UserProfile extends Component {
 		shippingAddressString: '',
 		shippingAddress: {},
 		user: {
-			id: null, // WTF this shouldn't be nested in here!
-			address_id: null, // WTF this shouldn't be nested in here!
-			addresses: [], // WTF this shouldn't be nested in here!
+			id: null, 
+			address_id: null, 
+			addresses: [], 
 			firstname: '',
 			middlename: '',
 			lastname: '',
@@ -39,9 +39,9 @@ export default AuthenticatedComponent(class UserProfile extends Component {
 			fax: ''
 		},
 		customer: {
-			id: null, // WTF this shouldn't be nested in here!
-			address_id: null, // WTF this shouldn't be nested in here!
-			addresses: [], // WTF this shouldn't be nested in here!
+			id: null, 
+			address_id: null, 
+			addresses: [], 
 			firstname: '',
 			middlename: '',
 			lastname: '',

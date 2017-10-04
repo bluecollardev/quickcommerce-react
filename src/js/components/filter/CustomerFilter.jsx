@@ -8,7 +8,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import ToggleDisplay from 'react-toggle-display'
 
 import FormComponent from '../FormComponent.jsx'
 
@@ -16,17 +15,7 @@ import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
 
 export default FormComponent(class CustomerFilter extends Component {
-    static defaultProps = {        
-		id: null, // WTF this shouldn't be nested in here!
-		address_id: null, // WTF this shouldn't be nested in here!
-		addresses: [], // WTF this shouldn't be nested in here!
-		firstname: '',
-		middlename: '',
-		lastname: '',
-		company_name: '',
-		email: '',
-		telephone: '',
-		fax: ''
+    static defaultProps = {
     }
     
     constructor(props) {

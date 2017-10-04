@@ -15,16 +15,6 @@ import CustomerService from '../../services/CustomerService.jsx'
 
 export default FormComponent(class CustomerInfo extends Component {
     static defaultProps = {
-        id: null, // WTF this shouldn't be nested in here!
-        address_id: null, // WTF this shouldn't be nested in here!
-        addresses: [], // WTF this shouldn't be nested in here!
-        firstname: '',
-        middlename: '',
-        lastname: '',
-        company_name: '',
-        email: '',
-        telephone: '',
-        fax: ''
     }
     
     constructor(props) {
@@ -120,7 +110,7 @@ export default FormComponent(class CustomerInfo extends Component {
                     
                     <FormGroup className='col-xs-4 col-sm-3'>
                         <ControlLabel>Title</ControlLabel>
-                        <FormControl name='title' type='text' {...this.props.fields('title', data.title)} />
+                        <FormControl componentClass='select' name='title' type='text' {...this.props.fields('title', data.title)} disabled />
                     </FormGroup>
                     
                     <FormGroup className='col-xs-8 col-sm-9'>
@@ -189,7 +179,7 @@ export default FormComponent(class CustomerInfo extends Component {
                     
                     <FormGroup className='col-xs-12 col-sm-6'>
                         <ControlLabel>Mobile</ControlLabel>
-                        <FormControl name='telephone' type='tel' {...this.props.fields('mobile', data.telephone)} />
+                        <FormControl name='telephone' type='tel' {...this.props.fields('mobile', '')} disabled placeholder='Disabled' />
                     </FormGroup>
                     
                     <FormGroup className='col-xs-12 col-sm-8'>

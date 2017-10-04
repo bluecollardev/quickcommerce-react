@@ -8,7 +8,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import ToggleDisplay from 'react-toggle-display'
 
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'

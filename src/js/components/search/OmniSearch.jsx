@@ -6,14 +6,12 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableFooter,
-  TableRow,
-  TableRowColumn,
+import Table, {
+	TableBody,
+	TableHead,
+	TableFoot,
+	TableRow,
+	TableCell
 } from 'material-ui/Table';
 
 import Autocomplete from 'react-autocomplete'
@@ -22,9 +20,11 @@ import OmniSearchActions from '../../actions/OmniSearchActions.jsx'
 import OmniSearchStore from '../../stores/OmniSearchStore.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
+
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
 import CustomerListStore from '../../stores/CustomerListStore.jsx'
 
+import CheckoutActions from '../../actions/CheckoutActions.jsx'
 import CheckoutStore from '../../stores/CheckoutStore.jsx'
 
 export default class OmniSearch extends Component {
@@ -111,7 +111,7 @@ export default class OmniSearch extends Component {
         
         // Update the order customer using the selected item
         // Fetch addresses and assign them to the order too
-        //CheckoutStore.setExistingCustomer({ customer: this.state.selectedCustomer })
+        //CheckoutActions.setExistingCustomer({ customer: this.state.selectedCustomer })
 
         console.log('executing onSelectClicked callback')
         if (typeof this.props.onSelect === 'function') {
@@ -156,7 +156,7 @@ export default class OmniSearch extends Component {
                 selectedCustomer: results[0]
             })
 
-            CheckoutStore.setBuiltInCustomer()
+            CheckoutActions.setBuiltInCustomer()
         }
     }*/
 
@@ -185,10 +185,10 @@ export default class OmniSearch extends Component {
 									
 									return (
 										<TableRow style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-											<TableRowColumn>{item.userId}</TableRowColumn>
-											<TableRowColumn>{[item.firstName, item.lastName].join(' ')}</TableRowColumn>
-											<TableRowColumn>{item.email}</TableRowColumn>
-											<TableRowColumn><Button><i className='fa fa-fw fa-file-text' /></Button>&nbsp;<Button><i className='fa fa-fw fa-eye' /></Button></TableRowColumn>
+											<TableCell>{item.userId}</TableCell>
+											<TableCell>{[item.firstName, item.lastName].join(' ')}</TableCell>
+											<TableCell>{item.email}</TableCell>
+											<TableCell><Button><i className='fa fa-fw fa-file-text' /></Button>&nbsp;<Button><i className='fa fa-fw fa-eye' /></Button></TableCell>
 										</TableRow>
 									)
 								}}
@@ -214,24 +214,22 @@ export default class OmniSearch extends Component {
 												height: 'auto',
 												maxHeight: '240px'}}>
 												<Table>
-													<TableHeader>
+													<TableHead>
 														<TableRow>
-															<TableHeaderColumn>ID</TableHeaderColumn>
-															<TableHeaderColumn>Name</TableHeaderColumn>
-															<TableHeaderColumn>Email</TableHeaderColumn>
-															<TableHeaderColumn>Action</TableHeaderColumn>
+															<TableCell>ID</TableCell>
+															<TableCell>Name</TableCell>
+															<TableCell>Email</TableCell>
+															<TableCell>Action</TableCell>
 														</TableRow>
-													</TableHeader>
+													</TableHead>
 													<TableBody>
-													{items}
-													</TableBody>
-													<TableFooter>
+														{items}
 														<TableRow>
-															<TableRowColumn>
+															<TableCell>
 																<Button><i className='fa fa-fw fa-user-plus' /> Create New Customer</Button>
-															</TableRowColumn>
+															</TableCell>
 														</TableRow>
-													</TableFooter>
+													</TableBody>
 												</Table>
 											</div>
 										</div>
@@ -264,10 +262,10 @@ export default class OmniSearch extends Component {
 									
 									// Update the order customer using the selected item
 									// Fetch addresses and assign them to the order too
-									//CheckoutStore.setExistingCustomer({ customer: item })
+									//CheckoutActions.setExistingCustomer({ customer: item })
 									// Note: there's nothing wrong with this, I just personally think I can consolidate the two bits
 									CustomerActions.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
-									CheckoutStore.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
+									CheckoutActions.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
 								}}
 							/>
 						</FormGroup>

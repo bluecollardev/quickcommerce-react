@@ -30,8 +30,8 @@ class OmniSearchStore extends BaseStore {
 
         switch (action.actionType) {
             // onLoad actions
-            case OmniSearchConstants.SEARCH_CUSTOMERS:
-                console.log('search customers')
+            case OmniSearchConstants.SEARCH_GENERIC:
+                console.log('search generic')
                 this.handleAction(payload)
                 break
 

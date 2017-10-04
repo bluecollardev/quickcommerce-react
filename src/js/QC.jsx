@@ -52,13 +52,25 @@ try {
     console.log(err)
 }
 
-
 class QC extends AuthenticatedApp {
     constructor(props) {
         super(props)
 		
 		this.onHashChange = this.onHashChange.bind(this)
+		this.renderErrors = this.renderErrors.bind(this)
+		this.renderNotifications = this.renderNotifications.bind(this)
 		//this.toggleSearch = this.toggleSearch.bind(this)
+        
+        this.state = {
+            errors: [
+                'Could not connect to the internet. Please check your internet connection settings.',
+                'Could not find mPOP cash drawer. Please check your Bluetooth settings and make sure your cash drawer has been paired.',
+                'Could not connect to mPOP cash drawer. Please try restarting your cash drawer or contact your system administrator.'
+            ],
+            notifications: [
+                'There is a new update available. Please click here to download the update.'
+            ]
+        }
     }
 
     componentWillMount() {
@@ -77,12 +89,77 @@ class QC extends AuthenticatedApp {
 		}
 
 	}
+    
+    renderErrors() {
+        let errors = []
+        let count = Object.keys(this.state.errors).length
+        let idx = 1
+        
+        if (typeof this.state.errors !== 'string' && count > 0) {
+            for (let error in this.state.errors) {
+                errors.push(<span><strong>Error:</strong> <span>{this.state.errors[error]}</span></span>)
+                if (idx < count) {
+                    errors.push(<br/>)
+                }
+                
+                idx++
+            }
+        } else if (typeof this.state.errors === 'string') {
+            errors.push(<span><strong>Error:</strong> <span>{this.state.errors}</span></span>)
+        }
+        
+        return errors
+    }
+    
+    renderNotifications() {
+        let notifications = []
+        let count = Object.keys(this.state.notifications).length
+        let idx = 1
+        
+        if (typeof this.state.notifications !== 'string' && count > 0) {
+            for (let notification in this.state.notifications) {
+                notifications.push(<span><strong>Notice:</strong> <span>{this.state.notifications[notification]}</span></span>)
+                if (idx < count) {
+                    notifications.push(<br/>)
+                }
+                
+                idx++
+            }
+        } else if (typeof this.state.notifications === 'string') {
+            notifications.push(<span><strong>Notice:</strong> <span>{this.state.notifications}</span></span>)
+        }
+        
+        return notifications
+    }
 
     render() {
+        let { errors, notifications } = this.state
         return (
             <AuthenticatedApp>
                 <div id='outer-container'>
                     <main id='page-wrap'>
+                        {/*(Object.keys(errors).length > 0 || Object.keys(notifications).length > 0) && (
+                        <Col xs={12}>
+                            {Object.keys(errors).length > 0 && (
+                            <Alert bsStyle='danger' style={{
+                                textAlign: 'center',
+                                margin: '1rem auto 0'
+                            }}>
+                            {this.renderErrors()}
+                            </Alert>
+                            )}
+                            
+                            {Object.keys(notifications).length > 0 && (
+                            <Alert bsStyle='info' style={{
+                                textAlign: 'center',
+                                margin: '1rem auto 0'
+                            }}>
+                            {this.renderNotifications()}
+                            </Alert>
+                            )}
+                        </Col>
+                        )*/}
+                        
                         <Col xs={12}>
                             <HashRouter>
                                 <div className='react-app-wrapper'>

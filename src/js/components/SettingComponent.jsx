@@ -460,21 +460,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 //this.parseZones(item.id)
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('store_id', item.id)
+                                                                this.props.fields('store_id', parseInt(item.id))
                                                                 this.props.fields('store', value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        store_id: item.id,
+                                                                        store_id: parseInt(item.id),
                                                                         store: value
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('store', data.store), { className: 'form-control'})
+                                                                assign(this.props.field('store', data.store), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='store_id' {...this.props.fields('store_id', data.store_id)} />
+                                                        <input type='hidden' name='store_id' {...this.props.field('store_id', data.store_id)} />
                                                     </FormGroup>
                                                     <h4>Location Settings</h4>
                                                     <hr />
@@ -512,12 +512,12 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 //this.parseZones(item.id)
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('default_country_id', item.id)
+                                                                this.props.fields('default_country_id', parseInt(item.id))
                                                                 this.props.fields('default_country', item.value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        default_country_id: item.id,
+                                                                        default_country_id: parseInt(item.id),
                                                                         default_country: item.value
                                                                     })
                                                                 }))
@@ -525,10 +525,10 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 SettingStore.parseZones(item.id)
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('default_country', data.default_country), { className: 'form-control'})
+                                                                assign(this.props.field('default_country', data.default_country), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='default_country_id' {...this.props.fields('default_country_id', data.default_country_id)} />
+                                                        <input type='hidden' name='default_country_id' {...this.props.field('default_country_id', data.default_country_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group col-sm-6'>
@@ -562,21 +562,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('default_zone_id', item.id)
+                                                                this.props.fields('default_zone_id', parseInt(item.id))
                                                                 this.props.fields('default_zone', item.value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        default_zone_id: item.id,
+                                                                        default_zone_id: parseInt(item.id),
                                                                         default_zone: item.value 
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('default_zone', data.default_zone), { className: 'form-control'})
+                                                                assign(this.props.field('default_zone', data.default_zone), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='default_zone_id' {...this.props.fields('default_zone_id', data.default_zone_id)} />
+                                                        <input type='hidden' name='default_zone_id' {...this.props.field('default_zone_id', data.default_zone_id)} />
                                                     </FormGroup>
                                                 </Col>
                                                 
@@ -619,16 +619,16 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        POS_initial_status_id: item.id,
+                                                                        POS_initial_status_id: parseInt(item.id),
                                                                         POS_initial_status: item.value 
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('POS_initial_status', data.POS_initial_status), { className: 'form-control'})
+                                                                assign(this.props.field('POS_initial_status', data.POS_initial_status), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='POS_initial_status_id' {...this.props.fields('POS_initial_status_id', data.POS_initial_status_id)} />
+                                                        <input type='hidden' name='POS_initial_status_id' {...this.props.field('POS_initial_status_id', data.POS_initial_status_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group col-sm-6'>
@@ -662,21 +662,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('POS_complete_status_id', item.id)
+                                                                this.props.fields('POS_complete_status_id', parseInt(item.id))
                                                                 this.props.fields('POS_complete_status', item.value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        POS_complete_status_id: item.id,
+                                                                        POS_complete_status_id: parseInt(item.id),
                                                                         POS_complete_status: item.value 
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('POS_complete_status', data.POS_complete_status), { className: 'form-control'})
+                                                                assign(this.props.field('POS_complete_status', data.POS_complete_status), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='POS_complete_status_id' {...this.props.fields('POS_complete_status_id', data.POS_complete_status_id)} />
+                                                        <input type='hidden' name='POS_complete_status_id' {...this.props.field('POS_complete_status_id', data.POS_complete_status_id)} />
                                                     </FormGroup>
                                                 </Col>
                                                 
@@ -714,21 +714,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('cash_customer_id', item.customer_id)
+                                                                this.props.fields('cash_customer_id', parseInt(item.customer_id))
                                                                 this.props.fields('cash_customer', value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        cash_customer_id: item.id, 
+                                                                        cash_customer_id: parseInt(item.id), 
                                                                         cash_customer: value
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('cash_customer', data.cash_customer), { className: 'form-control'})
+                                                                assign(this.props.field('cash_customer', data.cash_customer), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='cash_customer_id' {...this.props.fields('cash_customer_id', data.cash_customer_id)} />
+                                                        <input type='hidden' name='cash_customer_id' {...this.props.field('cash_customer_id', data.cash_customer_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group col-sm-6'>
@@ -762,21 +762,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('cash_customer_group_id', item.id)
+                                                                this.props.fields('cash_customer_group_id', parseInt(item.id))
                                                                 this.props.fields('cash_customer_group', value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        cash_customer_group_id: item.id, 
+                                                                        cash_customer_group_id: parseInt(item.id), 
                                                                         cash_customer_group: value
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('cash_customer_group', data.cash_customer_group), { className: 'form-control'})
+                                                                assign(this.props.field('cash_customer_group', data.cash_customer_group), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='cash_customer_group_id' {...this.props.fields('cash_customer_group_id', data.cash_customer_group_id)} />
+                                                        <input type='hidden' name='cash_customer_group_id' {...this.props.field('cash_customer_group_id', data.cash_customer_group_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group col-sm-6'>
@@ -810,21 +810,21 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             onSelect={(value, item) => {
-                                                                this.props.fields('default_customer_id', item.customer_id)
+                                                                this.props.fields('default_customer_id', parseInt(item.customer_id))
                                                                 this.props.fields('default_customer', value)
                                                                 
                                                                 this.setState(assign({}, this.state, {
                                                                     data: assign({}, data, {
-                                                                        default_customer_id: item.customer_id, 
+                                                                        default_customer_id: parseInt(item.customer_id), 
                                                                         default_customer: value
                                                                     })
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('default_customer', data.default_customer), { className: 'form-control'})
+                                                                assign(this.props.field('default_customer', data.default_customer), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='default_customer_id' {...this.props.fields('default_customer_id', data.default_customer_id)} />
+                                                        <input type='hidden' name='default_customer_id' {...this.props.field('default_customer_id', data.default_customer_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group col-sm-6'>
@@ -869,10 +869,10 @@ export default FormComponent(class SettingComponent extends Component {
                                                                 }))
                                                             }}
                                                             inputProps={
-                                                                assign(this.props.fields('default_customer_group', data.default_customer_group), { className: 'form-control'})
+                                                                assign(this.props.field('default_customer_group', data.default_customer_group), { className: 'form-control'})
                                                             }
                                                         />
-                                                        <input type='hidden' name='default_customer_group_id' {...this.props.fields('default_customer_group_id', data.default_customer_group_id)} />
+                                                        <input type='hidden' name='default_customer_group_id' {...this.props.field('default_customer_group_id', data.default_customer_group_id)} />
                                                     </FormGroup>
                                                     
                                                     <FormGroup className='autocomplete-control-group'>

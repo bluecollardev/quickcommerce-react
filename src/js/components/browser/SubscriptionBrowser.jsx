@@ -6,8 +6,7 @@ import { Nav, Navbar, NavOption, MenuOption, NavDropdown } from 'react-bootstrap
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-//import ToggleDisplay from 'react-toggle-display'
-import Griddle from 'griddle-react'
+//import Griddle from 'griddle-react'
 import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
 //import Stepper from '../stepper/BrowserStepper.jsx'

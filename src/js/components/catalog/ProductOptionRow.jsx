@@ -64,7 +64,7 @@ export default class ProductOptionRow extends Component {
         
         return (
             <Col xs={12}>
-                <div className='card'>
+                <div className='card product-options-card row'>
                     <p className='item-name'>
                         {this.props.data['name']}
                     </p>

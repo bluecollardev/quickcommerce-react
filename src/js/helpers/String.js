@@ -31,6 +31,10 @@ export default class StringHelper {
         return $('<div />').html(safe).text()
     }*/
     
+    static capitalizeFirstLetter = (str) => {
+        return str.charAt(0).toUpperCase() + str.slice(1)
+    }
+    
     /**
      * Method: App.Helpers.String.hyphenize
      *

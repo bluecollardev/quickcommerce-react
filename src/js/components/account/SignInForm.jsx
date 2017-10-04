@@ -28,8 +28,6 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
         this.rememberAccount = this.rememberAccount.bind(this)
         
         this.onLogout = this.onLogout.bind(this)
-        this.doLogin = this.doLogin.bind(this)
-        this.doLogout = this.doLogout.bind(this)
         
         this.renderErrors = this.renderErrors.bind(this)
         
@@ -123,7 +121,175 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
         localStorage.removeItem('password')
     }
     
-    /*startLogoutTimer() {
+    onSubmit(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        //if (typeof this.props.onSubmit === 'undefined') return false;
+        
+        // Should I change the name of callback to beforeSubmit?
+        console.log('executing onSubmit callback')
+        if (typeof this.props.onSubmit === 'function') {
+            console.log('execute handler')
+            let fn = this.props.onSubmit
+            fn(e)
+        }
+        
+        this.props.triggerAction((formData) => {
+            Auth.login(
+                formData['account'], 
+                formData['password'], 
+                this.onSuccess, 
+                this.onError
+            ).catch(function(err) {
+                console.log('Error logging in', err)
+            })
+            
+            if (this.state.remember) {
+                this.rememberAccount(formData)
+            } else {
+                this.forgetAccount()
+            }
+        })
+    }
+    
+    onCreate(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        if (typeof this.props.onCreate === 'undefined') return false;
+        
+        console.log('executing onCreate callback')
+        if (typeof this.props.onCreate === 'function') {
+            let fn = this.props.onCreate
+            fn(e)
+        }
+    }
+    
+    onLogout(e) {
+        e.preventDefault()
+        e.stopPropagation()
+		
+        // Should I change the name of callback to beforeLogout?
+        console.log('executing onLogout callback')
+        if (typeof this.props.onLogout === 'function') {
+            console.log('execute handler')
+            let fn = this.props.onLogout
+            fn(e)
+        }
+        
+        try {
+            Auth.logout()
+        } catch (err) {
+            console.log('Error logging out', err)
+        }
+        
+        window.location.hash = '/account/login' // TODO: Use history
+    }
+    
+    onSuccess(response) {
+        console.log('executing onLoginSuccess')
+        if (typeof this.props.onLoginSuccess === 'function') {
+            console.log('execute handler')
+            let fn = this.props.onLoginSuccess
+            fn(response)
+        }
+    }
+    
+    onError(response) {
+        console.log('executing onError')
+        if (typeof this.props.onError === 'function') {
+            console.log('execute handler')
+            let fn = this.props.onError
+            fn(response)
+        }
+        
+        this.setState({
+            errors: response.error
+        })
+    }
+    
+    renderErrors() {
+        let errors = []
+        let count = Object.keys(this.state.errors).length
+        let idx = 1
+        
+        if (typeof this.state.errors !== 'string' && count > 0) {
+            for (let error in this.state.errors) {
+                errors.push(<strong>{this.state.errors[error]}</strong>)
+                if (idx < count) {
+                    errors.push(<br/>)
+                }
+                
+                idx++
+            }
+        } else if (typeof this.state.errors === 'string') {
+            errors.push(<strong>{this.state.errors}</strong>)
+        }
+        
+        return errors
+    }
+    
+    render() {
+        if (this.props.loggedIn) {
+            return (
+                <div className='account-welcome'>
+                    <h5 style={{textAlign: 'center', whiteSpace: 'nowrap'}}>{/*<i className='fa fa-user'></i>&nbsp;*/}
+                    Welcome back, <span style={{ fontWeight: 'bold' }}>{this.state.fullName}</span>!
+                    </h5>
+                    {this.props.displayActions && (
+                    <a style={{
+                        float: 'right',
+                        marginTop: '1rem',
+                        fontSize: '1.3rem'
+                    }}
+                    onClick={this.onLogout}>Sign Out</a>
+                    )}
+                </div>
+            )
+        } else {
+            return (
+                <div className='signin-form'>
+                    {Object.keys(this.state.errors).length > 0 && (
+                    <Alert bsStyle='danger' style={{
+                        textAlign: 'center',
+                        margin: '0 auto 1rem'
+                    }}>
+                        {this.renderErrors()}
+                    </Alert>
+                    )}
+                    <form>
+                        <FormGroup className='display-block'>
+                            <ControlLabel>Username (E-mail Address)</ControlLabel>
+                            <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
+                        </FormGroup>
+                        
+                        <FormGroup className='display-block'>
+                            <ControlLabel>Password</ControlLabel>
+                            <FormControl type='password' {...this.props.fields('password', this.state.password)} />
+                        </FormGroup>
+                        
+                        <FormGroup className='display-block'>
+                            {this.props.displayActions && (
+                            <Button block onClick={this.onCreate}>
+                                <h4><i className='fa fa-user-plus' /> Create Account</h4>
+                            </Button>
+                            )}
+                            <Button block bsStyle='success' onClick={this.onSubmit}>
+                                <h4><i className='fa fa-sign-in' /> Sign In</h4>
+                            </Button>
+                        </FormGroup>
+                        <FormGroup style={{ display: 'flex', alignItems: 'center' }}>
+                            <FormControl onClick={this.toggleRemember} style={{ display: 'inline-block', width: '24px', marginRight: '1rem' }} type='checkbox' checked={this.state.remember} />
+                            <ControlLabel style={{ display: 'inline-block', paddingTop: '0.35rem' }}>Remember Me</ControlLabel>
+                        </FormGroup>
+                    </form>
+                </div>
+            )
+        }
+    }
+
+	/*startLogoutTimer() {
         var that = this,
             page = that.getPage(),
             moduleElement = $('#' + that.getId()),
@@ -254,183 +420,5 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
         that.getSession();
         // TODO: Check auth -- not sure what's best; in the page, embedded in the module?
         //loginWindow.center().open();
-    }*/
-    
-    doLogin() {
-        this.props.triggerAction((formData) => {
-            Auth.login(
-                formData['account'], 
-                formData['password'], 
-                this.onSuccess, 
-                this.onError
-            ).catch(function(err) {
-                console.log('Error logging in', err)
-            })
-            
-            if (this.state.remember) {
-                this.rememberAccount(formData)
-            } else {
-                this.forgetAccount()
-            }
-        })
-	}
-    
-	doLogout() {
-        try {
-            Auth.logout()
-        } catch (err) {
-            console.log('Error logging out', err)
-        }
-        
-        window.location.hash = '/account/login' // TODO: Use history
-    }
-    
-    onSubmit(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        //if (typeof this.props.onSubmit === 'undefined') return false;
-        
-        // Should I change the name of callback to beforeSubmit?
-        console.log('executing onSubmit callback')
-        if (typeof this.props.onSubmit === 'function') {
-            console.log('execute handler')
-            var fn = this.props.onSubmit
-            fn.call(this, e)
-        }
-        
-        this.doLogin()
-    }
-    
-    onCreate(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        if (typeof this.props.onCreate === 'undefined') return false;
-        
-        console.log('executing onCreate callback')
-        if (typeof this.props.onCreate === 'function') {
-            var fn = this.props.onCreate
-            fn.call(this, e)
-        }
-    }
-    
-    onLogout(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        //if (typeof this.props.onLogout === 'undefined') return false;
-        
-        // Should I change the name of callback to beforeLogout?
-        console.log('executing onLogout callback')
-        if (typeof this.props.onLogout === 'function') {
-            console.log('execute handler')
-            var fn = this.props.onLogout
-            fn.call(this, e)
-        }
-        
-        this.doLogout()
-    }
-    
-    onSuccess(response) {
-        console.log('executing onLoginSuccess')
-        if (typeof this.props.onLoginSuccess === 'function') {
-            console.log('execute handler')
-            var fn = this.props.onLoginSuccess
-            fn.call(this, response)
-        }
-    }
-    
-    onError(response) {
-        console.log('executing onError')
-        if (typeof this.props.onError === 'function') {
-            console.log('execute handler')
-            var fn = this.props.onError
-            fn.call(this, response)
-        }
-        
-        this.setState({
-            errors: response.error
-        })
-    }
-    
-    renderErrors() {
-        let errors = []
-        let count = Object.keys(this.state.errors).length
-        let idx = 1
-        
-        if (typeof this.state.errors !== 'string' && count > 0) {
-            for (let error in this.state.errors) {
-                errors.push(<strong>{this.state.errors[error]}</strong>)
-                if (idx < count) {
-                    errors.push(<br/>)
-                }
-                
-                idx++
-            }
-        } else if (typeof this.state.errors === 'string') {
-            errors.push(<strong>{this.state.errors}</strong>)
-        }
-        
-        return errors
-    }
-    
-    render() {
-        if (this.props.loggedIn) {
-            return (
-                <div className='account-welcome'>
-                    <h3 style={{textAlign: 'center', whiteSpace: 'nowrap'}}>{/*<i className='fa fa-user'></i>&nbsp;*/}
-                    Welcome, <span style={{ fontWeight: 'bold' }}>{this.state.fullName}</span>!
-                    </h3>
-                    {this.props.displayActions && (
-                    <a style={{
-                        float: 'right',
-                        marginTop: '1rem',
-                        fontSize: '1.3rem'
-                    }}
-                    onClick={this.onLogout}>Sign Out</a>
-                    )}
-                </div>
-            )
-        } else {
-            return (
-                <div className='signin-form'>
-                    {Object.keys(this.state.errors).length > 0 && (
-                    <Alert bsStyle='danger' style={{
-                        textAlign: 'center',
-                        margin: '0 auto 1rem'
-                    }}>
-                        {this.renderErrors()}
-                    </Alert>
-                    )}
-                    <form>
-                        <FormGroup className='display-block'>
-                            <ControlLabel>Username (E-mail Address)</ControlLabel>
-                            <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
-                        </FormGroup>
-                        
-                        <FormGroup className='display-block'>
-                            <ControlLabel>Password</ControlLabel>
-                            <FormControl type='password' {...this.props.fields('password', this.state.password)} />
-                        </FormGroup>
-                        
-                        <FormGroup className='display-block'>
-                            {this.props.displayActions && (
-                            <Button block onClick={this.onCreate}>
-                                <h4><i className='fa fa-user-plus' /> Create Account</h4>
-                            </Button>
-                            )}
-                            <Button block bsStyle='success' onClick={this.onSubmit}>
-                                <h4><i className='fa fa-sign-in' /> Sign In</h4>
-                            </Button>
-                        </FormGroup>
-                        <FormGroup style={{ display: 'flex', alignItems: 'center' }}>
-                            <FormControl onClick={this.toggleRemember} style={{ display: 'inline-block', width: '24px', marginRight: '1rem' }} type='checkbox' checked={this.state.remember} />
-                            <ControlLabel style={{ display: 'inline-block', paddingTop: '0.35rem' }}>Remember Me</ControlLabel>
-                        </FormGroup>
-                    </form>
-                </div>
-            )
-        }
-    }   
+    }*/	
 }))

@@ -4,6 +4,7 @@ import axios from 'axios'
 import { normalize, denormalize, schema } from 'normalizr'
 
 import CustomerListConstants from '../constants/CustomerListConstants.jsx'
+import CustomerSearchConstants from '../constants/CustomerSearchConstants.jsx'
 import FluxFactory from '../factory/Factory.jsx'
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
@@ -23,6 +24,8 @@ class CustomerListStore extends BaseStore {
         this.subscribe(() => {
             return this.registerToActions.bind(this)
         })
+		
+		window.CustomerListStore = this
     }
 
     registerToActions(action) {
@@ -31,10 +34,11 @@ class CustomerListStore extends BaseStore {
         switch (action.actionType) {
             // onLoad actions
             case CustomerListConstants.LOAD_CUSTOMERS:
-                console.log('load customers')
                 this.handleAction(payload)
                 break
-
+			case CustomerSearchConstants.SEARCH_CUSTOMERS:
+                this.handleAction(payload)
+                break
             default:
                 break
         }
@@ -116,11 +120,10 @@ class CustomerListStore extends BaseStore {
     fetchData(key, onSuccess, onError) {
         this.buildDataStore()
 
-        let that = this
         axios(this.config.src.transport.read)
         .then(response => {
             let payload = response.data
-            let normalizedData = normalize(payload.data, that.config.schema)
+            let normalizedData = normalize(payload.data, this.config.schema)
 
             // Normalize our data and store the items
             if (typeof key === 'string' && key !== '') {

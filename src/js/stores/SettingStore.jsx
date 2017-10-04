@@ -22,51 +22,88 @@ class SettingStore extends BaseStore {
         }
     }
     
-   static posDefaults = {
-        address: {
-            id: null,
-            address_id: null,
-            firstname: '',
-            lastname: '',
-            company: '',
-            address1: '',
-            address2: '',
-            suite: '',
-            street: '',
-            street_type: '',
-            dir: '',
-            box: '',
-            stn: '',
-            city: '',
-            zone: '',
-            zone_id: null,
-            country: '',
-            country_id: null,
-            postcode: ''
-        },
-        POS_a_country_id: 38,
-        POS_a_zone_id: 602,
-        POS_c_id: 0,
-        POS_initial_status_id: 1,
-        POS_initial_status: '',
-        POS_complete_status_id: 1,
-        POS_complete_status: '',
-        POS_c_type: 1,
-        shop_url: QC_BASE_URI
-    }
-    
     constructor() {
         super()
 		
 		if (instance !== null) {
             return instance
         }
+		this.adapter = null
         
+		// TODO: This stuff has moved to QcSettingAdapter
         this.settings = {
             cartConfig: {
                 countries: {}
             },
             posConfig: {}
+        }
+        
+        this.posDefaults = {
+            address: {
+                id: null,
+                address_id: null,
+                firstname: '',
+                lastname: '',
+                company: '',
+                address1: '',
+                address2: '',
+                suite: '',
+                street: '',
+                street_type: '',
+                dir: '',
+                box: '',
+                stn: '',
+                city: '',
+                zone: '',
+                zone_id: null,
+                country: '',
+                country_id: null,
+                postcode: ''
+            },
+            shop_url: QC_BASE_URI,
+            POS_a_country_id: 38,
+            POS_a_zone_id: 602,
+            POS_c_id: 0,
+            POS_c_type: 1,
+            POS_initial_status_id: 1,
+            POS_initial_status: '',
+            POS_complete_status_id: 1,
+            POS_complete_status: '',
+            config_country_id: 38, // Canada
+            config_zone_id: 602, // Alberta
+            config_customer_id: 0,
+            config_customer_group_id: 1,
+            config_customer_type: 1,
+            config_currency: 'CAD',
+            config_currency_id: 5, // CAD
+            config_invoice_prefix: 'pos',
+            config_shipping_method: 'instore',
+            config_shipping_code: 'instore.instore',
+            config_shipping_country: 'Canada',
+            config_shipping_zone: 'Alberta',
+            config_payment_method: 'In Store',
+            config_payment_code: 'in_store',
+            config_payment_country: 'Canada',
+            config_payment_zone: 'Alberta',
+            default_customer: '',
+            default_customer_id: 0,
+            default_customer_group: '',
+            default_customer_group_id: 1,
+            default_customer_firstname: 'In-Store',
+            default_customer_lastname: 'Customer',
+            default_customer_company: '',
+            default_customer_email: 'info@acecoffeeroasters.com',
+            default_customer_telephone: '780-414-1200',
+            default_customer_fax: '',
+            default_customer_address1: 'In-Store',
+            default_customer_address2: '',
+            default_customer_address_id: 0,
+            default_customer_city: 'Edmonton',
+            default_customer_country: 'Canada',
+            default_customer_country_id: 38,
+            default_customer_zone: 'Alberta',
+            default_customer_zone_id: 602,
+            default_customer_postcode: ''
         }
         
         this.posSettings = {
@@ -147,13 +184,13 @@ class SettingStore extends BaseStore {
     
     getSettings() {
         return assign({}, this.settings, {
-            posDefaults: SettingStore.posDefaults,
-            posSettings: this.posSettings
+            posDefaults: this.posDefaults,
+            posSettings: assign({}, this.posDefaults, this.posSettings)
         })
     }
     
     setSettings(settings) {
-        this.posSettings = assign({}, SettingStore.posDefaults, this.posSettings, settings)
+        this.posSettings = assign({}, this.posDefaults, this.posSettings, settings)
         this.freezeSettings(this.posSettings)
     }
 	

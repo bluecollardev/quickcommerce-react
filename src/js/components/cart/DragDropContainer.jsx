@@ -10,14 +10,25 @@ import BootstrapPager      from '../common/GriddleBootstrapPager.jsx'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
 
+import StringHelper from '../../helpers/String.js'
+
 import CheckoutStore       from '../../stores/CheckoutStore.jsx' // Will need for totals and stuff
 
 const DragDropContainer = React.createClass({
     componentDidMount() {
-        CheckoutStore.on('order-fetched', this.forceUpdate)
+        CheckoutStore.on('set-order', this.doUpdate)
     },
     componentWillUnmount() {
-        CheckoutStore.removeListener('order-fetched', this.forceUpdate)
+        CheckoutStore.removeListener('set-order', this.doUpdate)
+    },
+    doUpdate() {
+        this.forceUpdate()
+        
+        /*try {
+            this.forceUpdate()
+        } catch (err) {
+            console.log(err)
+        }*/
     },
     renderTotals() {
         let output = []
@@ -45,10 +56,10 @@ const DragDropContainer = React.createClass({
 
             output.push(
                 <tr>
-                    <td colSpan={this.props.columns.length + 1} style={{textAlign: 'right'}}>
+                    <td colSpan={this.props.columns.length} style={{textAlign: 'right'}}>
                         <strong>{subTotalTitle}:</strong>
                     </td>
-                    <td colSpan={3}>
+                    <td colSpan={2}>
                         ${parseFloat(totals[idx].value).toFixed(2)}
                     </td>
                 </tr>
@@ -72,14 +83,14 @@ const DragDropContainer = React.createClass({
 
             output.push(
                 <tr>
-                    <td colSpan={this.props.columns.length + 1} style={{textAlign: 'right'}}>
+                    <td colSpan={this.props.columns.length} style={{textAlign: 'right'}}>
                         <h4>{totalTitle}:
                         <br/>
                         <small>(CAD)</small>
                         </h4>
                         
                     </td>
-                    <td colSpan={3}>
+                    <td colSpan={2}>
                         <h1>${parseFloat(total.value).toFixed(2)}</h1>
                     </td>
                 </tr>
@@ -87,8 +98,8 @@ const DragDropContainer = React.createClass({
             
             output.push(
                 <tr>
-                    <td colSpan={this.props.columns.length + 3} style={{textAlign: 'center'}}>
-                        <small style={{color: 'white'}}>* All prices in Canadian Dollars (CDN)</small>
+                    <td colSpan={this.props.columns.length + 1} style={{textAlign: 'center'}}>
+                        <small style={{color: 'lightgrey'}}>* All prices in Canadian Dollars (CDN)</small>
                     </td>
                 </tr>
             )
@@ -101,17 +112,13 @@ const DragDropContainer = React.createClass({
             <table className={this.props.tableClassName}>
                 <thead>
                     <tr>
-                        <th />
-                        <th>{"Name".toUpperCase()}</th>
+                        <th>{"Name"}</th>
                         {this.props.columns.map(column => {
-                            return (
-                        <th key={column}>
-                            {column.toUpperCase()}
-                        </th>
-                            )
-                        })}
-                        <th>{"Qty".toUpperCase()}</th>
-                        <th />
+                        return (
+                        <th key={column}>{StringHelper.capitalizeFirstLetter(column)}</th>
+                        )}
+                        )}
+                        <th>{"Qty"}</th>
                     </tr>
                 </thead>
                 <tbody>

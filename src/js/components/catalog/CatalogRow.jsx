@@ -15,7 +15,7 @@ export default class CatalogRow extends Component {
     
     render() {
         return (
-            <Col xs={12} sm={4} md={4} lg={4}>
+            <Col xs={12} sm={4}>
                 <CartDragItem 
                   item = {this.props.data}
                   id = {this.props.data.id}

@@ -17,15 +17,80 @@ import SettingStore from '../../stores/SettingStore.jsx'
 import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
 
+import fieldNames from '../../forms/CustomerIdentityFields.jsx'
+
+import {
+	OccupationAutocomplete,
+	CountryAutocomplete,
+	ZoneAutocomplete,
+	CustomerAutocomplete,
+	CustomerGroupAutocomplete,
+	OrderStatusAutocomplete,
+	LanguageAutocomplete,
+	StoreAutocomplete
+} from '../form/Autocomplete.jsx'
+
+import {
+	SelectList,
+	ContactTypeDropdown,
+	IdTypeDropdown,
+	CustomerRelationDropdown,
+	SalutationDropdown,
+	SuffixDropdown,
+	GenderDropdown,
+	MaritalDropdown,
+	ResidenceTypeDropdown,
+	EmploymentTypeDropdown,
+	IncomeTypeDropdown,
+	FrequencyDropdown,
+	AssetTypeDropdown,
+	LiabilityTypeDropdown,
+	StreetTypeDropdown,
+	StreetDirDropdown
+} from '../form/Dropdown.jsx'
+
+import {
+	SelectButton,
+	ContactTypeButton,
+	IdTypeButton,
+	CustomerRelationButton,
+	SalutationButton,
+	SuffixButton,
+	GenderButton,
+	MaritalButton,
+	ResidenceTypeButton,
+	EmploymentTypeButton,
+	IncomeTypeButton,
+	FrequencyButton,
+	AssetTypeButton,
+	LiabilityTypeButton,
+	StreetTypeButton,
+	StreetDirButton
+} from '../form/Dropdown.jsx'
+
+import {
+	DateInput,
+	DateTimeInput,
+	TimeInput,
+	NumericInput,
+	TelephoneInput,
+	EmailInput,
+	PostalCodeInput,
+	SinNumberInput,
+	SsnInput
+} from '../form/Input.jsx'
+
 export default FormComponent(class CustomerIdentity extends Component {
     static defaultProps = {        
-		title: 'Identification',
-		identityType: '',
-		nameAsShown: '',
-		value: '',
-		expiryDate: '',
-		territory: '',
-		country: ''
+		title: null,
+		data: {
+			identityType: '',
+			nameAsShown: '',
+			value: '',
+			expiryDate: '',
+			territory: '',
+			country: ''
+		}
     }
     
     constructor(props) {
@@ -39,9 +104,6 @@ export default FormComponent(class CustomerIdentity extends Component {
         
         this.matchItemToCountry = this.matchItemToCountry.bind(this)
         this.matchItemToZone = this.matchItemToZone.bind(this)
-        
-        console.log('identity')
-        console.log(props.data)
         
         this.state = {
             data: assign({}, props.data)
@@ -127,38 +189,43 @@ export default FormComponent(class CustomerIdentity extends Component {
     }
     
     render() {
+		const mappings = this.props.mappings || fieldNames
+		
         let data = this.state.data 
         
         return (
             <div>
                 <form>
                     <Col xs={12} className='col-md-flex col-lg-flex'>
+						{this.props.title && (
 						<h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
-                        {/* Only display if purchaser is a company */}
+                        )}
+						
+						{/* Only display if purchaser is a company */}
                         <FormGroup style={{ display: 'none' }}>
                             <ControlLabel>Type</ControlLabel>
-                            <FormControl name='identityType' componentClass='select' {...this.props.fields('identityType', data.identityType)} />
+                            <IdTypeDropdown items={SettingStore.idTypes} componentClass='select' name={mappings.ID_TYPE} {...this.props.fields(mappings.ID_TYPE, data[mappings.ID_TYPE])} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-3 flex-md-25'>
+                        <FormGroup className='col-sm-3 flex-md-25'>
                             <ControlLabel>Name</ControlLabel>
-                            <FormControl name='nameAsShown' type='text' {...this.props.fields('nameAsShown', data.nameAsShown)} />
+                            <FormControl type='text' name={mappings.NAME_AS_SHOWN} {...this.props.fields(mappings.NAME_AS_SHOWN, data[mappings.NAME_AS_SHOWN])} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-3 flex-md-50 flex-lg-25'>
+                        <FormGroup className='col-sm-3 flex-md-50 flex-lg-25'>
                             <ControlLabel>Value</ControlLabel>
-                            <FormControl name='value' type='text' {...this.props.fields('value', data.value)} />
+                            <FormControl type='text' name={mappings.VALUE} {...this.props.fields(mappings.VALUE, data[mappings.VALUE])} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-2 flex-md-25 flex-lg-16'>
+                        <FormGroup className='col-sm-2 flex-md-25 flex-lg-16'>
                             <ControlLabel>Expiry</ControlLabel>
-                            <FormControl name='expiryDate' type='text' {...this.props.fields('expiryDate', data.expiryDate)} />
+                            <FormControl type='text' name={mappings.EXPIRY_DATE} {...this.props.fields(mappings.EXPIRY_DATE, data[mappings.EXPIRY_DATE])} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-2 flex-md-50 flex-lg-16'>
+                        <FormGroup className='col-sm-2 flex-md-50 flex-lg-16'>
                             <ControlLabel>Territory</ControlLabel>
                             <Autocomplete
-                                name='zone'
+                                name={mappings.ZONE}
                                 getItemValue={(item) => {
                                     return item.value
                                 }}
@@ -200,39 +267,39 @@ export default FormComponent(class CustomerIdentity extends Component {
                                 wrapperStyle={{
                                     display: 'block'
                                 }}
-                                value={data.zone}
+                                value={data[mappings.ZONE]}
                                 onChange={(event, value) => {
-                                    this.props.fields('zone', value)
+                                    this.props.fields(mappings.ZONE, value)
                                     
                                     this.setState(assign({}, this.state, {
                                         data: assign({}, this.state.data, {
-                                            zone: value
+                                            [mappings.ZONE]: value
                                         })
                                     }))
                                 }}
                                 onSelect={(value, item) => {
-                                    this.props.field('zone_id', item.id)
-                                    this.props.field('zone', item.value)
+                                    this.props.field(mappings.ZONE_ID, item.id)
+                                    this.props.field(mappings.ZONE, item.value)
                                     
                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                     this.setState(assign({}, this.state, {
                                         data: assign({}, this.state.data, {
-                                            zone_id: item.id,
-                                            zone: item.value 
+                                            [mappings.ZONE_ID]: item.id,
+                                            [mappings.ZONE]: item.value 
                                         })
                                     }))
                                 }}
                                 inputProps={
-                                    assign(this.props.fields('zone', data.zone), { className: 'form-control'})
+                                    assign(this.props.fields(mappings.ZONE, data[mappings.ZONE]), { className: 'form-control'})
                                 }
                             />
-                            <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
+                            <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, data[mappings.ZONE_ID])} />
                         </FormGroup>
                         
-                        <FormGroup className='col-lg-2 flex-md-50 flex-lg-16'>
+                        <FormGroup className='col-sm-2 flex-md-50 flex-lg-16'>
                             <ControlLabel>Country</ControlLabel>
                             <Autocomplete
-                                name='country'
+                                name={mappings.COUNTRY}
                                 getItemValue={(item) => {
                                     return item.value
                                 }}
@@ -274,37 +341,37 @@ export default FormComponent(class CustomerIdentity extends Component {
                                 wrapperStyle={{
                                     display: 'block'
                                 }}
-                                value={data.country}
+                                value={data[mappings.COUNTRY]}
                                 onChange={(event, value) => {
-                                    this.props.field('country', value)
+                                    this.props.field(mappings.COUNTRY, value)
                                     
                                     this.setState(assign({}, this.state, {
                                         data: assign({}, this.state.data, {
-                                            country: value
+                                            [mappings.COUNTRY]: value
                                         })
                                     }))
                                     
                                     //this.parseZones(item.id)
                                 }}
                                 onSelect={(value, item) => {
-                                    this.props.field('country_id', item.id)
-                                    this.props.field('country', item.value)
+                                    this.props.field(mappings.COUNTRY_ID, item.id)
+                                    this.props.field(mappings.COUNTRY, item.value)
                                     
                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                     this.setState(assign({}, this.state, {
                                         data: assign({}, this.state.data, {
-                                            country_id: item.id,
-                                            country: item.value
+                                            [mappings.COUNTRY_ID]: item.id,
+                                            [mappings.COUNTRY]: item.value
                                         })
                                     }))
                                     
                                     SettingStore.parseZones(item.id)
                                 }}
                                 inputProps={
-                                    assign(this.props.fields('country', data.country), { className: 'form-control'})
+                                    assign(this.props.fields(mappings.COUNTRY, data[mappings.COUNTRY]), { className: 'form-control'})
                                 }
                             />
-                            <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
+                            <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, data[mappings.COUNTRY_ID])} />
                         </FormGroup>
                         {/* Done with DOB */}
                     </Col>

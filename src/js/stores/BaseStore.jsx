@@ -28,6 +28,13 @@ export default class BaseStore extends EventEmitter {
     normalizePayload(data, from, to) {
         return ObjectHelper.recursiveFormatKeys(data, from, to)
     }
+    
+    /**
+     * TODO: I am a utility method move me out of here!
+     */
+    _isset(array, value) {
+        return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
+    }
 }
 
 BaseStore.dispatchToken = null

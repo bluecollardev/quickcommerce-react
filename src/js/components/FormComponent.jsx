@@ -13,15 +13,29 @@ export default (ComposedComponent) => {
         componentWillReceiveProps() {
             this.setState({ fields: {} })
         }
-
-        getField(fieldName, value) {
-            value = value || '' // TODO: Handle types other than string
+        
+        getField(fieldName, defaultValue) {
+            defaultValue = defaultValue || '' // TODO: Handle types other than string
+            let field = this.state.fields[fieldName] || null
             
-            // TODO: Sanitize string value!
-            if (!this.state.fields[fieldName] || (this.state.fields[fieldName].value === '' && value !== '')) {
+            if (field === null || typeof event === 'undefined') {
+                // If we're initializing a new field
                 this.state.fields[fieldName] = {
-                    value: value,
+                    name: fieldName,
+                    value: defaultValue,
                     onChange: (event) => {
+                        //console.log('setting FormComponent field value to "' + event.target.value + '"')
+                        this.state.fields[fieldName].value = event.target.value
+                        this.forceUpdate()
+                    }
+                }
+            } else if (field !== null && fieldName === event.target.name) {
+                // If we're udpating or clearing a field
+                this.state.fields[fieldName] = {
+                    name: fieldName,
+                    value: event.target.value,
+                    onChange: (event) => {
+                        //console.log('setting FormComponent field value to "' + event.target.value + '"')
                         this.state.fields[fieldName].value = event.target.value
                         this.forceUpdate()
                     }
@@ -29,6 +43,7 @@ export default (ComposedComponent) => {
             }
 
             return {
+                name: fieldName,
                 value: this.state.fields[fieldName].value,
                 onChange: this.state.fields[fieldName].onChange
             }
@@ -36,10 +51,12 @@ export default (ComposedComponent) => {
         
         setField(fieldName, value) {
             value = value || '' // TODO: Handle types other than string
+            let field = this.state.fields[fieldName] || null
             
             // TODO: Sanitize string value!
-            if (typeof this.state.fields[fieldName] !== 'undefined') {
+            if (field !== null) {
                 this.state.fields[fieldName] = {
+                    name: fieldName,
                     value: value,
                     onChange: (event) => {
                         this.state.fields[fieldName].value = event.target.value
@@ -52,6 +69,7 @@ export default (ComposedComponent) => {
             }
 
             return {
+                name: fieldName,
                 value: this.state.fields[fieldName].value,
                 onChange: this.state.fields[fieldName].onChange
             }
@@ -74,6 +92,27 @@ export default (ComposedComponent) => {
             return callback(this.getForm())
         }
         
+        renderErrors() {
+            let errors = []
+            let count = Object.keys(this.state.errors).length
+            let idx = 1
+            
+            if (typeof this.state.errors !== 'string' && count > 0) {
+                for (let error in this.state.errors) {
+                    errors.push(<strong>{this.state.errors[error]}</strong>)
+                    if (idx < count) {
+                        errors.push(<br/>)
+                    }
+                    
+                    idx++
+                }
+            } else if (typeof this.state.errors === 'string') {
+                errors.push(<strong>{this.state.errors}</strong>)
+            }
+            
+            return errors
+        }
+        
         render() {
             let props = Object.assign({}, this.props, {
                 fields: this.getField.bind(this),
@@ -83,8 +122,10 @@ export default (ComposedComponent) => {
             return (
                 <ComposedComponent
                     {...props}
+                    ref = {(component) => this.component = component}
                     getForm = {this.getForm.bind(this)}
                     triggerAction = {this.triggerAction.bind(this)}
+                    renderErrors = {this.renderErrors.bind(this)}
                     />
             )
         }

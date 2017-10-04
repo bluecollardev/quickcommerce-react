@@ -11,8 +11,11 @@ import Autocomplete from 'react-autocomplete'
 
 import CustomerService from '../../services/CustomerService.jsx'
 import CustomerActions from '../../actions/CustomerActions.jsx'
+
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
 import CustomerListStore from '../../stores/CustomerListStore.jsx'
+
+import CheckoutActions from '../../actions/CheckoutActions.jsx'
 import CheckoutStore from '../../stores/CheckoutStore.jsx'
 
 // TODO: Remove this from global scope, just for ease of testing
@@ -73,14 +76,15 @@ export default class CustomerPicker extends Component {
         }
     }
     
-    onSubmit(e) {
-        e.preventDefault()
-        e.stopPropagation()
+    onSubmit(item) {
+        //e.preventDefault()
+        //e.stopPropagation()
+        
         console.log('executing onSubmit callback')
         if (typeof this.props.onSubmit === 'function') {
             console.log('execute handler')
             let fn = this.props.onSubmit
-            fn(e)
+            fn(item)
         }
     }
 
@@ -125,20 +129,26 @@ export default class CustomerPicker extends Component {
 
     selectCashier() {
         let customers = CustomerListStore.getItems()
-        if (customers[0].firstname === 'Cash' && customers[0].lastname === 'Sales') {
-            // Set the customer for our component
-            this.setState({
-                customerName: 'Cash Sales',
-                selectedCustomer: customers[0]
-            })
+        
+        let cashCustomerName = SettingStore.posSettings['cash_customer']
+        let cashCustomerId = parseInt(SettingStore.posSettings['cash_customer_id'])
+        let cashCustomerGroup = SettingStore.posSettings['cash_customer_group']
+        let cashCustomerGroupId = parseInt(SettingStore.posSettings['cash_customer_group_id'])
+        
+        let customer = customers.filter((customer) => parseInt(customer['customer_id']) === cashCustomerId)[0]
+        
+        // Set the customer for our component
+        this.setState({
+            customerName: cashCustomerName,
+            selectedCustomer: customer
+        })
 
-            CheckoutStore.setBuiltInCustomer()
-        }
+        CheckoutActions.setBuiltInCustomer(customer)
     }
 
     render() {
         return (
-            <Row className='cutomer-picker'>
+            <Row className='customer-picker'>
                 <form>
                     <FormGroup className='autocomplete-control-group col-xs-12'>
                         <ControlLabel>Choose Customer</ControlLabel>
@@ -166,17 +176,27 @@ export default class CustomerPicker extends Component {
                             value={this.state.customerName}
                             onChange={(event, value) => {
                                 this.setState(assign({}, this.state, { customerName: value }))
+                                
+                                if (this.state.customers instanceof Array) {
+                                    let customers = this.state.customers
+                                    let matches = customers.filter(item => {
+                                        return [item.firstname, item.lastname].join(' ').toLowerCase() === value.toLowerCase()
+                                    })
+                                    
+                                    if (matches.length === 1) {
+                                        // Don't auto-select if there's more than one match
+                                        // Require a selection from the dropdown
+                                        CustomerService.setCustomer(matches[0])
+                                        
+                                        this.onSubmit(matches[0])
+                                    }
+                                }
                             }}
                             onSelect={(value, item) => {
                                 this.setState(assign({}, this.state, { customerName: value, selectedCustomer: item }))
-                                // Update the order customer using the selected item
-                                // Fetch addresses and assign them to the order too
-                                //CheckoutStore.setExistingCustomer({ customer: item })
-                                // Note: there's nothing wrong with this, I just personally think I can consolidate the two bits
-                                CustomerService.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
-                                CheckoutStore.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
+                                CustomerService.setCustomer(item)
                                 
-                                this.onSubmit()
+                                this.onSubmit(item)
                             }}
                         />
                     </FormGroup>
@@ -189,17 +209,17 @@ export default class CustomerPicker extends Component {
                     </FormGroup>
                     
                     {!this.props.displayActions && (
-                    <FormGroup className='col-xs-12 col-lg-6'>
+                    <FormGroup className='col-xs-12 col-md-6'>
                         <Button block onClick={this.onCreate}>
-                            <h4><i className='fa fa-user-plus' /> New Customer</h4>
+                            <h5><i className='fa fa-user-plus' /> New Customer</h5>
                         </Button>
                     </FormGroup>
                     )}
                     
                     {!this.props.displayActions && (
-                    <FormGroup className='col-xs-12 col-lg-6'>
+                    <FormGroup className='col-xs-12 col-md-6'>
                         <Button block onClick={this.onEdit}>
-                            <h4><i className='fa fa-edit' /> Edit Customer</h4>
+                            <h5><i className='fa fa-edit' /> Edit Customer</h5>
                         </Button>
                     </FormGroup>
                     )}

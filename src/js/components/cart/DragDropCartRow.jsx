@@ -49,13 +49,21 @@ const DragDropCartRow = React.createClass({
         let price = (typeof data.price !== 'undefined' && !isNaN(data.price)) ? Number(data.price).toFixed(2) : 0.00
         return (
             <tr>
-                <td style={{width: '50px'}}>
-                    <Thumbnail src={data.image} />
-                </td>
-                <td key='name'>
-                    <strong>{data['name']}</strong><br />
-                    {/*<div style={{maxWidth: '220px'}}><pre>{JSON.stringify(this.props.item.options)}</pre></div>*/}
-                    {this.renderOptions()}
+                <td key='name' className='cart-product-col'>
+                    <div className='cart-product-delete'>
+                        <Button 
+                          bsSize   = 'small'
+                          bsStyle  = 'danger'
+                          onClick  = {this.props.removeItem}>
+                            <i className='fa fa-remove' />
+                        </Button>
+                    </div>
+                    <strong className='cart-product-name'>{data['name']}</strong><br />
+                    <div className='cart-product-detail'>
+                        <Thumbnail src={data.image} />
+                        {/*<div style={{maxWidth: '220px'}}><pre>{JSON.stringify(this.props.item.options)}</pre></div>*/}
+                        {this.renderOptions()}
+                    </div>
                 </td>
                 <td style={{width: '100px'}}>
                     <div className='form-group form-group-sm' style={{width: '80px'}}>
@@ -66,15 +74,7 @@ const DragDropCartRow = React.createClass({
                     <div className='form-group form-group-sm' style={{width: '40px'}}>
                         {this.props.item.quantity}
                     </div>
-                </td>
-                <td style={{width: '50px'}}>
-                    <Button 
-                      bsSize   = 'small'
-                      bsStyle  = 'danger'
-                      onClick  = {this.props.removeItem}>
-                        <i className='fa fa-remove' />
-                    </Button>
-                </td>      
+                </td>    
             </tr>
         )
     }
