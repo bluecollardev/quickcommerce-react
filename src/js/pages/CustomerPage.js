@@ -27,7 +27,6 @@ export default AuthenticatedComponent(class CustomerPage extends Component {
 						marginBottom: '9.5rem',
 						float: 'none'
 					}}>
-					<img src='assets/application/images/ideal-logo-lg.png' style={{maxWidth: '100%', display: 'block', margin: '0 auto'}} />
                 </div>
 			</CustomerComponent>
         )

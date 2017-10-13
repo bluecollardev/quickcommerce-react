@@ -84,7 +84,7 @@ export default class ProductBrowser extends Component {
         if (typeof this.onChange === 'function') {
             BrowserStore.removeChangeListener(this.onChange)
             
-            delete this.onChange
+            //delete this.onChange // Don't think that's necessary
         }
         
     }
@@ -260,7 +260,8 @@ export default class ProductBrowser extends Component {
     configureRow(rowComponent) {
         let that = this
         let fn = null
-
+        
+        // Configure product browser row
         if (this.props.hasOwnProperty('onItemClicked') &&
             typeof this.props.onItemClicked === 'function') {
 
@@ -277,13 +278,14 @@ export default class ProductBrowser extends Component {
                 }
 
                 // Execute our handler
-                callback(arguments[0])
+                callback(...arguments)
             }
         } else {
             fn = this.props.onItemClicked
         }
 
         rowComponent.defaultProps.onItemClicked = fn
+        rowComponent.defaultProps.stepper = this.props.stepper
 
         return rowComponent
     }

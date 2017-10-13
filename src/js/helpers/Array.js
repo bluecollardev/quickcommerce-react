@@ -79,6 +79,31 @@ export default class ArrayHelper {
 
         return result
     }
+    
+    /**
+     * Checks to see if one array contains all the members of another eg. [0,1,2,3] in [0,1,2,3,4]
+     * This doesn't work if the array members are objects, and is designed to compare value types.
+     */
+    static containsAll = (arr1, arr2) => {
+        return arr2.every(arr2Item => arr1.includes(arr2Item))
+    }
+
+    /**
+     * Checks to see if two arrays have the same members eg. [2,1,2] <=> [1,2,2]
+     * This doesn't work if the array members are objects, and is designed to compare value types.
+     */
+    static sameMembers = (arr1, arr2) => {
+        return (ArrayHelper.containsAll(arr1, arr2) && ArrayHelper.containsAll(arr2, arr1))
+    }
+    
+    /**
+     * Quick and dirty way to compare arrays or objects without getting into too much detail.
+     * This isn't the fastest solution by any means but it generally works.
+     * I don't recommend using this to compare complex structures (it'll be slow).
+     */
+    static jsonSameMembers = (arr1, arr2) => {
+        return JSON.stringify(arr1) === JSON.stringify(arr2) 
+    }
 }
 
 module.exports = ArrayHelper

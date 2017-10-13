@@ -34,13 +34,14 @@ export default class ProductOptionRow extends Component {
             // Wrap the function in a generic handler so we can pass in custom args
             let callback = fn = this.props.onItemClicked
             fn = function () {
-                callback(arguments[0])
+                callback(...arguments)
             }
         } else {
             fn = this.props.onItemClicked
         }
 
         rowComponent.defaultProps.onItemClicked = fn
+        rowComponent.defaultProps.stepper = this.props.stepper
 
         return rowComponent
     }

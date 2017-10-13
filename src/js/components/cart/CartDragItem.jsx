@@ -1,6 +1,6 @@
 import React          from 'react'
 import { DragSource } from 'react-dnd'
-import { Thumbnail }  from 'react-bootstrap'
+import { Thumbnail, Button }  from 'react-bootstrap'
 
 const mySource = {
 
@@ -28,11 +28,21 @@ const CartDragItem = React.createClass({
             onItemClicked : () => {}
         }
     },
+    onClick(e) {
+        // onClick handler for CartDragItem
+        if (typeof this.props.onItemClicked === 'function') {
+            let fn = this.props.onItemClicked
+            fn(e, this.props.item)
+        }
+    },
     render() {
         const { id, isDragging, connectDragSource } = this.props
         return connectDragSource(
-            <div onClick={this.props.onItemClicked.bind(this, this.props.item)} className='card'>
-                <Thumbnail src={this.props.item.image} />
+            <div className='card'
+                onClick={this.onClick.bind(this)}>
+                <Thumbnail src={this.props.item.image}>
+                    {this.props.children}
+                </Thumbnail>
                 <h5 className='item-brand'>
                     {this.props.item['manufacturer']}
                 </h5>

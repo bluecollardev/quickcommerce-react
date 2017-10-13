@@ -3,6 +3,8 @@ import React               from 'react'
 import assign              from 'object-assign'
 import { Dispatcher }      from 'flux'
 
+import ArrayHelper from '../helpers/Array.js'
+
 const CartStore = assign({}, EventEmitter.prototype, {
     items        : {},
     selection    : [],
@@ -47,61 +49,77 @@ const CartStore = assign({}, EventEmitter.prototype, {
     getItem(index) {
         return this.selection[index]
     },
-
-    addItem(item, quantity, data, silent) {
+    addItem(key, quantity, item, silent) {
+        // Cart store addItem
         silent = silent || false
-        if (this.items.hasOwnProperty(item)) {
-            data = this.items[item]
+        let data = (item.hasOwnProperty('data')) ? item.data : null
+        
+        if (this.items.hasOwnProperty(key)) {
+            data = this.items[key]
         } else {
-            this.items[item] = data
+            this.items[key] = data
         }
 
-        for (let key in this.selection) {
-            if (item === this.selection[key].id) {
-                const oldQty = this.selection[key].quantity
-                this.selection[key].quantity += Number(quantity)
+        let exists = false
+        for (let selectionKey in this.selection) {
+            exists = false // Reset the variable just in case
+            // Compare item keys to see if the item already exists in the selection array
+            if (key === this.selection[selectionKey].id) {
+                // Now make sure the selected options are a match...
+                // If it isn't an exact match, we're going to assume a different 
+                // configuration for the same product, so skip this and create a new item
+                if (ArrayHelper.jsonSameMembers(item.options, this.selection[selectionKey].options)) {
+                    exists = true
+                }
+            }
+            
+            if (exists) {
+                const oldQty = this.selection[selectionKey].quantity
+                this.selection[selectionKey].quantity += Number(quantity)
                 
                 if (!silent) {
                     this.emit('change')
-                    this.emit('item-changed', this.items[item], this.selection[key].quantity, oldQty)
+                    this.emit('item-changed', item, this.selection[selectionKey].quantity, oldQty)
                 }
                 
-                return
+                return // Break out
             }
         }
 
         if (data) {
             this.selection.push({
-                id       : item,
+                id       : key,
                 quantity : Number(quantity),
                 data     : data,
-                options  : [],
+                options  : [...item.options],
                 _index   : this.selection.length,
                 _key     : this.nextKey++
             })
             
             if (!silent) {
                 this.emit('change')
-                this.emit('item-added', item, Number(quantity), data)                
+                this.emit('item-added', key, Number(quantity), item)
             }
         }
     },
-    updateItem(item, quantity, data, silent) {
+    updateItem(key, quantity, item, silent) {
         silent = silent || false
-        if (this.items.hasOwnProperty(item)) {
-            data = this.items[item]
+        let data = (item.hasOwnProperty('data')) ? item.data : null
+        
+        if (this.items.hasOwnProperty(key)) {
+            data = this.items[key]
         } else {
-            this.items[item] = data
+            this.items[key] = data
         }
 
-        for (let key in this.selection) {
-            if (item === this.selection[key].id) {
-                const oldQty = this.selection[key].quantity
-                this.selection[key].quantity += Number(quantity)
+        for (let selectionKey in this.selection) {
+            if (key === this.selection[selectionKey].id) {
+                const oldQty = this.selection[selectionKey].quantity
+                this.selection[selectionKey].quantity += Number(quantity)
                 
                 if (!silent) {
                     this.emit('change')
-                    this.emit('item-changed', this.items[item], this.selection[key].quantity, oldQty)                    
+                    this.emit('item-changed', item, this.selection[selectionKey].quantity, oldQty)
                 }
                 
                 return
@@ -110,7 +128,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
 
         if (data) {
             this.selection.push({
-                id       : item,
+                id       : key,
                 quantity : Number(quantity),
                 data     : data,
                 options  : [],
@@ -120,7 +138,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
             
             if (!silent) {
                 this.emit('change')
-                this.emit('item-added', item, Number(quantity), data)                
+                this.emit('item-added', key, Number(quantity), item)      
             }
         }
     },
@@ -190,7 +208,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
         let createItem = true
         for (let idx in this.selection) {
             let selection = this.selection[idx]
-            if (data.product['id'] === selection.id) {
+            if (Number(data.product['id']) === Number(selection.id)) {
                 createItem = false
             }
         }

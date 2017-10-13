@@ -50,7 +50,7 @@ export default (ComposedComponent) => {
         }
         
         setField(fieldName, value) {
-            value = value || '' // TODO: Handle types other than string
+            value = (typeof value !== 'undefined') ? value : '' // TODO: Should I really default to an empty string?
             let field = this.state.fields[fieldName] || null
             
             // TODO: Sanitize string value!

@@ -33,6 +33,8 @@ import DragDropCartRow from './cart/DragDropCartRow.jsx'
 import CartDropTarget from './cart/CartDropTarget.jsx'
 import CartDragItem from './cart/CartDragItem.jsx'
 import CatalogRow from './catalog/CatalogRow.jsx'
+import CategoryRow from './catalog/CategoryRow.jsx'
+import ProductRow from './catalog/ProductRow.jsx'
 import ProductOptionRow from '../components/catalog/ProductOptionRow.jsx'
 
 import Stepper from './stepper/BrowserStepper.jsx'
@@ -124,6 +126,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.configureSteps = this.configureSteps.bind(this)
         this.setStep = this.setStep.bind(this)
         this.addToCart = this.addToCart.bind(this)
+        this.quickAddToCart = this.quickAddToCart.bind(this)
         this.onComplete = this.onComplete.bind(this)
         this.updateNotes = this.updateNotes.bind(this)
         this.updatePaymentMethod = this.updatePaymentMethod.bind(this)
@@ -156,6 +159,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.reset = this.reset.bind(this)
         this.categoryClicked = this.categoryClicked.bind(this)
         this.itemClicked = this.itemClicked.bind(this)
+        this.addToCartClicked = this.addToCartClicked.bind(this)
         this.optionClicked = this.optionClicked.bind(this)
         this.itemDropped = this.itemDropped.bind(this)
         this.stepClicked = this.stepClicked.bind(this)
@@ -399,20 +403,20 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         })*/
         
         // We call this data because it's not a complete item, just a POJO
-        CartStore.on('item-added', (itemId, quantity, data) => {
+        CartStore.on('item-added', (itemId, quantity, item) => {
             console.log('item added to order')
-            console.log(data)
+            console.log(item)
             
             // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
             if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
                 if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
                     !isNaN(CheckoutStore.payload.order.orderId)) {
-                    let lineTotal = data['price'] * quantity
-                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, data['tax_class_id'])
-                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, data['tax_class_id'])
+                    let lineTotal = item.data['price'] * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
 
                     // We're mutating the supplied data object by design
-                    let orderProduct = assign(data, {
+                    let orderProduct = assign({}, item.data, {
                         product_id: parseInt(itemId),
                         quantity: quantity, // TODO: Inject quantity
                         total: lineTotal,
@@ -420,14 +424,14 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                     })
 
                     let orderTaxRates = CheckoutStore.getOrderTaxRates()
-                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(data['id']))
+                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(itemId))
 
                     CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
                         action: 'insert',
                         orderProduct: orderProduct,
                         orderProductId: 0,
                         orderOptions: orderOptions, // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
-                        productId: parseInt(data['id']),
+                        productId: parseInt(itemId),
                         orderTaxRates: orderTaxRates,
                         defaultSettings: this.getDefaultSettings()
                     }, (payload) => {
@@ -461,12 +465,12 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                 }
                             ]*/
                             
-                            orderProducts.reduce((list, item, index) => {
+                            /*orderProducts.reduce((list, item, index) => {
                                 
-                            })
+                            })*/
                             
                             // Update our CartStore
-                            CartStore.updateItem()
+                            //CartStore.updateItem()
                         }
                         
                         CheckoutStore.setOrder(payload)
@@ -488,19 +492,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
                 if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
                     !isNaN(CheckoutStore.payload.order.orderId)) {
-                    let lineTotal = item['price'] * quantity
-                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
-                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
+                    let lineTotal = item.data['price'] * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
 
                     let orderProductId = 0
                     for (let idx = 0; idx < CheckoutStore.payload.orderProducts.length; idx++) {
-                        if (parseInt(CheckoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+                        if (parseInt(CheckoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['id'])) {
                             orderProductId = CheckoutStore.payload.orderProducts[idx].orderProductId
                         }
                     }
                     
-                    let orderProduct = assign({}, item, {
-                        product_id: parseInt(item['id']),
+                    let orderProduct = assign({}, item.data, {
+                        product_id: parseInt(item.data['id']),
                         quantity: quantity, // TODO: Inject quantity
                         total: lineTotal,
                         tax: lineTax
@@ -674,6 +678,22 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             customPaymentAmount: null,
             settings: {}
         }
+        
+        this.stepper.on('item-added', (item, quantity, oldQuantity) => {
+            console.log('browser item added, add it to our cart')
+            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+            console.log(item)
+            //cart.addItem(item['product_option_value_id'], 1, item, product)
+        })
+        
+        this.stepper.on('item-changed', (item, quantity, oldQuantity) => {
+            console.log('browser item changed, update the item in our cart')
+            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+            console.log(item)
+            //cart.updateItem(item['product_option_value_id'], 1, item, product)
+        })
+        
+        
     }
     
     // TODO: Refactor me
@@ -779,9 +799,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                 return true
             },
             action: (step, data, done) => {
-                // Store the selection
-                //this.stepper.addItem(item, quantity, data)
-                
                 BrowserActions.loadCategories()
 
                 if (done) {
@@ -814,10 +831,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                 return true
             },
             action: (step, data, done) => {
-                data = data || null
-                // Store the selection
-                //this.stepper.addItem(item, quantity, data)
-                
+                data = data || null                
                 if (data !== null &&
                     data.hasOwnProperty('category_id') &&
                     !Number.isNaN(data.category_id)) {
@@ -1276,7 +1290,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         }
     }
     
-    categoryClicked(item) {
+    categoryClicked(e, item) {
         let stepId = 'cart'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
 
@@ -1294,7 +1308,14 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         }
     }
     
-    itemClicked(item) {
+    itemClicked(e, item) {
+        // If the Quick Add button was clicked
+        if (e.target.type === 'button') {
+            this.addToCartClicked(e, item)
+            
+            return
+        }
+        
         let stepId = 'options'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
 
@@ -1310,10 +1331,10 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     
     itemDropped(item) {
         //let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-        //cart.addItem(item, 1, products[item])
     }
     
     optionClicked(item) {
+        // TODO: Check what type of options etc... I have written code for this just need to port it over from the previous app
         /*let stepId = 'checkout'
         let stepDescriptor = this.stepper.getStepById(stepId) } || null
 
@@ -1330,10 +1351,8 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         
         let product = this.state.item
 
-        //this.stepper.addOption(item['product_option_value_id'], 1, item) // TODO: Finish the options bit, products are already good, just hack in the options the old way for now
-        // Note: I just looked again, and actually, it functions pretty good as is... maybe I'll leave the change for a later release, we're relatively good to go here
-        let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-        cart.addOption(item['product_option_value_id'], 1, item, product)
+        this.stepper.addOption(item['product_option_value_id'], 1, item, product)
+        this.forceUpdate() // Redraw, options have changed
     }
     
     categoryFilterSelected(categoryId, e) {
@@ -1357,22 +1376,61 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         e.preventDefault()
         e.stopPropagation()
         
-        let quantity = parseFloat(this.keypad.getForm().value)
+        let quantity = 0
+        
+        if (this.state.chooseQuantity) {
+            // If the keypad popup modal is open, use its value
+            quantity = parseFloat(this.popupKeypad.getForm().value)
+        } else {
+            quantity = parseFloat(this.keypad.getForm().value)
+        }
         
         if (!isNaN(quantity) && quantity > 0) {
             let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            let item = this.stepper.getItem(0) // Hardcoded to zero indexed item
+            let item = this.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
             
             //alert('Adding ' + quantity + 'x ' + item.data.name + '(s) to the order.')
-            cart.addItem(item.id, quantity, item.data)
-            
-            this.keypad.setField('value', 0)
+            cart.addItem(item.id, quantity, item)
+            this.keypad.component.clear()
             
             this.stepper.start()
             this.setStep('shop')
         } else {
             alert('Please enter the desired quantity.')
         }
+    }
+    
+    quickAddToCart(e) {
+        this.addToCart(e) // Add to cart
+        this.popupKeypad.component.clear()
+        
+        // Close quantity keypad popup modal
+        this.setState({
+            chooseQuantity: false
+        })
+    }
+    
+    addToCartClicked(e, item) {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        /*let stepId = 'options'
+        let stepDescriptor = this.stepper.getStepById(stepId) || null
+
+        if (stepDescriptor !== null) {
+            let data = item
+            
+            let isEnded = false
+            // Execute the step handler
+            this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+            this.stepper.addItem(item.id, 1, item)
+        }*/
+        
+        this.stepper.addItem(item.id, 0, item) // Don't set a quantity just register the item
+        
+        this.setState({
+            chooseQuantity: true
+        })
     }
     
     refresh() {
@@ -1388,7 +1446,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         cart.emptyCart()
         
-        this.checkoutNotes.clear()
+        this.checkoutNotes.component.clear()
 
         let stepId = 'shop'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
@@ -2051,7 +2109,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                             displayTextFilter = {true}
                                             stepper = {this.stepper}
                                             steps = {steps}
-                                            customRowComponent = {CatalogRow}
+                                            customRowComponent = {CategoryRow}
                                             results = {this.state.data.categories}
                                             fluxFactory = {fluxFactory}
                                             onItemClicked = {this.categoryClicked}
@@ -2076,10 +2134,11 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                             displayTextFilter = {true}
                                             stepper = {this.stepper}
                                             steps = {steps}
-                                            customRowComponent = {CatalogRow}
+                                            customRowComponent = {ProductRow}
                                             results = {this.state.data.products}
                                             fluxFactory = {fluxFactory}
                                             onItemClicked = {this.itemClicked}
+                                            onAddToCartClicked = {this.addToCartClicked}
                                             onFilterSelected = {this.categoryFilterSelected}
                                             onStepClicked = {this.stepClicked}
                                             />
@@ -2676,38 +2735,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                 </Modal>
                 
                 <Modal
-                  show   = {!!this.state.purchase}
-                  onHide = {this.hideModal}>
-                    <Modal.Header>
-                        <Modal.Title>
-                            Your order
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {this.state.purchase && (
-                            <div>
-                                <Alert bsStyle='warning'>
-                                    This is a demo&mdash;orders are not processed. <i className='fa fa-smile-o' />
-                                </Alert>
-                                <Table>
-                                    <tbody>
-                                        {this.state.purchase.map(item => {
-                                            return (
-                                                <tr key={item._key}>
-                                                    <td>{item.data['Brand']}</td>
-                                                    <td>{item.data['Name']}</td>
-                                                    <td>&times; {item.quantity}</td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </Table>
-                                <Button block onClick={this.hideModal}>Ok</Button>
-                            </div>
-                        )}
-                    </Modal.Body>
-                </Modal>
-                <Modal
                   show   = {!!this.state.code}
                   onHide = {this.hideCodeModal}>
                     <Modal.Header>
@@ -2755,12 +2782,15 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        {/*<Keyboard
-                            keyboardType='decimal-pad'
-                            onClear={this._handleClear.bind(this)}
-                            onDelete={this._handleDelete.bind(this)}
-                            onKeyPress={this._handleKeyPress.bind(this)}
-                        />*/}
+                        <Keypad ref = {(keypad) => this.popupKeypad = keypad} />
+                        <FormGroup style={{ display: 'block' }}>
+                            <Button block bsStyle='success' onClick={this.quickAddToCart}>
+                                <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
+                            </Button>
+                            <Button block bsStyle='danger' onClick={() => this.setState({ chooseQuantity: false }, () => this.popupKeypad.component.clear())}>
+                                <h4><i className='fa fa-ban' /> Cancel</h4>
+                            </Button>
+                        </FormGroup>
                     </Modal.Body>
                 </Modal>
 
