@@ -1,12 +1,14 @@
-import React               from 'react'
+import React from 'react'
 //import { DragDropContext } from 'react-dnd'
-//import HTML5Backend        from 'react-dnd-html5-backend'
-import Griddle             from 'griddle-react'
+//import HTML5Backend from 'react-dnd-html5-backend'
+import Griddle from 'griddle-react'
 
-import CartDragItem        from './CartDragItem.jsx'
-import CartDropTarget      from './CartDropTarget.jsx'
-import Cart      from '../../modules/Cart.jsx'
-import BootstrapPager      from '../common/GriddleBootstrapPager.jsx'
+import CartDragItem from './CartDragItem.jsx'
+import CartDropTarget from './CartDropTarget.jsx'
+import Cart from '../../modules/Cart.jsx'
+import CartStore from '../../modules/CartStore.jsx'
+
+import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
 
@@ -46,7 +48,20 @@ const DragDropCartRow = React.createClass({
     },
     render() {
         let data = this.props.item.data
-        let price = (typeof data.price !== 'undefined' && !isNaN(data.price)) ? Number(data.price).toFixed(2) : 0.00
+        
+        let price = 0.00
+        let optionTotal = 0.00
+        
+        price = (typeof data.price !== 'undefined' && !isNaN(data.price)) ? Number(data.price) : 0.00
+        
+        let selectedOptions = this.props.item.options
+        for (let key in Object.keys(selectedOptions)) {
+            let selectedOption = selectedOptions[key]
+            optionTotal += (!isNaN(selectedOption.data['price'])) ? Number(selectedOption.data['price']) : 0.00
+        }
+        
+        price = (price + optionTotal).toFixed(2)
+        
         return (
             <tr>
                 <td key='name' className='cart-product-col'>

@@ -476,6 +476,57 @@ export default FormComponent(class SettingComponent extends Component {
                                                         />
                                                         <input type='hidden' name='store_id' {...this.props.field('store_id', data.store_id)} />
                                                     </FormGroup>
+                                                    <h4>Layout Settings</h4>
+                                                    <hr />
+                                                    <FormGroup className='autocomplete-control-group col-sm-12'>
+                                                        <ControlLabel>Default Display Category</ControlLabel>
+                                                        <Autocomplete
+                                                            name='pinned_category'
+                                                            getItemValue={(item) => {
+                                                                return item.value
+                                                            }}
+                                                            items={SettingStore.categories}
+                                                            renderItem={(item, isHighlighted) => {
+                                                                return (
+                                                                    <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                                                        {item.value}
+                                                                    </div>
+                                                                )
+                                                            }}
+                                                            shouldItemRender={this.matchItemToStore}
+                                                            autoHighlight={true}
+                                                            wrapperStyle={{
+                                                                display: 'block'
+                                                            }}
+                                                            value={data.pinned_category}
+                                                            onChange={(event, value) => {
+                                                                this.props.fields('pinned_category', value)
+                                                                
+                                                                this.setState(assign({}, this.state, {
+                                                                    data: assign({}, data, {
+                                                                        pinned_category: value
+                                                                    })
+                                                                }))
+                                                                
+                                                                //this.parseZones(item.id)
+                                                            }}
+                                                            onSelect={(value, item) => {
+                                                                this.props.fields('pinned_category_id', parseInt(item.id))
+                                                                this.props.fields('pinned_category', value)
+                                                                
+                                                                this.setState(assign({}, this.state, {
+                                                                    data: assign({}, data, {
+                                                                        pinned_category_id: parseInt(item.id),
+                                                                        pinned_category: value
+                                                                    })
+                                                                }))
+                                                            }}
+                                                            inputProps={
+                                                                assign(this.props.field('pinned_category', data.pinned_category), { className: 'form-control'})
+                                                            }
+                                                        />
+                                                        <input type='hidden' name='pinned_category_id' {...this.props.field('pinned_category_id', data.pinned_category_id)} />
+                                                    </FormGroup>
                                                     <h4>Location Settings</h4>
                                                     <hr />
                                                     {/* Only display if purchaser is a company */}

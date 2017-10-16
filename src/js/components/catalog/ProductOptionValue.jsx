@@ -60,6 +60,13 @@ export default class ProductOptionValue extends Component {
                         <p className='item-name'>
                             {this.props.data['name']}
                         </p>
+                        {this.props.data.hasOwnProperty('price') && 
+                        this.props.data['price'] !== false && 
+                        !isNaN(this.props.data['price']) && (
+                        <p className='item-price'>
+                            {'$' + parseFloat(this.props.data['price']).toFixed(2)}
+                        </p>
+                        )}
                     </div>
                 </Col>
             </Row>

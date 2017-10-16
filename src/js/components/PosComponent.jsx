@@ -150,6 +150,8 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.completeOrder = this.completeOrder.bind(this)
         this.showReceiptModal = this.showReceiptModal.bind(this)
         this.hideReceiptModal = this.hideReceiptModal.bind(this)
+        this.debugReceipt = this.debugReceipt.bind(this)
+        this.debugOrder = this.debugOrder.bind(this)
         this.printReceipt = this.printReceipt.bind(this)
         this.printOrder = this.printOrder.bind(this)
         this.printReport = this.printReport.bind(this)
@@ -411,20 +413,53 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
                 if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
                     !isNaN(CheckoutStore.payload.order.orderId)) {
-                    let lineTotal = item.data['price'] * quantity
+                    let orderProduct = assign({}, item.data, {
+                        product_id: parseInt(itemId),
+                        quantity: quantity
+                    })
+                    
+                    let optionTotal = 0.00 
+                    // Get the prices off of the selected options and add them to the product price
+                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(itemId)) || null
+                    
+                    if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
+                        // Not sure if I want to finalize this as an array or an object so I'm accounting for either
+                        if (Object.keys(orderOptions).length > 0) {
+                            //for (let idx = 0; idx < orderOptions.length; idx++) {
+                            for (let key in Object.keys(orderOptions)) {
+                                let orderOption = orderOptions[key]
+                                
+                                // Get the product option value using the selected option's productOptionValueId
+                                let productOptionId = Number(orderOption.productOptionId)
+                                let productOptionValueId = Number(orderOption.productOptionValueId)
+                                
+                                let productOptions = item.data['options']
+                                let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
+                                
+                                if (selectedOptions instanceof Array && selectedOptions.length > 0) {
+                                    let selectedOption = selectedOptions[0]
+                                    // TODO: Make this method static
+                                    let optionPrice = CartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                    optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
+                                }
+                            }
+                        }                        
+                    }
+                    
+                    let orderProductPrice = parseFloat(item.data['price']) + optionTotal
+                    
+                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
+                    
+                    let lineTotal = orderProductPrice * quantity
                     let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
                     let lineTax = CheckoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
 
                     // We're mutating the supplied data object by design
-                    let orderProduct = assign({}, item.data, {
-                        product_id: parseInt(itemId),
-                        quantity: quantity, // TODO: Inject quantity
+                    orderProduct = assign(orderProduct, {
+                        price: orderProductPrice,
                         total: lineTotal,
                         tax: lineTax
                     })
-
-                    let orderTaxRates = CheckoutStore.getOrderTaxRates()
-                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(itemId))
 
                     CheckoutService.updateOrder(CheckoutStore.payload.order.orderId, {
                         action: 'insert',
@@ -492,10 +527,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
                 if (CheckoutStore.payload.order.hasOwnProperty('orderId') && 
                     !isNaN(CheckoutStore.payload.order.orderId)) {
-                    let lineTotal = item.data['price'] * quantity
-                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
-                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
-
                     let orderProductId = 0
                     for (let idx = 0; idx < CheckoutStore.payload.orderProducts.length; idx++) {
                         if (parseInt(CheckoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['id'])) {
@@ -505,7 +536,45 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                     
                     let orderProduct = assign({}, item.data, {
                         product_id: parseInt(item.data['id']),
-                        quantity: quantity, // TODO: Inject quantity
+                        quantity: quantity
+                    })
+                    
+                    let optionTotal = 0.00 
+                    // Get the prices off of the selected options and add them to the product price
+                    let orderOptions = CheckoutStore.getOrderOptions(parseInt(item.data['id'])) || null
+                    
+                    if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
+                        // Not sure if I want to finalize this as an array or an object so I'm accounting for either
+                        if (Object.keys(orderOptions).length > 0) {
+                            //for (let idx = 0; idx < orderOptions.length; idx++) {
+                            for (let key in Object.keys(orderOptions)) {
+                                let orderOption = orderOptions[key]
+                                
+                                // Get the product option value using the selected option's productOptionValueId
+                                let productOptionId = Number(orderOption.productOptionId)
+                                let productOptionValueId = Number(orderOption.productOptionValueId)
+                                
+                                let productOptions = item.data['options']
+                                let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
+                                
+                                if (selectedOptions instanceof Array && selectedOptions.length > 0) {
+                                    let selectedOption = selectedOptions[0]
+                                    
+                                    // TODO: Make this method static
+                                    let optionPrice = CartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                    optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
+                                }
+                            }
+                        }                        
+                    }
+                    
+                    let orderProductPrice = parseFloat(item.data['price']) + optionTotal
+                    
+                    let lineTotal = orderProductPrice * quantity
+                    let lineTotalWithTax = CheckoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTax = CheckoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+                    
+                    orderProduct = assign(orderProduct, item.data, {
                         total: lineTotal,
                         tax: lineTax
                     })
@@ -748,7 +817,9 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             cart: (typeof this.props.location !== 'undefined' && this.props.location.pathname === '/checkout/cart') ? 1 : 0
         })
         
+        let settings = SettingStore.getSettings().posSettings
         let categoryId = null
+        
         if (typeof this.props.match !== 'undefined' && 
             typeof this.props.match.params !== 'undefined' && 
             typeof this.props.match.params.cat !== 'undefined' && !isNaN(this.props.match.params.cat)) {
@@ -756,6 +827,11 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             categoryId = parseInt(this.props.match.params.cat)
             this.categoryClicked({
                 category_id: categoryId
+            })
+        } else if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
+            console.log('pinned category, auto select category : ' + settings['pinned_category'])
+            this.categoryClicked(null, {
+                category_id: settings['pinned_category_id']
             })
         }
     }
@@ -1001,18 +1077,26 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             charge: null
         })
         
-        let stepId = 'shop'
-        let stepDescriptor = this.stepper.getStepById(stepId) || null
+        let settings = SettingStore.getSettings().posSettings
+        if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
+            console.log('pinned category, auto select category : ' + settings['pinned_category'])
+            this.categoryClicked(null, {
+                category_id: settings['pinned_category_id']
+            })
+        } else {
+            let stepId = 'shop'
+            let stepDescriptor = this.stepper.getStepById(stepId) || null
 
-        if (stepDescriptor !== null) {
-            let data = {}
-            let isEnded = false
+            if (stepDescriptor !== null) {
+                let data = {}
+                let isEnded = false
 
-            // Execute the step handler
-            this.stepper.load(stepDescriptor, data, isEnded)
+                // Execute the step handler
+                this.stepper.load(stepDescriptor, data, isEnded)
 
-            // Update our component state
-            this.setStep(stepId)
+                // Update our component state
+                this.setStep(stepId)
+            }
         }
         
         console.log('checkout change detected')
@@ -1214,6 +1298,16 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         StarMicronicsStore.printOrder(this.renderPlainTxtOrder())
     }
     
+    debugReceipt() {
+        // Send output as plain text string
+        alert(JSON.stringify(this.renderPlainTxtReceipt()))
+    }
+    
+    debugOrder() {
+        // Send output as plain text string
+        alert(JSON.stringify(this.renderPlainTxtOrder()))
+    }
+    
     printReport() {
         axios({
             url: QC_API + 'report/endofday',
@@ -1394,7 +1488,16 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             this.keypad.component.clear()
             
             this.stepper.start()
-            this.setStep('shop')
+            
+            let settings = SettingStore.getSettings().posSettings
+            if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
+                console.log('pinned category, auto select category : ' + settings['pinned_category'])
+                this.categoryClicked(null, {
+                    category_id: settings['pinned_category_id']
+                })
+            } else {
+                this.setStep('shop')
+            }
         } else {
             alert('Please enter the desired quantity.')
         }
@@ -1652,11 +1755,22 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         )
     }
     
-    renderOptions(selectedOptions) {
+    renderOptions(selectedOptions, itemQty) {
+        itemQty = itemQty || 0
+        
         let options = []
         
         for (let idx in selectedOptions) {
-            options.push(<li>{selectedOptions[idx].data.option.name}: <b>{selectedOptions[idx].data.name}</b></li>)
+            let selectedOption = selectedOptions[idx]
+            let data = selectedOption.data
+            let price = Number(data['price'])
+            let lineTotal = price * itemQty
+            
+            if (price > 0) {
+                options.push(<li>{itemQty} x {data.option.name}: <b>{data.name}</b><span style={{'float': 'right'}}>${lineTotal.toFixed(2)}</span></li>)
+            } else {
+                options.push(<li>{data.option.name}: <b>{data.name}</b><span style={{'float': 'right'}}></span></li>)
+            }
         }
         
         return (            
@@ -1686,14 +1800,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Build our receipt, line by line
         // Store info
         let store = this.state.checkout.store
-        let datetime = new Date()
 
         let headerLines = []
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{store.name}</h4></span>)
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>10055 - 80 Ave NW</span>)
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>Edmonton, Alberta T6E 1T4</span>)
-        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>780.244.0ACE</span>)
-        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>{datetime.toString()}</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>Tel. 780.244.0ACE</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>info@acecoffeeroasters.com</span>)
+        
+        let local = new Date().toISOString()
+        let date = local.slice(0, 10)
+        let time = local.slice(11).split('.')[0]
+        
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>{[date, time].join(', ')}</span>)
 
         output.push(<div className='receipt-header' style={{'text-align': 'center'}}>{headerLines}</div>)
 
@@ -1707,27 +1826,39 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Items
         let items = this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
-            let price = parseFloat(items[idx].data['price']).toFixed(2)
-            let model = items[idx].data['model']
-            if (typeof items[idx].options !== 'undefined' && 
-                items[idx].options instanceof Array && 
-                items[idx].options.length > 0) {
-                    output.push(
-                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
-                            {model}
-                            <span style={{'float': 'right'}}>${price}</span>
-                            {this.renderOptions(items[idx].options)}
-                        </span>
-                    )
-                } else {
-                    output.push(
-                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
-                            {model}
-                            <span style={{'float': 'right'}}>${price}</span>
-                        </span>
-                    )
-                }
+            let item = items[idx]
+            let data = item.data
+            let price = 0.00
+            let optionTotal = 0.00
+            let lineTotal = 0.00
             
+            price = (typeof data['price'] !== 'undefined' && !isNaN(data.price)) ? Number(data.price) : 0.00
+            lineTotal = price * item.quantity
+            
+            // Don't include option prices in receipt, we want to detail the options line by line as well
+            lineTotal = (lineTotal).toFixed(2)
+            
+            //lineTotal = (lineTotal + optionTotal).toFixed(2)
+            
+            let model = data['model']
+            if (typeof item.options !== 'undefined' && 
+                item.options instanceof Array && 
+                item.options.length > 0) {
+                output.push(
+                    <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                        <span>{item.quantity} x {model}</span>
+                        <span style={{'float': 'right'}}>${lineTotal}</span>
+                        {this.renderOptions(items[idx].options, item.quantity)}
+                    </span>
+                )
+            } else {
+                output.push(
+                    <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                        <span>{item.quantity} x {model}</span>
+                        <span style={{'float': 'right'}}>${lineTotal}</span>
+                    </span>
+                )
+            }
         }
 
         output.push(<br />)
@@ -1802,14 +1933,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Build our receipt, line by line
         // Store info
         let store = this.state.prevCheckout.store
-        let datetime = new Date()
 
         let headerLines = []
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{store.name}</h4></span>)
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>10055 - 80 Ave NW</span>)
         headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>Edmonton, Alberta T6E 1T4</span>)
-        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>780.244.0ACE</span>)
-        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>{datetime.toString()}</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>Tel. 780.244.0ACE</span>)
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>info@acecoffeeroasters.com</span>)
+        
+        let local = new Date().toISOString()
+        let date = local.slice(0, 10)
+        let time = local.slice(11).split('.')[0]
+        
+        headerLines.push(<span style={{'display': 'block'}} className='receipt-line-item'>{[date, time].join(', ')}</span>)
 
         output.push(<div className='receipt-header' style={{'text-align': 'center'}}>{headerLines}</div>)
 
@@ -1820,30 +1956,42 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
         // We need a max line chars algo so we can make stuff line up
 
-        // Items
+        // Items - TODO: this code below is also repeated in renderReceipt
         let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
-            let price = parseFloat(items[idx].data['price']).toFixed(2)
-            let model = items[idx].data['model']
-            if (typeof items[idx].options !== 'undefined' && 
-                items[idx].options instanceof Array && 
-                items[idx].options.length > 0) {
-                    output.push(
-                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
-                            {model}
-                            <span style={{'float': 'right'}}>${price}</span>
-                            {this.renderOptions(items[idx].options)}
-                        </span>
-                    )
-                } else {
-                    output.push(
-                        <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
-                            {model}
-                            <span style={{'float': 'right'}}>${price}</span>
-                        </span>
-                    )
-                }
+            let item = items[idx]
+            let data = item.data
+            let price = 0.00
+            let optionTotal = 0.00
+            let lineTotal = 0.00
             
+            price = (typeof data['price'] !== 'undefined' && !isNaN(data.price)) ? Number(data.price) : 0.00
+            lineTotal = price * item.quantity
+            
+            // Don't include option prices in receipt, we want to detail the options line by line as well
+            lineTotal = (lineTotal).toFixed(2)
+            
+            //lineTotal = (lineTotal + optionTotal).toFixed(2)
+            
+            let model = data['model']
+            if (typeof item.options !== 'undefined' && 
+                item.options instanceof Array && 
+                item.options.length > 0) {
+                output.push(
+                    <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                        <span>{item.quantity} x {model}</span>
+                        <span style={{'float': 'right'}}>${lineTotal}</span>
+                        {this.renderOptions(items[idx].options, item.quantity)}
+                    </span>
+                )
+            } else {
+                output.push(
+                    <span style={{'display': 'block', clear: 'both'}} className='receipt-line-item'>
+                        <span>{item.quantity} x {model}</span>
+                        <span style={{'float': 'right'}}>${lineTotal}</span>
+                    </span>
+                )
+            }
         }
 
         output.push(<br />)
@@ -1886,14 +2034,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Build our receipt, line by line
         // Store info
         //let store = this.state.checkout.store
-        let datetime = new Date()
 
         let headerLines = []
         headerLines.push('ACE Coffee Roasters')
         headerLines.push('10055 - 80 Ave NW')
         headerLines.push('Edmonton, Alberta T6E 1T4')
-        headerLines.push('780.244.0ACE')
-        headerLines.push(datetime.toString())
+        headerLines.push('Tel. 780.244.0ACE')
+        headerLines.push('info@acecoffeeroasters.com')
+        
+        let local = new Date().toISOString()
+        let date = local.slice(0, 10)
+        let time = local.slice(11).split('.')[0]
+        
+        headerLines.push([date, time].join(', '))
 
         output.push(...headerLines) // ES6 extend array
 
@@ -1927,12 +2080,16 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Build our receipt, line by line
         // Store info
         //let store = this.state.prevCheckout.store
-        let datetime = new Date()
-
+        
         let headerLines = []
         headerLines.push('ORDER')
-        headerLines.push(datetime.toString())
-
+        
+        let local = new Date().toISOString()
+        let date = local.slice(0, 10)
+        let time = local.slice(11).split('.')[0]
+        
+        headerLines.push([date, time].join(', '))
+        
         output.push(...headerLines) // ES6 extend array
 
         output.push('\n')
@@ -1941,8 +2098,9 @@ export default AuthenticatedComponent(class PosComponent extends Component {
 
         // We need a max line chars algo so we can make stuff line up
 
+        let prev = this.state.prevCheckout || null
         // Items
-        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        let items = (prev !== null) ? prev.items : this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
             let line = [
                 items[idx].quantity + ' x ',
@@ -1954,7 +2112,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
             if (typeof items[idx].options !== 'undefined' && 
                 items[idx].options instanceof Array && 
                 items[idx].options.length > 0) {
-                output = output.concat(this.renderPlainTxtOptions(items[idx].options))
+                output = output.concat(this.renderPlainTxtOptions(items[idx].options, null, false))
             }
         }
         
@@ -1974,14 +2132,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         // Build our receipt, line by line
         // Store info
         //let store = this.state.prevCheckout.store
-        let datetime = new Date()
 
         let headerLines = []
         headerLines.push('ACE Coffee Roasters')
         headerLines.push('10055 - 80 Ave NW')
         headerLines.push('Edmonton, Alberta T6E 1T4')
-        headerLines.push('780.244.0ACE')
-        headerLines.push(datetime.toString())
+        headerLines.push('Tel. 780.244.0ACE')
+        headerLines.push('info@acecoffeeroasters.com')
+        
+        let local = new Date().toISOString()
+        let date = local.slice(0, 10)
+        let time = local.slice(11).split('.')[0]
+        
+        headerLines.push([date, time].join(', '))
 
         output.push(...headerLines) // ES6 extend array
 
@@ -1991,24 +2154,50 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         output.push('Qty        Item        Total')
 
         // We need a max line chars algo so we can make stuff line up
-
+        
+        let prev = this.state.prevCheckout || null
         // Items
-        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        let items = (prev !== null) ? prev.items : this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
         for (let idx = 0; idx < items.length; idx++) {
+            let item = items[idx]
+            
             let line = [
-                items[idx].quantity + ' x ',
-                items[idx].data['model'],
-                '$' + (parseFloat(items[idx].data['price']) * items[idx].quantity).toFixed(2)
+                item.quantity + ' x ',
+                item.data['model'],
+                '$' + (parseFloat(item.data['price']) * item.quantity).toFixed(2)
             ].join('  ')
 
             output.push(line)
+            
+            if (typeof item.options !== 'undefined' && 
+                item.options instanceof Array && 
+                item.options.length > 0) {
+                
+                let options = items[idx].options
+                options = options.filter(option => {
+                    // Only render options that have a price for the receipt
+                    return option.data['price'] !== false
+                })
+                
+                output = output.concat(this.renderPlainTxtOptions(options, items[idx].quantity, true))
+            }
         }
 
         output.push('\n')
-
+        
         // Totals
-        let totals = this.state.prevCheckout.totals || []
-        let total = this.state.prevCheckout.total || null
+        let totals = []
+        let total = null
+        
+        if (prev !== null) {
+            // Totals
+            totals = this.state.prevCheckout.totals || []
+            total = this.state.prevCheckout.total || null
+        } else {
+            // Totals
+            totals = this.state.checkout.totals || []
+            total = this.state.checkout.total || null
+        }    
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -2054,12 +2243,33 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
     }
     
-    renderPlainTxtOptions(selectedOptions) {
+    renderPlainTxtOptions(selectedOptions, itemQuantity, displayPrice) {
+        itemQuantity = itemQuantity || null
+        displayPrice = displayPrice || false
+        
         let options = []
         
         for (let idx in selectedOptions) {
-            options.push(selectedOptions[idx].data.option.name + ': ' + selectedOptions[idx].data.name)
-            options.push('\n')
+            let selectedOption = selectedOptions[idx]
+            let data = selectedOption.data
+            let price = Number(data['price'])
+            let lineTotal = price * itemQuantity
+            
+            let line = []
+            
+            if (itemQuantity !== null && !isNaN(itemQuantity)) {
+                line.push(itemQuantity + ' x ')
+            } else {
+                line.push(selectedOption.quantity + ' x ')
+            }
+            
+            line.push(data.option.name + ' (' + data.name + ')')
+            
+            if (price > 0 && displayPrice) {
+                line.push('     ' + ['$', lineTotal.toFixed(2)].join(''))
+            }
+            
+            options.push(line.join(''))
         }
         
         return options
@@ -2598,6 +2808,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                     <FormGroup>
                                         <Button bsStyle='default' block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
                                     </FormGroup>
+                                    
                                 </form>
                                 
                                 <div className='receipt'
@@ -2610,6 +2821,19 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                                     }}>
                                     {this.renderReceipt()}
                                 </div>
+                                
+                                <br />
+                                
+                                <FormGroup>
+                                    <Button bsStyle='warning' block onClick={this.debugReceipt}>
+                                        <h4><i className='fa fa-bug' /> Debug Receipt</h4>
+                                    </Button>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Button bsStyle='warning' block onClick={this.debugOrder}>
+                                        <h4><i className='fa fa-bug' /> Debug Order</h4>
+                                    </Button>
+                                </FormGroup>
                             </div>
                         </div>
                     </Modal.Body>
@@ -2778,11 +3002,13 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                   onHide = {this.hideQuantity}>
                     <Modal.Header>
                         <Modal.Title>
-                            Enter Quantity
+                            Enter Item Quantity
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Keypad ref = {(keypad) => this.popupKeypad = keypad} />
+                        <Keypad 
+                            ref = {(keypad) => this.popupKeypad = keypad} 
+                            displayLabel = {false} />
                         <FormGroup style={{ display: 'block' }}>
                             <Button block bsStyle='success' onClick={this.quickAddToCart}>
                                 <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>

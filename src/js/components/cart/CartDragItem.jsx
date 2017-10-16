@@ -49,10 +49,12 @@ const CartDragItem = React.createClass({
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>
-                {this.props.item.hasOwnProperty('price') && this.props.item['price'] !== '' && (
-                    <p className='item-price'>
-                        {'$' + parseFloat(this.props.item['price']).toFixed(2)}
-                    </p>
+                {this.props.item.hasOwnProperty('price') && 
+                this.props.item['price'] !== false && 
+                !isNaN(this.props.item['price']) && (
+                <p className='item-price'>
+                    {'$' + parseFloat(this.props.item['price']).toFixed(2)}
+                </p>
                 )}
             </div>
         )

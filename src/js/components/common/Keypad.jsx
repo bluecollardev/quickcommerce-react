@@ -50,7 +50,9 @@ export default FormComponent(class Keypad extends Component {
         return (
             <Col className='keypad'>
                 <FormGroup>
-                    <ControlLabel>Enter Product Quantity</ControlLabel>
+                    {this.props.displayLabel && (
+                    <ControlLabel>Enter Item Quantity</ControlLabel>
+                    )}
                     <NumberInput 
                         {...this.props.fields('value', this.state.value)} />
                 </FormGroup>

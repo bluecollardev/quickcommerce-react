@@ -321,6 +321,24 @@ const CartStore = assign({}, EventEmitter.prototype, {
         this.emit('change')
         this.emit('item-changed', this.items[item.id], quantity, oldQty)
     },
+    getOptionPrice(itemData, selectedOption, optionValueId) {
+        let productOptions = itemData['options']
+        
+        if (selectedOption['option_value'] instanceof Array) {
+            let selectedOptionValues = selectedOption['option_value']
+            let selectedValues = selectedOptionValues.filter(option => { 
+                return Number(option['product_option_value_id']) === optionValueId 
+            })
+            
+            if (selectedValues instanceof Array && selectedValues.length > 0) {
+                let selectedValue = selectedValues[0] // Single selection for now
+                
+                if (selectedValue['price'] !== false && !isNaN(selectedValue['price'])) {
+                    return Number(selectedValue['price'])
+                }
+            }
+        }        
+    },
     reset() {
         this.selection = []
         this.emit('change')

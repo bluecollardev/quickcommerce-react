@@ -232,8 +232,42 @@ class SettingStore extends BaseStore {
             this.parseGeoZones()
             this.parseOrderStatuses()
             this.parseCustomerGroups()
+            
+            this.fetchCategories(() => {
+                this.parseCategories()
+            }, onError) // Should be done concurrently with fetchSettings 
 
             this.emit('settings-loaded', payload)
+        }).catch(err => {
+            if (typeof onError === 'function') {
+                onError()
+            }
+        })
+    }
+    
+    fetchCategories(onSuccess, onError) {
+        axios({
+            url: QC_LEGACY_API + 'categories/level/1',
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        .then(response => {
+            // Resource API nests payload data inside its own data property
+            let payload = (response.data.hasOwnProperty('data')) ? response.data.data : response.data
+            // TODO: Throw null data error? Not sure... I'll think about it
+            this.rawCategories = payload
+            
+            console.log('saving categories')
+            console.log(this.rawCategories)
+
+            if (typeof onSuccess === 'function') {
+                onSuccess(payload)
+            }
+            
+            //this.parseCategories()
+
+            this.emit('categories-loaded', payload)
         }).catch(err => {
             if (typeof onError === 'function') {
                 onError()
@@ -419,6 +453,13 @@ class SettingStore extends BaseStore {
         let obj = this.settings.cartConfig.customerGroups
         this.customerGroups = Object.keys(obj).map(g => {
             return { id: g, value: obj[g] }
+        })
+    }
+    
+    parseCategories() {
+        let obj = this.rawCategories
+        this.categories = Object.keys(obj).map(c => { // TODO: Sort array
+            return { id: obj[c]['category_id'], value: obj[c]['name'], data: obj[c] } // Uses legacy API for now
         })
     }
     
