@@ -7,9 +7,6 @@ import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
 import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
-
-import ToggleDisplay from 'react-toggle-display'
-
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'

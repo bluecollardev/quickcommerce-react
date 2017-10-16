@@ -12,7 +12,6 @@ import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 import CustomerIdentity from '../customer/CustomerIdentity.jsx'
-import CustomerIncome from '../customer/CustomerIncome.jsx'
 
 import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'

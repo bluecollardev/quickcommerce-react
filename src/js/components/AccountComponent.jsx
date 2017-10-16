@@ -13,7 +13,6 @@ import { Jumbotron } from 'react-bootstrap'
 import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 
 import SignInForm from './account/SignInForm.jsx'
-import CreditCardForm from './payment/CreditCardForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
 import LoginStore from '../stores/LoginStore.jsx'
