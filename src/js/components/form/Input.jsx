@@ -1,65 +1,93 @@
 import React, { Component } from 'react'
 
-const DatePicker = () => {
-	return <input type='date' />
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+
+const DatePicker = (props) => {
+	//return <input type='date' />
+	return <FormControl type='date' {...props} />
 }
 
-const TimePicker = () => {
-	return <input type='time' />
+const TimePicker = (props) => {
+	//return <input type='time' />
+	return <FormControl type='time' {...props} />
 }
 
-const DateInput = () => {
+const DateInput = (props) => {
 	return (
-		<DatePicker />
+		<DatePicker {...props} />
 	)
 }
 
-const DateTimeInput = () => {
+const DateTimeInput = (props) => {
 	return (
-		<DatePicker />
+		<DatePicker {...props} />
 	)
 }
 
-const TimeInput = () => {
+const TimeInput = (props) => {
 	return (
-		<TimePicker />
+		<TimePicker {...props} />
 	)
 }
 
-const NumericInput = () => {
+const NumericInput = (props) => {
+	/*return (
+		<input type='number' {...props} />
+	)*/
+	
 	return (
-		<input type='number' />
+		<FormControl type='number' {...props} />
 	)
 }
 
-const TelephoneInput = () => {
+const TelephoneInput = (props) => {
+	/*return (
+		<input type='tel' {...props} />
+	)*/
+	
 	return (
-		<input type='tel' />
+		<FormControl type='tel' {...props} />
 	)
 }
 
-const EmailInput = () => {
+const EmailInput = (props) => {
+	/*return (
+		<input type='email' {...props} />
+	)*/
+	
 	return (
-		<input type='email' />
+		<FormControl type='email' {...props} />
 	)
 }
 
-const PostalCodeInput = () => {
+const PostalCodeInput = (props) => {
+	/*return (
+		<input type='text' {...props} />
+	)*/
+	
 	return (
-		<input type='text' />
+		<FormControl type='text' {...props} />
 	)
 }
 
-const SinNumberInput = () => {
+const SinInput = (props) => {
+	/*return (
+		<input type='text' {...props} />
+	)*/
+	
 	return (
-		<input type='text' />
+		<FormControl type='number' {...props} />
 	)
 }
 
-const SsnInput = () => {
+const SsnInput = (props) => {
+	/*return (
+		<input type='text' {...props} />
+	)*/
+	
 	return (
-		<input type='text' />
+		<FormControl type='number' {...props} />
 	)
 }
 
-export { DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinNumberInput, SsnInput }
+export { DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }

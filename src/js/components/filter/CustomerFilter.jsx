@@ -27,9 +27,6 @@ export default FormComponent(class CustomerFilter extends Component {
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
         
-        console.log('customer')
-        console.log(props.data)
-        
         this.state = {
             data: assign({}, props.data)
         }
