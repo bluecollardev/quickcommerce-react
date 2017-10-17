@@ -9,18 +9,18 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import { Jumbotron } from 'react-bootstrap'
 
+import Auth from '../services/AuthService.jsx'
+
 // Higher order component adds Auth functions
 import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 
 import SignInForm from './account/SignInForm.jsx'
 //import CreditCardForm from './payment/CreditCardForm.jsx'
-import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
+import CustomerProfile from './customer/CustomerFullProfile.jsx'
 
 import LoginStore from '../stores/LoginStore.jsx'
 import UserStore from '../stores/UserStore.jsx'
 import CustomerStore from '../stores/CustomerStore.jsx'
-
-import Auth from '../services/AuthService.jsx'
 
 export default AuthenticatedComponent(class CustomerComponent extends Component {
     constructor(props) {
@@ -30,13 +30,6 @@ export default AuthenticatedComponent(class CustomerComponent extends Component 
     }
     
     onCreateSuccess(response) {
-        /*Auth.fetchAccount(data => {
-            LoginActions.loginUser(response.data)
-            UserActions.setUser(response.data)
-            CustomerService.setCustomer(response.data)
-            
-            this.onLoginSuccess()
-        })*/
     }
 
     render() {       

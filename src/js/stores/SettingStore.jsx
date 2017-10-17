@@ -3,6 +3,7 @@ import assign from 'object-assign'
 import axios from 'axios'
 import { normalize, denormalize, schema } from 'normalizr'
 
+import SettingAdapter from '../adapters/setting/SettingAdapter.jsx'
 import SettingConstants from '../constants/SettingConstants.jsx'
 import BaseStore from './BaseStore.jsx'
 
@@ -28,6 +29,7 @@ class SettingStore extends BaseStore {
 		if (instance !== null) {
             return instance
         }
+		
 		this.adapter = null
         
 		// TODO: This stuff has moved to QcSettingAdapter
@@ -159,6 +161,9 @@ class SettingStore extends BaseStore {
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
         
+		// Attach a setting adapter
+		this.adapter = new SettingAdapter(this)
+		
         // Easy access while developing app
         window.SettingStore = instance = this
     }

@@ -10,6 +10,8 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import Autocomplete from 'react-autocomplete'
 
+import { DateInput } from '../form/Input.jsx'
+
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
@@ -18,7 +20,10 @@ import CustomerAddressService from '../../services/CustomerAddressService.jsx'
 
 import SettingStore from '../../stores/SettingStore.jsx'
 
+import fieldNames from '../../forms/AddressFields.jsx'
+
 export default FormComponent(class CurrentAddress extends Component {
+    // TODO: Map default props
     static defaultProps = {
         // Is the component embedded in another component or form?
         // If this is true, the component will handle its own updating
@@ -88,9 +93,11 @@ export default FormComponent(class CurrentAddress extends Component {
             data: assign({}, props.data, this.state.data, data)
         })
         
+        let city = state.data.city || null
         let zone = state.data.zone || null
         let country = state.data.country || null
         
+        let cityName = ''
         let zoneName = ''
         let countryName = ''
         

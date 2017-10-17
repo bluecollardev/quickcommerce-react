@@ -72,20 +72,21 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
     render() {       
         return (
             <div className='container-fluid'>
-                {!this.props.loggedIn && (
+				{!this.props.loggedIn && (
                 <Modal
                     show = {true}>
-                    <Modal.Header>
+                    {!this.props.loggedIn && this.props.location.pathname === '/account/login' && false && (
+					<Modal.Header>
                         <Modal.Title>
-                            {!this.props.loggedIn && this.props.location.pathname === '/account/login' && (
                             <div className='column_attr clearfix align_center'>
                                 <h2 className='heading-with-border' style={{textAlign: 'center'}}>Sign Into Your Account</h2>
                             </div>
-                            )}
                         </Modal.Title>
                     </Modal.Header>
+					)}
                     <Modal.Body>
-                        <SignInForm 
+                        {this.props.children} 
+						<SignInForm 
                             onLoginSuccess = {this.onLoginSuccess}
                             onCreate = {() => {window.location.hash = '/account/register'}}
                             />
