@@ -22,7 +22,7 @@ import SettingStore from '../../stores/SettingStore.jsx'
 
 import fieldNames from '../../forms/AddressFields.jsx'
 
-export default FormComponent(class CurrentAddress extends Component {
+export class CurrentAddress extends Component {
     // TODO: Map default props
     static defaultProps = {
         // Is the component embedded in another component or form?
@@ -1185,4 +1185,6 @@ export default FormComponent(class CurrentAddress extends Component {
             </div>
         )
     }
-})
+}
+
+export default FormComponent(CurrentAddress)

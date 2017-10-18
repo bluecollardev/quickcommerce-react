@@ -23,8 +23,6 @@ import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 
-
-
 export default class CustomerFullProfile extends Component {
 	// TODO: Redo default props, there are a couple items like this flagged in my comments
 	static defaultProps = {
