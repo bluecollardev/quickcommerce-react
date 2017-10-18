@@ -21,10 +21,12 @@ import CustomerStore from '../stores/CustomerStore.jsx'
 
 import Auth from '../services/AuthService.jsx'
 
-export default AuthenticatedComponent(class AccountComponent extends Component {
+export default class AccountComponent extends Component {
     constructor(props) {
         super(props)
         
+        this.doLogin = this.doLogin.bind(this)
+        this.doLogout = this.doLogout.bind(this)
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
         this.onLoginError = this.onLoginError.bind(this)
         this.onCreateSuccess = this.onCreateSuccess.bind(this)
@@ -49,6 +51,27 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
             window.location.hash = '/account/edit'
         }
     }
+	
+	doLogin(formData, onSuccess, onError) {		
+		Auth.login(
+			formData['account'], 
+			formData['password'], 
+			onSuccess,
+			onError
+		).catch(function(err) {
+			console.log('Error logging in', err)
+		})
+	}
+	
+	doLogout() {
+		try {
+            Auth.logout()
+        } catch (err) {
+            console.log('Error logging out', err)
+        }
+        
+        window.location.hash = '/account/login'
+	}
     
     // TODO: Can I move these next group of methods up a level to AuthenticatedComponent?
     onLoginSuccess() {
@@ -87,7 +110,9 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
                     <Modal.Body>
                         {this.props.children} 
 						<SignInForm 
+                            onSubmit = {this.doLogin}
                             onLoginSuccess = {this.onLoginSuccess}
+                            onLogout = {this.doLogout}
                             onCreate = {() => {window.location.hash = '/account/register'}}
                             />
                             
@@ -209,4 +234,4 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
             </div>
         )
     }
-})
+}

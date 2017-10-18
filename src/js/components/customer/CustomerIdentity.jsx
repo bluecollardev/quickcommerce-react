@@ -78,7 +78,7 @@ import {
 	SsnInput
 } from '../form/Input.jsx'
 
-export default FormComponent(class CustomerIdentity extends Component {
+export class CustomerIdentity extends Component {
     static defaultProps = {        
 		title: null,
 		data: {
@@ -391,4 +391,6 @@ export default FormComponent(class CustomerIdentity extends Component {
             </div>
         )
     }   
-})
+}
+
+export default FormComponent(CustomerIdentity)

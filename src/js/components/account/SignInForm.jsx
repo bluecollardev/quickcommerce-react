@@ -17,6 +17,8 @@ import CheckoutStore from '../../stores/CheckoutStore.jsx'
 export default AuthenticatedComponent(FormComponent(class SignInForm extends Component {
     constructor(props) {
         super(props)
+		
+		this.authHandler = this.props.authHandler || Auth
         
         this.onSubmit = this.onSubmit.bind(this)
         this.onCreate = this.onCreate.bind(this)
@@ -125,31 +127,29 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
         e.preventDefault()
         e.stopPropagation()
         
-        //if (typeof this.props.onSubmit === 'undefined') return false;
-        
-        // Should I change the name of callback to beforeSubmit?
-        console.log('executing onSubmit callback')
-        if (typeof this.props.onSubmit === 'function') {
-            console.log('execute handler')
-            let fn = this.props.onSubmit
-            fn(e)
-        }
-        
         this.props.triggerAction((formData) => {
-            Auth.login(
-                formData['account'], 
-                formData['password'], 
-                this.onSuccess, 
-                this.onError
-            ).catch(function(err) {
-                console.log('Error logging in', err)
-            })
-            
-            if (this.state.remember) {
-                this.rememberAccount(formData)
-            } else {
-                this.forgetAccount()
-            }
+            console.log('executing onSubmit callback')
+			if (typeof this.props.onSubmit === 'function') {
+				console.log('execute handler')
+				let fn = this.props.onSubmit
+				
+				// onSuccess, onError
+				fn(formData, (response) => {
+					this.onSuccess(response)
+					
+					if (this.state.remember) {
+						this.rememberAccount(formData)
+					} else {
+						this.forgetAccount()
+					}
+				}, this.onError)
+			} else {
+				if (this.state.remember) {
+					this.rememberAccount(formData)
+				} else {
+					this.forgetAccount()
+				}
+			}
         })
     }
     
@@ -177,14 +177,6 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
             let fn = this.props.onLogout
             fn(e)
         }
-        
-        try {
-            Auth.logout()
-        } catch (err) {
-            console.log('Error logging out', err)
-        }
-        
-        window.location.hash = '/account/login' // TODO: Use history
     }
     
     onSuccess(response) {

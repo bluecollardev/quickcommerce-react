@@ -76,7 +76,7 @@ import {
 
 import fieldNames from '../../forms/CustomerContactFields.jsx'
 
-export default FormComponent(class CustomerContact extends Component {
+export class CustomerContact extends Component {
     static defaultProps = {        
 		id: null,
 		email: '',
@@ -216,4 +216,6 @@ export default FormComponent(class CustomerContact extends Component {
             </Row>
         )
     }   
-})
+}
+
+export default FormComponent(CustomerContact)

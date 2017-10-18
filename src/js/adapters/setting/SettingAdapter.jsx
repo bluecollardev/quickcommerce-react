@@ -14,7 +14,11 @@ function settingFactory(settingStore) {
 			break
 	}
 	
-	return new adapter(settingStore)
+	if (adapter !== null) {
+		return new adapter(settingStore)
+	}
+	
+	return adapter
 }
 
 export default settingFactory

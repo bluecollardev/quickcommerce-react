@@ -8,11 +8,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import CurrentAddress from '../address/CurrentAddress.jsx'
-import ShippingAddress from '../address/ShippingAddress.jsx'
-import CustomerInfo from '../customer/CustomerFullInfo.jsx'
-import CustomerIdentity from '../customer/CustomerIdentity.jsx'
-
 import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
@@ -20,7 +15,18 @@ import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
 import CustomerAddressService from '../../services/CustomerAddressService.jsx'
 
+import CustomerInfo from '../customer/CustomerFullInfo.jsx'
+//import CustomerContact from '../customer/CustomerContact.jsx'
+//import CustomerIdentity from '../customer/CustomerIdentity.jsx'
+//import CustomerIncome from '../customer/CustomerIncome.jsx'
+
+import CurrentAddress from '../address/CurrentAddress.jsx'
+import ShippingAddress from '../address/ShippingAddress.jsx'
+
+
+
 export default class CustomerFullProfile extends Component {
+	// TODO: Redo default props, there are a couple items like this flagged in my comments
 	static defaultProps = {
 		pk: 'customer_id',
 		editAccount: false,
@@ -147,7 +153,11 @@ export default class CustomerFullProfile extends Component {
         this.setState({ showLogin: false })
     }
     
-    // TODO: Abstract out getForm and triggerAction
+    // TODO: Abstract out getForm, triggerAction, dispatch, freezeState, unfreezeState etc.
+	
+	/**
+	 * Grab all subforms and assemble their data into a single object
+	 */
     getForm() {
         console.log('grabbing form data from child form components')
         console.log(this.profile.getForm())

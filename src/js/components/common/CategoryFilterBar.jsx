@@ -45,7 +45,7 @@ export default class CategoryFilterBar extends Component {
                 elem.innerHTML = item.name
                 name = elem.value
                 
-                items.push(<NavItem eventKey={item.category_id} title={name} onSelect={this.onFilterSelected}>{name}</NavItem>)
+                items.push(<NavItem key={idx} eventKey={item.category_id} title={name} onSelect={this.onFilterSelected}>{name}</NavItem>)
             }
         }
         
