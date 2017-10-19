@@ -176,6 +176,9 @@ class SettingStore extends BaseStore {
             case SettingConstants.SET_SETTINGS:
                 this.setSettings(action.settings)
                 break
+            case SettingConstants.SET_CONFIG:
+                this.setConfig(action.config)
+                break
             case SettingConstants.FETCH_STORES:
                 this.fetchStores()
                 break
@@ -248,6 +251,11 @@ class SettingStore extends BaseStore {
                 onError()
             }
         })
+    }
+    
+    setConfig(config) {
+        this.config = assign({}, this.config, config)
+        //this.freezeConfig(this.config)
     }
     
     fetchCategories(onSuccess, onError) {

@@ -13,6 +13,12 @@ export default {
             settings: settings
         })
     },
+    setConfig: (config) => {
+        AppDispatcher.dispatch({
+            actionType: SettingConstants.SET_CONFIG,
+            config: config
+        })
+    },
     fetchStores: (id) => {
         AppDispatcher.dispatch({
             actionType: SettingConstants.FETCH_STORES
