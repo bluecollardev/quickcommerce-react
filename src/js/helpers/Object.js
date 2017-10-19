@@ -26,7 +26,7 @@ export default class ObjectHelper {
             let val = data[prop]
             let newVal = (typeof val === 'object' && val !== null) ? ObjectHelper.recursiveFormatKeys(val, from, to) : val
             
-            console.log("Converting property '" + prop + "' from '" + from + " to " + to + ': ' + JSON.stringify(newVal))
+            //console.log("Converting property '" + prop + "' from '" + from + " to " + to + ': ' + JSON.stringify(newVal))
             switch (to) {
                 case 'underscore':
                     obj[StringHelper.underscore(prop)] = newVal
@@ -62,7 +62,7 @@ export default class ObjectHelper {
             let val = data[prop]
             let newVal = (typeof val === 'object' && val !== null) ? ObjectHelper.recursiveFormatKeys(val, mappings) : val
             
-            console.log("Converting property '" + prop + "' from '" + from + " to " + to + ': ' + JSON.stringify(newVal))
+            //console.log("Converting property '" + prop + "' from '" + from + " to " + to + ': ' + JSON.stringify(newVal))
             switch (to) {
                 case 'underscore':
                     obj[StringHelper.underscore(prop)] = newVal

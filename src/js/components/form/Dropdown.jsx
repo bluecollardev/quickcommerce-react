@@ -1,3 +1,5 @@
+import assign from 'object-assign'
+
 import React, { Component } from 'react'
 
 import { Button, DropdownButton, SplitButton } from 'react-bootstrap'
@@ -5,14 +7,42 @@ import { FormControl } from 'react-bootstrap'
 import { MenuItem } from 'react-bootstrap'
 
 const SelectList = (props) => {
-	let items = props.items || []	
+	let items = props.items || []
+	let elementProps = assign({}, props) // Copy so we can delete, props are read-only
+	delete elementProps.items
+	delete elementProps.optionValue
+	delete elementProps.codeValue
+	
+	if (props.hasOwnProperty('optionValue')) {
+		return (
+			<FormControl componentClass='select' {...elementProps}>
+				<option key={0} value=''></option>
+				{items.map((item, idx) =>
+				<option key={idx + 1} value={item.value}>{item.value}</option>
+				)}
+			</FormControl>
+		)	
+	}
+	
+	if (props.hasOwnProperty('codeValue')) {
+		return (
+			<FormControl componentClass='select' {...elementProps}>
+				<option key={0} value=''></option>
+				{items.map((item, idx) =>
+				<option key={idx + 1} value={item.code}>{item.value}</option>
+				)}
+			</FormControl>
+		)	
+	}
+	
 	return (
-		<FormControl componentClass='select' {...props}>
-			{items.map(item =>
-			<option value={item.id}>{item.value}</option>
-			)}
-		</FormControl>
-	)
+			<FormControl componentClass='select' {...elementProps}>
+				<option key={0} value=''></option>
+				{items.map((item, idx) =>
+				<option key={idx + 1} value={item.id}>{item.value}</option>
+				)}
+			</FormControl>
+		)	
 }
 
 const SelectButton = (props) => {
@@ -21,7 +51,7 @@ const SelectButton = (props) => {
 		return (
 			<SplitButton title='Split Button' {...props}>
 				{items.map(item =>
-				<MenuItem eventKey={item.id}>{item.value}</MenuItem>
+				<MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>
 				)}
 			</SplitButton>
 		)
@@ -29,7 +59,7 @@ const SelectButton = (props) => {
 		return (
 			<DropdownButton title='Normal Button' {...props}>
 				{items.map(item =>
-				<MenuItem eventKey={item.id}>{item.value}</MenuItem>
+				<MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>
 				)}
 			</DropdownButton>
 		)
@@ -55,15 +85,32 @@ const CustomerRelationDropdown = (props) => {
 	)
 }
 
-const SalutationDropdown = (props) => {
+const SalutationDropdown = (props) => {	
 	return (
 		<SelectList {...props} />
 	)
 }
 
 const SuffixDropdown = (props) => {
+	let newProps = assign({}, props, {
+		items: [
+			{ id: 1, code: 'JR', value: 'Jr.' },
+			{ id: 2, code: 'SR', value: 'Sr.' },
+			{ id: 3, code: '1', value: 'I' },
+			{ id: 4, code: '2', value: 'II' },
+			{ id: 5, code: '3', value: 'III' },
+			{ id: 6, code: '4', value: 'IV' },
+			{ id: 7, code: '5', value: 'V' },
+			{ id: 8, code: '6', value: 'VI' },
+			{ id: 9, code: '7', value: 'VII' },
+			{ id: 10, code: '8', value: 'VIII' },
+			{ id: 11, code: '9', value: 'IX' },
+			{ id: 12, code: '10', value: 'X' }
+		]
+	})
+	
 	return (
-		<SelectList {...props} />
+		<SelectList {...newProps} />
 	)
 }
 
@@ -74,8 +121,18 @@ const GenderDropdown = (props) => {
 }
 
 const MaritalDropdown = (props) => {
+	let newProps = assign({}, props, {
+		items: [
+			{ id: 1, code: 'SINGLE', value: 'Single' },
+			{ id: 2, code: 'MARRIED', value: 'Married' },
+			{ id: 3, code: 'COMMONLAW', value: 'Common Law' },
+			{ id: 4, code: 'SEPARATED', value: 'Separated' },
+			{ id: 5, code: 'DIVORCED', value: 'Divorced' }
+		]
+	})
+	
 	return (
-		<SelectList {...props} />
+		<SelectList {...newProps} />
 	)
 }
 
@@ -86,6 +143,13 @@ const ResidenceTypeDropdown = (props) => {
 }
 
 const EmploymentTypeDropdown = (props) => {
+	return (
+		<SelectList {...props} />
+	)
+}
+
+
+const EmploymentStatusDropdown = (props) => {
 	return (
 		<SelectList {...props} />
 	)
@@ -223,7 +287,7 @@ export {
 	SelectList, SelectButton, 
 	ContactTypeDropdown, IdTypeDropdown, CustomerRelationDropdown,
 	SalutationDropdown, SuffixDropdown, GenderDropdown, MaritalDropdown,
-	ResidenceTypeDropdown, EmploymentTypeDropdown, IncomeTypeDropdown,
+	ResidenceTypeDropdown, EmploymentTypeDropdown, EmploymentStatusDropdown, IncomeTypeDropdown,
 	FrequencyDropdown, AssetTypeDropdown, LiabilityTypeDropdown,
 	StreetTypeDropdown, StreetDirDropdown,
 	ContactTypeButton, IdTypeButton, CustomerRelationButton,

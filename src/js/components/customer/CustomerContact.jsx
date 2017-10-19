@@ -13,9 +13,70 @@ import FormComponent from '../FormComponent.jsx'
 import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
 
+import {
+	OccupationAutocomplete,
+	CountryAutocomplete,
+	ZoneAutocomplete,
+	CustomerAutocomplete,
+	CustomerGroupAutocomplete,
+	OrderStatusAutocomplete,
+	LanguageAutocomplete,
+	StoreAutocomplete
+} from '../form/Autocomplete.jsx'
+
+import {
+	SelectList,
+	ContactTypeDropdown,
+	IdTypeDropdown,
+	CustomerRelationDropdown,
+	SalutationDropdown,
+	SuffixDropdown,
+	GenderDropdown,
+	MaritalDropdown,
+	ResidenceTypeDropdown,
+	EmploymentTypeDropdown,
+	IncomeTypeDropdown,
+	FrequencyDropdown,
+	AssetTypeDropdown,
+	LiabilityTypeDropdown,
+	StreetTypeDropdown,
+	StreetDirDropdown
+} from '../form/Dropdown.jsx'
+
+import {
+	SelectButton,
+	ContactTypeButton,
+	IdTypeButton,
+	CustomerRelationButton,
+	SalutationButton,
+	SuffixButton,
+	GenderButton,
+	MaritalButton,
+	ResidenceTypeButton,
+	EmploymentTypeButton,
+	IncomeTypeButton,
+	FrequencyButton,
+	AssetTypeButton,
+	LiabilityTypeButton,
+	StreetTypeButton,
+	StreetDirButton
+} from '../form/Dropdown.jsx'
+
+import {
+	DateInput,
+	DateTimeInput,
+	TimeInput,
+	NumericInput,
+	TelephoneInput,
+	EmailInput,
+	PostalCodeInput,
+	SinInput,
+	SsnInput
+} from '../form/Input.jsx'
+
 import fieldNames from '../../forms/CustomerContactFields.jsx'
 
-export default FormComponent(class CustomerContact extends Component {
+export class CustomerContact extends Component {
     static defaultProps = {        
 		id: null,
 		email: '',
@@ -31,9 +92,6 @@ export default FormComponent(class CustomerContact extends Component {
         this.onCancel = this.onCancel.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
-        
-        console.log('customer')
-        console.log(props.data)
         
         this.state = {
             data: assign({}, props.data)
@@ -108,40 +166,56 @@ export default FormComponent(class CustomerContact extends Component {
         let data = this.state.data 
         
         return (
-            <div>
-                <form>
-                    <Col sm={12} md={6} lg={4}>
-                        <FormGroup className='col-sm-12 col-md-4 col-sm-3'>
-                            <ControlLabel>Telephone*</ControlLabel>
-                            <FormControl type='tel' name={mappings.TELEPHONE} {...this.props.fields(mappings.TELEPHONE, data[mappings.TELEPHONE])} />
-                        </FormGroup>
-                        
-                        <FormGroup className='col-sm-12 col-md-4 col-sm-3'>
-                            <ControlLabel>Mobile</ControlLabel>
-                            <FormControl type='tel' name={mappings.MOBILE} {...this.props.fields(mappings.MOBILE, data[mappings.MOBILE])} />
-                        </FormGroup>
-                        
-                        <FormGroup className='col-sm-12 col-md-4 col-sm-3'>
-                            <ControlLabel>Email*</ControlLabel>
-                            <FormControl type='email' name={mappings.NAME} {...this.props.fields(mappings.NAME, data[mappings.NAME])} />
-                        </FormGroup>
-                    </Col>
+            <Row>
+				<FormGroup className='col-xs-12 col-sm-4 col-sm-4'>
+					<ControlLabel>Type*</ControlLabel>
+					<ContactTypeDropdown optionValue items={SettingStore.contactTypes} name={mappings.CONTACT_TYPE} {...this.props.fields(mappings.CONTACT_TYPE, this.props.getMappedValue(mappings.CONTACT_TYPE, data))} />
+				</FormGroup>
+				
+				{this.props.type === 'email' && (
+				<FormGroup className='col-xs-12 col-sm-8'>
+					<ControlLabel>Email*</ControlLabel>
+					<EmailInput name={mappings.EMAIL} {...this.props.fields(mappings.EMAIL, this.props.getMappedValue(mappings.EMAIL, data))} />
+				</FormGroup>
+				)}
+				
+				{this.props.type === 'phone' && (
+				<FormGroup className='col-xs-12 col-sm-6'>
+					<ControlLabel>Telephone*</ControlLabel>
+					<TelephoneInput name={mappings.TELEPHONE} {...this.props.fields(mappings.TELEPHONE, this.props.getMappedValue(mappings.TELEPHONE, data))} />
+				</FormGroup>
+				)}
+				
+				{this.props.type === 'mobile' && (
+				<FormGroup className='col-xs-12 col-sm-6'>
+					<ControlLabel>Mobile</ControlLabel>
+					<TelephoneInput name={mappings.MOBILE} {...this.props.fields(mappings.MOBILE, this.props.getMappedValue(mappings.MOBILE, data))} />
+				</FormGroup>
+				)}
+				
+				{(this.props.type === 'phone' || this.props.type === 'mobile') && (
+				<FormGroup className='col-xs-12 col-sm-2'>
+					<ControlLabel>Ext.</ControlLabel>
+					<NumericInput name={mappings.EXT} {...this.props.fields(mappings.EXT, this.props.getMappedValue(mappings.EXT, data))} />
+				</FormGroup>
+				)}
                     
-                    {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
-                        <FormGroup>
-                            <Button bsStyle='success' onClick={this.onCreate}>Create Account</Button>&nbsp;
-                            <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
-                        </FormGroup>
-                    )}
-                    
-                    {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'edit' && (
-                    <FormGroup>
-                        <Button bsStyle='success' onClick={this.onUpdate}>Update Info</Button>&nbsp;
-                        <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
-                    </FormGroup>
-                    )}
-                </form>
-            </div>
+				{this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
+					<FormGroup>
+						<Button bsStyle='success' onClick={this.onCreate}>Create Account</Button>&nbsp;
+						<Button onClick={this.onCancel}>Cancel</Button>&nbsp;
+					</FormGroup>
+				)}
+				
+				{this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'edit' && (
+				<FormGroup>
+					<Button bsStyle='success' onClick={this.onUpdate}>Update Info</Button>&nbsp;
+					<Button onClick={this.onCancel}>Cancel</Button>&nbsp;
+				</FormGroup>
+				)}
+            </Row>
         )
     }   
-})
+}
+
+export default FormComponent(CustomerContact)

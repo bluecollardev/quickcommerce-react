@@ -7,15 +7,12 @@ import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
 import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
-
-import ToggleDisplay from 'react-toggle-display'
-
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerService from '../../services/CustomerService.jsx'
 
-export default FormComponent(class CustomerFullInfo extends Component {
+export class CustomerFullInfo extends Component {
     static defaultProps = {        
 		id: null, // WTF this shouldn't be nested in here!
 		address_id: null, // WTF this shouldn't be nested in here!
@@ -37,9 +34,6 @@ export default FormComponent(class CustomerFullInfo extends Component {
         this.onCancel = this.onCancel.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
-        
-        console.log('customer')
-        console.log(props.data)
         
         this.state = {
             data: assign({}, props.data)
@@ -81,8 +75,8 @@ export default FormComponent(class CustomerFullInfo extends Component {
         console.log('executing onCancel')
         if (typeof this.props.onCancel === 'function') {
             console.log('execute handler')
-            var fn = this.props.onCancel
-            fn.call(this, e)
+            let fn = this.props.onCancel
+            fn(e)
         }
     }
     
@@ -90,8 +84,8 @@ export default FormComponent(class CustomerFullInfo extends Component {
         console.log('executing onSaveSuccess')
         if (typeof this.props.onSaveSuccess === 'function') {
             console.log('execute handler')
-            var fn = this.props.onSaveSuccess
-            fn.call(this, response)
+            let fn = this.props.onSaveSuccess
+            fn(response)
         }
     }
     
@@ -99,8 +93,8 @@ export default FormComponent(class CustomerFullInfo extends Component {
         console.log('executing onError')
         if (typeof this.props.onError === 'function') {
             console.log('execute handler')
-            var fn = this.props.onError
-            fn.call(this, response)
+            let fn = this.props.onError
+            fn(response)
         }
         
         this.setState({
@@ -235,4 +229,6 @@ export default FormComponent(class CustomerFullInfo extends Component {
             </div>
         )
     }   
-})
+}
+
+export default FormComponent(CustomerFullInfo)

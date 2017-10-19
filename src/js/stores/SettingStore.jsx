@@ -3,6 +3,7 @@ import assign from 'object-assign'
 import axios from 'axios'
 import { normalize, denormalize, schema } from 'normalizr'
 
+import SettingAdapter from '../adapters/setting/SettingAdapter.jsx'
 import SettingConstants from '../constants/SettingConstants.jsx'
 import BaseStore from './BaseStore.jsx'
 
@@ -28,6 +29,7 @@ class SettingStore extends BaseStore {
 		if (instance !== null) {
             return instance
         }
+		
 		this.adapter = null
         
 		// TODO: This stuff has moved to QcSettingAdapter
@@ -159,6 +161,9 @@ class SettingStore extends BaseStore {
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
         
+		// Attach a setting adapter
+		this.adapter = new SettingAdapter(this)
+		
         // Easy access while developing app
         window.SettingStore = instance = this
     }
@@ -235,6 +240,10 @@ class SettingStore extends BaseStore {
             this.parseGeoZones()
             this.parseOrderStatuses()
             this.parseCustomerGroups()
+            
+            this.fetchCategories(() => {
+                this.parseCategories()
+            }, onError) // Should be done concurrently with fetchSettings 
 
             this.emit('settings-loaded', payload)
         }).catch(err => {
@@ -247,6 +256,36 @@ class SettingStore extends BaseStore {
     setConfig(config) {
         this.config = assign({}, this.config, config)
         //this.freezeConfig(this.config)
+    }
+    
+    fetchCategories(onSuccess, onError) {
+        axios({
+            url: QC_LEGACY_API + 'categories/level/1',
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        .then(response => {
+            // Resource API nests payload data inside its own data property
+            let payload = (response.data.hasOwnProperty('data')) ? response.data.data : response.data
+            // TODO: Throw null data error? Not sure... I'll think about it
+            this.rawCategories = payload
+            
+            console.log('saving categories')
+            console.log(this.rawCategories)
+
+            if (typeof onSuccess === 'function') {
+                onSuccess(payload)
+            }
+            
+            //this.parseCategories()
+
+            this.emit('categories-loaded', payload)
+        }).catch(err => {
+            if (typeof onError === 'function') {
+                onError()
+            }
+        })
     }
 	
     /**
@@ -427,6 +466,13 @@ class SettingStore extends BaseStore {
         let obj = this.settings.cartConfig.customerGroups
         this.customerGroups = Object.keys(obj).map(g => {
             return { id: g, value: obj[g] }
+        })
+    }
+    
+    parseCategories() {
+        let obj = this.rawCategories
+        this.categories = Object.keys(obj).map(c => { // TODO: Sort array
+            return { id: obj[c]['category_id'], value: obj[c]['name'], data: obj[c] } // Uses legacy API for now
         })
     }
     

@@ -1,3 +1,5 @@
+import assign from 'object-assign'
+
 import axios from 'axios'
 //import request from 'reqwest' // TODO: Use axios
 //import when from 'when'
@@ -393,6 +395,9 @@ class CustomerService {
 		this.fetchShippingAddress()
     }
     
+	/**
+	 * TODO: This is legacy
+	 */
     handleApiError(response) {
         // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid
         // Having to base my action on text returned is weak

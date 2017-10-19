@@ -79,7 +79,7 @@ import {
 	TelephoneInput,
 	EmailInput,
 	PostalCodeInput,
-	SinNumberInput,
+	SinInput,
 	SsnInput
 } from '../components/form/Input.jsx'
 
@@ -143,7 +143,7 @@ SettingStore.on('settings-loaded', () => {
 								</FormGroup>
 								<FormGroup>
 									<ControlLabel>Social Insurance Number</ControlLabel>
-									<SinNumberInput />
+									<SinInput />
 								</FormGroup>
 								<FormGroup>
 									<ControlLabel>Social Security Number</ControlLabel>

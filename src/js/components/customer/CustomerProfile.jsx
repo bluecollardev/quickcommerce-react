@@ -351,6 +351,7 @@ export default class CustomerProfile extends Component {
 								modal = {this.props.modal}
                                 displaySummary = {true}
                                 displayActions = {true}
+								durationRequired = {this.props.durationRequired}
 								mode = 'create'
 								/>
 						</div>
@@ -422,6 +423,7 @@ export default class CustomerProfile extends Component {
                                 data = {this.props.billingAddress}
                                 displaySummary = {true}
                                 displayActions = {true}
+								durationRequired = {this.props.durationRequired}
                                 isSubForm = {true}
                                 onUpdate = {this.onBillingAddressUpdate}
                                 mode = 'edit'
@@ -440,6 +442,7 @@ export default class CustomerProfile extends Component {
 								data = {this.props.shippingAddress}
                                 displaySummary = {true}
                                 displayActions = {true}
+                                durationRequired = {this.props.durationRequired}
                                 isSubForm = {true}
                                 onUpdate = {this.onShippingAddressUpdate}
 								mode = 'edit'

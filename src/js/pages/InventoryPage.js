@@ -29,7 +29,6 @@ import BrowserMenu from '../components/browser/BrowserMenu.jsx'
 import NewAccountForm from '../components/account/NewAccountForm.jsx'
 import EditAccountForm from '../components/account/EditAccountForm.jsx'
 import CustomerProfile from '../components/customer/CustomerProfile.jsx'
-import EmployerProfile from '../components/employer/EmployerProfile.jsx'
 
 import Cart from '../modules/Cart.jsx'
 import InternalCartStore from '../modules/CartStore.jsx'

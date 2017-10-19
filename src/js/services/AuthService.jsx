@@ -57,6 +57,10 @@ class AuthService {
                 }
             }).catch(err => {
                 console.log(err)
+				if (typeof onError === 'function') {
+					let fn = onError
+					fn(response.data)
+				}
             })
         
         // ex. JWT
@@ -113,7 +117,7 @@ class AuthService {
                 console.log('executing onResponseReceived onSuccess callback')
                 if (typeof onSuccess === 'function') {
                     let fn = onSuccess
-                    fn.call(this, response)
+                    fn(response)
                 }
             })
         } else if (response.hasOwnProperty('data')) {
@@ -136,7 +140,7 @@ class AuthService {
         console.log('executing handleApiError onError callback')
         if (typeof onError === 'function') {
             let fn = onError
-            fn.call(this, response.data)
+            fn(response.data)
         }
     }
     
@@ -162,7 +166,7 @@ class AuthService {
                         
                         if (typeof onSuccess === 'function') {
                             let fn = onSuccess
-                            fn.call(this, data['session'])
+                            fn(data['session'])
                         }
                     }
                 }
@@ -172,7 +176,7 @@ class AuthService {
             })
 		} else if (typeof onSuccess === 'function') {
             let fn = onSuccess
-            fn.call(this, sessionStorage.userToken)
+            fn(sessionStorage.userToken)
         } else {
             // Try not to getToken in this manner, it's not reliable - use the onSuccess callback instead
             return sessionStorage.userToken

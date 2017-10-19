@@ -77,9 +77,10 @@ export default class BrowserMenu extends Component {
     renderSteps() {
         let that = this
         let steps = []
-        let renderStep = function (step) {
+        let renderStep = function (step, idx) {
             steps.push(
-                <Step 
+                <Step
+					key = {idx}
                     stepId = {step.config.stepId}
                     indicator = {step.config.indicator} 
                     title = {step.config.title}
@@ -92,7 +93,7 @@ export default class BrowserMenu extends Component {
         
         if (this.props.steps instanceof Array) {
             for (let idx = 0; idx < this.props.steps.length; idx++) {
-                renderStep(this.props.steps[idx])
+                renderStep(this.props.steps[idx], idx)
             }            
         }
         

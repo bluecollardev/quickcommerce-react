@@ -13,7 +13,6 @@ import { Jumbotron } from 'react-bootstrap'
 import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 
 import SignInForm from './account/SignInForm.jsx'
-import CreditCardForm from './payment/CreditCardForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
 import LoginStore from '../stores/LoginStore.jsx'
@@ -22,10 +21,12 @@ import CustomerStore from '../stores/CustomerStore.jsx'
 
 import Auth from '../services/AuthService.jsx'
 
-export default AuthenticatedComponent(class AccountComponent extends Component {
+export default class AccountComponent extends Component {
     constructor(props) {
         super(props)
         
+        this.doLogin = this.doLogin.bind(this)
+        this.doLogout = this.doLogout.bind(this)
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
         this.onLoginError = this.onLoginError.bind(this)
         this.onCreateSuccess = this.onCreateSuccess.bind(this)
@@ -50,6 +51,27 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
             window.location.hash = '/account/edit'
         }
     }
+	
+	doLogin(formData, onSuccess, onError) {		
+		Auth.login(
+			formData['account'], 
+			formData['password'], 
+			onSuccess,
+			onError
+		).catch(function(err) {
+			console.log('Error logging in', err)
+		})
+	}
+	
+	doLogout() {
+		try {
+            Auth.logout()
+        } catch (err) {
+            console.log('Error logging out', err)
+        }
+        
+        window.location.hash = '/account/login'
+	}
     
     // TODO: Can I move these next group of methods up a level to AuthenticatedComponent?
     onLoginSuccess() {
@@ -73,21 +95,24 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
     render() {       
         return (
             <div className='container-fluid'>
-                {!this.props.loggedIn && (
+				{!this.props.loggedIn && (
                 <Modal
                     show = {true}>
-                    <Modal.Header>
+                    {!this.props.loggedIn && this.props.location.pathname === '/account/login' && false && (
+					<Modal.Header>
                         <Modal.Title>
-                            {!this.props.loggedIn && this.props.location.pathname === '/account/login' && (
                             <div className='column_attr clearfix align_center'>
                                 <h2 className='heading-with-border' style={{textAlign: 'center'}}>Sign Into Your Account</h2>
                             </div>
-                            )}
                         </Modal.Title>
                     </Modal.Header>
+					)}
                     <Modal.Body>
-                        <SignInForm 
+                        {this.props.children} 
+						<SignInForm 
+                            onSubmit = {this.doLogin}
                             onLoginSuccess = {this.onLoginSuccess}
+                            onLogout = {this.doLogout}
                             onCreate = {() => {window.location.hash = '/account/register'}}
                             />
                             
@@ -209,4 +234,4 @@ export default AuthenticatedComponent(class AccountComponent extends Component {
             </div>
         )
     }
-})
+}
