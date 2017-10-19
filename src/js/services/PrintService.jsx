@@ -1,5 +1,5 @@
 class PrintService {
-	renderPlainTxtOrder() {
+	static renderPlainTxtOrder(checkout, notes) {
         let output = []
 
         // Build our receipt, line by line
@@ -20,7 +20,12 @@ class PrintService {
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        items = []
+        if (typeof checkout.items !== 'undefined' && 
+            checkout.items instanceof Array) {
+            items = checkout.items
+        }
+        
         for (let idx = 0; idx < items.length; idx++) {
             let line = [
                 items[idx].quantity + ' x ',
@@ -32,11 +37,11 @@ class PrintService {
             if (typeof items[idx].options !== 'undefined' && 
                 items[idx].options instanceof Array && 
                 items[idx].options.length > 0) {
-                output = output.concat(this.renderPlainTxtOptions(items[idx].options))
+                output = output.concat(PrintService.renderPlainTxtOptions(items[idx].options))
             }
         }
         
-        if (typeof this.state.notes === 'string' && this.state.notes !== '') {
+        if (typeof notes === 'string' && notes !== '') {
             output.push('\n')
             output.push('NOTES')
             output.push('\n')
@@ -46,7 +51,7 @@ class PrintService {
         return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
     }
     
-    renderPlainTxtReceipt() {
+    static renderPlainTxtReceipt(checkout, paymentMethod) {
         let output = []
 
         // Build our receipt, line by line
@@ -71,7 +76,12 @@ class PrintService {
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        items = []
+        if (typeof checkout.items !== 'undefined' && 
+            checkout.items instanceof Array) {
+            items = checkout.items
+        }
+        
         for (let idx = 0; idx < items.length; idx++) {
             let line = [
                 items[idx].quantity + ' x ',
@@ -85,8 +95,8 @@ class PrintService {
         output.push('\n')
 
         // Totals
-        let totals = this.state.prevCheckout.totals || []
-        let total = this.state.prevCheckout.total || null
+        let totals = checkout.totals || []
+        let total = checkout.total || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -127,12 +137,13 @@ class PrintService {
         }
         
         output.push('\n')
-        output.push('Payment Method' + ': ' + this.state.paymentMethod)
+        output.push('Payment Method' + ': ' + paymentMethod)
 
-        return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
+        return output.join('\n') + '\n' 
+        // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
     }
     
-    renderPlainTxtOptions(selectedOptions) {
+    static renderPlainTxtOptions(selectedOptions) {
         let options = []
         
         for (let idx in selectedOptions) {
@@ -142,8 +153,36 @@ class PrintService {
         
         return options
     }
-	
-	renderEndOfDayReport(data) {
+
+	static printReceipt() {
+        // Send output as plain text string
+        StarMicronicsStore.printReceipt(PrintService.renderPlainTxtReceipt())
+    }
+    
+    static printOrder() {
+        // Send output as plain text string
+        StarMicronicsStore.printOrder(PrintService.renderPlainTxtOrder())
+    }
+    
+    static printReport() {
+        axios({
+            url: QC_API + 'report/endofday',
+            method: 'GET',
+            dataType: 'json',
+            contentType: 'application/json'
+        })
+        .then(response => {
+            let payload = response.data
+
+            // Send output as plain text string
+            StarMicronicsStore.printReport(PrintService.renderEndOfDayReport(payload))
+
+        }).catch(err => {
+            // Do nothing
+        })
+    }
+    
+    static renderEndOfDayReport(data) {
         let output = []
 
         // Build our receipt, line by line
@@ -182,33 +221,5 @@ class PrintService {
         output.push('\n')
 
         return output.join('\n') + '\n' // Pad the bottom of the page... probably a way to do this via Star API but I'll check that out later
-    }
-
-	printReceipt() {
-        // Send output as plain text string
-        StarMicronicsStore.printReceipt(this.PrintService.renderPlainTxtReceipt())
-    }
-    
-    printOrder() {
-        // Send output as plain text string
-        StarMicronicsStore.printOrder(this.PrintService.renderPlainTxtOrder())
-    }
-    
-    printReport() {
-        axios({
-            url: QC_API + 'report/endofday',
-            method: 'GET',
-            dataType: 'json',
-            contentType: 'application/json'
-        })
-        .then(response => {
-            let payload = response.data
-
-            // Send output as plain text string
-            StarMicronicsStore.printReport(this.renderEndOfDayReport(payload))
-
-        }).catch(err => {
-            // Do nothing
-        })
     }
 }

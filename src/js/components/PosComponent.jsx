@@ -140,8 +140,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
         this.changeCustomer = this.changeCustomer.bind(this)
         this.showLoginForm = this.showLoginForm.bind(this)
         this.hideLoginForm = this.hideLoginForm.bind(this)
-        this.showOrder = this.showOrder.bind(this)
-        this.hideModal = this.hideModal.bind(this)
         this.showScanModal = this.showScanModal.bind(this)
         this.hideScanModal = this.hideScanModal.bind(this)
         this.showCodeModal = this.showCodeModal.bind(this)
@@ -1174,15 +1172,6 @@ export default AuthenticatedComponent(class PosComponent extends Component {
     
     hideLoginForm() {
         this.setState({ showLogin: false })
-    }
-    
-    showOrder() {
-        let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-        this.setState({ purchase: cart.getSelection() })
-    }
-    
-    hideModal() {
-        this.setState({ purchase: null })
     }
     
     showScanModal() {
@@ -2977,6 +2966,7 @@ export default AuthenticatedComponent(class PosComponent extends Component {
                         )}
                     </Modal.Body>
                 </Modal>
+                
                 <Modal
                   show   = {!!this.state.scan}
                   onHide = {this.hideScanModal}>

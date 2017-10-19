@@ -1,11 +1,10 @@
 class ReceiptService {
-	renderReceipt(cached = true) {
+	renderReceipt(checkout, paymentMethod, notes, cached = true) {
         cached = cached || true
         let render = false
         
-        if (this.state.hasOwnProperty('checkout') &&
-            this.state.checkout.hasOwnProperty('order') &&
-            typeof this.state.checkout.order !== 'undefined') {
+        if (checkout.hasOwnProperty('order') &&
+            typeof checkout.order !== 'undefined') {
             render = true
         }
         
@@ -15,7 +14,7 @@ class ReceiptService {
 
         // Build our receipt, line by line
         // Store info
-        let store = this.state.checkout.store
+        let store = checkout.store
         let datetime = new Date()
 
         let headerLines = []
@@ -28,14 +27,19 @@ class ReceiptService {
         output.push(<div className='receipt-header' style={{'text-align': 'center'}}>{headerLines}</div>)
 
         output.push(<hr />)
-        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{[this.state.paymentMethod, 'Sale'].join(' ')}</h4></span>)
+        output.push(<span style={{'display': 'block'}} className='receipt-line-item'><h4>{[paymentMethod, 'Sale'].join(' ')}</h4></span>)
         output.push(<br />)
         //output.push(<span style={{'display': 'block'}} className='receipt-line-item'>SKU      Description      Total</span>)
 
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.checkout.items // Annoying that this returns an object but below in totals we get an array...
+        items = []
+        if (typeof checkout.items !== 'undefined' && 
+            checkout.items instanceof Array) {
+            items = checkout.items
+        }
+        
         for (let idx = 0; idx < items.length; idx++) {
             let price = parseFloat(items[idx].data['price']).toFixed(2)
             let model = items[idx].data['model']
@@ -67,15 +71,15 @@ class ReceiptService {
         
         output.push(
             <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
-                <span style={{'font-size': '16px', 'font-weight': 'normal'}}>{this.state.notes}</span>
+                <span style={{'font-size': '16px', 'font-weight': 'normal'}}>{notes}</span>
             </span>
         )
         
         output.push(<br />)
 
         // Totals
-        let totals = this.state.checkout.totals || []
-        let total = this.state.checkout.total || null
+        let totals = checkout.totals || []
+        let total = checkout.total || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -108,20 +112,19 @@ class ReceiptService {
         output.push(
             <span style={{'display': 'block', 'clear': 'both'}} className='receipt-line-item'>
                 Payment Method
-                <span style={{'float': 'right', 'font-size': '16px', 'font-weight': 'bold'}}>{this.state.paymentMethod}</span>
+                <span style={{'float': 'right', 'font-size': '16px', 'font-weight': 'bold'}}>{paymentMethod}</span>
             </span>
         )
 
         return output
     }
     
-    renderCachedReceipt(cached = true) {
+    renderCachedReceipt(checkout, paymentMethod, notes, cached = true) {
         cached = cached || true
         let render = false
         
-        if (this.state.hasOwnProperty('prevCheckout') &&
-            this.state.prevCheckout.hasOwnProperty('order') &&
-            typeof this.state.prevCheckout.order !== 'undefined') {
+        if (checkout.hasOwnProperty('order') &&
+            typeof checkout.order !== 'undefined') {
             render = true
         }
         
@@ -131,7 +134,7 @@ class ReceiptService {
 
         // Build our receipt, line by line
         // Store info
-        let store = this.state.prevCheckout.store
+        let store = checkout.store
         let datetime = new Date()
 
         let headerLines = []
@@ -151,7 +154,12 @@ class ReceiptService {
         // We need a max line chars algo so we can make stuff line up
 
         // Items
-        let items = this.state.prevCheckout.items // Annoying that this returns an object but below in totals we get an array...
+        items = []
+        if (typeof checkout.items !== 'undefined' && 
+            checkout.items instanceof Array) {
+            items = checkout.items
+        }
+        
         for (let idx = 0; idx < items.length; idx++) {
             let price = parseFloat(items[idx].data['price']).toFixed(2)
             let model = items[idx].data['model']
@@ -179,8 +187,8 @@ class ReceiptService {
         output.push(<br />)
 
         // Totals
-        let totals = this.state.prevCheckout.totals || []
-        let total = this.state.prevCheckout.total || null
+        let totals = checkout.totals || []
+        let total = checkout.total || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
