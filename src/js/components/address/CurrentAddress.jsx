@@ -62,7 +62,8 @@ export class CurrentAddress extends Component {
         
         this.setInitialState = this.setInitialState.bind(this)
         
-        this.getAddressString = this.getAddressString.bind(this)
+		// Turned getAddressString into a static method
+        //this.getAddressString = this.getAddressString.bind(this)
         this.showAddressModal = this.showAddressModal.bind(this)
         this.hideAddressModal = this.hideAddressModal.bind(this)
         this.toggleAddress = this.toggleAddress.bind(this)
@@ -116,7 +117,7 @@ export class CurrentAddress extends Component {
             state.data['country'] = countryName
         }
         
-        state.addressString = this.getAddressString(state.data)
+        state.addressString = CurrentAddress.getAddressString(state.data)
         
         this.setState(state)
     }
@@ -180,7 +181,7 @@ export class CurrentAddress extends Component {
         }
     }
 
-    getAddressString(data) {
+    static getAddressString(data) {
         data = data || null
         let formatted = ''
 
@@ -554,7 +555,7 @@ export class CurrentAddress extends Component {
         
         if (this.props.modal) {
             this.setState({
-                addressString: this.getAddressString(assign({}, this.props.getForm())),
+                addressString: CurrentAddress.getAddressString(assign({}, this.props.getForm())),
                 data: assign({}, this.state.data, this.props.getForm())
             }, this.hideAddressModal())
         }
@@ -576,7 +577,7 @@ export class CurrentAddress extends Component {
         
         if (this.props.modal) {
             this.setState({
-                addressString: this.getAddressString(assign({}, this.props.getForm())),
+                addressString: CurrentAddress.getAddressString(assign({}, this.props.getForm())),
                 data: assign({}, this.state.data, this.props.getForm())
             }, this.hideAddressModal())
         }
