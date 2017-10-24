@@ -1,4 +1,5 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
+
 import CheckoutConstants from '../constants/CheckoutConstants.jsx';
 
 export default {
