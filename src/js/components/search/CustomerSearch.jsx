@@ -99,8 +99,8 @@ export default class CustomerSearch extends Component {
         console.log('executing onCreateClicked callback')
         if (typeof this.props.onCreate === 'function') {
             console.log('execute handler')
-            var fn = this.props.onCreate
-            fn.call(this, e)
+            let fn = this.props.onCreate
+            fn(e)
         }
         
     }
@@ -116,8 +116,8 @@ export default class CustomerSearch extends Component {
         console.log('executing onSelectClicked callback')
         if (typeof this.props.onSelect === 'function') {
             console.log('execute handler')
-            var fn = this.props.onSelect
-            fn.call(this, e)
+            let fn = this.props.onSelect
+            fn(e)
         }
     }
 

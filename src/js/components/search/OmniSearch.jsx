@@ -19,6 +19,9 @@ import Autocomplete from 'react-autocomplete'
 import OmniSearchActions from '../../actions/OmniSearchActions.jsx'
 import OmniSearchStore from '../../stores/OmniSearchStore.jsx'
 
+//import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
+//import CustomerSearchStore from '../../stores/CustomerSearchStore.jsx'
+
 import CustomerActions from '../../actions/CustomerActions.jsx'
 
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
@@ -168,6 +171,7 @@ export default class OmniSearch extends Component {
 						<FormGroup className='autocomplete-control-group col-xs-8 col-xs-push-2'>
 							<ControlLabel>{this.props.title}</ControlLabel>
 							<Autocomplete
+								open = {this.props.open}
 								name='customer'
 								getItemValue={(item) => {
 									// TODO: Make the result set object configurable
@@ -194,10 +198,7 @@ export default class OmniSearch extends Component {
 								}}
 								renderMenu={(items, value, style) => {
 									return (
-										<div style={{
-											position: 'relative',
-											width: '100%'
-										}}>
+										<div className='search-dropdown-wrapper'>
 											<div style={{
 												position: 'absolute',
 												zIndex: '9999',
