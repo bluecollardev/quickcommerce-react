@@ -105,251 +105,254 @@ import SettingStore from '../stores/SettingStore.jsx'
 import SettingActions from '../actions/SettingActions.jsx'
 
 SettingStore.on('settings-loaded', () => {
-	// Just a comment to reference in debugger
-	if ('undefined' !== typeof document) {
-		ReactDOM.render(
-			<MuiThemeProvider theme={theme}>
-				<Paper>
-					<div className='container'>
-						<Row>
-							<Col xs={12}>
-								<FormGroup>
-									<ControlLabel>Date</ControlLabel>
-									<DateInput />
+	try {
+		// Just a comment to reference in debugger
+		if ('undefined' !== typeof document) {
+			ReactDOM.render(
+				<MuiThemeProvider theme={theme}>
+					<Paper>
+						<div className='container'>
+							<Row>
+								<Col xs={12}>
+									<FormGroup>
+										<ControlLabel>Date</ControlLabel>
+										<DateInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>DateTime</ControlLabel>
+										<DateTimeInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Time</ControlLabel>
+										<TimeInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Numeric</ControlLabel>
+										<NumericInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Telephone</ControlLabel>
+										<TelephoneInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Email</ControlLabel>
+										<EmailInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Postal Code</ControlLabel>
+										<PostalCodeInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Social Insurance Number</ControlLabel>
+										<SinInput />
+									</FormGroup>
+									<FormGroup>
+										<ControlLabel>Social Security Number</ControlLabel>
+										<SsnInput />
+									</FormGroup>
+								</Col>
+							</Row>
+							{/*<Row>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Contact Type</ControlLabel>
+									<ContactTypeDropdown 
+										items = {SettingStore.contactTypes}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>DateTime</ControlLabel>
-									<DateTimeInput />
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Contact Type</ControlLabel>
+									<ContactTypeButton mode='split' 
+										items = {SettingStore.contactTypes}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Time</ControlLabel>
-									<TimeInput />
+							</Row>
+							<Row>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>ID Type</ControlLabel>
+									<IdTypeDropdown
+										items = {SettingStore.idTypes}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Numeric</ControlLabel>
-									<NumericInput />
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>ID Type</ControlLabel>
+									<IdTypeButton mode='split' 
+										items = {SettingStore.idTypes}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Telephone</ControlLabel>
-									<TelephoneInput />
+							</Row>*/}
+							<Row>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Relationship</ControlLabel>
+									<CustomerRelationDropdown />
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Email</ControlLabel>
-									<EmailInput />
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Relationship</ControlLabel>
+									<CustomerRelationButton mode='split' />
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Postal Code</ControlLabel>
-									<PostalCodeInput />
+							</Row>
+							{/*<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Salutation</ControlLabel>
+									<SalutationDropdown 
+										items = {SettingStore.salutations}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Social Insurance Number</ControlLabel>
-									<SinInput />
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Salutation</ControlLabel>
+									<SalutationButton mode='split' 
+										items = {SettingStore.salutations}
+										/>
 								</FormGroup>
-								<FormGroup>
-									<ControlLabel>Social Security Number</ControlLabel>
-									<SsnInput />
+							</Row>*/}
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Suffix</ControlLabel>
+									<SuffixDropdown />
 								</FormGroup>
-							</Col>
-						</Row>
-						<Row>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Contact Type</ControlLabel>
-								<ContactTypeDropdown 
-									items = {SettingStore.contactTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Contact Type</ControlLabel>
-								<ContactTypeButton mode='split' 
-									items = {SettingStore.contactTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>ID Type</ControlLabel>
-								<IdTypeDropdown
-									items = {SettingStore.idTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>ID Type</ControlLabel>
-								<IdTypeButton mode='split' 
-									items = {SettingStore.idTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Relationship</ControlLabel>
-								<CustomerRelationDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Relationship</ControlLabel>
-								<CustomerRelationButton mode='split' />
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Salutation</ControlLabel>
-								<SalutationDropdown 
-									items = {SettingStore.salutations}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Salutation</ControlLabel>
-								<SalutationButton mode='split' 
-									items = {SettingStore.salutations}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Suffix</ControlLabel>
-								<SuffixDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Suffix</ControlLabel>
-								<SuffixButton mode='split' />
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Gender</ControlLabel>
-								<GenderDropdown 
-									items = {SettingStore.genderTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Gender</ControlLabel>
-								<GenderButton mode='split' 
-									items = {SettingStore.genderTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Marital Status</ControlLabel>
-								<MaritalDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Marital Status</ControlLabel>
-								<MaritalButton mode='split' />
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Residence Type</ControlLabel>
-								<ResidenceTypeDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Residence Type</ControlLabel>
-								<ResidenceTypeButton mode='split' />
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Frequency</ControlLabel>
-								<FrequencyDropdown 
-									items = {SettingStore.paymentFrequencies}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Frequency</ControlLabel>
-								<FrequencyButton mode='split' 
-									items = {SettingStore.paymentFrequencies}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Income Type</ControlLabel>
-								<IncomeTypeDropdown 
-									items = {SettingStore.incomeTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Income Type</ControlLabel>
-								<IncomeTypeButton mode='split' 
-									items = {SettingStore.incomeTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Employment Type</ControlLabel>
-								<EmploymentTypeDropdown 
-									items = {SettingStore.employmentTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Employment Type</ControlLabel>
-								<EmploymentTypeButton mode='split' 
-									items = {SettingStore.employmentTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Asset Type</ControlLabel>
-								<AssetTypeDropdown 
-									items = {SettingStore.assetLiabilityTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Asset Type</ControlLabel>
-								<AssetTypeButton mode='split' 
-									items = {SettingStore.assetLiabilityTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Liability Type</ControlLabel>
-								<LiabilityTypeDropdown 
-									items = {SettingStore.assetLiabilityTypes}
-									/>
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Liability Type</ControlLabel>
-								<LiabilityTypeButton mode='split' 
-									items = {SettingStore.assetLiabilityTypes}
-									/>
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Street Type</ControlLabel>
-								<StreetTypeDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Street Type</ControlLabel>
-								<StreetTypeButton mode='split' />
-							</FormGroup>
-						</Row>
-						<Row>	
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Street Direction</ControlLabel>
-								<StreetDirDropdown />
-							</FormGroup>
-							<FormGroup className='col-sm-6'>
-								<ControlLabel>Street Direction</ControlLabel>
-								<StreetDirButton mode='split' />
-							</FormGroup>
-						</Row>
-					</div>
-				</Paper>
-			</MuiThemeProvider>,
-			document.getElementById('main')
-		)
-	} else {
-		print(renderToString(
-			<MuiThemeProvider theme={theme}>
-				<MainComponent />
-			</MuiThemeProvider>
-		))
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Suffix</ControlLabel>
+									<SuffixButton mode='split' />
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Gender</ControlLabel>
+									<GenderDropdown 
+										items = {SettingStore.genderTypes}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Gender</ControlLabel>
+									<GenderButton mode='split' 
+										items = {SettingStore.genderTypes}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Marital Status</ControlLabel>
+									<MaritalDropdown />
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Marital Status</ControlLabel>
+									<MaritalButton mode='split' />
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Residence Type</ControlLabel>
+									<ResidenceTypeDropdown />
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Residence Type</ControlLabel>
+									<ResidenceTypeButton mode='split' />
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Frequency</ControlLabel>
+									<FrequencyDropdown 
+										items = {SettingStore.paymentFrequencies}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Frequency</ControlLabel>
+									<FrequencyButton mode='split' 
+										items = {SettingStore.paymentFrequencies}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Income Type</ControlLabel>
+									<IncomeTypeDropdown 
+										items = {SettingStore.incomeTypes}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Income Type</ControlLabel>
+									<IncomeTypeButton mode='split' 
+										items = {SettingStore.incomeTypes}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Employment Type</ControlLabel>
+									<EmploymentTypeDropdown 
+										items = {SettingStore.employmentTypes}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Employment Type</ControlLabel>
+									<EmploymentTypeButton mode='split' 
+										items = {SettingStore.employmentTypes}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Asset Type</ControlLabel>
+									<AssetTypeDropdown 
+										items = {SettingStore.assetLiabilityTypes}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Asset Type</ControlLabel>
+									<AssetTypeButton mode='split' 
+										items = {SettingStore.assetLiabilityTypes}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Liability Type</ControlLabel>
+									<LiabilityTypeDropdown 
+										items = {SettingStore.assetLiabilityTypes}
+										/>
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Liability Type</ControlLabel>
+									<LiabilityTypeButton mode='split' 
+										items = {SettingStore.assetLiabilityTypes}
+										/>
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Street Type</ControlLabel>
+									<StreetTypeDropdown />
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Street Type</ControlLabel>
+									<StreetTypeButton mode='split' />
+								</FormGroup>
+							</Row>
+							<Row>	
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Street Direction</ControlLabel>
+									<StreetDirDropdown />
+								</FormGroup>
+								<FormGroup className='col-sm-6'>
+									<ControlLabel>Street Direction</ControlLabel>
+									<StreetDirButton mode='split' />
+								</FormGroup>
+							</Row>
+						</div>
+					</Paper>
+				</MuiThemeProvider>,
+				document.getElementById('main')
+			)
+		} else {
+			print(renderToString(
+				<MuiThemeProvider theme={theme}>
+					<MainComponent />
+				</MuiThemeProvider>
+			))
+		}
+	} catch (err) {
+		console.log(JSON.stringify(err))
 	}
-
 })
 
 SettingActions.fetchSettings()
