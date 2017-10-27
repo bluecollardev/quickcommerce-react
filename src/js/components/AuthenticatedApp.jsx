@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
-import LoginStore from '../stores/LoginStore.jsx'
-import AuthService from '../services/AuthService.jsx'
-
-export default class AuthenticatedApp extends Component {
-        constructor(props) {
+@inject(deps => ({
+    authService: deps.authService,
+    loginStore: deps.loginStore
+}))
+@observer
+class AuthenticatedApp extends Component {
+    constructor(props) {
         super(props)
 
         this.state = this.getLoginState()
@@ -12,13 +15,13 @@ export default class AuthenticatedApp extends Component {
 
     getLoginState() {
         return {
-            loggedIn: LoginStore.isLoggedIn()
+            loggedIn: this.props.loginStore.isLoggedIn()
         }
     }
 
     componentDidMount() {
         this.changeListener = this.onChange.bind(this)
-        LoginStore.addChangeListener(this.changeListener)
+        this.props.loginStore.addChangeListener(this.changeListener)
     }
 
     onChange() {
@@ -26,7 +29,7 @@ export default class AuthenticatedApp extends Component {
     }
 
     componentWillUnmount() {
-        LoginStore.removeChangeListener(this.changeListener)
+        this.props.loginStore.removeChangeListener(this.changeListener)
     }
 
     render() {
@@ -45,7 +48,7 @@ export default class AuthenticatedApp extends Component {
 
     logout(e) {
         e.preventDefault()
-        AuthService.logout()
+        this.props.authService.logout()
     }
 
     get headerItems() {
@@ -60,3 +63,5 @@ export default class AuthenticatedApp extends Component {
         }
     }
 }
+
+export default AuthenticatedApp

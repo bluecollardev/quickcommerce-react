@@ -1,15 +1,18 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
-import LoginStore from '../stores/LoginStore.jsx'
-import UserStore from '../stores/UserStore.jsx'
-
-// TODO: Split out customers, add logic to another HoC
 export default (ComposedComponent) => {
-    return class AuthenticatedComponent extends Component {
+    @inject(deps => ({
+        authService: deps.authService,
+        loginStore: deps.loginStore,
+        userStore: deps.userStore
+    }))
+    @observer
+    class AuthenticatedComponent extends Component {
         static willTransitionTo(transition) {
-            if (!LoginStore.isLoggedIn()) {
+            if (!this.props.loginStore.isLoggedIn()) {
                 //transition.redirect('/login', {}, {'nextPath' : transition.path})
             }
         }
@@ -19,27 +22,28 @@ export default (ComposedComponent) => {
             
             this.state = assign({},
                 this.getLoginState(),
-                this.getUserState())
+                this.getUserState()
+            )
         }
 
         getLoginState() {
             return {
-                loggedIn: LoginStore.isLoggedIn(),
-                user: LoginStore.user,
-                userToken: LoginStore.userToken
+                loggedIn: this.props.loginStore.isLoggedIn(),
+                userToken: this.props.loginStore.userToken,
+                user: this.props.loginStore.user
             }
         }
         
         getUserState() {
             return {
-                userToken: LoginStore.userToken,
-                loggedIn: LoginStore.isLoggedIn(),
-                user: UserStore.user
+                loggedIn: this.props.loginStore.isLoggedIn(),
+                userToken: this.props.loginStore.userToken,
+                user: this.props.userStore.user
             }
         }
         
         onChange() {
-			this.setState(
+            this.setState(
                 assign({},
                     this.getLoginState(),
                     this.getUserState())
@@ -48,21 +52,21 @@ export default (ComposedComponent) => {
 
         componentDidMount() {
             this.changeListener = this.onChange.bind(this)
-            LoginStore.addChangeListener(this.changeListener)
-            UserStore.addChangeListener(this.changeListener)
+            this.props.loginStore.addChangeListener(this.changeListener)
+            this.props.userStore.addChangeListener(this.changeListener)
         }
         
         componentWillUnmount() {
             if (typeof this.changeListener === 'function') {
-                LoginStore.removeChangeListener(this.changeListener)
-                UserStore.removeChangeListener(this.changeListener)
+                this.props.loginStore.removeChangeListener(this.changeListener)
+                this.props.userStore.removeChangeListener(this.changeListener)
                 
                 delete this.changeListener
             }
         }
 
         render() {			
-			return (
+            return (
                 <ComposedComponent
                     {...this.props}
                     user = {this.state.user}
@@ -71,4 +75,6 @@ export default (ComposedComponent) => {
             )
         }
     }
+    
+    return AuthenticatedComponent
 }

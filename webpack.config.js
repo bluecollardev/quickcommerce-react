@@ -41,6 +41,7 @@ module.exports = [{
                          'es2015'
                     ],
                     plugins: [
+                        'transform-decorators-legacy',
                         'transform-class-properties'
                     ]
                 }
