@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Col, Row, Modal } from 'react-bootstrap'
 //import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -19,17 +20,8 @@ import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 import CustomerFilter from './filter/CustomerFilter.jsx'
 
-import LoginStore from '../stores/LoginStore.jsx'
-import UserStore from '../stores/UserStore.jsx'
-
 import CustomerSearchActions from '../actions/CustomerSearchActions.jsx'
-import CustomerSearchStore from '../stores/CustomerSearchStore.jsx'
-
 import CustomerListActions from '../actions/CustomerListActions.jsx'
-import CustomerListStore from '../stores/CustomerListStore.jsx'
-
-import CustomerStore from '../stores/CustomerStore.jsx'
-import CheckoutStore from '../stores/CheckoutStore.jsx'
 
 //import { withStyles } from 'material-ui/styles'
 
@@ -245,9 +237,9 @@ class GridDetailContainer extends Component {
 		const { lowPriorityTasks, normalPriorityTasks, highPriorityTasks, value } = this.state
 		const { data, classes } = this.props
 		console.log('are we rendering the order info?')
-		console.log(lowPriorityTasks)
-		console.log(normalPriorityTasks)
-		console.log(highPriorityTasks)
+		//console.log(lowPriorityTasks)
+		//console.log(normalPriorityTasks)
+		//console.log(highPriorityTasks)
 		return (
 		  <div>
 			<Paper>
@@ -278,7 +270,20 @@ class GridDetailContainer extends Component {
 //const GridDetailContainer = withStyles(styles, { name: 'ThemingDemo' })(GridDetailContainerBase)
 //const GridDetailContainer = (GridDetailContainerBase)
 
-export default AuthenticatedComponent(class CustomerListComponent extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService,
+    checkoutService: deps.checkoutService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore,
+    customerSearchStore: deps.customerSearchStore,
+    customerListStore: deps.customerListStore,
+    checkoutStore: deps.checkoutStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class CustomerListComponent extends Component {
     constructor(props) {
         super(props)
         
@@ -306,7 +311,7 @@ export default AuthenticatedComponent(class CustomerListComponent extends Compon
 				{ name: orderFieldNames.DATE_CREATED, title: 'Created' },
 				{ name: 'lenders', title: 'Lenders' }
 			],
-			//rows: CustomerListStore.getItems(), //generateRows({ length: 22 }),
+			//rows: this.props.customerListStore.getItems(), //generateRows({ length: 22 }),
 			customerRows: [],
 			expandedCustomerRows: [],
 			expandedOrderRows: [],
@@ -515,56 +520,56 @@ export default AuthenticatedComponent(class CustomerListComponent extends Compon
     
     getLoginState() {
         return {
-            loggedIn: LoginStore.isLoggedIn(),
-            user: LoginStore.user,
-            userToken: LoginStore.userToken
+            loggedIn: this.props.loginStore.isLoggedIn(),
+            user: this.props.loginStore.user,
+            userToken: this.props.loginStore.userToken
         }
     }
     
     getUserState() {
         return {
-            loggedIn: LoginStore.isLoggedIn(),
-            user: UserStore.user,
-            billingAddress: UserStore.billingAddress,
-            shippingAddress: UserStore.shippingAddress,
-            userToken: LoginStore.userToken
+            loggedIn: this.props.loginStore.isLoggedIn(),
+            user: this.props.userStore.user,
+            billingAddress: this.props.userStore.billingAddress,
+            shippingAddress: this.props.userStore.shippingAddress,
+            userToken: this.props.loginStore.userToken
         }
     }
     
     getCustomerState() {
         return {
-            loggedIn: LoginStore.isLoggedIn(),
-            customer: CustomerStore.customer,
-            billingAddress: CustomerStore.billingAddress,
-            billingAddressString: CustomerStore.billingAddressString,
-            shippingAddress: CustomerStore.shippingAddress,
-            shippingAddressString: CustomerStore.shippingAddressString,
-            customerToken: CustomerStore.customerToken
+            loggedIn: this.props.loginStore.isLoggedIn(),
+            customer: this.props.customerStore.customer,
+            billingAddress: this.props.customerStore.billingAddress,
+            billingAddressString: this.props.customerStore.billingAddressString,
+            shippingAddress: this.props.customerStore.shippingAddress,
+            shippingAddressString: this.props.customerStore.shippingAddressString,
+            customerToken: this.props.customerStore.customerToken
         }
     }
 
     componentDidMount() {
         this.changeListener = this.onChange.bind(this)
-        LoginStore.addChangeListener(this.changeListener)
-        UserStore.addChangeListener(this.changeListener)
-        CustomerStore.addChangeListener(this.changeListener)
-        CustomerSearchStore.addChangeListener(this.changeListener)
+        this.props.loginStore.addChangeListener(this.changeListener)
+        this.props.userStore.addChangeListener(this.changeListener)
+        this.props.customerStore.addChangeListener(this.changeListener)
+        this.props.customerSearchStore.addChangeListener(this.changeListener)
 		
 		// Get initial result set
 		CustomerSearchActions.search({ search: '' })
     }
 	
 	componentWillUnmount() {
-        LoginStore.removeChangeListener(this.changeListener)
-        UserStore.removeChangeListener(this.changeListener)
-        CustomerStore.removeChangeListener(this.changeListener)
-		CustomerSearchStore.removeChangeListener(this.changeListener)
+        this.props.loginStore.removeChangeListener(this.changeListener)
+        this.props.userStore.removeChangeListener(this.changeListener)
+        this.props.customerStore.removeChangeListener(this.changeListener)
+		this.props.customerSearchStore.removeChangeListener(this.changeListener)
     }
 
     onChange() {
 		// CustomerListComponent onChange handler
 		let state = assign({}, this.state, { 
-			customerRows: CustomerSearchStore.getItems() || []
+			customerRows: this.props.customerSearchStore.getItems() || []
 		})
 		
         this.setState(state)
@@ -598,7 +603,7 @@ export default AuthenticatedComponent(class CustomerListComponent extends Compon
 					style = {{ backgroundColor: '#0071BC' }}>
                     <OmniSearch
                         title = 'Search Customers'
-                        customer = {CheckoutStore.customer}
+                        customer = {this.props.checkoutStore.customer}
                         onCreate = {this.onProfileCreate}
                         onSelect = {this.onProfileSelect}
                         />
@@ -772,4 +777,7 @@ export default AuthenticatedComponent(class CustomerListComponent extends Compon
             </div>
         )
     }
-})
+}
+
+export default AuthenticatedComponent(CustomerListComponent)
+export { CustomerListComponent }

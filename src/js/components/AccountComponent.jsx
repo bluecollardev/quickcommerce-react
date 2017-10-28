@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -15,13 +16,14 @@ import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
-import LoginStore from '../stores/LoginStore.jsx'
-import UserStore from '../stores/UserStore.jsx'
-import CustomerStore from '../stores/CustomerStore.jsx'
-
-import Auth from '../services/AuthService.jsx'
-
-export default class AccountComponent extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore
+}))
+@observer
+class AccountComponent extends Component {
     constructor(props) {
         super(props)
         
@@ -53,7 +55,7 @@ export default class AccountComponent extends Component {
     }
 	
 	doLogin(formData, onSuccess, onError) {		
-		Auth.login(
+		this.props.authService.login(
 			formData['account'], 
 			formData['password'], 
 			onSuccess,
@@ -65,7 +67,7 @@ export default class AccountComponent extends Component {
 	
 	doLogout() {
 		try {
-            Auth.logout()
+            this.props.authService.logout()
         } catch (err) {
             console.log('Error logging out', err)
         }
@@ -83,7 +85,7 @@ export default class AccountComponent extends Component {
     }
     
     onCreateSuccess(response) {
-        /*Auth.fetchAccount(data => {
+        /*this.props.authService.fetchAccount(data => {
             LoginActions.loginUser(response.data)
             UserActions.setUser(response.data)
             CustomerService.setCustomer(response.data)
@@ -235,3 +237,5 @@ export default class AccountComponent extends Component {
         )
     }
 }
+
+export default AccountComponent

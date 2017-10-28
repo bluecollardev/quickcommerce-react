@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -9,21 +10,20 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import Autocomplete from 'react-autocomplete'
 
-import CustomerService from '../../services/CustomerService.jsx'
 import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CustomerListStore from '../../stores/CustomerListStore.jsx'
-
 import CheckoutActions from '../../actions/CheckoutActions.jsx'
-import CheckoutStore from '../../stores/CheckoutStore.jsx'
 
-// TODO: Remove this from global scope, just for ease of testing
-window.CustomerListStore = CustomerListStore
-window.CustomerListActions = CustomerListActions
-window.CustomerActions = CustomerActions
-//window.CheckoutStore = CheckoutStore // Already exposed somewhere else
-
+@inject(deps => ({
+    customerService: deps.customerService,
+    customerStore: deps.customerStore,
+    customerSearchStore: deps.customerSearchStore,
+    customerListStore: deps.customerListStore,
+    checkoutService: deps.checkoutService,
+    checkoutStore: deps.checkoutStore,
+    settingStore: deps.settingStore
+}))
+@observer
 export default class CustomerPicker extends Component {
     constructor(props) {
         super(props)
@@ -51,7 +51,7 @@ export default class CustomerPicker extends Component {
         }
 
         // Use core event from BaseStore
-        CustomerListStore.on('CHANGE', this.updateCustomerList)
+        this.props.customerListStore.on('CHANGE', this.updateCustomerList)
 
         CustomerListActions.loadCustomers()
     }
@@ -63,8 +63,8 @@ export default class CustomerPicker extends Component {
 	}
 
 	componentWillUnmount() {
-		if (CustomerListStore.listenerCount('CHANGE') > 0) {
-			CustomerListStore.removeListener('CHANGE', this.updateCustomerList)
+		if (this.props.customerListStore.listenerCount('CHANGE') > 0) {
+			this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
         }
 	}
     
@@ -113,7 +113,7 @@ export default class CustomerPicker extends Component {
     }
 
     getCustomerList() {
-        let customers = CustomerListStore.getItems()
+        let customers = this.props.customerListStore.getItems()
         if (typeof customers === 'undefined' || customers instanceof Array === false || customers.length === 0) {
             // Autocomplete will completely eff up if no input array of items is provided
             customers = [{
@@ -128,7 +128,7 @@ export default class CustomerPicker extends Component {
     }
 
     selectCashier() {
-        let customers = CustomerListStore.getItems()
+        let customers = this.props.customerListStore.getItems()
         
         let cashCustomerName = SettingStore.posSettings['cash_customer']
         let cashCustomerId = parseInt(SettingStore.posSettings['cash_customer_id'])
@@ -186,7 +186,7 @@ export default class CustomerPicker extends Component {
                                     if (matches.length === 1) {
                                         // Don't auto-select if there's more than one match
                                         // Require a selection from the dropdown
-                                        CustomerService.setCustomer(matches[0])
+                                        this.props.customerService.setCustomer(matches[0])
                                         
                                         this.onSubmit(matches[0])
                                     }
@@ -194,7 +194,7 @@ export default class CustomerPicker extends Component {
                             }}
                             onSelect={(value, item) => {
                                 this.setState(assign({}, this.state, { customerName: value, selectedCustomer: item }))
-                                CustomerService.setCustomer(item)
+                                this.props.customerService.setCustomer(item)
                                 
                                 this.onSubmit(item)
                             }}

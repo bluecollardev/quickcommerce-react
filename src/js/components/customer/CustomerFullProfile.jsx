@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -8,12 +9,9 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
-import CustomerAddressService from '../../services/CustomerAddressService.jsx'
 
 import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 //import CustomerContact from '../customer/CustomerContact.jsx'
@@ -23,7 +21,14 @@ import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 
-export default class CustomerFullProfile extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService,
+    customerAddressService: deps.customerAddressService,
+    settingStore: deps.settingStore
+}))
+@observer
+class CustomerFullProfile extends Component {
 	// TODO: Redo default props, there are a couple items like this flagged in my comments
 	static defaultProps = {
 		pk: 'customer_id',
@@ -185,7 +190,7 @@ export default class CustomerFullProfile extends Component {
         e.stopPropagation()
         
         this.triggerAction((formData) => {
-            CustomerService.post(formData.profile, this.onCreateSuccess, this.onError)
+            this.props.customerService.post(formData.profile, this.onCreateSuccess, this.onError)
         })
     }
     
@@ -194,7 +199,7 @@ export default class CustomerFullProfile extends Component {
         e.stopPropagation()
         
         this.triggerAction((formData) => {
-            CustomerService.put(formData.profile, this.onSaveSuccess, this.onError)
+            this.props.customerService.put(formData.profile, this.onSaveSuccess, this.onError)
             
             for (let idx = 0; idx < formData.addresses.length; idx++) {
                 let address = formData.addresses[idx]
@@ -209,9 +214,9 @@ export default class CustomerFullProfile extends Component {
                 })
                 
                 if (addressId === null) {
-                    CustomerAddressService.post(address)
+                    this.props.customerAddressService.post(address)
                 } else if (!isNaN(addressId)) {
-                    CustomerAddressService.put(address)
+                    this.props.customerAddressService.put(address)
                 }
             }
         })
@@ -693,3 +698,5 @@ export default class CustomerFullProfile extends Component {
         }
     }
 }
+
+export default CustomerFullProfile

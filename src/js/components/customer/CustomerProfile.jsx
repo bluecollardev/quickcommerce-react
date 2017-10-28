@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -13,15 +14,18 @@ import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 import CustomerInfo from '../customer/CustomerInfo.jsx'
 
-import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
-import CustomerAddressService from '../../services/CustomerAddressService.jsx'
 
-export default class CustomerProfile extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService,
+    customerAddressService: deps.customerAddressService
+}))
+@observer
+class CustomerProfile extends Component {
     static defaultProps = {
 		pk: 'customer_id',
         editAccount: false,
@@ -196,7 +200,7 @@ export default class CustomerProfile extends Component {
         e.stopPropagation()
         
         this.triggerAction((formData) => {
-            CustomerService.post(formData, this.onCreateSuccess, this.onError)
+            this.props.customerService.post(formData, this.onCreateSuccess, this.onError)
         })
     }
     
@@ -207,7 +211,7 @@ export default class CustomerProfile extends Component {
         // Use this if we're using an endpoint like customer/1/address
         /*this.triggerAction((formData) => {
             // No PUT available in API
-            CustomerService.patch(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.patch(formData, this.onSaveSuccess, this.onError)
             
             for (let idx = 0; idx < formData.addresses.length; idx++) {
                 let address = formData.addresses[idx]
@@ -232,7 +236,7 @@ export default class CustomerProfile extends Component {
         // Use this if we're submitting the address along with the customer
         this.triggerAction((formData) => {
             // No PUT available in API
-            CustomerService.patch(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.patch(formData, this.onSaveSuccess, this.onError)
         })
     }
     
@@ -481,3 +485,5 @@ export default class CustomerProfile extends Component {
         return null
     }
 }
+
+export default CustomerProfile

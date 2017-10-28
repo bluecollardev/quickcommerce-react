@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -8,15 +9,17 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
 
-export default FormComponent(class CustomerFilter extends Component {
-    static defaultProps = {
-    }
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService
+}))
+@observer
+class CustomerFilter extends Component {
+    static defaultProps = {}
     
     constructor(props) {
         super(props)
@@ -43,7 +46,7 @@ export default FormComponent(class CustomerFilter extends Component {
         e.stopPropagation()
     
         this.props.triggerAction((formData) => {
-            CustomerService.post(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.post(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
@@ -54,7 +57,7 @@ export default FormComponent(class CustomerFilter extends Component {
         e.stopPropagation()
         
         this.props.triggerAction((formData) => {
-            CustomerService.put(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.put(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
@@ -133,4 +136,7 @@ export default FormComponent(class CustomerFilter extends Component {
             </div>
         )
     }   
-})
+}
+
+export default FormComponent(CustomerFilter)
+export { CustomerFilter }

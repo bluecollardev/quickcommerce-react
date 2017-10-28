@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -12,10 +13,7 @@ import Autocomplete from 'react-autocomplete'
 
 import FormComponent from '../FormComponent.jsx'
 
-import SettingStore from '../../stores/SettingStore.jsx'
-
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
 
 import fieldNames from '../../forms/CustomerIdentityFields.jsx'
 
@@ -78,6 +76,11 @@ import {
 	SsnInput
 } from '../form/Input.jsx'
 
+@inject(deps => ({
+    customerService: deps.customerService,
+    settingStore: deps.settingStore
+}))
+@observer
 export class CustomerIdentity extends Component {
     static defaultProps = {        
 		title: null,
@@ -160,7 +163,7 @@ export class CustomerIdentity extends Component {
         if (typeof this.props.onCancel === 'function') {
             console.log('execute handler')
             let fn = this.props.onCancel
-            fn.call(this, e)
+            fn(e)
         }
     }
     
@@ -169,7 +172,7 @@ export class CustomerIdentity extends Component {
         if (typeof this.props.onSaveSuccess === 'function') {
             console.log('execute handler')
             let fn = this.props.onSaveSuccess
-            fn.call(this, response)
+            fn(response)
         }
     }
     
@@ -178,7 +181,7 @@ export class CustomerIdentity extends Component {
         if (typeof this.props.onError === 'function') {
             console.log('execute handler')
             let fn = this.props.onError
-            fn.call(this, response)
+            fn(response)
         }
         
         this.setState({
@@ -202,7 +205,7 @@ export class CustomerIdentity extends Component {
 						{/* Only display if purchaser is a company */}
                         <FormGroup style={{ display: 'none' }}>
                             <ControlLabel>Type</ControlLabel>
-                            <IdTypeDropdown items={SettingStore.idTypes} componentClass='select' name={mappings.ID_TYPE} {...this.props.fields(mappings.ID_TYPE, data[mappings.ID_TYPE])} />
+                            <IdTypeDropdown items={this.props.settingStore.idTypes} componentClass='select' name={mappings.ID_TYPE} {...this.props.fields(mappings.ID_TYPE, data[mappings.ID_TYPE])} />
                         </FormGroup>
                         
                         <FormGroup className='col-sm-3 flex-md-25'>
@@ -227,7 +230,7 @@ export class CustomerIdentity extends Component {
                                 getItemValue={(item) => {
                                     return item.value
                                 }}
-                                items={SettingStore.zones}
+                                items={this.props.settingStore.zones}
                                 renderItem={(item, isHighlighted) => {
                                     return (
                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -301,7 +304,7 @@ export class CustomerIdentity extends Component {
                                 getItemValue={(item) => {
                                     return item.value
                                 }}
-                                items={SettingStore.countries}
+                                items={this.props.settingStore.countries}
                                 renderItem={(item, isHighlighted) => {
                                     return (
                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -363,7 +366,7 @@ export class CustomerIdentity extends Component {
                                         })
                                     }))
                                     
-                                    SettingStore.parseZones(item.id)
+                                    this.props.settingStore.parseZones(item.id)
                                 }}
                                 inputProps={
                                     assign(this.props.fields(mappings.COUNTRY, data[mappings.COUNTRY]), { className: 'form-control'})

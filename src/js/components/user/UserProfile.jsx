@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -6,14 +7,16 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import CustomerInfo from '../customer/CustomerInfo.jsx'
 
-import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
-export default AuthenticatedComponent(class UserProfile extends Component {
+@inject(deps => ({
+    authService: deps.authService
+}))
+@observer
+class UserProfile extends Component {
     // TODO: Invalid default props here...
 	static defaultProps = {
 		pk: 'customer_id',
@@ -92,4 +95,7 @@ export default AuthenticatedComponent(class UserProfile extends Component {
             </Col>
         )
     }
-})
+}
+
+export default AuthenticatedComponent(UserProfile)
+export { UserProfile }

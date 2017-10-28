@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -9,8 +10,6 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import { Jumbotron } from 'react-bootstrap'
 
-import Auth from '../services/AuthService.jsx'
-
 // Higher order component adds Auth functions
 import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 
@@ -18,11 +17,13 @@ import SignInForm from './account/SignInForm.jsx'
 //import CreditCardForm from './payment/CreditCardForm.jsx'
 import CustomerProfile from './customer/CustomerFullProfile.jsx'
 
-import LoginStore from '../stores/LoginStore.jsx'
-import UserStore from '../stores/UserStore.jsx'
-import CustomerStore from '../stores/CustomerStore.jsx'
-
-export default AuthenticatedComponent(class CustomerComponent extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    loginStore: deps.loginStore,
+    customerStore: deps.customerStore
+    userStore: deps.userStore
+}))
+class CustomerComponent extends Component {
     constructor(props) {
         super(props)
         
@@ -101,4 +102,7 @@ export default AuthenticatedComponent(class CustomerComponent extends Component 
             </div>
         )
     }
-})
+}
+
+export default AuthenticatedComponent(CustomerComponent)
+export { CustomerComponent }

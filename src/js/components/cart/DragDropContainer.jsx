@@ -1,26 +1,33 @@
-import React               from 'react'
-//import { DragDropContext } from 'react-dnd'
-//import HTML5Backend        from 'react-dnd-html5-backend'
-import Griddle             from 'griddle-react'
-
-import CartDragItem        from './CartDragItem.jsx'
-import CartDropTarget      from './CartDropTarget.jsx'
-import Cart                from '../../modules/Cart.jsx'
-import BootstrapPager      from '../common/GriddleBootstrapPager.jsx'
+import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
 
 import StringHelper from '../../helpers/String.js'
 
-import CheckoutStore       from '../../stores/CheckoutStore.jsx' // Will need for totals and stuff
+import Cart from '../../modules/Cart.jsx'
 
-const DragDropContainer = React.createClass({
+@inject(deps => ({
+    checkoutStore: deps.checkoutStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class DragDropContainer extends Component {
+    constructor(props) {
+        super(props)
+        
+        this.doUpdate = this.doUpdate.bind(this)
+        this.renderTotals = this.renderTotals.bind(this)
+    }
+    
     componentDidMount() {
-        CheckoutStore.on('set-order', this.doUpdate)
-    },
+        this.props.checkoutStore.on('set-order', this.doUpdate)
+    }
+    
     componentWillUnmount() {
-        CheckoutStore.removeListener('set-order', this.doUpdate)
-    },
+        this.props.checkoutStore.removeListener('set-order', this.doUpdate)
+    }
+    
     doUpdate() {
         this.forceUpdate()
         
@@ -29,13 +36,14 @@ const DragDropContainer = React.createClass({
         } catch (err) {
             console.log(err)
         }*/
-    },
+    }
+    
     renderTotals() {
         let output = []
 
         // Totals
-        let totals = CheckoutStore.getTotals() || []
-        let total = CheckoutStore.getTotal() || null
+        let totals = this.props.checkoutStore.getTotals() || []
+        let total = this.props.checkoutStore.getTotal() || null
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
@@ -106,7 +114,8 @@ const DragDropContainer = React.createClass({
         }
 
         return output
-    },
+    }
+    
     render() {
         return (
             <table className={this.props.tableClassName}>
@@ -130,6 +139,6 @@ const DragDropContainer = React.createClass({
             </table>
         )
     }
-})
+}
 
-module.exports = DragDropContainer
+export default DragDropContainer

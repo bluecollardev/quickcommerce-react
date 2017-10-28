@@ -1,7 +1,8 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -15,14 +16,16 @@ import { DateInput } from '../form/Input.jsx'
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
-import CustomerAddressService from '../../services/CustomerAddressService.jsx'
-
-import SettingStore from '../../stores/SettingStore.jsx'
 
 import fieldNames from '../../forms/AddressFields.jsx'
 
-export class CurrentAddress extends Component {
+@inject(deps => ({
+    customerService: deps.customerService, // Not used, just in case!
+    customerAddressService: deps.customerAddressService,
+    settingStore: deps.settingStore
+}))
+@observer
+class CurrentAddress extends Component {
     // TODO: Map default props
     static defaultProps = {
         // Is the component embedded in another component or form?
@@ -104,7 +107,7 @@ export class CurrentAddress extends Component {
         
         if ((country !== null && typeof country !== 'string') &&
             (zone !== null && typeof zone !== 'string')) {
-            let zones = SettingStore.getZones(country.country_id)
+            let zones = this.props.settingStore.getZones(country.country_id)
             
             zoneName = zones.filter(obj => Number(obj.id) === Number(zone.zone_id))[0].value
             state.data['zone_id'] = zone.zone_id
@@ -112,7 +115,7 @@ export class CurrentAddress extends Component {
         }
         
         if (country !== null && typeof country !== 'string') {
-            countryName = SettingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
+            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
             state.data['country_id'] = country.country_id
             state.data['country'] = countryName
         }
@@ -123,11 +126,11 @@ export class CurrentAddress extends Component {
     }
     
     componentWillMount() {
-        let countries = SettingStore.getCountries() || []
-        let zones = SettingStore.zones || []
+        let countries = this.props.settingStore.getCountries() || []
+        let zones = this.props.settingStore.zones || []
         
         if (!Object.keys(countries).length > 0 && !Object.keys(zones).length > 0) {
-            SettingStore.on('settings-loaded', () => {
+            this.props.settingStore.on('settings-loaded', () => {
                 this.setInitialState(this.props)
             })
         } else {
@@ -135,11 +138,11 @@ export class CurrentAddress extends Component {
         }
     }
     componentWillReceiveProps(newProps) {
-        let countries = SettingStore.getCountries() || []
-        let zones = SettingStore.zones || []
+        let countries = this.props.settingStore.getCountries() || []
+        let zones = this.props.settingStore.zones || []
         
         if (!Object.keys(countries).length > 0 && !Object.keys(zones).length > 0) {
-            SettingStore.on('settings-loaded', () => {
+            this.props.settingStore.on('settings-loaded', () => {
                 this.setInitialState(newProps)
             })
         } else {
@@ -549,7 +552,7 @@ export class CurrentAddress extends Component {
         
         if (!this.props.isSubForm) {
             this.props.triggerAction((formData) => {
-                CustomerAddressService.post(formData, this.onSaveSuccess, this.onError)
+                this.props.customerAddressService.post(formData, this.onSaveSuccess, this.onError)
             })            
         }
         
@@ -567,7 +570,7 @@ export class CurrentAddress extends Component {
         
         if (!this.props.isSubForm) {
             this.props.triggerAction((formData) => {
-                CustomerAddressService.put(formData, this.onSaveSuccess, this.onError)
+                this.props.customerAddressService.put(formData, this.onSaveSuccess, this.onError)
             })
         } else if (typeof this.props.onUpdate === 'function') {
             console.log('execute CurrentAddress onUpdate handler')
@@ -832,7 +835,7 @@ export class CurrentAddress extends Component {
                                             })
                                         }))
                                         
-                                        SettingStore.parseZones(item.id)
+                                        this.props.settingStore.parseZones(item.id)
                                     }}
                                     inputProps={
                                         assign(this.props.fields('country', data.country), { className: 'form-control'})
@@ -1059,7 +1062,7 @@ export class CurrentAddress extends Component {
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
-                                                items={SettingStore.getCountries()}
+                                                items={this.props.settingStore.getCountries()}
                                                 renderItem={(item, isHighlighted) => {
                                                     return (
                                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -1096,7 +1099,7 @@ export class CurrentAddress extends Component {
                                                         })
                                                     }))
                                                     
-                                                    SettingStore.getZones(item.id)
+                                                    this.props.settingStore.getZones(item.id)
                                                 }}
                                                 inputProps={
                                                     assign(this.props.fields('country', data.country), { className: 'form-control'})
@@ -1111,7 +1114,7 @@ export class CurrentAddress extends Component {
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
-                                                items={SettingStore.getZones(data.country_id)}
+                                                items={this.props.settingStore.getZones(data.country_id)}
                                                 renderItem={(item, isHighlighted) => {
                                                     return (
                                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -1189,3 +1192,4 @@ export class CurrentAddress extends Component {
 }
 
 export default FormComponent(CurrentAddress)
+export { CurrentAddress }

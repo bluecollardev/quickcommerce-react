@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -19,18 +20,19 @@ import Autocomplete from 'react-autocomplete'
 import OmniSearchActions from '../../actions/OmniSearchActions.jsx'
 import OmniSearchStore from '../../stores/OmniSearchStore.jsx'
 
-//import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
-//import CustomerSearchStore from '../../stores/CustomerSearchStore.jsx'
-
 import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CustomerListStore from '../../stores/CustomerListStore.jsx'
-
 import CheckoutActions from '../../actions/CheckoutActions.jsx'
-import CheckoutStore from '../../stores/CheckoutStore.jsx'
 
-export default class OmniSearch extends Component {
+@inject(deps => ({
+    customerStore: deps.customerStore,
+    customerSearchStore: deps.customerSearchStore,
+    customerListStore: deps.customerListStore,
+    checkoutStore: deps.checkoutStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class OmniSearch extends Component {
     constructor(props) {
         super(props)
         
@@ -279,3 +281,5 @@ export default class OmniSearch extends Component {
         )
     }
 }
+
+export default OmniSearch

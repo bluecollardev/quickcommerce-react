@@ -1,6 +1,5 @@
-import axios from 'axios'
-
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -11,10 +10,13 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import Avatar from 'material-ui/Avatar'
 import List, { ListItem, ListItemText } from 'material-ui/List'
 
-import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
-export default AuthenticatedComponent(class AccountMenu extends Component {
+@inject(deps => ({
+    authService: deps.authService
+}))
+@observer
+class ProfileMenu extends Component {
     constructor(props) {
         super(props)
         
@@ -36,7 +38,7 @@ export default AuthenticatedComponent(class AccountMenu extends Component {
         e.stopPropagation()
         
         try {
-            Auth.logout()
+            this.props.authServicelogout()
         } catch (err) {
             console.log('Error logging out', err)
         }
@@ -60,4 +62,7 @@ export default AuthenticatedComponent(class AccountMenu extends Component {
             return null
         }
     }   
-})
+}
+
+export default AuthenticatedComponent(ProfileMenu)
+export { ProfileMenu }

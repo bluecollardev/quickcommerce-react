@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -17,12 +18,14 @@ import FormComponent from './FormComponent.jsx'
 import CurrentAddress from './address/CurrentAddress.jsx'
 
 import SettingActions from '../actions/SettingActions.jsx'
-import SettingStore from '../stores/SettingStore.jsx'
-
 import CustomerListActions from '../actions/CustomerListActions.jsx'
-import CustomerListStore from '../stores/CustomerListStore.jsx'
 
-export default FormComponent(class SettingComponent extends Component {
+@inject(deps => ({
+    customerListStore: deps.customerListStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class SettingComponent extends Component {
 	static defaultProps = {
         customers: [{id: null, value: ''}],
         visible: true,
@@ -64,9 +67,9 @@ export default FormComponent(class SettingComponent extends Component {
         this.openSettings = this.openSettings.bind(this)
         this.closeSettings = this.closeSettings.bind(this)
         
-        // Merge defaults from SettingStore into our component state
+        // Merge defaults from this.props.settingStore into our component state
         this.state = assign({}, SettingComponent.defaultProps, props, {
-            data: SettingStore.posSettings
+            data: this.props.settingStore.posSettings
         })
     }
     
@@ -94,7 +97,7 @@ export default FormComponent(class SettingComponent extends Component {
         
         if ((country !== null && typeof country !== 'string') &&
             (zone !== null && typeof zone !== 'string')) {
-            let zones = SettingStore.getZones(country.country_id)
+            let zones = this.props.settingStore.getZones(country.country_id)
             
             zoneName = zones.filter(obj => Number(obj.id) === Number(zone.zone_id))[0].value
             state.data['zone_id'] = zone.zone_id
@@ -102,7 +105,7 @@ export default FormComponent(class SettingComponent extends Component {
         }
         
         if (country !== null && typeof country !== 'string') {
-            countryName = SettingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
+            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
             state.data['country_id'] = country.country_id
             state.data['country'] = countryName
         }
@@ -134,7 +137,7 @@ export default FormComponent(class SettingComponent extends Component {
         SettingActions.fetchStores()
         
         // Use core event from BaseStore
-        CustomerListStore.on('CHANGE', this.updateCustomerList)
+        this.props.customerListStore.on('CHANGE', this.updateCustomerList)
 
         CustomerListActions.loadCustomers()
         
@@ -145,8 +148,8 @@ export default FormComponent(class SettingComponent extends Component {
 	componentWillUnmount() {
 		window.removeEventListener('hashchange', this.onHashChange)
         
-        if (CustomerListStore.listenerCount('CHANGE') > 0) {
-			CustomerListStore.removeListener('CHANGE', this.updateCustomerList)
+        if (this.props.customerListStore.listenerCount('CHANGE') > 0) {
+			this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
         }
 	}
     
@@ -168,7 +171,7 @@ export default FormComponent(class SettingComponent extends Component {
 	}
 	
     getCustomerList() {
-        let customers = CustomerListStore.getItems()
+        let customers = this.props.customerListStore.getItems()
         if (typeof customers === 'undefined' || customers instanceof Array === false || customers.length === 0) {
             // Autocomplete will completely eff up if no input array of items is provided
             customers = [{
@@ -328,7 +331,7 @@ export default FormComponent(class SettingComponent extends Component {
         let address = (typeof this.address !== 'undefined') ? this.address.getForm() : {}
         
         // Use default keys
-        let keys = Object.keys(SettingStore.getSettings().posDefaults.address)
+        let keys = Object.keys(this.props.settingStore.getSettings().posDefaults.address)
         let addressState = {}
         
         for (let idx = 0; idx < keys.length; idx++) {
@@ -434,7 +437,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.stores}
+                                                            items={this.props.settingStore.stores}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -485,7 +488,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.categories}
+                                                            items={this.props.settingStore.categories}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -537,7 +540,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.getCountries()}
+                                                            items={this.props.settingStore.getCountries()}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -573,7 +576,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                                     })
                                                                 }))
                                                                 
-                                                                SettingStore.parseZones(item.id)
+                                                                this.props.settingStore.parseZones(item.id)
                                                             }}
                                                             inputProps={
                                                                 assign(this.props.field('default_country', data.default_country), { className: 'form-control'})
@@ -589,7 +592,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.getZones(data.default_country_id)}
+                                                            items={this.props.settingStore.getZones(data.default_country_id)}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -641,7 +644,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.orderStatuses}
+                                                            items={this.props.settingStore.orderStatuses}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -689,7 +692,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.orderStatuses}
+                                                            items={this.props.settingStore.orderStatuses}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -789,7 +792,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.customerGroups}
+                                                            items={this.props.settingStore.customerGroups}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -885,7 +888,7 @@ export default FormComponent(class SettingComponent extends Component {
                                                             getItemValue={(item) => {
                                                                 return item.value
                                                             }}
-                                                            items={SettingStore.customerGroups}
+                                                            items={this.props.settingStore.customerGroups}
                                                             renderItem={(item, isHighlighted) => {
                                                                 return (
                                                                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -966,4 +969,7 @@ export default FormComponent(class SettingComponent extends Component {
 		// This only works with React 15+
 		return null
 	}
-})
+}
+
+export default FormComponent(SettingComponent)
+export { SettingComponent }

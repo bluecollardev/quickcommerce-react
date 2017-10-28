@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -10,9 +11,13 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import FormComponent from '../FormComponent.jsx'
 
 import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerService from '../../services/CustomerService.jsx'
 
-export class CustomerFullInfo extends Component {
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService
+}))
+@observer
+class CustomerFullInfo extends Component {
     static defaultProps = {        
 		id: null, // WTF this shouldn't be nested in here!
 		address_id: null, // WTF this shouldn't be nested in here!
@@ -51,7 +56,7 @@ export class CustomerFullInfo extends Component {
         e.stopPropagation()
     
         this.props.triggerAction((formData) => {
-            CustomerService.post(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.post(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
@@ -62,7 +67,7 @@ export class CustomerFullInfo extends Component {
         e.stopPropagation()
         
         this.props.triggerAction((formData) => {
-            CustomerService.put(formData, this.onSaveSuccess, this.onError)
+            this.props.customerService.put(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
@@ -232,3 +237,4 @@ export class CustomerFullInfo extends Component {
 }
 
 export default FormComponent(CustomerFullInfo)
+export { CustomerFullInfo }

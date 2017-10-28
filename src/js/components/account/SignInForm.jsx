@@ -1,6 +1,5 @@
-import axios from 'axios'
-
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -8,13 +7,14 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import Auth from '../../services/AuthService.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 import FormComponent from '../FormComponent.jsx'
 
-import CheckoutStore from '../../stores/CheckoutStore.jsx'
-
-export default AuthenticatedComponent(FormComponent(class SignInForm extends Component {
+@inject(deps => ({
+    authService: deps.authService
+}))
+@observer
+class SignInForm extends Component {
     constructor(props) {
         super(props)
 		
@@ -413,4 +413,7 @@ export default AuthenticatedComponent(FormComponent(class SignInForm extends Com
         // TODO: Check auth -- not sure what's best; in the page, embedded in the module?
         //loginWindow.center().open();
     }*/	
-}))
+}
+
+export default AuthenticatedComponent(FormComponent(SignInForm))
+export { SignInForm }

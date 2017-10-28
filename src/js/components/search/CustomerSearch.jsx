@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -16,18 +17,20 @@ import Table, {
 
 import Autocomplete from 'react-autocomplete'
 
-import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
-import CustomerSearchStore from '../../stores/CustomerSearchStore.jsx'
-
 import CustomerActions from '../../actions/CustomerActions.jsx'
-
+import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CustomerListStore from '../../stores/CustomerListStore.jsx'
+import CheckoutActions from '../../actions/CheckoutActions.jsx'\
 
-import CheckoutActions from '../../actions/CheckoutActions.jsx'
-import CheckoutStore from '../../stores/CheckoutStore.jsx'
-
-export default class CustomerSearch extends Component {
+@inject(deps => ({
+    customerStore: deps.customerStore,
+    customerSearchStore: deps.customerSearchStore,
+    customerListStore: deps.customerListStore,
+    checkoutStore: deps.checkoutStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class CustomerSearch extends Component {
     constructor(props) {
         super(props)
         
@@ -69,7 +72,7 @@ export default class CustomerSearch extends Component {
         }
 
         // Use core event from BaseStore
-        CustomerSearchStore.on('CHANGE', this.updateCustomerSearch)
+        this.props.customerSearchStore.on('CHANGE', this.updateCustomerSearch)
     }
 	
 	updateCustomerSearch() {
@@ -79,8 +82,8 @@ export default class CustomerSearch extends Component {
 	}
 	
 	componentWillUnmount() {
-		if (CustomerSearchStore.listenerCount('CHANGE') > 0) {
-			CustomerSearchStore.removeListener('CHANGE', this.updateCustomerSearch)
+		if (this.props.customerSearchStore.listenerCount('CHANGE') > 0) {
+			this.props.customerSearchStore.removeListener('CHANGE', this.updateCustomerSearch)
 		}
 	}
 	
@@ -122,7 +125,7 @@ export default class CustomerSearch extends Component {
     }
 
     getResults() {
-        let results = CustomerSearchStore.getItems()
+        let results = this.props.customerSearchStore.getItems()
         if (typeof results === 'undefined' || results instanceof Array === false || results.length === 0) {
             // Autocomplete will completely eff up if no input array of items is provided
             // TODO: Make the result set object configurable
@@ -148,7 +151,7 @@ export default class CustomerSearch extends Component {
     }
 
     /*selectCashier() {
-        let results = CustomerSearchStore.getItems()
+        let results = this.props.customerSearchStore.getItems()
         if (results[0].firstname === 'Cash' && results[0].lastname === 'Sales') {
             // Set the customer for our component
             this.setState({
@@ -278,3 +281,5 @@ export default class CustomerSearch extends Component {
         )
     }
 }
+
+export default CustomerSearch

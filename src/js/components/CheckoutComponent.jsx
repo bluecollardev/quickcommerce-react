@@ -2,6 +2,7 @@ import assign from 'object-assign'
 import axios from 'axios' // Move me out! Just using in here for temp report processing
 
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
 import BlockUi from 'react-block-ui';
 import 'react-block-ui/style.css';
@@ -47,10 +48,6 @@ window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore
 
 let CartStore = window.CartStore
 
-import CheckoutStore       from '../stores/CheckoutStore.jsx' // Will need for totals and stuff
-import ProductStore       from '../stores/ProductStore.jsx' // Will need for totals and stuff
-import SettingStore        from '../stores/SettingStore.jsx'
-
 import ToggleDisplay from 'react-toggle-display'
 import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
 
@@ -95,16 +92,30 @@ const CASH_IN_DRAWER = [
     ['ONE HUNDRED', 100.00]
 ]
 
-const CheckoutComponent = React.createClass({
-    getInitialState() {
+@inject(deps => ({
+    authService: deps.authService,
+    customerService: deps.customerService,
+    checkoutService: deps.checkoutService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore,
+    checkoutStore: deps.checkoutStore,
+    productStore: deps.productStore,
+    settingStore: deps.settingStore
+}))
+@observer
+class CheckoutComponent extends Component {
+    constructor(props) {
+        super(props)
+        
         // Subscribe to checkout block ui events
-        CheckoutStore.on('block-ui', () => {
+        props.checkoutStore.on('block-ui', () => {
             this.setState({
                 blockUi: true
             })
         })
 
-        CheckoutStore.on('unblock-ui', () => {
+        props.checkoutStore.on('unblock-ui', () => {
             this.setState({
                 blockUi: false
             })
@@ -136,7 +147,7 @@ const CheckoutComponent = React.createClass({
             }
         }
 
-        return {
+        this.state = {
             blockUi: false,
             chooseQuantity: false,
             data: { categories: categoryData, products: productData },
@@ -145,7 +156,7 @@ const CheckoutComponent = React.createClass({
             canSubmit: false,
             createAccount: false,
             editAccount: false,
-            showLogin: (typeof this.props.logged !== 'undefined' && this.props.logged === true) ? true : false,
+            showLogin: (typeof props.logged !== 'undefined' && props.logged === true) ? true : false,
             checkoutMode: 'pos', // [cart|pos]
             step: 'shop', // [shop|cart|checkout|shipping|confirm] Not finalized, subject to change!
             purchase: null,
@@ -154,7 +165,8 @@ const CheckoutComponent = React.createClass({
             cashAmount: 0.00,
             settings: {}
         }
-    },
+    }
+    
     componentDidMount() {
         /*let orderButton = document.getElementById('cart-button')
         console.log('order button')
@@ -191,7 +203,8 @@ const CheckoutComponent = React.createClass({
                 category_id: categoryId
             })
         }
-    },    
+    }
+    
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {   
         let categoryId = null
@@ -205,14 +218,17 @@ const CheckoutComponent = React.createClass({
             })
             }
         }
-    },
+    }
+    
     getSelection() {
         return CartStore.getSelection()
-    },
+    }
+    
     hasItems() {
         let selection = CartStore.getSelection() || null
         return (selection instanceof Array && selection.length > 0)
-    },
+    }
+    
     configureSteps() {
         // An array of step functions
         return [{
@@ -298,7 +314,8 @@ const CheckoutComponent = React.createClass({
             action: (step, data, done) => {
             }
         }]
-    },
+    }
+    
     onComplete() {
         var doCheckout = true,
             product = null,
@@ -351,60 +368,74 @@ const CheckoutComponent = React.createClass({
         if (doCheckout) {
             doCheckout()
         }*/
-    },
+    }
+    
     setStep(step) {
         //this.props.stepper.setStep(this.props.stepper.getIndex(arguments[0]))
 
         this.setState({ step: step })
-    },
+    }
+    
     continueShopping() {
         this.setStep('shop')
         
         window.location.hash = '/category'
-    },
+    }
+    
     refresh() {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
 
         this.setState({ canSubmit : !cart.isEmpty() })
-    },
+    }
+    
     showNewAccountForm() {
         this.hideLoginForm()
         this.setState({ createAccount: true })
-    },
+    }
+    
     hideNewAccountForm() {
         this.showLoginForm()
         this.setState({ createAccount: false })
-    },
+    }
+    
     showEditAccountForm() {
         this.hideLoginForm()
         this.setState({ editAccount: true })
-    },
+    }
+    
     hideEditAccountForm() {
         this.showLoginForm()
         this.setState({ editAccount: false })
-    },
+    }
+    
     showLoginForm() {
         this.setState({ showLogin: true })
-    },
+    }
+    
     hideLoginForm() {
         this.setState({ showLogin: false })
-    },
+    }
+    
     showOrder() {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         this.setState({ purchase: cart.getSelection() })
-    },
+    }
+    
     /*showCartModal() {
         this.setState({ cart: 1 })
-    },
+    }
+    
     hideCartModal() {
         this.setState({ cart: null })
-    },*/
+    }*/
+    
     showChargeModal() {
         this.setState({ charge: 1 })
-    },
+    }
+    
     hideChargeModal() {
         // Create the order
-        CheckoutStore.doCheckout(
+        this.props.checkoutStore.doCheckout(
         (data) => {
             // onSuccess handl
             this.setState({ charge: null })
@@ -416,20 +447,23 @@ const CheckoutComponent = React.createClass({
             this.setState({ charge: null })
             //this.showCompleteModal()
         })
-    },
+    }
+    
     showReceiptModal() {
         // Hide the current modal
         this.hideCompleteModal()
 
         // Trigger receipt display
         this.setState({ receipt: 1 })
-    },
+    }
+    
     hideReceiptModal() {
         // Hide the receipt
         this.setState({ receipt: null })
 
         this.showCompleteModal()
-    },
+    }
+    
     showCompleteModal() {
         // Hide the charge modal, if for any reason it is visible
         this.hideChargeModal()
@@ -441,20 +475,22 @@ const CheckoutComponent = React.createClass({
                     currency: CURRENCY,
                     drawer: CASH_IN_DRAWER
                 },
-                store: SettingStore.getStoreData(),
-                order: CheckoutStore.getOrderDetails(),
+                store: this.props.settingStore.getStoreData(),
+                order: this.props.checkoutStore.getOrderDetails(),
                 items: CartStore.selection, // Should already be available via getOrderDetails? Just a thought....
-                totals: CheckoutStore.getTotals(),
-                total: CheckoutStore.getTotal()
+                totals: this.props.checkoutStore.getTotals(),
+                total: this.props.checkoutStore.getTotal()
             }
         }, () => {
         })
-    },
+    }
+    
     hideCompleteModal() {
         this.setState({
             complete: null
         })
-    },
+    }
+    
     onSaleComplete() {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         cart.clearCart()
@@ -481,7 +517,8 @@ const CheckoutComponent = React.createClass({
         }
         
         window.location.hash = '/category'
-    },
+    }
+    
     reset() {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         cart.emptyCart()
@@ -499,7 +536,8 @@ const CheckoutComponent = React.createClass({
             // Update our component state
             this.setStep(stepId)
         }
-    },
+    }
+    
     categoryClicked(item) {
         let stepId = 'cart'
         let instance = this.stepper.getStepById(stepId)
@@ -522,7 +560,8 @@ const CheckoutComponent = React.createClass({
                 } else clearInterval(scrollInterval)
             }, 15)
         }
-    },
+    }
+    
     itemClicked(item) {
         // Block the UI to prevent double click, which we don't want!
         /*this.setState({
@@ -544,7 +583,8 @@ const CheckoutComponent = React.createClass({
                 window.scrollBy(0, scrollStep)
             } else clearInterval(scrollInterval)
         }, 15)
-    },
+    }
+    
     optionClicked(item) {
         let stepId = 'checkout'
         let instance = this.stepper.getStepById(stepId)
@@ -562,12 +602,14 @@ const CheckoutComponent = React.createClass({
 
         //let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
         //cart.addItem(item.id, 1, item)
-    },
+    }
+    
     itemDropped(item) {
         let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
 
         cart.addItem(item, 1, products[item])
-    },
+    }
+    
     stepClicked(stepProps) {
         // Get the BrowserStepDescriptor instance by stepId (shop|cart|checkout|etc).
         // We can't get it by index because the Step argument for this method is the config prop
@@ -587,7 +629,8 @@ const CheckoutComponent = React.createClass({
                 this.setStep(stepProps.stepId)
             }
         }
-    },
+    }
+    
     getChangeAmounts(price, cash, cid) {
         let change = cash - price
         cid = cid || CASH_IN_DRAWER // Defined at the top
@@ -640,7 +683,8 @@ const CheckoutComponent = React.createClass({
 
         // Here is your change, ma'am.
         return change_arr
-    },
+    }
+    
     getTotal() {
         let total = 0
 
@@ -649,7 +693,8 @@ const CheckoutComponent = React.createClass({
         }
 
         return total
-    },
+    }
+    
     categoryFilterSelected(categoryId, e) {
         categoryId = (!Number.isNaN(parseInt(categoryId))) ? parseInt(categoryId) : null // Ensure conversion
 
@@ -669,7 +714,8 @@ const CheckoutComponent = React.createClass({
             // Update our component state
             this.setStep(stepId)
         }
-    },
+    }
+    
     rowIterator(context, row) {
         if (!context) {
             return {
@@ -681,9 +727,10 @@ const CheckoutComponent = React.createClass({
                 total : Number(context.total) + Number(row.quantity) * price
             }
         }
-    },
+    }
+    
     renderCashOptions() {
-        let total = parseFloat(CheckoutStore.getTotal().value)
+        let total = parseFloat(this.props.checkoutStore.getTotal().value)
         let min = Math.ceil(total/5)*5 // 5 dollars is the lowest bill denomination
         let options = []
 
@@ -702,10 +749,11 @@ const CheckoutComponent = React.createClass({
                 <Button bsStyle='disabled' onClick={this.calculateChange}>Custom</Button>&nbsp;
             </div>
         )
-    },
+    }
+    
     calculateChange(e) {
         console.log(e)
-        let orderTotal = parseFloat(CheckoutStore.getTotal().value)
+        let orderTotal = parseFloat(this.props.checkoutStore.getTotal().value)
         let cashAmount = parseFloat(e.target.getAttribute('data-amount'))
 
         this.setState({
@@ -714,7 +762,8 @@ const CheckoutComponent = React.createClass({
         })
 
         this.showCompleteModal()
-    },
+    }
+    
     renderOptions() {
         let options = []
         let selected = this.props.item.options
@@ -731,7 +780,8 @@ const CheckoutComponent = React.createClass({
                 {options}
             </ul>
         )
-    },
+    }
+    
     renderReceipt() {
         let output = []
 
@@ -804,7 +854,8 @@ const CheckoutComponent = React.createClass({
         }
 
         return output
-    },
+    }
+    
     render() {
         let steps = this.stepper.getSteps() // Stepper extends store, we're good
 
@@ -966,9 +1017,9 @@ const CheckoutComponent = React.createClass({
                                                         
                                                         <Row>
                                                             <CustomerProfile
-                                                                customer = {CheckoutStore.customer}
-                                                                billingAddress = {CheckoutStore.billingAddress}
-                                                                shippingAddress = {CheckoutStore.shippingAddress}
+                                                                customer = {this.props.checkoutStore.customer}
+                                                                billingAddress = {this.props.checkoutStore.billingAddress}
+                                                                shippingAddress = {this.props.checkoutStore.shippingAddress}
                                                                 displayProfile = {true}
                                                                 displayBillingAddress = {true}
                                                                 displayShippingAddress = {true}>
@@ -1148,7 +1199,7 @@ const CheckoutComponent = React.createClass({
                         <Modal.Header>
                             <Modal.Title>
                                 <span style={{ float: 'right' }}>Charge / Split</span>
-                                <span style={{ float: 'none' }} class='total-charge'>${parseFloat(CheckoutStore.getTotal().value).toFixed(2)}</span>
+                                <span style={{ float: 'none' }} class='total-charge'>${parseFloat(this.props.checkoutStore.getTotal().value).toFixed(2)}</span>
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
@@ -1281,6 +1332,7 @@ const CheckoutComponent = React.createClass({
             </div>
         )
     }
-})
+}
 
-module.exports = CheckoutComponent
+export default AuthenticatedComponent(CheckoutComponent)
+export { CheckoutComponent }
