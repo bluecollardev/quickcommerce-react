@@ -18,7 +18,7 @@ class SignInForm extends Component {
     constructor(props) {
         super(props)
 		
-		this.authHandler = this.props.authHandler || Auth
+		this.authHandler = this.props.authHandler || props.authService
         
         this.onSubmit = this.onSubmit.bind(this)
         this.onCreate = this.onCreate.bind(this)
