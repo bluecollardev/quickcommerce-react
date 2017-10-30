@@ -1,5 +1,5 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import LoginConstants from '../constants/LoginConstants.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import LoginConstants from '../constants/LoginConstants.jsx'
 
 export default {
     loginUser: (userToken) => {

@@ -1,4 +1,5 @@
-import UserConstants from '../constants/UserConstants.jsx';
+import UserConstants from '../constants/UserConstants.jsx'
+
 import BaseStore from './BaseStore.jsx'
 
 let instance = null
@@ -40,3 +41,4 @@ class UserStore extends BaseStore {
 UserStore.user = null
 
 export default new UserStore()
+export { UserStore }

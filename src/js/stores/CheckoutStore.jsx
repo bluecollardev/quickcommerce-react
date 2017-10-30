@@ -680,3 +680,4 @@ class CheckoutStore extends OrderStore {
 }
 
 export default new CheckoutStore()
+export { CheckoutStore }

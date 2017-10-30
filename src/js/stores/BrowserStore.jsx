@@ -1,30 +1,60 @@
-import assign from 'object-assign'
-
 import axios from 'axios'
+import assign from 'object-assign'
 import { normalize, denormalize, schema } from 'normalizr'
 
-import BrowserConstants from '../constants/BrowserConstants.jsx';
-import FluxFactory from '../factory/Factory.jsx'
-import BaseStore from './BaseStore.jsx'
-//import jwt_decode from 'jwt-decode'
+import { EventEmitter } from 'events'
 
-class BrowserStore extends BaseStore {
-    constructor() {
+import ArrayHelper from '../helpers/Array.js'
+import ObjectHelper from '../helpers/Object.js'
+import StringHelper from '../helpers/String.js'
+
+import BrowserConstants from '../constants/BrowserConstants.jsx'
+
+class BrowserStore extends EventEmitter {
+    // BrowserStore constructor
+    constructor(dispatcher) {
         super()
         
         this.stepForward = false
         this.config = null
 
         // Data 
+        this.dispatcher = dispatcher
+        
         this.items = {}
         this.availableTracks = [] // Just so we don't forget VEST
         this.availableDates = [] // VEST as well
         this.unavailableDates = [] // Bookings
         
-        this.fluxFactory = new FluxFactory()
-        
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
+    }
+    
+    subscribe(actionSubscribe) {
+        this.dispatchToken = this.dispatcher.register(actionSubscribe())
+    }
+
+    emitChange() {
+        this.emit('CHANGE')
+    }
+
+    addChangeListener(cb) {
+        this.on('CHANGE', cb)
+    }
+
+    removeChangeListener(cb) {
+        this.removeListener('CHANGE', cb)
+    }
+    
+    normalizePayload(data, from, to) {
+        return ObjectHelper.recursiveFormatKeys(data, from, to)
+    }
+    
+    /**
+     * TODO: I am a utility method move me out of here!
+     */
+    _isset(array, value) {
+        return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
     }
     
     registerToActions(action) {
@@ -40,7 +70,8 @@ class BrowserStore extends BaseStore {
                 if (payload.category !== null && !Number.isNaN(payload.category)) {
                     this.category = payload.category // Store category id
                     // And adjust the endpoint accordingly...
-                    payload.config.src.transport.read.url = payload.config.src.transport.read.url + '/category/' + payload.category.toString()
+                    // TODO: Use a template to do this part... 
+                    payload.config.src.transport.read.url = payload.config.src.transport.read.url.replace('{id}', payload.category.toString())
                     this.handleAction(payload)
                 }
                 
@@ -156,17 +187,9 @@ class BrowserStore extends BaseStore {
         if (this.config === null) {
             throw new Error('Invalid configuration! Cannot build datastore.')
         }
-        
-        this.fluxFactory.make(this.config.key, this.config.schema)
-        
-        let Action = this.fluxFactory.useAction(this.config.key)
-        // Generated store is observable, just use addChangeListener to attach listeners
-        let Store = this.fluxFactory.useStore(this.config.key) 
     }
     
-    fetchData(key, onSuccess, onError) {
-        this.buildDataStore()
-            
+    fetchData(key, onSuccess, onError) {      
         let that = this
         axios(this.config.src.transport.read)
         .then(response => {
@@ -214,5 +237,6 @@ BrowserStore.items = {}
 BrowserStore.availableTracks = [] // Just so we don't forget VEST
 BrowserStore.availableDates = [] // VEST as well
 BrowserStore.unavailableDates = [] // Bookings
+BrowserStore.dispatchToken = null
 
-export default new BrowserStore()
+export { BrowserStore }

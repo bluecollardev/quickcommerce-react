@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
 import CurrentAddress from './CurrentAddress.jsx'
 
 export default () => {

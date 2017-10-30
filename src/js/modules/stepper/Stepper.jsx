@@ -42,7 +42,12 @@ class Stepper extends BaseStore {
         this.reject = null
         this.currentStep = -1
         
-        steps.forEach((step) => this.add(step))
+        // TODO: Type check?
+        steps = steps || null
+        if (steps !== null) {
+            steps.forEach((step) => this.add(step))
+        }
+        
         this.reject = onReject
         
         // Just monkey patch the parent method
@@ -166,6 +171,10 @@ class Stepper extends BaseStore {
         } else {
             return index
         }
+    }
+    
+    setSteps(steps) {
+        steps.forEach((step) => this.add(step))
     }
     
     /**

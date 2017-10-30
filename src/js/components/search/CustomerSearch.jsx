@@ -13,7 +13,7 @@ import Table, {
 	TableFoot,
 	TableRow,
 	TableCell
-} from 'material-ui/Table';
+} from 'material-ui/Table'
 
 import Autocomplete from 'react-autocomplete'
 

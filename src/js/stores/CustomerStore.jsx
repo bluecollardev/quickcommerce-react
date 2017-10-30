@@ -1,4 +1,5 @@
-import CustomerConstants from '../constants/CustomerConstants.jsx';
+import CustomerConstants from '../constants/CustomerConstants.jsx'
+
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
@@ -179,3 +180,4 @@ CustomerStore.shippingAddress = {
 }
 
 export default new CustomerStore()
+export { CustomerStore }

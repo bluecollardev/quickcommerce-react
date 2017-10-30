@@ -4,17 +4,17 @@ import axios from 'axios' // Move me out! Just using in here for temp report pro
 import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
 
-import BlockUi from 'react-block-ui';
-import 'react-block-ui/style.css';
+import BlockUi from 'react-block-ui'
+import 'react-block-ui/style.css'
 
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap';
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap';
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap';
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
-import { Button, Checkbox, Radio } from 'react-bootstrap';
+import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
+import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
+import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
+import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import Header from 'grommet/components/Header';
-import Title from 'grommet/components/Title';
+import Header from 'grommet/components/Header'
+import Title from 'grommet/components/Title'
 import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 
 import DragDropContainer   from './cart/DragDropContainer.jsx'
@@ -25,7 +25,7 @@ import CatalogRow          from './catalog/CatalogRow.jsx'
 
 import Stepper from './stepper/BrowserStepper.jsx'
 import BrowserActions from '../actions/BrowserActions.jsx'
-import BrowserStore from '../stores/BrowserStore.jsx'
+import BrowserStore from '../stores/BrowserStore.jsx' // TODO: Don't initialize this here!
 
 import ProductActions from '../actions/ProductActions.jsx'
 

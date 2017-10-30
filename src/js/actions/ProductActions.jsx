@@ -1,5 +1,5 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import ProductConstants from '../constants/ProductConstants.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import ProductConstants from '../constants/ProductConstants.jsx'
 
 export default {
     setProduct: (data) => {

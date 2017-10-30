@@ -7,9 +7,6 @@ import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'r
 import Griddle from 'griddle-react'
 import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
-import BrowserActions from '../../actions/BrowserActions.jsx'
-import BrowserStore from '../../stores/BrowserStore.jsx'
-
 import ProductOptionValue from '../catalog/ProductOptionValue.jsx'
 
 export default class ProductOptionRow extends Component {
@@ -33,7 +30,7 @@ export default class ProductOptionRow extends Component {
 
             // Wrap the function in a generic handler so we can pass in custom args
             let callback = fn = this.props.onItemClicked
-            fn = function () {
+            fn = function() {
                 callback(...arguments)
             }
         } else {

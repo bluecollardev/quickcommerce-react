@@ -163,3 +163,4 @@ OmniSearchStore.config = null
 OmniSearchStore.items = {}
 
 export default new OmniSearchStore()
+export { OmniSearchStore }

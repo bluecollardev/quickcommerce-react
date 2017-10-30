@@ -159,3 +159,4 @@ CustomerSearchStore.config = null
 CustomerSearchStore.items = {}
 
 export default new CustomerSearchStore()
+export { CustomerSearchStore }

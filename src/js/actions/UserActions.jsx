@@ -1,5 +1,5 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import UserConstants from '../constants/UserConstants.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import UserConstants from '../constants/UserConstants.jsx'
 
 export default {
     clearUser: () => {

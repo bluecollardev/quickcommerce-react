@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Dispatcher } from 'flux'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -10,33 +11,34 @@ import { Well } from 'react-bootstrap'
 import Griddle from 'griddle-react'
 import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
-import Anchor from 'grommet/components/Anchor';
-import Box from 'grommet/components/Box';
-import Card from 'grommet/components/Card';
-import Chart, { Area, Axis, Base, Layers } from 'grommet/components/chart/Chart';
-import Menu from 'grommet/components/Menu';
-import Footer from 'grommet/components/Footer';
-import FormField from 'grommet/components/FormField';
-import NumberInput from 'grommet/components/NumberInput';
-import Select from 'grommet/components/Select';
-import Heading from 'grommet/components/Heading';
-import Hero from 'grommet/components/Hero';
-import Image from 'grommet/components/Image';
-import Label from 'grommet/components/Label';
-import TableHeader from 'grommet/components/TableHeader';
-import TableRow from 'grommet/components/TableRow';
-import Paragraph from 'grommet/components/Paragraph';
-import Quote from 'grommet/components/Quote';
-import Section from 'grommet/components/Section';
-import SocialShare from 'grommet/components/SocialShare';
-import Video from 'grommet/components/Video';
-import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay';
+import Anchor from 'grommet/components/Anchor'
+import Box from 'grommet/components/Box'
+import Card from 'grommet/components/Card'
+import Chart, { Area, Axis, Base, Layers } from 'grommet/components/chart/Chart'
+import Menu from 'grommet/components/Menu'
+import Footer from 'grommet/components/Footer'
+import FormField from 'grommet/components/FormField'
+import NumberInput from 'grommet/components/NumberInput'
+import Select from 'grommet/components/Select'
+import Heading from 'grommet/components/Heading'
+import Hero from 'grommet/components/Hero'
+import Image from 'grommet/components/Image'
+import Label from 'grommet/components/Label'
+import TableHeader from 'grommet/components/TableHeader'
+import TableRow from 'grommet/components/TableRow'
+import Paragraph from 'grommet/components/Paragraph'
+import Quote from 'grommet/components/Quote'
+import Section from 'grommet/components/Section'
+import SocialShare from 'grommet/components/SocialShare'
+import Video from 'grommet/components/Video'
+import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay'
 
 import StarRating from 'react-star-rating'
 
 //import Stepper from '../stepper/BrowserStepper.jsx'
 import BrowserActions from '../../actions/BrowserActions.jsx'
-import BrowserStore from '../../stores/BrowserStore.jsx'
+import { BrowserStore } from '../../stores/BrowserStore.jsx'
+
 import BrowserMenu from './BrowserMenu.jsx'
 
 import CatalogRow from '../catalog/CatalogRow.jsx'
@@ -60,6 +62,9 @@ export default class ProductBrowser extends Component {
         this.onChange = this.onChange.bind(this)
 
         this.state = this.getInitialState()
+        this.dispatcher = new Dispatcher()
+        this.store = new BrowserStore(this.dispatcher)
+        this.actions = BrowserActions(this.dispatcher)
     }
 
     // TODO: Fry anything we don't need in here!
@@ -79,7 +84,7 @@ export default class ProductBrowser extends Component {
 
     componentDidMount() {
         // Subscribe to BrowserStore to listen for changes when the component is mounted
-        BrowserStore.addChangeListener(this.onChange)
+        this.store.addChangeListener(this.onChange)
         
         //let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
@@ -92,7 +97,7 @@ export default class ProductBrowser extends Component {
     
     componentWillUnmount() {
         if (typeof this.onChange === 'function') {
-            BrowserStore.removeChangeListener(this.onChange)
+            this.store.removeChangeListener(this.onChange)
             
             //delete this.onChange // Don't think that's necessary
         }
@@ -100,9 +105,9 @@ export default class ProductBrowser extends Component {
     
     onChange() {
         // Grab our items and update our component state whenever the BrowserStore is updated
-        let items = BrowserActions.getItems()
-        let categories = BrowserActions.getCategories()
-        let options = BrowserActions.getOptions()
+        let items = this.store.getItems()
+        let categories = this.store.getCategories()
+        let options = this.store.getOptions()
 
         this.setState({
             categories: categories,
@@ -276,9 +281,9 @@ export default class ProductBrowser extends Component {
 
             // Wrap the function in a generic handler so we can pass in custom args
             let callback = fn = this.props.onItemClicked
-            fn = function () {
+            fn = function() {
                 // What's the current step?
-                let step = BrowserActions.getCurrentStep()
+                let step = that.store.getConfig()
 
                 // Make sure there's a next step before calling it into action
                 // Also, subtract a step to account for zero index

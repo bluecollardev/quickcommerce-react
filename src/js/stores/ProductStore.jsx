@@ -1,4 +1,5 @@
-import ProductConstants from '../constants/ProductConstants.jsx';
+import ProductConstants from '../constants/ProductConstants.jsx'
+
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
@@ -55,3 +56,4 @@ class ProductStore extends BaseStore {
 ProductStore.product = null
 
 export default new ProductStore()
+export { ProductStore }

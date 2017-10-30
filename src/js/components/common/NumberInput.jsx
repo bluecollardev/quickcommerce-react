@@ -1,13 +1,13 @@
 // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import CSSClassnames from '../../utils/CSSClassnames';
-import Button from './Button';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import classnames from 'classnames'
+import CSSClassnames from '../../utils/CSSClassnames'
+import Button from './Button'
 
-const CLASS_ROOT = CSSClassnames.NUMBER_INPUT;
-const INPUT = CSSClassnames.INPUT;
+const CLASS_ROOT = CSSClassnames.NUMBER_INPUT
+const INPUT = CSSClassnames.INPUT
 
 export default class NumberInput extends Component {
 

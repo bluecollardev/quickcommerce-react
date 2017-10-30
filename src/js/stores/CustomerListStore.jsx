@@ -164,3 +164,4 @@ CustomerListStore.config = null
 CustomerListStore.items = {}
 
 export default new CustomerListStore()
+export { CustomerListStore }

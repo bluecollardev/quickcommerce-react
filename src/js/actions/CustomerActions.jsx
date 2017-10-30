@@ -1,5 +1,5 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import CustomerConstants from '../constants/CustomerConstants.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import CustomerConstants from '../constants/CustomerConstants.jsx'
 
 export default {
     clearCustomer: () => {

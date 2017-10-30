@@ -39,8 +39,6 @@ import ProductRow from './catalog/ProductRow.jsx'
 import ProductOptionRow from '../components/catalog/ProductOptionRow.jsx'
 
 import Stepper from './stepper/BrowserStepper.jsx'
-import BrowserActions from '../actions/BrowserActions.jsx'
-import BrowserStore from '../stores/BrowserStore.jsx'
 
 import CheckoutActions from '../actions/CheckoutActions.jsx'
 import CustomerActions from '../actions/CustomerActions.jsx'
@@ -110,19 +108,6 @@ const CASH_IN_DRAWER = [
     ['ONE HUNDRED', 100.00]
 ]
 
-@inject(deps => ({
-    authService: deps.authService,
-    customerService: deps.customerService,
-    checkoutService: deps.checkoutService,
-    loginStore: deps.loginStore,
-    userStore: deps.userStore,
-    customerStore: deps.customerStore,
-    checkoutStore: deps.checkoutStore,
-    starMicronicsStore: deps.starMicronicsStore,
-    productStore: deps.productStore,
-    settingStore: deps.settingStore
-}))
-@observer
 class PosComponent extends Component {
     constructor(props) {
         super(props)
@@ -189,6 +174,10 @@ class PosComponent extends Component {
         
         this.getDefaultSettings = this.getDefaultSettings.bind(this)
         
+        // Store our stepper instance
+        // Stepper maintains its own state and store
+        this.stepper = new Stepper()
+        
         SettingActions.fetchStore(8)
         
         this.props.settingStore.on('store-info-loaded', (id, payload) => {
@@ -208,92 +197,92 @@ class PosComponent extends Component {
         })
         
         // Subscribe to checkout block ui events
-        this.props.checkoutStore.on('block-ui', () => {
+        props.checkoutStore.on('block-ui', () => {
             this.setState({
                 blockUi: true
             })
         })
 
-        this.props.checkoutStore.on('unblock-ui', () => {
+        props.checkoutStore.on('unblock-ui', () => {
             this.setState({
                 blockUi: false
             })
         })
         
-        this.props.checkoutStore.on('set-customer', () => {
+        props.checkoutStore.on('set-customer', () => {
             console.log('checkout customer change detected')
-            console.log(CustomerStore.customer)
-            console.log(CustomerStore.billingAddress)
-            console.log(CustomerStore.shippingAddress)
+            console.log(props.customerStore.customer)
+            console.log(props.customerStore.billingAddress)
+            console.log(props.customerStore.shippingAddress)
             
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && 
-                    this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && 
+                    props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
                         
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'update',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                         // No orderId detected in the payload order, let's try create instead
                     } else {
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.createOrder(assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.createOrder(assign({}, props.checkoutStore.payload.order, {
                             action: 'insert',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                     }
                 // Payload order doesn't exist, we're gonna have to create it
                 } else {
                     // TODO: Fix me! I'm hardcoded
                     // Change country and zone to customer default address
-                    this.props.checkoutService.createOrder(assign({}, {
+                    props.checkoutService.createOrder(assign({}, {
                         action: 'insert',
                         defaultSettings: this.getDefaultSettings()
                     }), (payload) => {
-                        this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                        props.checkoutStore.setOrder(payload)
+                        //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                     })
                 }
             }
         })
 
-        this.props.checkoutStore.on('set-order-status', () => {
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+        props.checkoutStore.on('set-order-status', () => {
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
                         
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'updateOrderStatus',
                             defaultSettings: this.getDefaultSettings(),
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                         // No orderId detected in the payload order, let's try create instead
                     }
@@ -301,26 +290,26 @@ class PosComponent extends Component {
             }
         })
         
-        this.props.checkoutStore.on('set-payment-method', () => {
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+        props.checkoutStore.on('set-payment-method', () => {
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
                         
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'updatePaymentMethod',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                         // No orderId detected in the payload order, let's try create instead
                     }
@@ -328,26 +317,26 @@ class PosComponent extends Component {
             }
         })
         
-        this.props.checkoutStore.on('set-shipping-method', () => {
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+        props.checkoutStore.on('set-shipping-method', () => {
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
                         
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'updateShippingMethod',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                         // No orderId detected in the payload order, let's try create instead
                     }
@@ -355,26 +344,26 @@ class PosComponent extends Component {
             }
         })
         
-        this.props.checkoutStore.on('set-notes', () => {
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+        props.checkoutStore.on('set-notes', () => {
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
                         
                         // TODO: Fix me! I'm hardcoded
                         // Change country and zone to customer default address
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'updateNotes',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                         // No orderId detected in the payload order, let's try create instead
                     }
@@ -382,28 +371,28 @@ class PosComponent extends Component {
             }
         })  
         
-        /*this.props.checkoutStore.on('set-order', () => {
+        /*props.checkoutStore.on('set-order', () => {
             console.log('checkout change detected')
-            console.log(CustomerStore.customer)
-            console.log(CustomerStore.billingAddress)
-            console.log(CustomerStore.shippingAddress)
+            console.log(props.customerStore.customer)
+            console.log(props.customerStore.billingAddress)
+            console.log(props.customerStore.shippingAddress)
             
-            if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+            if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
+                // Just handle, customer should be set to props.checkoutStore
+                props.checkoutStore.setExistingCustomer()
                 
                 // Payloard order exists
-                if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
                     // Do we update?
-                    if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
-                        this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, assign({}, this.props.checkoutStore.payload.order, {
+                    if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                        !isNaN(props.checkoutStore.payload.order.orderId) &&
+                        props.checkoutStore.payload.order.orderId > 0) {
+                        props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, assign({}, props.checkoutStore.payload.order, {
                             action: 'update',
                             defaultSettings: this.getDefaultSettings()
                         }), (payload) => {
-                            this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                            props.checkoutStore.setOrder(payload)
+                            //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                         })
                     }
                 }
@@ -416,9 +405,9 @@ class PosComponent extends Component {
             console.log(item)
             
             // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
-            if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
-                if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(this.props.checkoutStore.payload.order.orderId)) {
+            if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(props.checkoutStore.payload.order.orderId)) {
                     let orderProduct = assign({}, item.data, {
                         product_id: parseInt(itemId),
                         quantity: quantity
@@ -426,7 +415,7 @@ class PosComponent extends Component {
                     
                     let optionTotal = 0.00 
                     // Get the prices off of the selected options and add them to the product price
-                    let orderOptions = this.props.checkoutStore.getOrderOptions(parseInt(itemId)) || null
+                    let orderOptions = props.checkoutStore.getOrderOptions(parseInt(itemId)) || null
                     
                     if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
                         // Not sure if I want to finalize this as an array or an object so I'm accounting for either
@@ -454,11 +443,11 @@ class PosComponent extends Component {
                     
                     let orderProductPrice = parseFloat(item.data['price']) + optionTotal
                     
-                    let orderTaxRates = this.props.checkoutStore.getOrderTaxRates()
+                    let orderTaxRates = props.checkoutStore.getOrderTaxRates()
                     
                     let lineTotal = orderProductPrice * quantity
-                    let lineTotalWithTax = this.props.checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
-                    let lineTax = this.props.checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTotalWithTax = props.checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTax = props.checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
 
                     // We're mutating the supplied data object by design
                     orderProduct = assign(orderProduct, {
@@ -467,7 +456,7 @@ class PosComponent extends Component {
                         tax: lineTax
                     })
 
-                    this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, {
+                    props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, {
                         action: 'insert',
                         orderProduct: orderProduct,
                         orderProductId: 0,
@@ -514,8 +503,8 @@ class PosComponent extends Component {
                             //CartStore.updateItem()
                         }
                         
-                        this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId, onSuccess)
+                        props.checkoutStore.setOrder(payload)
+                        //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId, onSuccess)
                     })
                 } else {
                     // Create a new order
@@ -530,13 +519,13 @@ class PosComponent extends Component {
             console.log('old qty: ' + oldQuantity)
             
             // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
-            if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
-                if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(this.props.checkoutStore.payload.order.orderId)) {
+            if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(props.checkoutStore.payload.order.orderId)) {
                     let orderProductId = 0
-                    for (let idx = 0; idx < this.props.checkoutStore.payload.orderProducts.length; idx++) {
-                        if (parseInt(this.props.checkoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['id'])) {
-                            orderProductId = this.props.checkoutStore.payload.orderProducts[idx].orderProductId
+                    for (let idx = 0; idx < props.checkoutStore.payload.orderProducts.length; idx++) {
+                        if (parseInt(props.checkoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['id'])) {
+                            orderProductId = props.checkoutStore.payload.orderProducts[idx].orderProductId
                         }
                     }
                     
@@ -547,7 +536,7 @@ class PosComponent extends Component {
                     
                     let optionTotal = 0.00 
                     // Get the prices off of the selected options and add them to the product price
-                    let orderOptions = this.props.checkoutStore.getOrderOptions(parseInt(item.data['id'])) || null
+                    let orderOptions = props.checkoutStore.getOrderOptions(parseInt(item.data['id'])) || null
                     
                     if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
                         // Not sure if I want to finalize this as an array or an object so I'm accounting for either
@@ -577,18 +566,18 @@ class PosComponent extends Component {
                     let orderProductPrice = parseFloat(item.data['price']) + optionTotal
                     
                     let lineTotal = orderProductPrice * quantity
-                    let lineTotalWithTax = this.props.checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
-                    let lineTax = this.props.checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTotalWithTax = props.checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                    let lineTax = props.checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
                     
                     orderProduct = assign(orderProduct, item.data, {
                         total: lineTotal,
                         tax: lineTax
                     })
 
-                    let orderTaxRates = this.props.checkoutStore.getOrderTaxRates()
-                    //let orderOptions = this.props.checkoutStore.getOrderOptions()
+                    let orderTaxRates = props.checkoutStore.getOrderTaxRates()
+                    //let orderOptions = props.checkoutStore.getOrderOptions()
 
-                    this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, {
+                    props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, {
                         action: 'modifyQuantity',
                         orderProduct: orderProduct,
                         orderProductId: orderProductId,
@@ -597,8 +586,8 @@ class PosComponent extends Component {
                         quantityAfter: quantity,
                         orderTaxRates: orderTaxRates
                     }, (payload) => {
-                        this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                        props.checkoutStore.setOrder(payload)
+                        //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                     })
                 }
             }
@@ -609,16 +598,16 @@ class PosComponent extends Component {
             console.log(item)
             console.log('qty: ' + quantity)
 
-            if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
-                if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(this.props.checkoutStore.payload.order.orderId)) {
+            if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(props.checkoutStore.payload.order.orderId)) {
                     let lineTotal = item['price'] * quantity
-                    let lineTotalWithTax = this.props.checkoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
-                    let lineTax = this.props.checkoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
+                    let lineTotalWithTax = props.checkoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
+                    let lineTax = props.checkoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
                     
                     let orderProductId = 0
                     // Grab associated orderProduct
-                    let orderProduct = this.props.checkoutStore.payload.orderProducts.filter(orderProduct => {
+                    let orderProduct = props.checkoutStore.payload.orderProducts.filter(orderProduct => {
                         return orderProduct.productId === parseInt(product['id'])
                     })
                     
@@ -634,10 +623,10 @@ class PosComponent extends Component {
                     })*/
                     
                     // TODO: Promises would probably work better here
-                    let orderTaxRates = this.props.checkoutStore.getOrderTaxRates()
-                    let orderOptions = this.props.checkoutStore.getOrderOptions(parseInt(product['id']), orderProductId)
+                    let orderTaxRates = props.checkoutStore.getOrderTaxRates()
+                    let orderOptions = props.checkoutStore.getOrderOptions(parseInt(product['id']), orderProductId)
 
-                    this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, {
+                    props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, {
                         action: 'update',
                         //orderProduct: orderProduct,
                         orderProductId: orderProductId,
@@ -647,8 +636,8 @@ class PosComponent extends Component {
                         orderTaxRates: orderTaxRates,
                         defaultSettings: this.getDefaultSettings()
                     }, (payload) => {
-                        this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                        props.checkoutStore.setOrder(payload)
+                        //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                     })
                 }
             }
@@ -658,13 +647,13 @@ class PosComponent extends Component {
             console.log('item removed')
             console.log(item)
 
-            if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
-                if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(this.props.checkoutStore.payload.order.orderId)) {
+            if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
+                if (props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
+                    !isNaN(props.checkoutStore.payload.order.orderId)) {
                     let orderProductId = 0
-                    for (let idx = 0; idx < this.props.checkoutStore.payload.orderProducts.length; idx++) {
-                        if (parseInt(this.props.checkoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
-                            orderProductId = this.props.checkoutStore.payload.orderProducts[idx].orderProductId
+                    for (let idx = 0; idx < props.checkoutStore.payload.orderProducts.length; idx++) {
+                        if (parseInt(props.checkoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+                            orderProductId = props.checkoutStore.payload.orderProducts[idx].orderProductId
                         }
                     }
 
@@ -673,10 +662,10 @@ class PosComponent extends Component {
                         quantity: 0
                     })
 
-                    let orderTaxRates = this.props.checkoutStore.getOrderTaxRates()
-                    //let orderOptions = this.props.checkoutStore.getOrderOptions()
+                    let orderTaxRates = props.checkoutStore.getOrderTaxRates()
+                    //let orderOptions = props.checkoutStore.getOrderOptions()
 
-                    this.props.checkoutService.updateOrder(this.props.checkoutStore.payload.order.orderId, {
+                    props.checkoutService.updateOrder(props.checkoutStore.payload.order.orderId, {
                         action: 'modifyQuantity',
                         orderProduct: data,
                         orderProductId: orderProductId,
@@ -684,8 +673,8 @@ class PosComponent extends Component {
                         orderTaxRates: orderTaxRates,
                         //orderOptions: orderOptions
                     }, (payload) => {
-                        this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+                        props.checkoutStore.setOrder(payload)
+                        //props.checkoutService.fetchOrder(props.checkoutStore.payload.order.orderId)
                     })
                 }
             }
@@ -694,25 +683,18 @@ class PosComponent extends Component {
         CartStore.on('cart-reset', () => {
             console.log('reset checkout store - cart was reset') // TODO: Have clear and reset, they aren't really the same thing
 
-            this.props.checkoutService.clearOrder()
+            props.checkoutService.clearOrder()
         })
 
         CartStore.on('cart-cleared', () => {
             console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
 
             // Don't reset, which deletes order, just create a new order
-            this.props.checkoutService.createOrder({
+            props.checkoutService.createOrder({
                 action: 'insert'
             })
         })
-
-        //this.configureSteps = this.configureSteps.bind(this)
-
-        // Store our stepper instance
-        // Stepper maintains its own state and store
-        this.stepper = new Stepper(this.configureSteps())
-        this.stepper.start()
-
+        
         let categoryData = []
         let productData = []
 
@@ -740,7 +722,7 @@ class PosComponent extends Component {
             canSubmit: false,
             createAccount: false,
             editAccount: false,
-            showLogin: (typeof this.props.loggedIn !== 'undefined' && this.props.loggedIn === true) ? true : false,
+            showLogin: (typeof props.loggedIn !== 'undefined' && props.loggedIn === true) ? true : false,
             checkoutMode: 'pos', // [cart|pos]
             step: 'shop', // [shop|cart|checkout|shipping|confirm] Not finalized, subject to change!
             title: '', // [shop|cart|checkout|shipping|confirm] Not finalized, subject to change!
@@ -753,29 +735,13 @@ class PosComponent extends Component {
             customPaymentAmount: null,
             settings: {}
         }
-        
-        this.stepper.on('item-added', (item, quantity, oldQuantity) => {
-            console.log('browser item added, add it to our cart')
-            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            console.log(item)
-            //cart.addItem(item['product_option_value_id'], 1, item, product)
-        })
-        
-        this.stepper.on('item-changed', (item, quantity, oldQuantity) => {
-            console.log('browser item changed, update the item in our cart')
-            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            console.log(item)
-            //cart.updateItem(item['product_option_value_id'], 1, item, product)
-        })
-        
-        
     }
     
     // TODO: Refactor me
     getDefaultSettings() {
         let customerId = 0
-        if (CustomerStore.customer.hasOwnProperty('customer_id') && !isNaN(CustomerStore.customer['customer_id'])) {
-            let storeCustomerId = parseInt(CustomerStore.customer['customer_id'])
+        if (this.props.customerStore.customer.hasOwnProperty('customer_id') && !isNaN(this.props.customerStore.customer['customer_id'])) {
+            let storeCustomerId = parseInt(this.props.customerStore.customer['customer_id'])
             if (storeCustomerId > 0) {
                 customerId = storeCustomerId
             }
@@ -823,6 +789,11 @@ class PosComponent extends Component {
             cart: (typeof this.props.location !== 'undefined' && this.props.location.pathname === '/checkout/cart') ? 1 : 0
         })
         
+        // Store our stepper instance
+        // Stepper maintains its own state and store
+        this.stepper.setSteps(this.configureSteps())
+        this.stepper.start()
+        
         let settings = this.props.settingStore.getSettings().posSettings
         let categoryId = null
         
@@ -840,6 +811,22 @@ class PosComponent extends Component {
                 category_id: settings['pinned_category_id']
             })
         }
+        
+        this.stepper.on('item-added', (item, quantity, oldQuantity) => {
+            console.log('browser item added, add it to our cart')
+            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+            console.log(item)
+            //cart.addItem(item['product_option_value_id'], 1, item, product)
+        })
+        
+        this.stepper.on('item-changed', (item, quantity, oldQuantity) => {
+            console.log('browser item changed, update the item in our cart')
+            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
+            console.log(item)
+            //cart.updateItem(item['product_option_value_id'], 1, item, product)
+        })
+        
+        
     }
     
     componentDidUpdate(prevProps, prevState) {
@@ -881,7 +868,7 @@ class PosComponent extends Component {
                 return true
             },
             action: (step, data, done) => {
-                BrowserActions.loadCategories()
+                this.categoryBrowser.actions.loadCategories()
 
                 if (done) {
                     // Process checkout if done
@@ -918,9 +905,9 @@ class PosComponent extends Component {
                     data.hasOwnProperty('category_id') &&
                     !Number.isNaN(data.category_id)) {
 
-                    BrowserActions.loadProducts(data.category_id) // TODO: CONST for prop name?
+                    this.productBrowser.actions.loadProducts(data.category_id) // TODO: CONST for prop name?
                 } else {
-                    BrowserActions.loadProducts()
+                    this.productBrowser.actions.loadProducts()
                 }
 
                 if (done) {
@@ -960,7 +947,7 @@ class PosComponent extends Component {
                     data.hasOwnProperty('id') &&
                     !Number.isNaN(data.id)) {
 
-                    BrowserActions.loadOptions(data) // TODO: CONST for prop name?
+                    this.optionBrowser.actions.loadOptions(data) // TODO: CONST for prop name?
                 } else {
                     // Do nothing - options only correlate to a browser item
                     // TODO: This is being triggered when clicking a browser item, but there's no data object...
@@ -1106,11 +1093,11 @@ class PosComponent extends Component {
         }
         
         console.log('checkout change detected')
-        console.log(CustomerStore.customer)
-        console.log(CustomerStore.billingAddress)
-        console.log(CustomerStore.shippingAddress)
+        console.log(this.props.customerStore.customer)
+        console.log(this.props.customerStore.billingAddress)
+        console.log(this.props.customerStore.shippingAddress)
         
-        if (typeof CustomerStore.customer !== 'undefined' && CustomerStore.customer !== null) {
+        if (typeof this.props.customerStore.customer !== 'undefined' && this.props.customerStore.customer !== null) {
             // Just handle, customer should be set to this.props.checkoutStore
             this.props.checkoutStore.setExistingCustomer()
             
@@ -2317,6 +2304,7 @@ class PosComponent extends Component {
                                 <Col sm={12}>
                                     <BlockUi tag='div' blocking={this.state.blockUi}>
                                         <ProductBrowser
+                                            ref = {(browser) => this.categoryBrowser = browser}
                                             activeStep = 'shop'
                                             title = {this.state.title}
                                             displayTitle = {false}
@@ -2342,6 +2330,7 @@ class PosComponent extends Component {
                                 <Col sm={12}>
                                     <BlockUi tag='div' blocking={this.state.blockUi}>
                                         <ProductBrowser
+                                            ref = {(browser) => this.productBrowser = browser}
                                             activeStep = 'cart'
                                             displayTitle = {true}
                                             title = {this.state.title}
@@ -2368,6 +2357,7 @@ class PosComponent extends Component {
                                 <Col sm={12}>
                                     <BlockUi tag='div' blocking={this.state.blockUi}>
                                         <ProductBrowser
+                                            ref = {(browser) => this.optionBrowser = browser}
                                             activeStep = 'options'
                                             displayTitle = {false}
                                             title = {this.state.title}
@@ -2492,9 +2482,9 @@ class PosComponent extends Component {
                                 {this.state.createAccount && (
                                 <div>
                                     <CustomerProfile
-                                        customer = {CustomerStore.customer}
-                                        billingAddress = {CustomerStore.billingAddress}
-                                        shippingAddress = {CustomerStore.shippingAddress}
+                                        customer = {this.props.customerStore.customer}
+                                        billingAddress = {this.props.customerStore.billingAddress}
+                                        shippingAddress = {this.props.customerStore.shippingAddress}
                                         editAccount = {false}
                                         createAccount = {true}
                                         displayProfile = {true}
@@ -2537,9 +2527,9 @@ class PosComponent extends Component {
                                 {this.state.editAccount && (
                                 <div>
                                     <CustomerProfile
-                                        customer = {CustomerStore.customer}
-                                        billingAddress = {CustomerStore.billingAddress}
-                                        shippingAddress = {CustomerStore.shippingAddress}
+                                        customer = {this.props.customerStore.customer}
+                                        billingAddress = {this.props.customerStore.billingAddress}
+                                        shippingAddress = {this.props.customerStore.shippingAddress}
                                         editAccount = {true}
                                         createAccount = {false}
                                         displayProfile = {true}

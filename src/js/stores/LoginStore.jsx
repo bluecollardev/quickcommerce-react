@@ -1,4 +1,5 @@
-import LoginConstants from '../constants/LoginConstants.jsx';
+import LoginConstants from '../constants/LoginConstants.jsx'
+
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 let instance = null
@@ -46,3 +47,4 @@ LoginStore.userToken = null
 LoginStore.user = null
 
 export default new LoginStore()
+export { LoginStore }

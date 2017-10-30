@@ -105,7 +105,7 @@ class StarMicronicsStore extends BaseStore {
 
         window.plugins.starMicronics.portDiscovery('All', (error, printerList) => {
             if (error) {
-                console.error(error);
+                console.error(error)
                 alert(JSON.stringify(error))
             } else {
 				// TODO: Check to make sure it's a function!
@@ -191,3 +191,4 @@ class StarMicronicsStore extends BaseStore {
 }
 
 export default new StarMicronicsStore()
+export { StarMicronicsStore }

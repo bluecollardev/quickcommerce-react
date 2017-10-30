@@ -12,8 +12,8 @@ export default {
     src: {
         transport: {
             read: {
-                //url: 'data/product.json',
-                url: QC_LEGACY_API + 'products',
+                //url: 'data/product.json', // TODO: Better regex based approach, maybe reuse something in react-router
+                url: QC_RESOURCE_API + 'category/{id}/product',
                 method: 'get', //type: 'GET',
                 responseType: 'json' //dataType: 'json',
                 /*beforeSend: function (request) {

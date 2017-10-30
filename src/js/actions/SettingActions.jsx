@@ -1,5 +1,5 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import SettingConstants from '../constants/SettingConstants.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import SettingConstants from '../constants/SettingConstants.jsx'
 
 export default {
     fetchSettings: () => {
