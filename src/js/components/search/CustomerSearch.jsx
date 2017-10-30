@@ -20,7 +20,7 @@ import Autocomplete from 'react-autocomplete'
 import CustomerActions from '../../actions/CustomerActions.jsx'
 import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
 import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CheckoutActions from '../../actions/CheckoutActions.jsx'\
+import CheckoutActions from '../../actions/CheckoutActions.jsx'
 
 @inject(deps => ({
     customerStore: deps.customerStore,
