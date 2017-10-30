@@ -68,13 +68,13 @@ export default (dispatcher) => {
             // TODO: Remove this!
         }
         /*loadDateTimeOption: () => {
-            AppDispatcher.dispatch({
+            dispatcher.dispatch({
                 actionType: BrowserConstants.LOAD_DATE,
                 config: ProductDateTimeStep
             })
         },
         loadQuantity: () => {
-            AppDispatcher.dispatch({
+            dispatcher.dispatch({
                 actionType: BrowserConstants.LOAD_QUANTITY,
                 config: ProductQuantityStep
             })

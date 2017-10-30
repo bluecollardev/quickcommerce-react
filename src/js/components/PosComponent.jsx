@@ -180,17 +180,17 @@ class PosComponent extends Component {
         
         SettingActions.fetchStore(8)
         
-        this.props.settingStore.on('store-info-loaded', (id, payload) => {
-            this.props.checkoutStore.stores[id] = payload
+        props.settingStore.on('store-info-loaded', (id, payload) => {
+            props.checkoutStore.stores[id] = payload
         }) // Load ACE bar store data so we don't have to later
         
         SettingActions.fetchSettings()
         
-        this.props.settingStore.on('settings-loaded', (payload) => {
-            this.props.checkoutStore.settings = payload
+        props.settingStore.on('settings-loaded', (payload) => {
+            props.checkoutStore.settings = payload
 
             // We only wanna do this once, so stick 'er right up top
-           this.props.checkoutService.createOrder({
+           props.checkoutService.createOrder({
                 action: 'insert'
                 //orderTaxRates: this.orderTaxRates
             })
@@ -715,10 +715,10 @@ class PosComponent extends Component {
         }
 
         this.state = {
-            blockUi         : false,
-            chooseQuantity  : false,
-            data            : { categories: categoryData, products: productData },
-            initialSelection : CartStore.getSelection(),
+            blockUi: false,
+            chooseQuantity: false,
+            data: { categories: categoryData, products: productData },
+            initialSelection: CartStore.getSelection(),
             canSubmit: false,
             createAccount: false,
             editAccount: false,
