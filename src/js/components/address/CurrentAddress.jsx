@@ -90,6 +90,8 @@ class CurrentAddress extends Component {
     }
     
     setInitialState(props) {
+		const mappings = props.mappings || fieldNames
+		
         let data = this.props.getForm()
         
         let state = assign({}, this.state, {
@@ -106,17 +108,17 @@ class CurrentAddress extends Component {
         
         if ((country !== null && typeof country !== 'string') &&
             (zone !== null && typeof zone !== 'string')) {
-            let zones = this.props.settingStore.getZones(country.country_id)
+            let zones = this.props.settingStore.getZones(country[mappings.COUNTRY_ID])
             
-            zoneName = zones.filter(obj => Number(obj.id) === Number(zone.zone_id))[0].value
-            state.data['zone_id'] = zone.zone_id
-            state.data['zone'] = zoneName
+            zoneName = zones.filter(obj => Number(obj.id) === Number(zone[mappings.ZONE_ID]))[0].value
+            state.data[mappings.ZONE_ID] = zone[mappings.ZONE_ID]
+            state.data[mappings.ZONE] = zoneName
         }
         
         if (country !== null && typeof country !== 'string') {
-            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
-            state.data['country_id'] = country.country_id
-            state.data['country'] = countryName
+            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(this.props.getMappedValue(mappings.COUNTRY_ID, state.data)))[0].value
+            state.data[mappings.COUNTRY_ID] = this.props.getMappedValue(mappings.COUNTRY_ID, state.data)
+            state.data[mappings.COUNTRY] = countryName
         }
         
         state.addressString = CurrentAddress.getAddressString(state.data)
@@ -624,7 +626,8 @@ class CurrentAddress extends Component {
     }
     
     render() {
-        console.log('rendering CurrentAddress')
+        const mappings = this.props.mappings || fieldNames
+		
         let data = this.state.data
         
         return (
@@ -659,20 +662,20 @@ class CurrentAddress extends Component {
                     <form>
                         {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
                         <Col xs={12} className='col-md-flex col-lg-flex'>
-                            <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
+                            <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
                             
                             {/* First Name / Last Name */}
                             {this.props.nameRequired && (
                             <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
                                 <ControlLabel>First Name*</ControlLabel>
-                                <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
+                                <FormControl name={mappings.FIRST_NAME} type='text' {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
                             </FormGroup>
                             )}
                             
                             {this.props.nameRequired && (
                             <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
                                 <ControlLabel>Last Name*</ControlLabel>
-                                <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
+                                <FormControl name={mappings.LAST_NAME} type='text' {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
                             </FormGroup>
                             )}
                             
@@ -680,13 +683,13 @@ class CurrentAddress extends Component {
                             {this.props.type === 'simple' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 1*</ControlLabel>
-                                <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
+                                <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'simple' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 2</ControlLabel>
-                                <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
+                                <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
                             </FormGroup>
                             )}
                             
@@ -694,25 +697,25 @@ class CurrentAddress extends Component {
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Suite</ControlLabel>
-                                <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
+                                <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
                                 <ControlLabel>Street Name</ControlLabel>
-                                <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
+                                <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.STREET_NAME, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Street Type</ControlLabel>
-                                <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
+                                <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
                                 <ControlLabel>Direction</ControlLabel>
-                                <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
+                                <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
                             </FormGroup>
                             )}
                             
@@ -720,13 +723,13 @@ class CurrentAddress extends Component {
                             {this.props.type === 'pobox' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Box</ControlLabel>
-                                <FormControl type='text' value={data.box} />
+                                <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'pobox' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Station</ControlLabel>
-                                <FormControl type='text' value={data.stn} />
+                                <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
                             </FormGroup>
                             )}
                             
@@ -734,37 +737,37 @@ class CurrentAddress extends Component {
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Range Rd.</ControlLabel>
-                                <FormControl type='text' value={data.box} />
+                                <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Site</ControlLabel>
-                                <FormControl type='text' value={data.site} />
+                                <FormControl type='text' name={mappings.SITE} {...this.props.fields(mappings.SITE, this.props.getMappedValue(mappings.SITE, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Comp</ControlLabel>
-                                <FormControl type='text' value={data.comp} />
+                                <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Box</ControlLabel>
-                                <FormControl type='text' value={data.box} />
+                                <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Lot #</ControlLabel>
-                                <FormControl type='text' value={data.lot} />
+                                <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Concession #</ControlLabel>
-                                <FormControl type='text' value={data.concession} />
+                                <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
                             </FormGroup>
                             )}
                             
@@ -772,13 +775,13 @@ class CurrentAddress extends Component {
                             {this.props.durationRequired && (
                             <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
                                 <ControlLabel>From</ControlLabel>
-                                <FormControl name='from' type='text' {...this.props.fields('from', data.from)} />
+                                <DateInput name='from' name={mappings.FROM} {...this.props.fields(mappings.FROM, this.props.getMappedValue(mappings.FROM, data))} />
                             </FormGroup>
                             )}
                             {this.props.durationRequired && (
                             <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
                                 <ControlLabel>To</ControlLabel>
-                                <FormControl name='to' type='text' {...this.props.fields('to', data.to)} />
+                                <DateInput name='to' name={mappings.TO} {...this.props.fields(mappings.TO, this.props.getMappedValue(mappings.TO, data))} />
                             </FormGroup>
                             )}
                         </Col>
@@ -786,14 +789,14 @@ class CurrentAddress extends Component {
                             {/* City (If Applicable) */}
                             <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25'>
                                 <ControlLabel>City*</ControlLabel>
-                                <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
+                                <FormControl type='text' name={mappings.CITY} {...this.props.fields(mappings.CITY, this.props.getMappedValue(mappings.CITY, data))} />
                             </FormGroup>
                             
                             {/* Common Address Fields */}
                             <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Country*</ControlLabel>
                                 <Autocomplete
-                                    name='country'
+                                    name={mappings.COUNTRY}
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
@@ -810,42 +813,42 @@ class CurrentAddress extends Component {
                                     wrapperStyle={{
                                         display: 'block'
                                     }}
-                                    value={data.country}
+                                    value={this.props.getMappedValue(mappings.COUNTRY, data)}
                                     onChange={(event, value) => {
-                                        this.props.field('country', value)
+                                        this.props.field(mappings.COUNTRY, value)
                                         
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, this.state.data, {
-                                                country: value
+                                                [mappings.COUNTRY]: value
                                             })
                                         }))
                                         
                                         //this.parseZones(item.id)
                                     }}
                                     onSelect={(value, item) => {
-                                        this.props.field('country_id', item.id)
-                                        this.props.field('country', value)
+                                        this.props.field(mappings.COUNTRY_ID, item.id)
+                                        this.props.field(mappings.COUNTRY, value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, data, {
-                                                country_id: item.id,
-                                                country: value
+                                                [mappings.COUNTRY_ID]: item.id,
+                                                [mappings.COUNTRY]: value
                                             })
                                         }))
                                         
                                         this.props.settingStore.parseZones(item.id)
                                     }}
                                     inputProps={
-                                        assign(this.props.fields('country', data.country), { className: 'form-control'})
+                                        assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
                                     }
                                 />
-                                <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
+                                <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
                             </FormGroup>
                             <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Prov.*</ControlLabel>
                                 <Autocomplete
-                                    name='zone'
+                                    name={mappings.ZONE}
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
@@ -862,9 +865,9 @@ class CurrentAddress extends Component {
                                     wrapperStyle={{
                                         display: 'block'
                                     }}
-                                    value={data.zone}
+                                    value={this.props.getMappedValue(mappings.ZONE, data)}
                                     onChange={(event, value) => {
-                                        this.props.fields('zone', value)
+                                        this.props.fields(mappings.ZONE, value)
                                         
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, this.data, {
@@ -873,8 +876,8 @@ class CurrentAddress extends Component {
                                         }))
                                     }}
                                     onSelect={(value, item) => {
-                                        this.props.field('zone_id', item.id)
-                                        this.props.field('zone', value)
+                                        this.props.field(mappings.ZONE_ID, item.id)
+                                        this.props.field(mappings.ZONE, value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
                                         this.setState(assign({}, this.state, {
@@ -885,14 +888,14 @@ class CurrentAddress extends Component {
                                         }))
                                     }}
                                     inputProps={
-                                        assign(this.props.fields('zone', data.zone), { className: 'form-control'})
+                                        assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
                                     }
                                 />
-                                <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
+                                <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
                             </FormGroup>
                             <FormGroup className='col-sm-9 col-md-9 col-lg-5 flex-md-25'>
                                 <ControlLabel>Postal Code*</ControlLabel>
-                                <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
+                                <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
                             </FormGroup>
                         </Col>
                         
@@ -939,18 +942,18 @@ class CurrentAddress extends Component {
                                 </div>*/}
                                 <form>
                                     <div>
-                                        <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
+                                        <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
                                         
                                         {/* First Name / Last Name */}
                                         {this.props.nameRequired && (
                                         <Row>
                                             <FormGroup className='col-xs-12 col-lg-6'>
                                                 <ControlLabel>First Name*</ControlLabel>
-                                                <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
+                                                <FormControl type='text' name={mappings.FIRST_NAME} {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
                                             </FormGroup>
                                             <FormGroup className='col-xs-12 col-lg-6'>
                                                 <ControlLabel>Last Name*</ControlLabel>
-                                                <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
+                                                <FormControl type='text' name={mappings.LAST_NAME} {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
                                             </FormGroup>
                                         </Row>
                                         )}
@@ -959,13 +962,13 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 1</ControlLabel>
-                                            <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
+                                            <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 2</ControlLabel>
-                                            <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
+                                            <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
                                         </FormGroup>
                                         )}
                                         
@@ -973,25 +976,25 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Suite</ControlLabel>
-                                            <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
+                                            <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Name</ControlLabel>
-                                            <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
+                                            <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.STREET_NAME, this.props.getMappedValue(mappings.STREET_NAME, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Type</ControlLabel>
-                                            <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
+                                            <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Direction</ControlLabel>
-                                            <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
+                                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
                                         </FormGroup>
                                         )}
                                         
@@ -999,13 +1002,13 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
-                                            <FormControl type='text' value={data.box} />
+                                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Station</ControlLabel>
-                                            <FormControl type='text' value={data.stn} />
+                                            <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
                                         </FormGroup>
                                         )}
                                         
@@ -1013,37 +1016,37 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Range Rd.</ControlLabel>
-                                            <FormControl type='text' value={data.box} />
+                                            <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Site</ControlLabel>
-                                            <FormControl type='text' value={data.site} />
+                                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Comp</ControlLabel>
-                                            <FormControl type='text' value={data.comp} />
+                                            <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
-                                            <FormControl type='text' value={data.box} />
+                                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Lot #</ControlLabel>
-                                            <FormControl type='text' value={data.lot} />
+                                            <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Concession #</ControlLabel>
-                                            <FormControl type='text' value={data.concession} />
+                                            <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
                                         </FormGroup>
                                         )}
                                         
@@ -1057,7 +1060,7 @@ class CurrentAddress extends Component {
                                         <FormGroup className='autocomplete-control-group'>
                                             <ControlLabel>Country*</ControlLabel>
                                             <Autocomplete
-                                                name='country'
+                                                name={mappings.COUNTRY}
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
@@ -1074,9 +1077,9 @@ class CurrentAddress extends Component {
                                                 wrapperStyle={{
                                                     display: 'block'
                                                 }}
-                                                value={data.country}
+                                                value={this.props.getMappedValue(mappings.COUNTRY, data)}
                                                 onChange={(event, value) => {
-                                                    this.props.field('country', value)
+                                                    this.props.field(mappings.COUNTRY, value)
                                                     
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
@@ -1087,33 +1090,33 @@ class CurrentAddress extends Component {
                                                     //this.parseZones(item.id)
                                                 }}
                                                 onSelect={(value, item) => {
-                                                    this.props.field('country_id', item.id)
-                                                    this.props.field('country', value)
+                                                    this.props.field(mappings.COUNTRY_ID, item.id)
+                                                    this.props.field(mappings.COUNTRY, value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            country_id: item.id,
-                                                            country: value
+                                                            [mappings.COUNTRY_ID]: item.id,
+                                                            [mappings.COUNTRY]: value
                                                         })
                                                     }))
                                                     
                                                     this.props.settingStore.getZones(item.id)
                                                 }}
                                                 inputProps={
-                                                    assign(this.props.fields('country', data.country), { className: 'form-control'})
+                                                    assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
                                                 }
                                             />
-                                            <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
+                                            <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
                                         </FormGroup>
                                         <FormGroup className='autocomplete-control-group'>
                                             <ControlLabel>Prov.*</ControlLabel>
                                             <Autocomplete
-                                                name='zone'
+                                                name={mappings.ZONE}
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
-                                                items={this.props.settingStore.getZones(data.country_id)}
+                                                items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
                                                 renderItem={(item, isHighlighted) => {
                                                     return (
                                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -1126,37 +1129,37 @@ class CurrentAddress extends Component {
                                                 wrapperStyle={{
                                                     display: 'block'
                                                 }}
-                                                value={data.zone}
+                                                value={this.props.getMappedValue(mappings.ZONE, data)}
                                                 onChange={(event, value) => {
-                                                    this.props.fields('zone', value)
+                                                    this.props.fields(mappings.ZONE, value)
                                                     
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            zone: value
+                                                            [mappings.ZONE]: value
                                                         })
                                                     }))
                                                 }}
                                                 onSelect={(value, item) => {
-                                                    this.props.field('zone_id', item.id)
-                                                    this.props.field('zone', value)
+                                                    this.props.field(mappings.ZONE_ID, item.id)
+                                                    this.props.field(mappings.ZONE, value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            zone_id: item.id,
-                                                            zone: value 
+                                                            [mappings.ZONE_ID]: item.id,
+                                                            [mappings.ZONE]: value 
                                                         })
                                                     }))
                                                 }}
                                                 inputProps={
-                                                    assign(this.props.fields('zone', data.zone), { className: 'form-control'})
+                                                    assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
                                                 }
                                             />
-                                            <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
+                                            <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Postal Code*</ControlLabel>
-                                            <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
+                                            <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
                                         </FormGroup>
                                         
                                         {this.props.displayActions && (
