@@ -19,6 +19,9 @@ import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 
+import customerFieldNames from 'quickcommerce-react/forms/CustomerInfoFields.jsx'
+import addressFieldNames from 'quickcommerce-react/forms/AddressFields.jsx'
+
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
@@ -286,6 +289,11 @@ class CustomerFullProfile extends Component {
     }
 
     render() {
+		const mappings = this.props.mappings || {
+			customer: customerFieldNames,
+			address: addressFieldNames
+		}
+
         if (this.props.createAccount) {
             return (
                 <Col sm={12} className='customer-profile display-block'>
@@ -311,8 +319,16 @@ class CustomerFullProfile extends Component {
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
-                                Customer Information {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
+                                Customer Information 
+								{/* TODO: What did we call it in CurrentAddress? */}
+								{['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
+								<Button className='repeater-button'><h5><i className='fa fa-pencil' /> Edit</h5></Button>
+								)}
+								
+								{/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
+								{!this.props.editMode || ['modal', 'custom'].indexOf(this.props.editMode) === -1 && (
                                 <Button className='repeater-button'><h5><i className='fa' />&nbsp;</h5></Button>
+								)}
                             </h4>
                         </Col>
                     </Row>
@@ -322,6 +338,7 @@ class CustomerFullProfile extends Component {
                         
                         {this.props.displayProfile && (
                         <CustomerInfo
+							mappings = {mappings.customer}
                             ref = {(profile) => {this.profile = profile}}
                             onCancel = {this.onCancel}
                             onSaveSuccess = {this.onSaveSuccess}
@@ -332,6 +349,7 @@ class CustomerFullProfile extends Component {
                     </div>
                     
                     {/* Customer Contacts */}
+					{this.props.displayContacts && (
 					<Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
@@ -340,18 +358,44 @@ class CustomerFullProfile extends Component {
                             </h4>
                         </Col>
                     </Row>
-                    {[0,1].map(idx => (
-                    <Row className='repeater-row'>
+					)}
+					
+                    {this.props.displayContacts && this.props.contacts && this.props.contacts.email && this.props.contacts.email.map((contact, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
                         <Col xs={10}>
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
-                                    <CustomerIdentity
-                                        ref = {(identity) => {this.identity = identity}}
-                                        //title = 'Contact & Identification'
-                                        title = ''
+                                    <CustomerContact
+										type = 'email'
+										mappings = {mappings.contact}
+                                        ref = {(contact) => {this.contact = contact}}
+										data = {contact}
+                                        onCancel = {this.onCancel}
+                                        onSaveSuccess = {this.onSaveSuccess}
+                                        //mode = 'create'
+                                        />
+                                </div>
+                            </div>
+                        </Col>
+                        <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
+                    </Row>
+                    ))}
+                    
+                    {this.props.displayContacts && this.props.contacts && this.props.contacts.phone && this.props.contacts.phone.map((contact, idx) => (
+                    <Row key={idx} className='repeater-row'>
+                        <Col xs={1}>
+                            <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
+                        </Col>
+                        <Col xs={10}>
+                            <div className='customer-profile-block row full-width-inputs'>
+                                <div className='billing-address'>
+                                    <CustomerContact
+										mappings = {mappings.contact}
+                                        ref = {(contact) => {this.contact = contact}}
+										data = {contact}
                                         onCancel = {this.onCancel}
                                         onSaveSuccess = {this.onSaveSuccess}
                                         //mode = 'create'
@@ -364,16 +408,19 @@ class CustomerFullProfile extends Component {
                     ))}
                     
                     {/* Customer Identification */}
+					{this.props.displayIdentification && (
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Identification
-                                <Button className='repeater-button'><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
+                                <Button className='repeater-button' onClick={() => { CustomerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
                             </h4>
                         </Col>
                     </Row>
-                    {[0].map(idx => (
-                    <Row className='repeater-row'>
+					)}
+					
+                    {this.props.displayIdentification && this.props.identities && this.props.identities.map((identity, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
@@ -381,9 +428,9 @@ class CustomerFullProfile extends Component {
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
                                     <CustomerIdentity
+										mappings = {mappings.identity}
                                         ref = {(identity) => {this.identity = identity}}
-                                        //title = 'Contact & Identification'
-                                        title = ''
+										data = {identity}
                                         onCancel = {this.onCancel}
                                         onSaveSuccess = {this.onSaveSuccess}
                                         //mode = 'create'
@@ -396,72 +443,60 @@ class CustomerFullProfile extends Component {
                     ))}
                     
                     {/* Customer Addresses */}
+					{['multiple'].indexOf(this.props.displayAddresses) > -1 && (
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Addresses
-                                {this.props.multipleAddresses && (
-                                <Button className='repeater-button'><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
+                                {this.props.displayAddresses === 'multiple' && (
+                                <Button className='repeater-button' onClick={() => { CustomerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
                                 )}
                                 
                                 {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
-                                {!this.props.multipleAddresses && (
+                                {!this.props.displayAddresses === 'multiple' && (
                                 <Button className='repeater-button'><h5><i className='fa' />&nbsp;</h5></Button>
                                 )}
                             </h4>
                         </Col>
                     </Row>
+					)}
                     
-                    {this.props.multipleAddresses && (
-                    [0,1,2].map(idx => (
-                    <Row className='repeater-row'>
+                    {this.props.displayAddresses === 'multiple' && this.props.addresses && this.props.addresses.map((address, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
                         <Col xs={10}>
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
-                                    {/* TODO: Temporary hack so I can see several address types */}
-                                    {idx  === 1 && (
                                     <CurrentAddress
+										mappings = {mappings.address}
                                         ref = {(address) => {this.billingAddress = address}}
-                                        //title = ''
                                         modal = {this.props.modal}
-                                        data = {this.props.billingAddress}
-                                        durationRequired = {true}
+                                        data = {address}
+                                        durationRequired = {this.props.durationRequired}
                                         nameRequired = {false}
                                         mode = 'create'
                                         />
-                                    )}
-                                    
-                                    {idx  !== 1 && (
-                                    <CurrentAddress
-                                        ref = {(address) => {this.billingAddress = address}}
-                                        //title = ''
-                                        modal = {this.props.modal}
-                                        data = {this.props.billingAddress}
-                                        durationRequired = {true}
-                                        nameRequired = {false}
-                                        mode = 'create'
-                                        />
-                                    )}
                                 </div>
                             </div>
                         </Col>
                         <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
                     </Row>
-                    ))
-                    )}
+                    ))}
 
                     {/* If single / shipping / billing address */}
-                    {!this.props.multipleAddresses && this.props.displayCurrentAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='billing-address'>
                             <CurrentAddress
+								mappings = {mappings.address}
                                 ref = {(address) => {this.billingAddress = address}}
                                 title = 'Current Address'
                                 modal = {this.props.modal}
                                 data = {this.props.billingAddress}
+								durationRequired = {this.props.durationRequired}
+								nameRequired = {false}
                                 mode = 'create'
                                 />
                         </div>
@@ -469,26 +504,31 @@ class CustomerFullProfile extends Component {
                     )}
                     
                     {/* If single / shipping / billing address */}
-                    {!this.props.multipleAddresses && this.props.displayShippingAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='shipping-address'>
                             <CurrentAddress
+								mappings = {mappings.address}
                                 ref = {(address) => {this.shippingAddress = address}}
                                 title = 'Shipping Address'
                                 modal = {this.props.modal}
                                 data = {this.props.shippingAddress}
+								durationRequired = {this.props.durationRequired}
+								nameRequired = {false}
                                 mode = 'create'
                                 />
                         </div>
                     </div>
                     )}
                     
+					{this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
                         <FormGroup>
                             <Button bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> Create Account</h4></Button>&nbsp;
                             <Button onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>&nbsp;
                         </FormGroup>
                     </div>
+					)}
                 </Col>
             )
         } else if (this.props.editAccount) {
@@ -507,8 +547,16 @@ class CustomerFullProfile extends Component {
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
-                                Customer Information {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
+                                Customer Information 
+								{/* TODO: What did we call it in CurrentAddress? */}
+								{['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
+								<Button className='repeater-button' onClick={this.props.onEditClicked}><h5><i className='fa fa-pencil' /> Edit</h5></Button>
+								)}
+								
+								{/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
+								{!this.props.editMode || ['modal', 'custom'].indexOf(this.props.editMode) === -1 && (
                                 <Button className='repeater-button'><h5><i className='fa' />&nbsp;</h5></Button>
+								)}
                             </h4>
                         </Col>
                     </Row>
@@ -518,6 +566,7 @@ class CustomerFullProfile extends Component {
                         
                         {this.props.displayProfile && (
                         <CustomerInfo
+							mappings = {mappings.customer}
                             ref = {(profile) => {this.profile = profile}}
                             data = {this.props.customer}
                             onCancel = {this.props.onCancel}
@@ -529,6 +578,7 @@ class CustomerFullProfile extends Component {
                     </div>
                     
                     {/* Customer Contacts */}
+					{this.props.displayContacts && (
 					<Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
@@ -537,18 +587,21 @@ class CustomerFullProfile extends Component {
                             </h4>
                         </Col>
                     </Row>
-                    {[0,1].map(idx => (
-                    <Row className='repeater-row'>
+                    )}
+					
+					{this.props.displayContacts && this.props.contacts && this.props.contacts.email && this.props.contacts.email.map((contact, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
                         <Col xs={10}>
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
-                                    <CustomerIdentity
-                                        ref = {(identity) => {this.identity = identity}}
-                                        //title = 'Contact & Identification'
-                                        title = ''
+                                    <CustomerContact
+										type = 'email'
+										mappings = {mappings.contact}
+                                        ref = {(contact) => {this.contact = contact}}
+										data = {contact}
                                         onCancel = {this.onCancel}
                                         onSaveSuccess = {this.onSaveSuccess}
                                         //mode = 'edit'
@@ -560,17 +613,44 @@ class CustomerFullProfile extends Component {
                     </Row>
                     ))}
                     
+					{this.props.displayContacts && this.props.contacts && this.props.contacts.phone && this.props.contacts.phone.map((contact, idx) => (
+                    <Row key={idx} className='repeater-row'>
+                        <Col xs={1}>
+                            <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
+                        </Col>
+                        <Col xs={10}>
+                            <div className='customer-profile-block row full-width-inputs'>
+                                <div className='billing-address'>
+                                    <CustomerContact
+										type = 'phone'
+										mappings = {mappings.contact}
+                                        ref = {(contact) => {this.contact = contact}}
+                                        data = {contact}
+										onCancel = {this.onCancel}
+                                        onSaveSuccess = {this.onSaveSuccess}
+                                        //mode = 'edit'
+                                        />
+                                </div>
+                            </div>
+                        </Col>
+                        <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
+                    </Row>
+                    ))}
+                    
                     {/* Customer Identification */}
+					{this.props.displayIdentification && (
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Identification
-                                <Button className='repeater-button'><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
+                                <Button className='repeater-button' onClick={() => { CustomerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
                             </h4>
                         </Col>
                     </Row>
-                    {[0].map(idx => (
-                    <Row className='repeater-row'>
+					)}
+					
+                    {this.props.displayIdentification && this.props.identities && this.props.identities.map((identity, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
@@ -578,9 +658,9 @@ class CustomerFullProfile extends Component {
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
                                     <CustomerIdentity
+										mappings = {mappings.identity}
                                         ref = {(identity) => {this.identity = identity}}
-                                        //title = 'Contact & Identification'
-                                        title = ''
+                                        data = {identity}
                                         onCancel = {this.onCancel}
                                         onSaveSuccess = {this.onSaveSuccess}
                                         //mode = 'edit'
@@ -593,68 +673,56 @@ class CustomerFullProfile extends Component {
                     ))}
                     
                     {/* Customer Addresses */}
+					{['multiple'].indexOf(this.props.displayAddresses) > -1 && (
                     <h4 className='section-heading' style={{textAlign: 'center'}}>
                         Customer Addresses
-                        {this.props.multipleAddresses && (
-                        <Button className='repeater-button'><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
+                        {this.props.displayAddresses === 'multiple' && (
+                        <Button className='repeater-button' onClick={() => { CustomerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
                         )}
                         
                         {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
-                        {!this.props.multipleAddresses && (
+                        {!this.props.displayAddresses === 'multiple' && (
                         <Button className='repeater-button'><h5><i className='fa' />&nbsp;</h5></Button>
                         )}
                     </h4>
+					)}
                     
-                    {this.props.multipleAddresses && (
-                    [0,1,2].map(idx => (
-                    <Row className='repeater-row'>
+                    {this.props.displayAddresses === 'multiple' && this.props.addresses && this.props.addresses.map((address, idx) => (
+                    <Row key={idx} className='repeater-row'>
                         <Col xs={1}>
                             <Button className='repeater-button' block><h5><i className='fa fa-minus-circle' /></h5></Button>
                         </Col>
                         <Col xs={10}>
                             <div className='customer-profile-block row full-width-inputs'>
                                 <div className='billing-address'>
-                                    {/* TODO: Temporary hack so I can see several address types */}
-                                    {idx  === 1 && (
                                     <CurrentAddress
+										mappings = {mappings.address}
                                         ref = {(address) => {this.billingAddress = address}}
-                                        //title = ''
                                         modal = {this.props.modal}
-                                        data = {this.props.billingAddress}
-                                        durationRequired = {true}
+                                        data = {address}
+                                        durationRequired = {this.props.durationRequired}
                                         nameRequired = {false}
                                         mode = 'edit'
                                         />
-                                    )}
-                                    
-                                    {idx  !== 1 && (
-                                    <CurrentAddress
-                                        ref = {(address) => {this.billingAddress = address}}
-                                        //title = ''
-                                        modal = {this.props.modal}
-                                        data = {this.props.billingAddress}
-                                        durationRequired = {true}
-                                        nameRequired = {false}
-                                        mode = 'edit'
-                                        />
-                                    )}
                                 </div>
                             </div>
                         </Col>
                         <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
                     </Row>
-                    ))
-                    )}
+                    ))}
                     
                     {/* If single / shipping / billing address */}
-                    {!this.props.multipleAddresses && this.props.displayCurrentAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='billing-address'>
                             <CurrentAddress
+								mappings = {mappings.address}
                                 ref = {(address) => {this.billingAddress = address}}
                                 title = 'Billing Address'
                                 modal = {this.props.modal}
                                 data = {this.props.billingAddress}
+								durationRequired = {this.props.durationRequired}
+								nameRequired = {false}
                                 mode = 'edit'
                                 />
                         </div>
@@ -662,26 +730,30 @@ class CustomerFullProfile extends Component {
                     )}
                     
                     {/* If single / shipping / billing address */}
-                    {!this.props.multipleAddresses && this.props.displayShippingAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='shipping-address'>
                             <CurrentAddress
+								mappings = {mappings.address}
                                 ref = {(address) => {this.shippingAddress = address}}
                                 title = 'Shipping Address'
                                 modal = {this.props.modal}
                                 data = {this.props.shippingAddress}
+								durationRequired = {this.props.durationRequired}
                                 mode = 'edit'
                                 />
                         </div>
                     </div>
                     )}
                     
+					{this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
                         <FormGroup>
                             <Button bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> Update Account</h4></Button>&nbsp;
                             <Button onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>&nbsp;
                         </FormGroup>
                     </div>
+					)}
                     
                     {/*
                     <div>

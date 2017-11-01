@@ -16,6 +16,7 @@ import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
+/*
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
@@ -25,6 +26,7 @@ import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
     customerStore: deps.customerStore
 }))
 @observer
+*/
 class AccountComponent extends Component {
     constructor(props) {
         super(props)

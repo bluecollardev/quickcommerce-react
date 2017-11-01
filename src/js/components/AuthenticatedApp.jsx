@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import {inject, observer, Provider} from 'mobx-react'
 
-@inject(deps => ({
-    actions: deps.actions,
-    authService: deps.authService,
-    loginStore: deps.loginStore
-}))
-@observer
 class AuthenticatedApp extends Component {
     constructor(props) {
         super(props)
@@ -15,8 +8,15 @@ class AuthenticatedApp extends Component {
     }
 
     getLoginState() {
+		let loggedIn = false
+		let loginStore = this.props.loginStore || null
+		
+		if (loginStore !== null && loginStore.isLoggedIn()) {
+			loggedIn = loginStore.isLoggedIn()
+		}
+		
         return {
-            loggedIn: this.props.loginStore.isLoggedIn()
+            loggedIn: loggedIn
         }
     }
 

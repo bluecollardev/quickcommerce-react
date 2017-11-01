@@ -15,6 +15,7 @@ class LoginStore extends BaseStore {
         
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
+        this.isLoggedIn = this.isLoggedIn.bind(this)
         
         window.LoginStore = instance = this
     }
