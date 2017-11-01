@@ -3,15 +3,14 @@ import axios from 'axios'
 //import when from 'when'
 
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
 
-import Auth from './AuthService.jsx'
+import { BaseService } from './BaseService.jsx'
 
-class UserService {
+export default class UserService extends BaseService {
     onSuccess(response) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
             let data = response.data['data']
-            CustomerActions.setCustomer(data)
+            this.actions.customer.setCustomer(data)
         } else if (response.hasOwnProperty('data')) {
             // Check to see if user is already logged?
             if (response.data.success === false) {
@@ -76,16 +75,16 @@ class UserService {
                 let payload = response.data
                 
                 // Set the customer
-                CustomerActions.setCustomer(data)
+                this.actions.customer.setCustomer(data)
                 
                 // Resource API data is wrapped in a data object                
-                CustomerActions.setBillingAddress({
+                this.actions.customer.setBillingAddress({
                     addresses: [payload.data],
                     billingAddressId: addressId,
                     billingAddress: payload.data
                 })
                 
-                CustomerActions.setShippingAddress({
+                this.actions.customer.setShippingAddress({
                     addresses: [payload.data],
                     shippingAddressId: addressId,
                     shippingAddress: payload.data
@@ -96,11 +95,11 @@ class UserService {
                 
                 // TODO: Notify user
                 
-                CustomerActions.setCustomer(data)
+                this.actions.customer.setCustomer(data)
             })
             
         } else {
-            CustomerActions.setCustomer(data)
+            this.actions.customer.setCustomer(data)
             // TODO: Clear addresses explicitly
         }
     }
@@ -201,9 +200,9 @@ class UserService {
 			data: JSON.stringify(data),
 			//method: 'PUT',
 			method: 'POST', // Legacy API sucks and uses POST (3rd party OCAPI)
-			headers: {
-                'X-Oc-Session': Auth.getToken()
-            }
+			//headers: {
+            //    'X-Oc-Session': this.services.auth.getToken()
+            //}
 		}).then(response => {
             if (response.success) {
                 if (response.hasOwnProperty('data')) {
@@ -319,7 +318,7 @@ class UserService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setBillingAddress({
+                        this.actions.customer.setBillingAddress({
                             addresses: payload.addresses,
                             billingAddressId: addressId,
                             billingAddress: address
@@ -366,7 +365,7 @@ class UserService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setShippingAddress({
+                        this.actions.customer.setShippingAddress({
                             addresses: payload.addresses,
                             shippingAddressId: addressId,
                             shippingAddress: address
@@ -397,7 +396,7 @@ class UserService {
                 if (response.status === 200) {
                     if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                         let data = response.data['data']
-                        CustomerActions.setCustomer(data)
+                        this.actions.customer.setCustomer(data)
                     } else {
                         that.handleApiError(response)
                     }
@@ -410,5 +409,3 @@ class UserService {
 		//return isLogged
 	}
 }
-
-export default new CustomerService()

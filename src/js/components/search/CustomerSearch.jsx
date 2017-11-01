@@ -17,12 +17,8 @@ import Table, {
 
 import Autocomplete from 'react-autocomplete'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerSearchActions from '../../actions/CustomerSearchActions.jsx'
-import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CheckoutActions from '../../actions/CheckoutActions.jsx'\
-
 @inject(deps => ({
+    actions: deps.actions,
     customerStore: deps.customerStore,
     customerSearchStore: deps.customerSearchStore,
     customerListStore: deps.customerListStore,
@@ -114,7 +110,7 @@ class CustomerSearch extends Component {
         
         // Update the order customer using the selected item
         // Fetch addresses and assign them to the order too
-        //CheckoutActions.setExistingCustomer({ customer: this.state.selectedCustomer })
+        //this.props.actions.checkout.setExistingCustomer({ customer: this.state.selectedCustomer })
 
         console.log('executing onSelectClicked callback')
         if (typeof this.props.onSelect === 'function') {
@@ -159,7 +155,7 @@ class CustomerSearch extends Component {
                 selectedCustomer: results[0]
             })
 
-            CheckoutActions.setBuiltInCustomer()
+            this.props.actions.checkout.setBuiltInCustomer()
         }
     }*/
 
@@ -249,7 +245,7 @@ class CustomerSearch extends Component {
 								value={this.state.customerName}
 								onChange={(event, value) => {
 									if (typeof value === 'string' && value.trim().length > 0) {										
-										CustomerSearchActions.search({
+										this.props.actions.customerSearch.search({
 											search: value.trim()
 										})
 									}
@@ -265,10 +261,10 @@ class CustomerSearch extends Component {
 									
 									// Update the order customer using the selected item
 									// Fetch addresses and assign them to the order too
-									//CheckoutActions.setExistingCustomer({ customer: item })
+									//this.props.actions.checkout.setExistingCustomer({ customer: item })
 									// Note: there's nothing wrong with this, I just personally think I can consolidate the two bits
-									CustomerActions.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
-									CheckoutActions.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
+									this.props.actions.customer.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
+									this.props.actions.checkout.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
 								}}
 							/>
 						</FormGroup>

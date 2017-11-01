@@ -40,11 +40,6 @@ import ProductOptionRow from '../components/catalog/ProductOptionRow.jsx'
 
 import Stepper from './stepper/BrowserStepper.jsx'
 
-import CheckoutActions from '../actions/CheckoutActions.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
-import SettingActions from '../actions/SettingActions.jsx'
-import ProductActions from '../actions/ProductActions.jsx'
-
 import ProductBrowser from './browser/ProductBrowser.jsx'
 import BrowserMenu from './browser/BrowserMenu.jsx'
 import CustomerPicker from './customer/CustomerPicker.jsx'
@@ -178,13 +173,13 @@ class PosComponent extends Component {
         // Stepper maintains its own state and store
         this.stepper = new Stepper()
         
-        SettingActions.fetchStore(8)
+        this.props.actions.setting.fetchStore(8)
         
         props.settingStore.on('store-info-loaded', (id, payload) => {
             props.checkoutStore.stores[id] = payload
         }) // Load ACE bar store data so we don't have to later
         
-        SettingActions.fetchSettings()
+        this.props.actions.setting.fetchSettings()
         
         props.settingStore.on('settings-loaded', (payload) => {
             props.checkoutStore.settings = payload
@@ -989,7 +984,7 @@ class PosComponent extends Component {
     
     changeCustomer(item) {
         //this.props.customerService.setCustomer(item)
-        CheckoutActions.setExistingCustomer({ customer: item })
+        this.props.actions.checkout.setExistingCustomer({ customer: item })
     }
     
     updateNotes(notes) {
@@ -2494,14 +2489,14 @@ class PosComponent extends Component {
                                         onCreateSuccess = {(payload) => {
                                             let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
                                             
-                                            CustomerActions.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
-                                            CustomerActions.setBillingAddress({
+                                            this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
+                                            this.props.actions.customer.setBillingAddress({
                                                 addresses: data.addresses,
                                                 billingAddressId: data.customer['address_id'],
                                                 billingAddress: data.addresses[0] // TODO: Get the right address using ID
                                             })
                                             
-                                            /*CustomerActions.setShippingAddress({
+                                            /*this.props.actions.customer.setShippingAddress({
                                                 addresses: [payload.data],
                                                 shippingAddressId: addressId,
                                                 shippingAddress: payload.data
@@ -2539,8 +2534,8 @@ class PosComponent extends Component {
                                         onSaveSuccess = {(payload) => {
                                             let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
                                             
-                                            CustomerActions.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
-                                            CustomerActions.setBillingAddress({
+                                            this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
+                                            this.props.actions.customer.setBillingAddress({
                                                 addresses: data.addresses,
                                                 billingAddressId: data.customer['address_id'],
                                                 billingAddress: data.addresses[0] // TODO: Get the right address using ID

@@ -3,15 +3,16 @@ import axios from 'axios'
 //import when from 'when'
 
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
 
-class CustomerAddressService {
+import { BaseService } from './BaseService.jsx'
+
+export default class CustomerAddressService extends BaseService {
     onSuccess(response) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {            
             //var model = new Entity()
             //that.setData(response.data, model)
             let data = response.data['data']
-            CustomerActions.setCustomer(data)
+            this.actions.customer.setCustomer(data)
         } else if (response.hasOwnProperty('data')) {
             // Check to see if user is already logged?
             if (response.data.success === false) {
@@ -209,7 +210,7 @@ class CustomerAddressService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setBillingAddress({
+                        this.actions.customer.setBillingAddress({
                             addresses: payload.addresses,
                             billingAddressId: addressId,
                             billingAddress: address
@@ -256,7 +257,7 @@ class CustomerAddressService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setShippingAddress({
+                        this.actions.customer.setShippingAddress({
                             addresses: payload.addresses,
                             shippingAddressId: addressId,
                             shippingAddress: address
@@ -269,5 +270,3 @@ class CustomerAddressService {
         })
 	}
 }
-
-export default new CustomerAddressService()

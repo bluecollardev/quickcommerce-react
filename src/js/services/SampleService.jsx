@@ -1,13 +1,11 @@
 import assign from 'object-assign'
 import axios from 'axios'
 
-import Auth from './AuthService.jsx'
-
 import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
 import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
 import StringHelper from 'quickcommerce-react/helpers/String.js'
 
-export class SampleService {
+export class SampleService extends BaseService {
 	/**
 	 * Override parent implementation.
 	 */

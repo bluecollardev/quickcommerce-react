@@ -8,6 +8,7 @@ import StringHelper from '../../helpers/String.js'
 import Cart from '../../modules/Cart.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     checkoutStore: deps.checkoutStore,
     settingStore: deps.settingStore
 }))

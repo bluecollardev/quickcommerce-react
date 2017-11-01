@@ -33,7 +33,7 @@ import SocialShare from 'grommet/components/SocialShare'
 import Video from 'grommet/components/Video'
 import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay'
 
-import StarRating from 'react-star-rating'
+//import StarRating from 'react-star-rating'
 
 //import Stepper from '../stepper/BrowserStepper.jsx'
 import BrowserActions from '../../actions/BrowserActions.jsx'
@@ -359,7 +359,7 @@ export default class ProductBrowser extends Component {
                                                 justify='between'
                                                 separator='top'>
                                                 <Label size='small'>Rating</Label>
-                                                <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
+                                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
                                             </Box>
                                         </Box>
                                     </Col>
@@ -418,7 +418,7 @@ export default class ProductBrowser extends Component {
                                                 justify='between'
                                                 separator='top'>
                                                 <Label size='small'>Rating</Label>
-                                                <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
+                                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
                                             </Box>
                                         </Box>
                                         <Box pad={{vertical: 'small'}}

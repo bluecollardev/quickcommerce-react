@@ -10,11 +10,9 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import Autocomplete from 'react-autocomplete'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CheckoutActions from '../../actions/CheckoutActions.jsx'
-
 @inject(deps => ({
+    actions: deps.actions,
+    customerService: deps.customerService,
     customerService: deps.customerService,
     customerStore: deps.customerStore,
     customerSearchStore: deps.customerSearchStore,
@@ -53,7 +51,7 @@ export default class CustomerPicker extends Component {
         // Use core event from BaseStore
         this.props.customerListStore.on('CHANGE', this.updateCustomerList)
 
-        CustomerListActions.loadCustomers()
+        this.props.actions.customerList.loadCustomers()
     }
 	
 	updateCustomerList() {
@@ -143,7 +141,7 @@ export default class CustomerPicker extends Component {
             selectedCustomer: customer
         })
 
-        CheckoutActions.setBuiltInCustomer(customer)
+        this.props.actions.checkout.setBuiltInCustomer(customer)
     }
 
     render() {

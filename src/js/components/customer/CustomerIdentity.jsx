@@ -13,8 +13,6 @@ import Autocomplete from 'react-autocomplete'
 
 import FormComponent from '../FormComponent.jsx'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import fieldNames from '../../forms/CustomerIdentityFields.jsx'
 
 import {
@@ -77,6 +75,7 @@ import {
 } from '../form/Input.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     customerService: deps.customerService,
     settingStore: deps.settingStore
 }))

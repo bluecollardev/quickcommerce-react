@@ -5,8 +5,9 @@ import BaseStore from './BaseStore.jsx'
 let instance = null
 
 class LoginStore extends BaseStore {   
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        // LoginStore
+        super(dispatcher)
         
         if (instance !== null) {
             return instance
@@ -46,5 +47,4 @@ class LoginStore extends BaseStore {
 LoginStore.userToken = null
 LoginStore.user = null
 
-export default new LoginStore()
 export { LoginStore }

@@ -5,8 +5,8 @@ import BaseStore from './BaseStore.jsx'
 let instance = null
 
 class UserStore extends BaseStore {    
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
         
         if (instance !== null) {
             return instance

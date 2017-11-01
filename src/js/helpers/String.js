@@ -82,4 +82,27 @@ export default class StringHelper {
         let trimmed = str.substr(0, maxLength)
         return trimmed.substr(0, Math.min(trimmed.length, trimmed.lastIndexOf(' ')))
     }
+    
+    static toSentenceCase = (text) => {
+        return text.replace(/\w\S*/g, function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        })
+    }
+
+    static quoteIfNecessary = (text) => {
+        // quote if there are embedded spaces
+        if (text.indexOf(' ') !== -1) {
+          text = "'" + text + "'"
+        }
+        return text
+    }
+
+    static unquoteIfNecessary = (text) =>  {
+        // remove surrounding quotes
+        if ((text[0] === '\'' && text[text.length - 1] === '\'') ||
+          (text[0] === '"' && text[text.length - 1] === '"')) {
+          text = text.slice(1, text.length - 1)
+        }
+        return text
+    }
 }

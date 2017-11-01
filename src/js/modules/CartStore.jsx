@@ -1,14 +1,13 @@
-import EventEmitter        from 'events'
-import React               from 'react'
-import assign              from 'object-assign'
-import { Dispatcher }      from 'flux'
+import assign from 'object-assign'
+
+import EventEmitter from 'events'
 
 import ArrayHelper from '../helpers/Array.js'
 
 const CartStore = assign({}, EventEmitter.prototype, {
-    items        : {},
-    selection    : [],
-    nextKey      : 0,
+    items: {},
+    selection: [],
+    nextKey: 0,
 
     init(config) {
         //this.total        = total

@@ -13,6 +13,7 @@ import List, { ListItem, ListItemText } from 'material-ui/List'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService
 }))
 @observer
@@ -38,7 +39,7 @@ class ProfileMenu extends Component {
         e.stopPropagation()
         
         try {
-            this.props.authServicelogout()
+            this.props.authService.logout()
         } catch (err) {
             console.log('Error logging out', err)
         }

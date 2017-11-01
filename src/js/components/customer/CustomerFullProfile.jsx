@@ -11,8 +11,6 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 //import CustomerContact from '../customer/CustomerContact.jsx'
 //import CustomerIdentity from '../customer/CustomerIdentity.jsx'
@@ -22,6 +20,7 @@ import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService,
     customerAddressService: deps.customerAddressService,

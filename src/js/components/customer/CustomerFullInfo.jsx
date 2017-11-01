@@ -10,9 +10,8 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 import FormComponent from '../FormComponent.jsx'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService
 }))

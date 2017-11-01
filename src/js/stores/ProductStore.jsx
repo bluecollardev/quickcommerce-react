@@ -4,8 +4,8 @@ import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
 class ProductStore extends BaseStore {
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
         
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))

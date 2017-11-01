@@ -18,6 +18,7 @@ import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/CustomerFullProfile.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     loginStore: deps.loginStore,
     customerStore: deps.customerStore

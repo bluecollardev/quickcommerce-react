@@ -1,14 +1,14 @@
-import React               from 'react'
-import classNames          from 'classnames'
-import { DropTarget }      from 'react-dnd'
+import React from 'react'
+import classNames from 'classnames'
+import { DropTarget } from 'react-dnd'
 
-import { Well }            from 'react-bootstrap'
+import { Well } from 'react-bootstrap'
 
-import RowComponent        from './CartRowComponent.jsx'
-import ContainerComponent  from './CartContainerComponent.jsx'
+import RowComponent from './CartRowComponent.jsx'
+import ContainerComponent from './CartContainerComponent.jsx'
 
-import CartDispatcher      from './CartDispatcher.jsx'
-import InternalCartStore   from './CartStore.jsx'
+import CartDispatcher from './CartDispatcher.jsx'
+import InternalCartStore from './CartStore.jsx'
 
 // Dirty global hack to maintain store instance until I refactor 
 // this component to use context or switch from flux to redux
@@ -16,12 +16,13 @@ window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore
 
 let CartStore = window.CartStore
 
-var cartTarget = {
+let cartTarget = {
 
     drop(props, monitor, component) {
         if (monitor.didDrop()) {
             return
         }
+        
         const item = monitor.getItem()
         component.props.onItemDropped(item.id)
     }

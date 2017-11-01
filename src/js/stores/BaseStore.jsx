@@ -1,16 +1,29 @@
 import { EventEmitter } from 'events'
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx'
+import { Dispatcher } from 'flux'
+
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
 export default class BaseStore extends EventEmitter {
-    constructor() {
+    constructor(dispatcher) {
         super()
+        
+        dispatcher = dispatcher || null
+        if (dispatcher instanceof Dispatcher) {
+            this.dispatcher = dispatcher
+        } else {
+            this.dispatcher = new Dispatcher()  // TODO: Hmmm... maybe I shouldn't just create a random dispatcher that's attached to the base store
+            // This is just in here until I decide how to handle the case where it isn't provided
+        }
     }
 
     subscribe(actionSubscribe) {
-        this.dispatchToken = AppDispatcher.register(actionSubscribe())
+        if (!this.dispatcher instanceof Dispatcher) {
+            throw new Error('Failed to provide dispatcher to BaseStore, cannot register actions')
+        }
+        
+        this.dispatchToken = this.dispatcher.register(actionSubscribe())
     }
 
     emitChange() {

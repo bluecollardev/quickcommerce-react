@@ -17,7 +17,9 @@ import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
+    customerService: deps.customerService,
     loginStore: deps.loginStore,
     userStore: deps.userStore,
     customerStore: deps.customerStore
@@ -76,8 +78,23 @@ class AccountComponent extends Component {
 	}
     
     // TODO: Can I move these next group of methods up a level to AuthenticatedComponent?
-    onLoginSuccess() {
-        window.location.hash = '/'
+    onLoginSuccess(response) {
+        let actions = this.props.actions
+        
+        // TODO: Check return - is it response or data object?
+        if (response.success || response.status === 200) {
+            if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
+                // TODO: This is still using legacy API
+                let data = response.data.data                
+                
+                // Account -> User role
+                actions.user.setUser(data)
+                // Account -> Customer role
+                this.props.customerService.setCustomer(data) 
+                
+                window.location.hash = '/'
+            }
+        }
     }
     
     onLoginError() {
@@ -86,8 +103,8 @@ class AccountComponent extends Component {
     
     onCreateSuccess(response) {
         /*this.props.authService.fetchAccount(data => {
-            LoginActions.loginUser(response.data)
-            UserActions.setUser(response.data)
+            this.props.actions.login.loginUser(response.data)
+            this.props.actions.user.setUser(response.data)
             CustomerService.setCustomer(response.data)
             
             this.onLoginSuccess()

@@ -16,10 +16,8 @@ import CustomerInfo from '../customer/CustomerInfo.jsx'
 
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
-import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService,
     customerAddressService: deps.customerAddressService
@@ -226,9 +224,9 @@ class CustomerProfile extends Component {
                 })
                 
                 if (addressId === null) {
-                    CustomerAddressService.post(address)
+                    this.props.customerAddressService.post(address)
                 } else if (!isNaN(addressId)) {
-                    CustomerAddressService.put(address)
+                    this.props.customerAddressService.put(address)
                 }
             }
         })*/
@@ -260,7 +258,7 @@ class CustomerProfile extends Component {
             fn(response)
         }
         
-        CustomerListActions.loadCustomers()
+        this.props.actions.customerList.loadCustomers()
     }
     
     onSaveSuccess(response) {
@@ -271,7 +269,7 @@ class CustomerProfile extends Component {
             fn(response)
         }
         
-        CustomerListActions.loadCustomers()
+        this.props.actions.customerList.loadCustomers()
     }
     
     onBillingAddressUpdate() {

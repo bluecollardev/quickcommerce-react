@@ -1,8 +1,6 @@
 import assign from 'object-assign'
 
 import EventEmitter from 'events'
-import React from 'react'
-import { Dispatcher } from 'flux'
 
 import LoginConstants from '../../constants/LoginConstants.jsx'
 import BaseStore from '../../stores/BaseStore.jsx'

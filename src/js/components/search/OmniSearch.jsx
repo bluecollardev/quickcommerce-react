@@ -17,14 +17,10 @@ import Table, {
 
 import Autocomplete from 'react-autocomplete'
 
-import OmniSearchActions from '../../actions/OmniSearchActions.jsx'
 import OmniSearchStore from '../../stores/OmniSearchStore.jsx'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-import CustomerListActions from '../../actions/CustomerListActions.jsx'
-import CheckoutActions from '../../actions/CheckoutActions.jsx'
-
 @inject(deps => ({
+    actions: deps.actions,
     customerStore: deps.customerStore,
     customerSearchStore: deps.customerSearchStore,
     customerListStore: deps.customerListStore,
@@ -116,7 +112,7 @@ class OmniSearch extends Component {
         
         // Update the order customer using the selected item
         // Fetch addresses and assign them to the order too
-        //CheckoutActions.setExistingCustomer({ customer: this.state.selectedCustomer })
+        //this.props.actions.checkout.setExistingCustomer({ customer: this.state.selectedCustomer })
 
         console.log('executing onSelectClicked callback')
         if (typeof this.props.onSelect === 'function') {
@@ -161,7 +157,7 @@ class OmniSearch extends Component {
                 selectedCustomer: results[0]
             })
 
-            CheckoutActions.setBuiltInCustomer()
+            this.props.actions.checkout.setBuiltInCustomer()
         }
     }*/
 
@@ -249,7 +245,7 @@ class OmniSearch extends Component {
 								value={this.state.customerName}
 								onChange={(event, value) => {
 									if (typeof value === 'string' && value.trim().length > 0) {										
-										OmniSearchActions.search({
+										this.props.actions.omniSearch.search({
 											search: value.trim()
 										})
 									}
@@ -265,10 +261,10 @@ class OmniSearch extends Component {
 									
 									// Update the order customer using the selected item
 									// Fetch addresses and assign them to the order too
-									//CheckoutActions.setExistingCustomer({ customer: item })
+									//this.props.actions.checkout.setExistingCustomer({ customer: item })
 									// Note: there's nothing wrong with this, I just personally think I can consolidate the two bits
-									CustomerActions.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
-									CheckoutActions.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
+									this.props.actions.customer.setCustomer(item) // TODO: This should trigger an event... right now it doesn't trigger anything
+									this.props.actions.checkout.setExistingCustomer({ customer: item }) // TODO: This should trigger an event... right now it doesn't trigger anything
 								}}
 							/>
 						</FormGroup>

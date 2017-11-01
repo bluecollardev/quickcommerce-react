@@ -11,8 +11,6 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 
 import FormComponent from '../FormComponent.jsx'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import {
 	OccupationAutocomplete,
 	CountryAutocomplete,
@@ -77,6 +75,7 @@ import {
 import fieldNames from '../../forms/CustomerContactFields.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService
 }))

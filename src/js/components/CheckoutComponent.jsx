@@ -27,8 +27,6 @@ import Stepper from './stepper/BrowserStepper.jsx'
 import BrowserActions from '../actions/BrowserActions.jsx'
 import BrowserStore from '../stores/BrowserStore.jsx' // TODO: Don't initialize this here!
 
-import ProductActions from '../actions/ProductActions.jsx'
-
 import ProductBrowser      from './browser/ProductBrowser.jsx'
 import BrowserMenu         from './browser/BrowserMenu.jsx'
 import CustomerPicker      from './customer/CustomerPicker.jsx'
@@ -93,6 +91,7 @@ const CASH_IN_DRAWER = [
 ]
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService,
     checkoutService: deps.checkoutService,
@@ -572,7 +571,7 @@ class CheckoutComponent extends Component {
         
         // TODO: If POS mode... add switch
         //cart.addItem(item.id, 1, item)
-        ProductActions.setProduct(item)
+        this.props.actions.product.setProduct(item)
         
         window.location.hash = '/product'
         

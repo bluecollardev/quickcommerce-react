@@ -12,8 +12,8 @@ import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 let instance = null
 
 class CheckoutStore extends OrderStore {
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
 		
 		if (instance !== null) {
             return instance

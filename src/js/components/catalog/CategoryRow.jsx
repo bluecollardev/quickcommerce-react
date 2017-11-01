@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import CartDragItem from '../cart/CartDragItem.jsx'
+import CategoryDragItem from './CategoryDragItem.jsx'
 import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
 
 export default class CategoryRow extends Component {
@@ -16,9 +16,9 @@ export default class CategoryRow extends Component {
     render() {
         return (
             <Col xs={12} sm={4}>
-                <CartDragItem 
+                <CategoryDragItem 
                   item = {this.props.data}
-                  id = {this.props.data.id}
+                  id = {this.props.data['category_id']}
                   onItemClicked = {this.props.onItemClicked} />
             </Col>
         )

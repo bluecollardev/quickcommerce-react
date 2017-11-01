@@ -17,10 +17,8 @@ import FormComponent from './FormComponent.jsx'
 
 import CurrentAddress from './address/CurrentAddress.jsx'
 
-import SettingActions from '../actions/SettingActions.jsx'
-import CustomerListActions from '../actions/CustomerListActions.jsx'
-
 @inject(deps => ({
+    actions: deps.actions,
     customerListStore: deps.customerListStore,
     settingStore: deps.settingStore
 }))
@@ -133,13 +131,13 @@ class SettingComponent extends Component {
 	componentWillMount() {
 		//this.setInitialState(this.props)
         
-        SettingActions.fetchSettings()
-        SettingActions.fetchStores()
+        this.props.actions.setting.fetchSettings()
+        this.props.actions.setting.fetchStores()
         
         // Use core event from BaseStore
         this.props.customerListStore.on('CHANGE', this.updateCustomerList)
 
-        CustomerListActions.loadCustomers()
+        this.props.actions.customerList.loadCustomers()
         
         window.addEventListener('hashchange', this.onHashChange)
 		this.onHashChange()
@@ -158,10 +156,10 @@ class SettingComponent extends Component {
         this.setInitialState(newProps)
         
         console.log('SettingComponent componentWillReceiveProps')
-        SettingActions.fetchSettings()
-        SettingActions.fetchStores()
+        this.props.actions.setting.fetchSettings()
+        this.props.actions.setting.fetchStores()
         
-        CustomerListActions.loadCustomers()
+        this.props.actions.customerList.loadCustomers()
 	}
 	
 	onHashChange() {
@@ -306,7 +304,7 @@ class SettingComponent extends Component {
             console.log('updating store settings')
             console.log(formData)
             
-            SettingActions.setSettings(formData)
+            this.props.actions.setting.setSettings(formData)
             
             this.closeSettings()
         })

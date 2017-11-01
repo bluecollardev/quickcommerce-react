@@ -10,6 +10,7 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService
 }))
 @observer
@@ -35,7 +36,7 @@ class AccountMenu extends Component {
         e.stopPropagation()
         
         try {
-            this.props.authServicelogout()
+            this.props.authService.logout()
         } catch (err) {
             console.log('Error logging out', err)
         }

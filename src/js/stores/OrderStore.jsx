@@ -11,8 +11,8 @@ import OrderConstants from '../constants/OrderConstants.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
 export class OrderStore extends BaseStore {
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
 
         this.stores = SettingStore.stores
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     loginStore: deps.loginStore
 }))
@@ -25,6 +26,7 @@ class AuthenticatedApp extends Component {
     }
 
     onChange() {
+        // onChange handler for AuthenticatedApp
         this.setState(this.getLoginState())
     }
 

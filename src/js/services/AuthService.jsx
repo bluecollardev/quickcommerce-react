@@ -3,16 +3,12 @@ import axios from 'axios'
 //import when from 'when'
 
 import LoginConstants from '../constants/LoginConstants.jsx'
-import LoginActions from '../actions/LoginActions.jsx'
-
 import UserConstants from '../constants/UserConstants.jsx'
-import UserActions from '../actions/UserActions.jsx'
-
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-import CustomerService from '../services/CustomerService.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
 
-class AuthService {
+import { BaseService } from './BaseService.jsx'
+
+export default class AuthService extends BaseService {
     login(email, password, onSuccess, onError) {
         return this.handleAuth(axios({
             url: QC_LEGACY_API + 'login/',
@@ -34,10 +30,10 @@ class AuthService {
         }).then(response => {
             if (response.status === 200) {
                 // Clears token and user properties from AuthStore
-                LoginActions.logoutUser()
+                this.actions.login.logoutUser()
                 // Clear user / customer data
-                UserActions.clearUser()
-                CustomerActions.clearCustomer()
+                this.actions.user.clearUser()
+                this.actions.customer.clearCustomer()
                 
                 return true
             }
@@ -50,7 +46,7 @@ class AuthService {
         return loginPromise
             .then(response => {
                 if (response.status === 200) {
-                    // Triggers LoginActions.loginUser
+                    // Triggers this.actions.login.loginUser
                     this.onResponseReceived(response, onSuccess, onError)
                     
                     return true
@@ -68,7 +64,7 @@ class AuthService {
         
             .then(function(response) {
                 var jwt = response.id_token
-                LoginActions.loginUser(jwt)
+                this.actions.login.loginUser(jwt)
                 return true
         })*/
     }
@@ -101,16 +97,11 @@ class AuthService {
     
     onResponseReceived(response, onSuccess, onError) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-            let data = response.data['data']
-            this.getToken(userToken => {
+            let data = response.data['data'] // TODO: This isn't a constant...
+            this.getToken(token => {
                 // Store auth and current, authorized account
-                LoginActions.loginUser(userToken) // Set token
-                LoginActions.setUser(data) // Set data
-                
-                // Account -> User role
-                UserActions.setUser(data)
-                // Account -> Customer role
-                CustomerService.setCustomer(data)
+                this.actions.login.loginUser(token) // Set token
+                this.actions.login.setUser(data) // Set data
                 
                 if (typeof onSuccess === 'undefined') return
         
@@ -211,5 +202,3 @@ class AuthService {
 		return (isLogged) ? this.getToken() : isLogged
 	}
 }
-
-export default new AuthService()

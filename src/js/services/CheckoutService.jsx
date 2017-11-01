@@ -4,22 +4,18 @@ import axios from 'axios'
 //import request from 'reqwest' // TODO: Use axios
 //import when from 'when'
 
-import Auth from './AuthService.jsx'
-
-import CheckoutActions from '../actions/CheckoutActions.jsx'
+import { BaseService } from './BaseService.jsx'
 
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
-import CustomerStore from '../stores/CustomerStore.jsx'
 
+import CustomerStore from '../stores/CustomerStore.jsx'
 import StarMicronicsStore from '../stores/StarMicronicsStore.jsx'
 
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
-class CheckoutService {    
-    // From here down list utility methods that invoke our mirrored API methods
+export default class CheckoutService extends BaseService {
     fetchOrder(id, onSuccess, onError) {
         console.log('attempting to push product to cart')
         //console.log(JSON.stringify(cartProduct))
@@ -367,5 +363,3 @@ class CheckoutService {
 		return isSuccess
 	}
 }
-
-export default new CheckoutService()

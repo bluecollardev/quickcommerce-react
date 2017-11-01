@@ -10,8 +10,8 @@ import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
 class CustomerListStore extends BaseStore {
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
 
         this.config = null
 

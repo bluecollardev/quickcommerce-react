@@ -13,6 +13,7 @@ import CustomerInfo from '../customer/CustomerInfo.jsx'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService
 }))
 @observer

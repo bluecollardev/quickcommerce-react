@@ -5,6 +5,7 @@ import {inject, observer, Provider} from 'mobx-react'
 
 export default (ComposedComponent) => {
     @inject(deps => ({
+        actions: deps.actions,
         authService: deps.authService,
         loginStore: deps.loginStore,
         userStore: deps.userStore

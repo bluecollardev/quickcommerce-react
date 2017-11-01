@@ -20,7 +20,7 @@ export default class ProductRow extends Component {
                 <CartDragItem
                     onItemClicked = {this.props.onItemClicked}
                     item = {this.props.data}
-                    id = {this.props.data.id}>
+                    id = {this.props.data['product_id']}>
                     <Button block onClick={this.props.onAddToCartClicked}><i className='fa fa-shopping-cart' /> Quick Add</Button>
                 </CartDragItem>
             </Col>

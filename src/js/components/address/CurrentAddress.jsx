@@ -15,11 +15,10 @@ import { DateInput } from '../form/Input.jsx'
 
 import FormComponent from '../FormComponent.jsx'
 
-import CustomerActions from '../../actions/CustomerActions.jsx'
-
 import fieldNames from '../../forms/AddressFields.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     customerService: deps.customerService, // Not used, just in case!
     customerAddressService: deps.customerAddressService,
     settingStore: deps.settingStore

@@ -1,9 +1,9 @@
-import EventEmitter        from 'events'
-import React               from 'react'
-import assign              from 'object-assign'
-import { Dispatcher }      from 'flux'
+import assign from 'object-assign'
 
-import CartStore           from './CartStore.jsx'
+import EventEmitter from 'events'
+import { Dispatcher } from 'flux'
+
+import CartStore from './CartStore.jsx'
 
 const CartDispatcher = new Dispatcher
 

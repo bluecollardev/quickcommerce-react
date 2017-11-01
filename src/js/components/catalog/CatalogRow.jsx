@@ -18,7 +18,7 @@ export default class CatalogRow extends Component {
             <Col xs={12} sm={4}>
                 <CartDragItem 
                   item = {this.props.data}
-                  id = {this.props.data.id}
+                  id = {this.props.data['product_id']}
                   onItemClicked = {this.props.onItemClicked} />
             </Col>
         )

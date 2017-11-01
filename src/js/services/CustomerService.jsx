@@ -5,20 +5,20 @@ import axios from 'axios'
 //import when from 'when'
 
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-import CustomerActions from '../actions/CustomerActions.jsx'
+
 import CustomerStore from '../stores/CustomerStore.jsx'
 
-import Auth from './AuthService.jsx'
+import { BaseService } from './BaseService.jsx'
 
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
-export class CustomerService {
+export default class CustomerService extends BaseService {
     onSuccess(response) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
             let data = response.data['data']
-            CustomerActions.setCustomer(data)
+            this.actions.customer.setCustomer(data)
         } else if (response.hasOwnProperty('data')) {
             // Check to see if user is already logged?
             if (response.data.success === false) {
@@ -51,16 +51,16 @@ export class CustomerService {
                 let payload = response.data
                 
                 // Set the customer
-                CustomerActions.setCustomer(data)
+                this.actions.customer.setCustomer(data)
                 
                 // Resource API data is wrapped in a data object                
-                CustomerActions.setBillingAddress({
+                this.actions.customer.setBillingAddress({
                     addresses: [payload.data],
                     billingAddressId: addressId,
                     billingAddress: payload.data
                 })
                 
-                CustomerActions.setShippingAddress({
+                this.actions.customer.setShippingAddress({
                     addresses: [payload.data],
                     shippingAddressId: addressId,
                     shippingAddress: payload.data
@@ -71,11 +71,11 @@ export class CustomerService {
                 
                 // TODO: Notify user
                 
-                CustomerActions.setCustomer(data)
+                this.actions.customer.setCustomer(data)
             })
             
         } else {
-            CustomerActions.setCustomer(data)
+            this.actions.customer.setCustomer(data)
             // TODO: Clear addresses explicitly
         }
     }
@@ -97,7 +97,7 @@ export class CustomerService {
 						delete data.user
 					}
 					
-					CustomerActions.setCustomer(data)
+					this.actions.customer.setCustomer(data)
 					
 					if (typeof onSuccess === 'function') {
                         onSuccess(data)
@@ -111,7 +111,7 @@ export class CustomerService {
 			/*if (response.status === 200) {
 				if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
 					let data = response.data['data']
-					CustomerActions.setCustomer(data)
+					this.actions.customer.setCustomer(data)
 				} else {
 					this.handleApiError(response)
 				}
@@ -143,9 +143,9 @@ export class CustomerService {
             dataType: 'json',
             method: 'PATCH',
             contentType: 'application/json'
-            /*headers: {
-                'X-Oc-Session': Auth.getToken()
-            }*/ // Legacy API
+            //headers: {
+            //    'X-Oc-Session': this.services.auth.getToken()
+            //} // Legacy API
         }).then(response => {
             if (response.success || response.status === 200) {
                 if (response.hasOwnProperty('data')) {
@@ -206,9 +206,9 @@ export class CustomerService {
                 method: 'PATCH',
                 dataType: 'json',
                 contentType: 'application/json',
-                headers: {
-                    'X-Oc-Session': Auth.getToken()
-                }
+                //headers: {
+                //    'X-Oc-Session': this.services.auth.getToken()
+                //}
             }).then(response => {
                 // TODO: Patch is not returning a success / fail
                 if (response.success || response.status === 200) {
@@ -271,9 +271,9 @@ export class CustomerService {
                 method: 'PATCH',
                 dataType: 'json',
                 contentType: 'application/json',
-                headers: {
-                    'X-Oc-Session': Auth.getToken()
-                }
+                //headers: {
+                //   'X-Oc-Session': this.services.auth.getToken()
+                //}
             }).then(response => {
                 // TODO: Is patch still not returning a success / fail?
                 if (response.success || response.status === 200) {
@@ -478,7 +478,7 @@ export class CustomerService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setBillingAddress({
+                        this.actions.customer.setBillingAddress({
                             addresses: payload.addresses,
                             billingAddressId: addressId,
                             billingAddress: address
@@ -525,7 +525,7 @@ export class CustomerService {
                     
                     if (address !== null) {
                         // We have the address, set it to state
-                        CustomerActions.setShippingAddress({
+                        this.actions.customer.setShippingAddress({
                             addresses: payload.addresses,
                             shippingAddressId: addressId,
                             shippingAddress: address
@@ -556,7 +556,7 @@ export class CustomerService {
                 if (response.status === 200) {
                     if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                         let data = response.data['data']
-                        CustomerActions.setCustomer(data)
+                        this.actions.customer.setCustomer(data)
                     } else {
                         that.handleApiError(response)
                     }
@@ -569,5 +569,3 @@ export class CustomerService {
 		//return isLogged
 	}
 }
-
-export default new CustomerService()

@@ -1,4 +1,4 @@
-const RequestHelper = {
+const OcRequestHelper = {
     setHeaders(request, area, sessId, storeId) {
 		var	that = this,
 			headers = [];
@@ -28,4 +28,4 @@ const RequestHelper = {
 	}
 };
 
-module.exports = RequestHelper;
+module.exports = OcRequestHelper;

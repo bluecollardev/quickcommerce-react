@@ -23,8 +23,8 @@ class SettingStore extends BaseStore {
         }
     }
     
-    constructor() {
-        super()
+    constructor(dispatcher) {
+        super(dispatcher)
 		
 		if (instance !== null) {
             return instance

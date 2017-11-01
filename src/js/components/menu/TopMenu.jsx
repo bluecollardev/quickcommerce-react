@@ -10,6 +10,7 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService
 }))
 @observer

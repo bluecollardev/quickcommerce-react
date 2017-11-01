@@ -20,9 +20,6 @@ import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 import CustomerFilter from './filter/CustomerFilter.jsx'
 
-import CustomerSearchActions from '../actions/CustomerSearchActions.jsx'
-import CustomerListActions from '../actions/CustomerListActions.jsx'
-
 //import { withStyles } from 'material-ui/styles'
 
 import Avatar from 'material-ui/Avatar'
@@ -271,6 +268,7 @@ class GridDetailContainer extends Component {
 //const GridDetailContainer = (GridDetailContainerBase)
 
 @inject(deps => ({
+    actions: deps.actions,
     authService: deps.authService,
     customerService: deps.customerService,
     checkoutService: deps.checkoutService,
@@ -556,7 +554,7 @@ class CustomerListComponent extends Component {
         this.props.customerSearchStore.addChangeListener(this.changeListener)
 		
 		// Get initial result set
-		CustomerSearchActions.search({ search: '' })
+		this.props.actions.customerSearch.search({ search: '' })
     }
 	
 	componentWillUnmount() {
