@@ -3,8 +3,8 @@ import axios from 'axios'
 
 import { Dispatcher } from 'flux'
 
-import HashTable from '../utils/HashTable.js'
-import ChainableHash from '../utils/ChainableHash.js'
+//import HashTable from '../utils/HashTable.js'
+//import HashProxy from '../utils/HashProxy.js'
 
 //import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
 //import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
@@ -14,16 +14,15 @@ export class BaseService {
 	constructor(deps) {
         deps = deps || null
         
-        this.actions = {} // null
-        this.dispatcher = {} // null
-        
-        if (deps !== null) {
+        this.actions = {} // Private? (TODO: Symbols)
+        this.dispatcher = {} // Private? (TODO: Symbols)
+                if (deps !== null) {
             if (deps.hasOwnProperty('actions') && deps.actions !== null && Object.keys(deps.actions).length > 0) {
-                this.actions = deps.actions //this.actions = new ChainableHash(actions)
+                this.actions = deps.actions //this.actions = new HashProxy(actions)
             }
             
             if (deps.hasOwnProperty('services') && deps.services !== null && Object.keys(deps.services).length > 0) {
-                this.services = deps.services //this.services = new ChainableHash(services)
+                this.services = deps.services //this.services = new HashProxy(services)
             }
             
             if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
@@ -31,14 +30,14 @@ export class BaseService {
             }
         }   
     }
-    
-    getDispatcher() {
-        let dispatcher = this.dispatcher || null
+	
+    /*get dispatcher() {
+        let dispatcher = this._dispatcher || null
         
         if (dispatcher instanceof Dispatcher) {
-            return this.dispatcher
+            return this._dispatcher
         }
         
         return null
-    }
+    }*/
 }

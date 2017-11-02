@@ -1,13 +1,58 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
 
+/**
+ * An application container that injects a minimum set of services etc into 
+ * React's context so they can be shared freely with nested components. 
+ * All QC apps should generally be wrapped in this HoC.
+ * @prop dispatcher required
+ * @prop actions required authActions settingActions
+ * @prop services required authService settingService
+ * @prop stores required
+ * @prop maggings optional
+ * @prop i8ln optional
+ */
+ 
+/**
+ * App dependencies passed in via Mobx's Provider HoC are injected into our component as props using a wrapper (Mobx injector HoC).
+ */
+@inject(deps => ({
+	actions: deps.actions,
+	authService: deps.authService,
+	settingService: deps.authService,
+	loginStore: deps.loginStore,
+	settingStore: deps.settingStore,
+	mappings: deps.mappings, // Per component or global scope?
+	translations: deps.translations, // i8ln transations
+	roles: deps.roles, // App level roles, general authenticated user (not customer!)
+	userRoles: deps.userRoles, // Shortcut or implement via HoC?
+	user: deps.user, // Shortcut or implement via HoC?
+}))
 class AuthenticatedApp extends Component {
     constructor(props) {
         super(props)
 
-        this.state = this.getLoginState()
+		this.changeListener = this.onChange.bind(this)
+        
+		this.state = this.getLoginState()
     }
 
-    getLoginState() {
+    componentDidMount() {
+        this.props.settingStore.addChangeListener(this.changeListener)
+        this.props.loginStore.addChangeListener(this.changeListener)
+    }
+
+    componentWillUnmount() {
+        this.props.settingStore.removeChangeListener(this.changeListener)
+        this.props.loginStore.removeChangeListener(this.changeListener)
+    }
+	
+	onChange() {
+        // onChange handler for AuthenticatedApp
+        this.setState(this.getLoginState())
+    }
+	
+	getLoginState() {
 		let loggedIn = false
 		let loginStore = this.props.loginStore || null
 		
@@ -18,20 +63,6 @@ class AuthenticatedApp extends Component {
         return {
             loggedIn: loggedIn
         }
-    }
-
-    componentDidMount() {
-        this.changeListener = this.onChange.bind(this)
-        this.props.loginStore.addChangeListener(this.changeListener)
-    }
-
-    onChange() {
-        // onChange handler for AuthenticatedApp
-        this.setState(this.getLoginState())
-    }
-
-    componentWillUnmount() {
-        this.props.loginStore.removeChangeListener(this.changeListener)
     }
 
     render() {
@@ -47,12 +78,14 @@ class AuthenticatedApp extends Component {
             </div>
         )
     }
-
+	
+	// Just a shortcut
     logout(e) {
         e.preventDefault()
         this.props.authService.logout()
     }
 
+	// Not used, just for confirmation when I was building the auth components, I will strip this out later
     get headerItems() {
         if (!this.state.loggedIn) {
             return (
