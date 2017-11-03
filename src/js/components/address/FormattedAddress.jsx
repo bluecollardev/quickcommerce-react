@@ -90,8 +90,6 @@ class CurrentAddress extends Component {
     }
     
     setInitialState(props) {
-		const mappings = props.mappings || fieldNames
-		
         let data = this.props.getForm()
         
         let state = assign({}, this.state, {
@@ -108,17 +106,17 @@ class CurrentAddress extends Component {
         
         if ((country !== null && typeof country !== 'string') &&
             (zone !== null && typeof zone !== 'string')) {
-            let zones = this.props.settingStore.getZones(country[mappings.COUNTRY_ID])
+            let zones = this.props.settingStore.getZones(country.country_id)
             
-            zoneName = zones.filter(obj => Number(obj.id) === Number(zone[mappings.ZONE_ID]))[0].value
-            state.data[mappings.ZONE_ID] = zone[mappings.ZONE_ID]
-            state.data[mappings.ZONE] = zoneName
+            zoneName = zones.filter(obj => Number(obj.id) === Number(zone.zone_id))[0].value
+            state.data['zone_id'] = zone.zone_id
+            state.data['zone'] = zoneName
         }
         
         if (country !== null && typeof country !== 'string') {
-            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(this.props.getMappedValue(mappings.COUNTRY_ID, state.data)))[0].value
-            state.data[mappings.COUNTRY_ID] = this.props.getMappedValue(mappings.COUNTRY_ID, state.data)
-            state.data[mappings.COUNTRY] = countryName
+            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(country.country_id))[0].value
+            state.data['country_id'] = country.country_id
+            state.data['country'] = countryName
         }
         
         state.addressString = CurrentAddress.getAddressString(state.data)
@@ -216,6 +214,329 @@ class CurrentAddress extends Component {
         return formatted
     }
     
+    /**
+     * In progress, porting from kPaged address module
+     */
+    setAddress() {
+        var	that = this,
+			moduleElement = $('#' + that.getId()),
+			page = that.getPage(),
+			block = page.getBlock('center-pane'),
+			viewModel = that.getViewModel(),
+			data = page.getFormData(),
+			addressEventHandler = that.getEventHandler(),
+			addressValidator = block.getValidator(),
+			addressEditPopup,
+			addressLookupPopup,
+			addressEditWindow,
+			addressLookupWindow,
+			addressEditTrigger,
+			addressLookupTrigger,
+			addressDisplay,
+			overrideAddress,
+			overrideAddressReason,
+			addressReviewDate,
+			sources = {},
+			tabs = that.tabs,
+			tab,
+			fields = {},
+			address = [],
+			addressString = [],
+			current
+			
+		tab = tabs.select()
+		fields = {
+			// Civic address fields
+			civic: {
+				suiteNumber: $.trim(viewModel.get('address.suiteNumber')),
+				streetNumber: $.trim(viewModel.get('address.streetNumber')),
+				streetName: $.trim(viewModel.get('address.streetName')),
+				streetType: $.trim(viewModel.get('address.streetType')),
+				streetDirection: $.trim(viewModel.get('address.streetDirection')),
+				poBox: (viewModel.get('address.poBox')) ? 'PO BOX ' + $.trim(viewModel.get('address.poBox')) : ''
+				
+			},
+			// Rural address fields
+			rural: {
+				rr: (viewModel.get('address.rr')) ? 'RR ' + $.trim(viewModel.get('address.rr')) : '',
+				site: (viewModel.get('address.site')) ? 'SITE ' + $.trim(viewModel.get('address.site')) : '',
+				comp: (viewModel.get('address.comp')) ? 'COMP ' + $.trim(viewModel.get('address.comp')) : '',
+				box: (viewModel.get('address.box')) ? 'BOX ' + $.trim(viewModel.get('address.box')) : '',
+				lotNumber: (viewModel.get('address.lotNumber')) ? 'LOT ' + $.trim(viewModel.get('address.lotNumber')) : '',
+				concessionNumber: (viewModel.get('address.concessionNumber')) ? 'CONCESSION ' + $.trim(viewModel.get('address.concessionNumber')) : ''
+			},
+			common: {
+				station: (viewModel.get('address.station')) ? 'STN ' + $.trim(viewModel.get('address.station')) : '',
+				city: $.trim(viewModel.get('address.city')),
+				zone: $.trim(viewModel.get('address.zone')),
+				postcode: $.trim(viewModel.get('address.postcode')),
+				country: $.trim(viewModel.get('address.country'))
+			}
+		}
+		
+		// Create a string representation of the address fields
+		if (tab.index() === 0) {
+			// Civic address selected
+			// Clear all rural values
+			$.each(fields.rural, function (key, value) {
+				viewModel.set(key, '')
+			})
+			
+			if (fields.civic.suiteNumber !== '') {
+				address.push('{suiteNumber}-{streetNumber} {streetName} {streetType} {streetDirection}')
+			} else {
+				address.push('{streetNumber} {streetName} {streetType} {streetDirection}')
+			}
+			address.push('{poBox} {station}')
+		} else if (tab.index() === 1) {
+			// Rural address selected
+			// Clear all civic values
+			$.each(fields.civic, function (key, value) {
+				viewModel.set(key, '') 
+			})
+			
+			if (fields.rural.lot !== '' && fields.rural.concession !== '') {
+				address.push('{lotNumber} {concessionNumber}')
+			}
+			if (fields.rural.site !== '' && fields.rural.comp !== '') {
+				address.push('{site} {comp} {box}')
+			}
+			address.push('{rr} {station}')
+		}
+		
+		// Append city/municipality, zone and postal code
+		address.push('{city} {zone} {postcode}')
+
+		if (fields.common.country == "USA") {
+			address.push('{country}')
+		}
+		
+		// Replace formatting keys with form values
+		$.each(address, function (idx, format) {
+			current = format
+			if (tab.index() === 0) {
+				$.each(fields.civic, function (key, value) {
+					current = current.replace('{' + key + '}', value)
+				})
+			} else if (tab.index() === 1) {
+				$.each(fields.rural, function (key, value) {
+					current = current.replace('{' + key + '}', value)
+				})
+			}
+			
+			$.each(fields.common, function (key, value) {
+				current = current.replace('{' + key + '}', value)
+			})
+			
+			if ($.trim(current) !== '') {
+				addressString.push($.trim(current))
+			}
+		})
+		
+		// Join address strings
+		addressString = addressString.join('\r\n')
+		
+		that.addressDisplay.attr('readonly', false).val(addressString).attr('readonly', true)
+		$('div[name=addressEditPopup]').data('kendoWindow').close()
+    }
+    
+    /**
+     * In progress, porting from kPaged address module
+     */
+    onAddressLookupClicked() {
+        var moduleElement = e.sender.element.closest('[id^=module_address_]'),
+            module = page.getModule(moduleElement.attr('id')),
+            //lookupWindow = module.addressLookupPopup.data('kendoWindow')
+            lookupWindow = addressLookupWindow
+        
+        console.log(moduleElement)
+        console.log(module)
+        console.log(lookupWindow)
+        
+        lookupWindow.center().open()
+    }
+    
+    /**
+     * In progress, porting from kPaged address module
+     */
+    onAddressEditClicked() {
+        var moduleElement = e.sender.element.closest('[id^=module_address_]'),
+            module = page.getModule(moduleElement.attr('id')),
+            //editWindow = module.addressEditPopup.data('kendoWindow')
+            editWindow = addressEditWindow
+        
+        console.log(moduleElement)
+        console.log(module)
+        console.log(editWindow)
+        
+        editWindow.center().open()
+    }
+    
+    /**
+     * In progress, porting from kPaged address module
+     */
+    onAddressLookupSelect() {
+        var addressLookupGrid = $("#addressLookupGrid").data("kendoGrid"),
+            selectedItem = addressLookupGrid.dataItem(addressLookupGrid.select()),
+            viewModel = this,
+            fields = {
+                // Civic address fields
+                civic: {
+                    suiteNumber: $.trim(viewModel.get('address.suiteNumber')),
+                    streetNumber: $.trim(viewModel.get('address.streetNumber')),
+                    streetName: $.trim(viewModel.get('address.streetName')),
+                    streetType: $.trim(viewModel.get('address.streetType')),
+                    streetDirection: $.trim(viewModel.get('address.streetDirection')),
+                    poBox: (viewModel.get('address.poBox')) ? 'PO BOX ' + $.trim(viewModel.get('address.poBox')) : ''
+                },
+                // Rural address fields
+                rural: {
+                    rr: (viewModel.get('address.rr')) ? 'RR ' + $.trim(viewModel.get('address.rr')) : '',
+                    site: (viewModel.get('address.site')) ? 'SITE ' + $.trim(viewModel.get('address.site')) : '',
+                    comp: (viewModel.get('address.comp')) ? 'COMP ' + $.trim(viewModel.get('address.comp')) : '',
+                    box: (viewModel.get('address.box')) ? 'BOX ' + $.trim(viewModel.get('address.box')) : '',
+                    lotNumber: (viewModel.get('address.lotNumber')) ? 'LOT ' + $.trim(viewModel.get('address.lotNumber')) : '',
+                    concessionNumber: (viewModel.get('address.concessionNumber')) ? 'CONCESSION ' + $.trim(viewModel.get('address.concessionNumber')) : ''
+                },
+                common: {
+                    station: (viewModel.get('address.station')) ? 'STN ' + $.trim(viewModel.get('address.station')) : '',
+                    city: $.trim(viewModel.get('address.city')),
+                    zone: $.trim(viewModel.get('address.zone')),
+                    postcode: $.trim(viewModel.get('address.postcode')),
+                    country: $.trim(viewModel.get('address.country'))
+                }
+            }
+            
+        if (selectedItem !== null) {
+            // Clear the address fields
+            $.each(fields, function (key, value) {
+                $.each(fields[key], function (key, value) {
+                    viewModel.set(key, '') 
+                })
+            })
+
+            viewModel.set('address.streetName', selectedItem.StreetName)
+            viewModel.set('address.streetType', selectedItem.StreetType)
+            viewModel.set('address.streetDirection', selectedItem.Direction)
+            viewModel.set('address.city', selectedItem.City)
+            viewModel.set('address.zone', selectedItem.Jurisdiction)
+            viewModel.set('address.postcode', selectedItem.PostalCode)
+            viewModel.set('address.country', "CANADA")
+            
+            // Clear the street number
+            viewModel.set('address.streetNumber', '')
+            
+            $("div#addressLookupPopup").data("kendoWindow").close()
+            $("div#addressEditPopup").data("kendoWindow").open()
+        }
+    }
+    
+    /**
+     * In progress, porting from kPaged address module
+     */
+    renderAddress() {
+        try {
+            fields = {
+                // Civic address fields
+                civic: {
+                    suiteNumber: $.trim(addressViewModel.get('address.suiteNumber')),
+                    streetNumber: $.trim(addressViewModel.get('address.streetNumber')),
+                    streetName: $.trim(addressViewModel.get('address.streetName')),
+                    streetType: $.trim(addressViewModel.get('address.streetType')),
+                    streetDirection: $.trim(addressViewModel.get('address.streetDirection')),
+                    poBox: (addressViewModel.get('address.poBox')) ? 'PO BOX ' + $.trim(addressViewModel.get('address.poBox')) : ''
+                    
+                },
+                // Rural address fields
+                rural: {
+                    rr: (addressViewModel.get('address.rr')) ? 'RR ' + $.trim(addressViewModel.get('address.rr')) : '',
+                    site: (addressViewModel.get('address.site')) ? 'SITE ' + $.trim(addressViewModel.get('address.site')) : '',
+                    comp: (addressViewModel.get('address.comp')) ? 'COMP ' + $.trim(addressViewModel.get('address.comp')) : '',
+                    box: (addressViewModel.get('address.box')) ? 'BOX ' + $.trim(addressViewModel.get('address.box')) : '',
+                    lotNumber: (addressViewModel.get('address.lotNumber')) ? 'LOT ' + $.trim(addressViewModel.get('address.lotNumber')) : '',
+                    concessionNumber: (addressViewModel.get('address.concessionNumber')) ? 'CONCESSION ' + $.trim(addressViewModel.get('address.concessionNumber')) : ''
+                },
+                common: {
+                    station: (addressViewModel.get('address.station')) ? 'STN ' + $.trim(addressViewModel.get('address.station')) : '',
+                    city: $.trim(addressViewModel.get('address.city')),
+                    zone: $.trim(addressViewModel.get('address.zone')),
+                    postcode: $.trim(addressViewModel.get('address.postcode'))
+                }
+            }
+        } catch (e) {
+            App.log(e)
+        }
+        
+        // Create a string representation of the address fields
+        if (tab.index() === 0) {
+            // Civic address selected
+            // Clear all rural values
+            $.each(fields.rural, function (key, value) {
+                addressViewModel.set(key, '')
+            })
+            
+            if (fields.civic.suiteNumber !== '') {
+                address.push('{suiteNumber}-{streetNumber} {streetName} {streetType} {streetDirection}')
+            } else {
+                address.push('{streetNumber} {streetName} {streetType} {streetDirection}')
+            }
+            address.push('{poBox} {station}')
+        } else if (tab.index() === 1) {
+            // Rural address selected
+            // Clear all civic values
+            $.each(fields.civic, function (key, value) {
+                addressViewModel.set(key, '') 
+            })
+            
+            if (fields.rural.lot !== '' && fields.rural.concession !== '') {
+                address.push('{lotNumber} {concessionNumber}')
+            }
+            if (fields.rural.site !== '' && fields.rural.comp !== '') {
+                address.push('{site} {comp} {box}')
+            }
+            address.push('{rr} {station}')
+        }
+        
+        // Append city/municipality, zone and postal code
+        address.push('{city} {zone} {postcode}')
+        
+        // Replace formatting keys with form values
+        $.each(address, function (idx, format) {
+            current = format
+            if (tab.index() === 0) {
+                $.each(fields.civic, function (key, value) {
+                    current = current.replace('{' + key + '}', value)
+                })
+            } else if (tab.index() === 1) {
+                $.each(fields.rural, function (key, value) {
+                    current = current.replace('{' + key + '}', value)
+                })
+            }
+            
+            $.each(fields.common, function (key, value) {
+                current = current.replace('{' + key + '}', value)
+            })
+            
+            if ($.trim(current) !== '') {
+                addressString.push($.trim(current))
+            }
+        })
+        
+        // Join address strings
+        addressString = addressString.join('\r\n')
+        
+        addressDisplay.attr('readonly', false).val(addressString).attr('readonly', true)
+        addressEditWindow.close()
+        // Create hidden fields in the parent form (if it exists)
+        
+        // Only if autoBind is true...
+        /*try {
+            that.dataBind(addressViewModel)
+        } catch (e) {
+            App.log(e)
+        }*/
+    }
+    
     // TODO: Move me to a utils class
     // Also: Why the hell is sometimes this being fed a string and other times an object?
     matchItemToTerm(item, value) {
@@ -303,8 +624,7 @@ class CurrentAddress extends Component {
     }
     
     render() {
-        const mappings = this.props.mappings || fieldNames
-		
+        console.log('rendering CurrentAddress')
         let data = this.state.data
         
         return (
@@ -339,20 +659,20 @@ class CurrentAddress extends Component {
                     <form>
                         {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
                         <Col xs={12} className='col-md-flex col-lg-flex'>
-                            <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
+                            <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
                             
                             {/* First Name / Last Name */}
                             {this.props.nameRequired && (
                             <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
                                 <ControlLabel>First Name*</ControlLabel>
-                                <FormControl name={mappings.FIRST_NAME} type='text' {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
+                                <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
                             </FormGroup>
                             )}
                             
                             {this.props.nameRequired && (
                             <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
                                 <ControlLabel>Last Name*</ControlLabel>
-                                <FormControl name={mappings.LAST_NAME} type='text' {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
+                                <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
                             </FormGroup>
                             )}
                             
@@ -360,13 +680,13 @@ class CurrentAddress extends Component {
                             {this.props.type === 'simple' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 1*</ControlLabel>
-                                <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
+                                <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
                             </FormGroup>
                             )}
                             {this.props.type === 'simple' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 2</ControlLabel>
-                                <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
+                                <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
                             </FormGroup>
                             )}
                             
@@ -374,25 +694,25 @@ class CurrentAddress extends Component {
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Suite</ControlLabel>
-                                <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
+                                <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
                                 <ControlLabel>Street Name</ControlLabel>
-                                <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.STREET_NAME, data))} />
+                                <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Street Type</ControlLabel>
-                                <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
+                                <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
                             </FormGroup>
                             )}
                             {this.props.type === 'civic' && (
                             <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
                                 <ControlLabel>Direction</ControlLabel>
-                                <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
+                                <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
                             </FormGroup>
                             )}
                             
@@ -400,13 +720,13 @@ class CurrentAddress extends Component {
                             {this.props.type === 'pobox' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Box</ControlLabel>
-                                <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                                <FormControl type='text' value={data.box} />
                             </FormGroup>
                             )}
                             {this.props.type === 'pobox' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Station</ControlLabel>
-                                <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
+                                <FormControl type='text' value={data.stn} />
                             </FormGroup>
                             )}
                             
@@ -414,37 +734,37 @@ class CurrentAddress extends Component {
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Range Rd.</ControlLabel>
-                                <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
+                                <FormControl type='text' value={data.box} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Site</ControlLabel>
-                                <FormControl type='text' name={mappings.SITE} {...this.props.fields(mappings.SITE, this.props.getMappedValue(mappings.SITE, data))} />
+                                <FormControl type='text' value={data.site} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Comp</ControlLabel>
-                                <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
+                                <FormControl type='text' value={data.comp} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Box</ControlLabel>
-                                <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                                <FormControl type='text' value={data.box} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Lot #</ControlLabel>
-                                <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
+                                <FormControl type='text' value={data.lot} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
                             <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Concession #</ControlLabel>
-                                <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
+                                <FormControl type='text' value={data.concession} />
                             </FormGroup>
                             )}
                             
@@ -452,13 +772,13 @@ class CurrentAddress extends Component {
                             {this.props.durationRequired && (
                             <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
                                 <ControlLabel>From</ControlLabel>
-                                <DateInput name='from' name={mappings.FROM} {...this.props.fields(mappings.FROM, this.props.getMappedValue(mappings.FROM, data))} />
+                                <FormControl name='from' type='text' {...this.props.fields('from', data.from)} />
                             </FormGroup>
                             )}
                             {this.props.durationRequired && (
                             <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
                                 <ControlLabel>To</ControlLabel>
-                                <DateInput name='to' name={mappings.TO} {...this.props.fields(mappings.TO, this.props.getMappedValue(mappings.TO, data))} />
+                                <FormControl name='to' type='text' {...this.props.fields('to', data.to)} />
                             </FormGroup>
                             )}
                         </Col>
@@ -466,14 +786,14 @@ class CurrentAddress extends Component {
                             {/* City (If Applicable) */}
                             <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25'>
                                 <ControlLabel>City*</ControlLabel>
-                                <FormControl type='text' name={mappings.CITY} {...this.props.fields(mappings.CITY, this.props.getMappedValue(mappings.CITY, data))} />
+                                <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
                             </FormGroup>
                             
                             {/* Common Address Fields */}
                             <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Country*</ControlLabel>
                                 <Autocomplete
-                                    name={mappings.COUNTRY}
+                                    name='country'
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
@@ -490,42 +810,42 @@ class CurrentAddress extends Component {
                                     wrapperStyle={{
                                         display: 'block'
                                     }}
-                                    value={this.props.getMappedValue(mappings.COUNTRY, data)}
+                                    value={data.country}
                                     onChange={(event, value) => {
-                                        this.props.field(mappings.COUNTRY, value)
+                                        this.props.field('country', value)
                                         
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, this.state.data, {
-                                                [mappings.COUNTRY]: value
+                                                country: value
                                             })
                                         }))
                                         
                                         //this.parseZones(item.id)
                                     }}
                                     onSelect={(value, item) => {
-                                        this.props.field(mappings.COUNTRY_ID, item.id)
-                                        this.props.field(mappings.COUNTRY, value)
+                                        this.props.field('country_id', item.id)
+                                        this.props.field('country', value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, data, {
-                                                [mappings.COUNTRY_ID]: item.id,
-                                                [mappings.COUNTRY]: value
+                                                country_id: item.id,
+                                                country: value
                                             })
                                         }))
                                         
                                         this.props.settingStore.parseZones(item.id)
                                     }}
                                     inputProps={
-                                        assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
+                                        assign(this.props.fields('country', data.country), { className: 'form-control'})
                                     }
                                 />
-                                <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
+                                <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
                             </FormGroup>
                             <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Prov.*</ControlLabel>
                                 <Autocomplete
-                                    name={mappings.ZONE}
+                                    name='zone'
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
@@ -542,9 +862,9 @@ class CurrentAddress extends Component {
                                     wrapperStyle={{
                                         display: 'block'
                                     }}
-                                    value={this.props.getMappedValue(mappings.ZONE, data)}
+                                    value={data.zone}
                                     onChange={(event, value) => {
-                                        this.props.fields(mappings.ZONE, value)
+                                        this.props.fields('zone', value)
                                         
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, this.data, {
@@ -553,8 +873,8 @@ class CurrentAddress extends Component {
                                         }))
                                     }}
                                     onSelect={(value, item) => {
-                                        this.props.field(mappings.ZONE_ID, item.id)
-                                        this.props.field(mappings.ZONE, value)
+                                        this.props.field('zone_id', item.id)
+                                        this.props.field('zone', value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
                                         this.setState(assign({}, this.state, {
@@ -565,14 +885,14 @@ class CurrentAddress extends Component {
                                         }))
                                     }}
                                     inputProps={
-                                        assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
+                                        assign(this.props.fields('zone', data.zone), { className: 'form-control'})
                                     }
                                 />
-                                <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
+                                <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
                             </FormGroup>
                             <FormGroup className='col-sm-9 col-md-9 col-lg-5 flex-md-25'>
                                 <ControlLabel>Postal Code*</ControlLabel>
-                                <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
+                                <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
                             </FormGroup>
                         </Col>
                         
@@ -619,18 +939,18 @@ class CurrentAddress extends Component {
                                 </div>*/}
                                 <form>
                                     <div>
-                                        <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
+                                        <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
                                         
                                         {/* First Name / Last Name */}
                                         {this.props.nameRequired && (
                                         <Row>
                                             <FormGroup className='col-xs-12 col-lg-6'>
                                                 <ControlLabel>First Name*</ControlLabel>
-                                                <FormControl type='text' name={mappings.FIRST_NAME} {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
+                                                <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
                                             </FormGroup>
                                             <FormGroup className='col-xs-12 col-lg-6'>
                                                 <ControlLabel>Last Name*</ControlLabel>
-                                                <FormControl type='text' name={mappings.LAST_NAME} {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
+                                                <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
                                             </FormGroup>
                                         </Row>
                                         )}
@@ -639,13 +959,13 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 1</ControlLabel>
-                                            <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
+                                            <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 2</ControlLabel>
-                                            <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
+                                            <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
                                         </FormGroup>
                                         )}
                                         
@@ -653,25 +973,25 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Suite</ControlLabel>
-                                            <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
+                                            <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Name</ControlLabel>
-                                            <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.STREET_NAME, this.props.getMappedValue(mappings.STREET_NAME, data))} />
+                                            <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Type</ControlLabel>
-                                            <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
+                                            <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Direction</ControlLabel>
-                                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
+                                            <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
                                         </FormGroup>
                                         )}
                                         
@@ -679,13 +999,13 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
-                                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                                            <FormControl type='text' value={data.box} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Station</ControlLabel>
-                                            <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
+                                            <FormControl type='text' value={data.stn} />
                                         </FormGroup>
                                         )}
                                         
@@ -693,37 +1013,37 @@ class CurrentAddress extends Component {
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Range Rd.</ControlLabel>
-                                            <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
+                                            <FormControl type='text' value={data.box} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Site</ControlLabel>
-                                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
+                                            <FormControl type='text' value={data.site} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Comp</ControlLabel>
-                                            <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
+                                            <FormControl type='text' value={data.comp} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
-                                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                                            <FormControl type='text' value={data.box} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Lot #</ControlLabel>
-                                            <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
+                                            <FormControl type='text' value={data.lot} />
                                         </FormGroup>
                                         )}
                                         {this.props.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Concession #</ControlLabel>
-                                            <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
+                                            <FormControl type='text' value={data.concession} />
                                         </FormGroup>
                                         )}
                                         
@@ -737,7 +1057,7 @@ class CurrentAddress extends Component {
                                         <FormGroup className='autocomplete-control-group'>
                                             <ControlLabel>Country*</ControlLabel>
                                             <Autocomplete
-                                                name={mappings.COUNTRY}
+                                                name='country'
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
@@ -754,9 +1074,9 @@ class CurrentAddress extends Component {
                                                 wrapperStyle={{
                                                     display: 'block'
                                                 }}
-                                                value={this.props.getMappedValue(mappings.COUNTRY, data)}
+                                                value={data.country}
                                                 onChange={(event, value) => {
-                                                    this.props.field(mappings.COUNTRY, value)
+                                                    this.props.field('country', value)
                                                     
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
@@ -767,33 +1087,33 @@ class CurrentAddress extends Component {
                                                     //this.parseZones(item.id)
                                                 }}
                                                 onSelect={(value, item) => {
-                                                    this.props.field(mappings.COUNTRY_ID, item.id)
-                                                    this.props.field(mappings.COUNTRY, value)
+                                                    this.props.field('country_id', item.id)
+                                                    this.props.field('country', value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            [mappings.COUNTRY_ID]: item.id,
-                                                            [mappings.COUNTRY]: value
+                                                            country_id: item.id,
+                                                            country: value
                                                         })
                                                     }))
                                                     
                                                     this.props.settingStore.getZones(item.id)
                                                 }}
                                                 inputProps={
-                                                    assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
+                                                    assign(this.props.fields('country', data.country), { className: 'form-control'})
                                                 }
                                             />
-                                            <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
+                                            <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
                                         </FormGroup>
                                         <FormGroup className='autocomplete-control-group'>
                                             <ControlLabel>Prov.*</ControlLabel>
                                             <Autocomplete
-                                                name={mappings.ZONE}
+                                                name='zone'
                                                 getItemValue={(item) => {
                                                     return item.value
                                                 }}
-                                                items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
+                                                items={this.props.settingStore.getZones(data.country_id)}
                                                 renderItem={(item, isHighlighted) => {
                                                     return (
                                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -806,37 +1126,37 @@ class CurrentAddress extends Component {
                                                 wrapperStyle={{
                                                     display: 'block'
                                                 }}
-                                                value={this.props.getMappedValue(mappings.ZONE, data)}
+                                                value={data.zone}
                                                 onChange={(event, value) => {
-                                                    this.props.fields(mappings.ZONE, value)
+                                                    this.props.fields('zone', value)
                                                     
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            [mappings.ZONE]: value
+                                                            zone: value
                                                         })
                                                     }))
                                                 }}
                                                 onSelect={(value, item) => {
-                                                    this.props.field(mappings.ZONE_ID, item.id)
-                                                    this.props.field(mappings.ZONE, value)
+                                                    this.props.field('zone_id', item.id)
+                                                    this.props.field('zone', value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                                                     this.setState(assign({}, this.state, {
                                                         data: assign({}, data, {
-                                                            [mappings.ZONE_ID]: item.id,
-                                                            [mappings.ZONE]: value 
+                                                            zone_id: item.id,
+                                                            zone: value 
                                                         })
                                                     }))
                                                 }}
                                                 inputProps={
-                                                    assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
+                                                    assign(this.props.fields('zone', data.zone), { className: 'form-control'})
                                                 }
                                             />
-                                            <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
+                                            <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
                                         </FormGroup>
                                         <FormGroup>
                                             <ControlLabel>Postal Code*</ControlLabel>
-                                            <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
+                                            <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
                                         </FormGroup>
                                         
                                         {this.props.displayActions && (
