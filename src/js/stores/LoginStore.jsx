@@ -2,22 +2,22 @@ import LoginConstants from '../constants/LoginConstants.jsx'
 
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
-let instance = null
+//let instance = null
 
 class LoginStore extends BaseStore {   
     constructor(dispatcher) {
         // LoginStore
         super(dispatcher)
         
-        if (instance !== null) {
+        /*if (instance !== null) {
             return instance
-        }
+        }*/
         
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
         this.isLoggedIn = this.isLoggedIn.bind(this)
         
-        window.LoginStore = instance = this
+        //window.LoginStore = instance = this
     }
 
     registerToActions(action) {
