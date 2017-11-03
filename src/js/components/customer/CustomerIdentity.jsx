@@ -80,7 +80,7 @@ import {
     settingStore: deps.settingStore
 }))
 @observer
-export class CustomerIdentity extends Component {
+class CustomerIdentity extends Component {
     static defaultProps = {        
 		title: null,
 		data: {
@@ -396,3 +396,4 @@ export class CustomerIdentity extends Component {
 }
 
 export default FormComponent(CustomerIdentity)
+export { CustomerIdentity }

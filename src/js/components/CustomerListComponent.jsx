@@ -100,7 +100,7 @@ const customerCommands = {
 		</div>
 	),
 	edit: onClick => (
-		<IconButton onClick={() => window.location.hash = 'customer/2/edit'} title='Edit row'>
+		<IconButton onClick={onClick} title='Edit row'>
 		  <EditIcon />
 		</IconButton>
 	),
@@ -126,7 +126,7 @@ const orderCommands = {
 		<div style={{ textAlign: 'center' }}>
 		  <Button
 			color='primary'
-			onClick={() => window.location.hash = 'retail/create'}
+			onClick={onClick}
 			title='Create new row'
 			disabled={!allowAdding}>
 			New
@@ -136,7 +136,7 @@ const orderCommands = {
 	edit: onClick => {
 		// Test onClick for CustomerListComponent
 		return (
-			<IconButton onClick={() => window.location.hash = 'retail/edit'} title='Edit row'>
+			<IconButton onClick={onClick} title='Edit row'>
 			  <OpenInNewIcon />
 			</IconButton>
 		)
@@ -288,6 +288,10 @@ class CustomerListComponent extends Component {
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
         this.onProfileCreate = this.onProfileCreate.bind(this)
         this.onProfileSelect = this.onProfileSelect.bind(this)
+        this.onCustomerCreate = this.onCustomerCreate.bind(this)
+        this.onCustomerEdit = this.onCustomerEdit.bind(this)
+        this.onOrderCreate = this.onOrderCreate.bind(this)
+        this.onOrderEdit = this.onOrderEdit.bind(this)
         this.hideCustomerSearchModal = this.hideCustomerSearchModal.bind(this)
         
         this.state = {
@@ -472,7 +476,11 @@ class CustomerListComponent extends Component {
 							}
 						}} />
 					<DxTableHeaderRow allowSorting />
-					<EditingState onCommitChanges={() => { return }} />
+					<EditingState 
+						onCommitChanges={() => { return }}
+						onAddedRowsChange={this.onOrderCreate}
+						onEditingRowsChange={this.onOrderEdit}
+						/>
 					<TableEditRow />
 					<TableEditColumn
 						allowAdding
@@ -507,42 +515,6 @@ class CustomerListComponent extends Component {
 						}} />
 				</DxGrid>				
 			)
-		}
-    }
-    
-    hideCustomerSearchModal() {
-        this.setState({
-            customerSearch: null
-        })
-    }
-    
-    getLoginState() {
-        return {
-            loggedIn: this.props.loginStore.isLoggedIn(),
-            user: this.props.loginStore.user,
-            userToken: this.props.loginStore.userToken
-        }
-    }
-    
-    getUserState() {
-        return {
-            loggedIn: this.props.loginStore.isLoggedIn(),
-            user: this.props.userStore.user,
-            billingAddress: this.props.userStore.billingAddress,
-            shippingAddress: this.props.userStore.shippingAddress,
-            userToken: this.props.loginStore.userToken
-        }
-    }
-    
-    getCustomerState() {
-        return {
-            loggedIn: this.props.loginStore.isLoggedIn(),
-            customer: this.props.customerStore.customer,
-            billingAddress: this.props.customerStore.billingAddress,
-            billingAddressString: this.props.customerStore.billingAddressString,
-            shippingAddress: this.props.customerStore.shippingAddress,
-            shippingAddressString: this.props.customerStore.shippingAddressString,
-            customerToken: this.props.customerStore.customerToken
         }
     }
 
@@ -564,6 +536,12 @@ class CustomerListComponent extends Component {
 		this.props.customerSearchStore.removeChangeListener(this.changeListener)
     }
 
+    hideCustomerSearchModal() {
+        this.setState({
+            customerSearch: null
+        })
+    }
+
     onChange() {
 		// CustomerListComponent onChange handler
 		let state = assign({}, this.state, { 
@@ -571,10 +549,6 @@ class CustomerListComponent extends Component {
 		})
 		
         this.setState(state)
-    }
-    
-    onLoginSuccess(e) {
-        window.location.hash = '/account/edit'
     }
     
     onProfileCreate() {
@@ -591,6 +565,64 @@ class CustomerListComponent extends Component {
             customerSearch: null
         })
     }
+    
+	onCustomerCreate(addedRows) {
+		console.log('onAddedRowsChange: create customer')
+		//let rowIdx = addedRows.pop() // editingRows is an array, limit to one row
+		//let row = this.state.customerRows[rowIdx]
+		
+		//if (typeof row !== 'undefined' && row !== null) {
+			//if (typeof row !== 'undefined' && row !== null) {
+				// TODO: Use mappings!
+				window.location.hash = '/customer/create'
+			//}
+		//}
+	}
+	
+	
+	onCustomerEdit(editingRows) {
+		console.log('onEditingRowsChange: edit customer')
+		let rowIdx = editingRows.pop() // editingRows is an array, limit to one row
+		let row = this.state.customerRows[rowIdx]
+		
+		if (typeof row !== 'undefined' && row !== null) {
+			if (typeof row !== 'undefined' && row !== null) {
+				// TODO: Use mappings!
+				window.location.hash = '/customer/' + row['customerId'] + '/edit'
+			}
+		}
+	}
+	
+	onOrderCreate(addedRows) {
+		console.log('onAddedRowsChange: create deal')
+		//let rowIdx = addedRows.pop() // addedRows is an array, limit to one row
+		//let row = this.state.dealRows[rowIdx]
+		
+		//if (typeof row !== 'undefined' && row !== null) {		
+			//CustomerService.fetch(customerId, () => {
+				// TODO: Use mappings!
+				window.location.hash = '/deal/create'
+			//})
+		//}
+	}
+	
+	onOrderEdit(editingRows) {
+		console.log('onEditingRowsChange: edit deal')
+		let rowIdx = editingRows.pop() // editingRows is an array, limit to one row
+		
+		let customerRow = this.state.customerRows[this.state.expandedCustomerRows[0]]
+		let customerId = customerRow.customerId // TODO: Use mappings....
+		
+		let row = customerRow.deals[rowIdx]
+		console.log(row)
+		
+		if (typeof row !== 'undefined' && row !== null) {
+			CustomerService.fetch(customerId, () => {
+				// TODO: Use mappings!
+				window.location.hash = '/deal/' + row['dealId'] + '/edit'
+			})
+		}
+	}
     
     render() {
 		const { customerRows, customerColumns, expandedCustomerRows, allowedPageSizes } = this.state
@@ -739,22 +771,28 @@ class CustomerListComponent extends Component {
 								<DxTableHeaderRow allowSorting />
 								<TableFilterRow rowHeight={80} />
 								<DxTableRowDetail template={this.rowTemplate} />
-								<EditingState onCommitChanges={() => { return }} />
+								<EditingState 
+									onCommitChanges={() => { return }}
+									onAddedRowsChange={this.onCustomerCreate}
+									onEditingRowsChange={this.onCustomerEdit}
+									/>
 								<TableEditRow />
 								<TableEditColumn
 									allowAdding
 									allowEditing
-									commandTemplate={({ executeCommand, id }) => {
+									commandTemplate={(props) => {
+										let { executeCommand, id } = props
 									  const template = customerCommands[id]
+										
 									  if (template) {
 										const allowAdding = true
 										const onClick = (e) => {
 										  executeCommand()
-										  e.stopPropagation()
+												//e.stopPropagation()
 										}
 										return template(
 										  onClick,
-										  allowAdding,
+												allowAdding
 										)
 									  }
 									  

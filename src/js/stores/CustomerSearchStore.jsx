@@ -4,7 +4,7 @@ import axios from 'axios'
 import { normalize, denormalize, schema } from 'normalizr'
 
 import CustomerSearchConstants from '../constants/CustomerSearchConstants.jsx'
-import FluxFactory from '../factory/Factory.jsx'
+//import FluxFactory from '../factory/Factory.jsx'
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
@@ -17,7 +17,7 @@ class CustomerSearchStore extends BaseStore {
         // Data
         this.items = {}
 
-        this.fluxFactory = new FluxFactory()
+        //this.fluxFactory = new FluxFactory()
 
         // Just monkey patch the parent method
         this.subscribe(() => {
@@ -26,7 +26,8 @@ class CustomerSearchStore extends BaseStore {
     }
 
     registerToActions(action) {
-        let payload = JSON.parse(JSON.stringify(action)) // Clone the action so we can modify it as necessary
+		// Clone the action so we can modify it as necessary
+        let payload = JSON.parse(JSON.stringify(action)) 
 
         switch (action.actionType) {
             // onLoad actions
@@ -105,11 +106,11 @@ class CustomerSearchStore extends BaseStore {
             throw new Error('Invalid configuration! Cannot build datastore.')
         }
 
-        this.fluxFactory.make(this.config.key, this.config.schema)
+        //this.fluxFactory.make(this.config.key, this.config.schema)
 
-        let Action = this.fluxFactory.useAction(this.config.key)
+        //let Action = this.fluxFactory.useAction(this.config.key)
         // Generated store is observable, just use addChangeListener to attach listeners
-        let Store = this.fluxFactory.useStore(this.config.key)
+        //let Store = this.fluxFactory.useStore(this.config.key)
     }
 
     fetchData(key, onSuccess, onError) {
@@ -154,7 +155,6 @@ class CustomerSearchStore extends BaseStore {
 
 // Static config and options
 CustomerSearchStore.config = null
-
 // Data
 CustomerSearchStore.items = {}
 

@@ -52,6 +52,8 @@ class CustomerSearch extends Component {
 			customerName: '',
             selectedCustomer: {
 				userId: null,
+				customerId: null,
+				customerDisplayName: '',	 
 				name: '',
 				firstName: '',
 				lastName: '',
@@ -279,3 +281,4 @@ class CustomerSearch extends Component {
 }
 
 export default CustomerSearch
+export { CustomerSearch }
