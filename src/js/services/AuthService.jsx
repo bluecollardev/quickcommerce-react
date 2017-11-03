@@ -10,14 +10,47 @@ import { BaseService } from './BaseService.jsx'
 
 export default class AuthService extends BaseService {
     login(email, password, onSuccess, onError) {
-        return this.handleAuth(axios({
-            url: QC_LEGACY_API + 'login/',
-            data: JSON.stringify({
-                email: email,
-                password: password
-            }),
-            method: 'POST'
-        }), onSuccess, onError)
+        if (AUTH_MODE === 'normal') {
+			// Revert to legacy
+			return this.handleAuth(axios({
+				url: QC_LEGACY_API + 'login/',
+				data: JSON.stringify({
+					email: email,
+					password: password
+				}),
+				method: 'POST'
+			}), onSuccess, onError)
+		} else if (AUTH_MODE === 'legacy') {
+			// Revert to legacy
+			return this.handleAuth(axios({
+				url: QC_LEGACY_API + 'login/',
+				data: JSON.stringify({
+					email: email,
+					password: password
+				}),
+				method: 'POST'
+			}), onSuccess, onError)
+		} else if (AUTH_MODE === 'mock') {
+			// No auth mode provided, or using mock data
+			// Fire away... get any user
+			// TODO: This could be user service too depending on a to-be-added mode
+			// How do I make this (and customer selection) easily configurable?
+			
+			// Store auth and current, authorized account
+			// Store auth and current, authorized account
+			this.actions.login.loginUser('DUMMYtoken12345') // Set token
+			this.actions.login.setUser({}) // Set data
+			
+			if (typeof onSuccess === 'undefined') return
+	
+			console.log('executing onResponseReceived onSuccess callback')
+			if (typeof onSuccess === 'function') {
+				let fn = onSuccess
+				fn({})
+			}
+			
+			return this.handleAuth(Promise.resolve({ status: 200, data: { success: true, data: {} } }), onSuccess, onError)
+		}
     }
 
     logout() {

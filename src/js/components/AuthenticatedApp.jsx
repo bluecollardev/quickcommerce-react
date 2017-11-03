@@ -66,6 +66,7 @@ class AuthenticatedApp extends Component {
     }
 
     render() {
+		// AuthenticatedApp render
         return (
             <div className='app-container'>
                 {/*<nav className='navbar navbar-default'>
