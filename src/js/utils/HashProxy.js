@@ -11,9 +11,8 @@ import HashTable from './HashTable.js'
 export default function HashProxy(obj) {
 	return new Proxy(new HashTable(obj), {
 		get: (hash, key) => {
-			if (hash.has(key) === false) {
-				// Fail silently and log to console
-				console.log('attempting to get non-existent property "' + name + '"')
+			// Ignore non-strings
+			if (typeof key !== 'string') {
 				return undefined
 			}
 			
