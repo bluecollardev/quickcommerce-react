@@ -26,9 +26,9 @@ class SettingStore extends BaseStore {
     constructor(dispatcher) {
         super(dispatcher)
 		
-		if (instance !== null) {
+		/*if (instance !== null) {
             return instance
-        }
+        }*/
 		
 		this.adapter = null
         
@@ -165,7 +165,7 @@ class SettingStore extends BaseStore {
 		this.adapter = new SettingAdapter(this)
 		
         // Easy access while developing app
-        window.SettingStore = instance = this
+        //window.SettingStore = instance = this
     }
     
     registerToActions(action) {
@@ -251,6 +251,10 @@ class SettingStore extends BaseStore {
                 onError()
             }
         })
+    }
+    
+    getConfig() {
+        return this.config
     }
     
     setConfig(config) {
