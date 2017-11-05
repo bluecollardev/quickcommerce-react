@@ -19,8 +19,8 @@ import CustomerInfo from '../customer/CustomerFullInfo.jsx'
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 
-import customerFieldNames from 'quickcommerce-react/forms/CustomerInfoFields.jsx'
-import addressFieldNames from 'quickcommerce-react/forms/AddressFields.jsx'
+import customerFieldNames from '../../forms/CustomerInfoFields.jsx'
+import addressFieldNames from '../../forms/AddressFields.jsx'
 
 @inject(deps => ({
     actions: deps.actions,

@@ -71,12 +71,12 @@ const Cart = React.createClass({
     },
     getInitialState() {
         return {
-            selection : []
+            selection: []
         }
     },
     refresh() {
         this.setState({
-            selection : CartStore.getSelection()
+            selection: CartStore.getSelection()
         })
     },
     onChange() {
@@ -86,10 +86,10 @@ const Cart = React.createClass({
     componentDidMount() {
         CartStore.on('ready', this.refresh)
         CartDispatcher.dispatch({
-            actionType : 'cart-initialize',
-            config     : {
-                items        : this.props.items,
-                selection    : this.props.selection
+            actionType: 'cart-initialize',
+            config: {
+                items: this.props.items,
+                selection: this.props.selection
             }
         })
         CartStore.on('change', this.onChange)
@@ -106,50 +106,50 @@ const Cart = React.createClass({
     },
     addItem(key, quantity, item) {
         CartDispatcher.dispatch({
-            actionType : 'cart-add-item',
-            key        : key,
-            quantity   : quantity,
-            item       : item
+            actionType: 'cart-add-item',
+            key: key,
+            quantity: quantity,
+            item: item
         })
     },
     removeItem(index) {
         CartDispatcher.dispatch({
-            actionType : 'cart-remove-item',
-            index      : index
+            actionType: 'cart-remove-item',
+            index: index
         })
     },
     updateQuantity(index, quantity) {
         CartDispatcher.dispatch({
-            actionType : 'cart-update-item',
-            index      : index,
-            quantity   : quantity
+            actionType: 'cart-update-item',
+            index: index,
+            quantity: quantity
         })
     },
     addOption(key, quantity, item, product) {
         CartDispatcher.dispatch({
-            actionType : 'cart-add-option',
-            key        : key,
-            quantity   : quantity,
-            item       : item,
-            product    : product
+            actionType: 'cart-add-option',
+            key: key,
+            quantity: quantity,
+            item: item,
+            product: product
         })
     },
     emptyCart() {
         CartDispatcher.dispatch({
-            actionType : 'cart-reset'
+            actionType: 'cart-reset'
         })
     },
     clearCart() {
         CartDispatcher.dispatch({
-            actionType : 'cart-clear'
+            actionType: 'cart-clear'
         })
     },
     reset() {
         CartDispatcher.dispatch({
-            actionType : 'cart-revert',
-            config     : {
-                items        : this.props.items,
-                selection    : this.props.selection
+            actionType: 'cart-revert',
+            config: {
+                items: this.props.items,
+                selection: this.props.selection
             }
         })
     },
@@ -162,17 +162,17 @@ const Cart = React.createClass({
     render() {
         const { position, isOver, canDrop, connectDropTarget } = this.props
 
-        let context   = this.props.iterator(),
+        let context = this.props.iterator(),
             Container = this.props.containerComponent,
-            Row       = this.props.rowComponent
+            Row = this.props.rowComponent
         if (this.isEmpty()) {
             return connectDropTarget(
                 <div className='dnd-target-wrapper'>
                     <div>
                         <Well
                           className = {classNames({"well-is-over": isOver})}
-                          style     = {{marginBottom: '.5em'}}
-                          bsSize    = 'large'>
+                          style = {{marginBottom: '.5em'}}
+                          bsSize = 'large'>
                             {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
                             <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
                         </Well>
@@ -181,23 +181,24 @@ const Cart = React.createClass({
                 </div>
             )
         }
+        
         return connectDropTarget(
             <div className='dnd-target-wrapper'>
                 <Container
-                  tableClassName = {this.props.tableClassName}
-                  columns        = {this.props.columns}
-                  body           = {this.state.selection.map(item => {
-                      context = this.props.iterator(context, item)
+                    tableClassName = {this.props.tableClassName}
+                    columns = {this.props.columns}
+                    body = {this.state.selection.map(item => {
+                      let context = this.props.iterator(context, item)
                       return (
                           <Row
-                            key        = {item._key}
-                            item       = {item}
-                            columns    = {this.props.columns}
+                            key = {item._key}
+                            item = {item}
+                            columns = {this.props.columns}
                             removeItem = {()  => this.removeItem(item._index)}
                             setItemQty = {qty => this.updateQuantity(item._index, qty)} />
                       )
-                  })}
-                  context        = {context}
+                    })}
+                    context = {context}
                 />
             </div>
         )

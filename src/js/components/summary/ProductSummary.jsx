@@ -14,9 +14,9 @@ export default class ProductSummary extends Component {
                 {/*<meta itemProp="priceCurrency" content="USD" />
                 <link itemProp="availability" href="http://schema.org/InStock" />*/}
                 <div className="product-details">
-                    <div className="row collapse">
+                    <div className="row">
                       <div className="col-sm-12 col-md-8 top_row" style={{height: 500}}>
-                        <div className="row collapse">
+                        <div className="row">
                           <div className="col-sm-12 columns">
                             <div className="product_section">
                               <span className="section_title"></span>
@@ -24,7 +24,7 @@ export default class ProductSummary extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="row collapse">
+                        <div className="row">
                           <div className="col-sm-12 flavor">
                             <div className="product_section">
                               <span className="section_title">Description</span>
@@ -34,7 +34,7 @@ export default class ProductSummary extends Component {
                             </div>
                           </div>
                         </div>
-                        <div className="row collapse">
+                        <div className="row">
                           <div className="col-sm-12 col-md-5 location mid_block" style={{height: 114}}>
                             <div className="product_section">
                               <span className="section_title">Location</span>
@@ -59,7 +59,7 @@ export default class ProductSummary extends Component {
                         </div>
                       </div>
                     </div>{/* .row */}
-                    <div className="row collapse">
+                    <div className="row">
                       <div className="col-sm-12 col-md-3 type bottom_row" style={{height: 114}}>
                         <div className="product_section">
                           <span className="section_title">Attribute 2</span>
