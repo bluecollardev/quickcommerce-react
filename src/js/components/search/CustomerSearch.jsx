@@ -136,6 +136,8 @@ class CustomerSearch extends Component {
 			
 			results = [{
                 userId: null,
+				customerId: null,
+                customerDisplayName: '',
                 name: '',
                 firstName: '',
                 lastName: '',

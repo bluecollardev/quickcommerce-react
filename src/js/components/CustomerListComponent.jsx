@@ -599,7 +599,7 @@ class CustomerListComponent extends Component {
 		//let row = this.state.dealRows[rowIdx]
 		
 		//if (typeof row !== 'undefined' && row !== null) {		
-			//CustomerService.fetch(customerId, () => {
+			//this.props.customerService.fetch(customerId, () => {
 				// TODO: Use mappings!
 				window.location.hash = '/deal/create'
 			//})
@@ -617,7 +617,7 @@ class CustomerListComponent extends Component {
 		console.log(row)
 		
 		if (typeof row !== 'undefined' && row !== null) {
-			CustomerService.fetch(customerId, () => {
+			this.props.customerService.fetch(customerId, () => {
 				// TODO: Use mappings!
 				window.location.hash = '/deal/' + row['dealId'] + '/edit'
 			})

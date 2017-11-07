@@ -305,8 +305,23 @@ class CurrentAddress extends Component {
     render() {
         const mappings = this.props.mappings || fieldNames
 		
-        let data = this.state.data
-        
+		if (this.state === null) {
+			console.log('CurrentAddress component is unable to render - component state is null')
+			console.log('dumping props and state to console')
+			console.log(JSON.stringify(this.props))
+			return null // Don't render
+		}
+		
+        let data = this.state.data || null
+		
+		if (data === null) {
+			console.log('CurrentAddress component is unable to render - no data was provided')
+			console.log('dumping props and state to console')
+			console.log(JSON.stringify(this.props))
+			console.log(JSON.stringify(this.state))
+			return null // Don't render
+		}
+		
         return (
             <div>
                 {this.props.title && (
