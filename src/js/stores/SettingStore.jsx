@@ -23,14 +23,10 @@ class SettingStore extends BaseStore {
         }
     }
     
-    constructor(dispatcher) {
+    constructor(dispatcher, adapter) {
         super(dispatcher)
 		
-		/*if (instance !== null) {
-            return instance
-        }*/
-		
-		this.adapter = null
+		this.adapter = adapter || null
         
 		// TODO: This stuff has moved to QcSettingAdapter
         this.settings = {
@@ -161,11 +157,8 @@ class SettingStore extends BaseStore {
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
         
-		// Attach a setting adapter
-		this.adapter = new SettingAdapter(this)
-		
-        // Easy access while developing app
-        //window.SettingStore = instance = this
+		// Attach a setting adapter if it wasn't provided
+		this.adapter = new SettingAdapter(this, adapter)
     }
     
     registerToActions(action) {
@@ -217,8 +210,11 @@ class SettingStore extends BaseStore {
             this.posSettings = JSON.parse(localStorage.getItem('POS_settings'))
         }
 	}
-
-    fetchSettings(onSuccess, onError) {
+	
+	/**
+	 * The old way of doing things (formerly fetchSettings)
+	 */
+    fetchOcSettings(onSuccess, onError) {
         axios({
             url: QC_API + 'referenceData',
             method: 'GET',
@@ -252,6 +248,23 @@ class SettingStore extends BaseStore {
             }
         })
     }
+	
+	fetchSettings() {
+		try {			
+			this.adapter.fetchSettings(
+				(settings) => {
+					// On success
+					this.emit('settings-loaded', settings)
+				},
+				() => {
+					// On error
+					this.emit('settings-loaded-error')
+				}
+			)
+		} catch (err) {
+			console.log(err)
+		}
+	}
     
     getConfig() {
         return this.config
@@ -378,6 +391,10 @@ class SettingStore extends BaseStore {
             }
         })
     }
+	
+	getDefaultStore() {
+		return SettingStore.defaultStore
+	}	
 
     getStoreData(storeId) {
         /*if (typeof this.stores[storeId] !== 'undefined') {
@@ -424,13 +441,23 @@ class SettingStore extends BaseStore {
         })
     }
     
+	/**
+	 * TODO: I need to be refactored cartConfig is specific to the upcoming OC setting adapter
+	 */
     getZones(countryId) {
         countryId = countryId || null
         let obj = this.settings.cartConfig.zones
         
         if (countryId !== null && !isNaN(countryId)) {
             return this.zones[countryId]
-        }
+        } else if (Object.keys(this.zones).length === 1) {
+			// Default country
+			let zones = this.zones[Object.keys(this.zones)[0]] 
+			// TODO: This works, but if countryId isn't supplied and zones haven't loaded 
+			// it returns an object instead of an array (which is expected); we addressed this
+			// in the return but yeah, this needs to be rewritten
+			return (zones instanceof Array) ? zones : [{id: null, value: ''}]
+		}
         
         return [{id: null, value: ''}]
     }

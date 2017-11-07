@@ -77,7 +77,8 @@ import fieldNames from '../../forms/CustomerContactFields.jsx'
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
-    customerService: deps.customerService
+    customerService: deps.customerService,
+    settingStore: deps.settingStore
 }))
 @observer
 class CustomerContact extends Component {
@@ -173,7 +174,7 @@ class CustomerContact extends Component {
             <Row>
 				<FormGroup className='col-xs-12 col-sm-4 col-sm-4'>
 					<ControlLabel>Type*</ControlLabel>
-					<ContactTypeDropdown optionValue items={SettingStore.contactTypes} name={mappings.CONTACT_TYPE} {...this.props.fields(mappings.CONTACT_TYPE, this.props.getMappedValue(mappings.CONTACT_TYPE, data))} />
+					<ContactTypeDropdown optionValue items={this.props.settingStore.contactTypes} name={mappings.CONTACT_TYPE} {...this.props.fields(mappings.CONTACT_TYPE, this.props.getMappedValue(mappings.CONTACT_TYPE, data))} />
 				</FormGroup>
 				
 				{this.props.type === 'email' && (

@@ -12,9 +12,10 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import AuthenticatedComponent from '../AuthenticatedComponent'
 
 import CustomerInfo from '../customer/CustomerFullInfo.jsx'
-//import CustomerContact from '../customer/CustomerContact.jsx'
-//import CustomerIdentity from '../customer/CustomerIdentity.jsx'
-//import CustomerIncome from '../customer/CustomerIncome.jsx'
+// TODO: These need to be moved to inheriting class
+import CustomerContact from '../customer/CustomerContact.jsx'
+import CustomerIdentity from '../customer/CustomerIdentity.jsx'
+import CustomerIncome from '../customer/CustomerIncome.jsx'
 
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
@@ -27,6 +28,7 @@ import addressFieldNames from '../../forms/AddressFields.jsx'
     authService: deps.authService,
     customerService: deps.customerService,
     customerAddressService: deps.customerAddressService,
+    customerStore: deps.customerStore,
     settingStore: deps.settingStore
 }))
 @observer
@@ -413,7 +415,7 @@ class CustomerFullProfile extends Component {
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Identification
-                                <Button className='repeater-button' onClick={() => { CustomerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
+                                <Button className='repeater-button' onClick={() => { this.props.customerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
                             </h4>
                         </Col>
                     </Row>
@@ -449,7 +451,7 @@ class CustomerFullProfile extends Component {
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Addresses
                                 {this.props.displayAddresses === 'multiple' && (
-                                <Button className='repeater-button' onClick={() => { CustomerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
+                                <Button className='repeater-button' onClick={() => { this.props.customerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
                                 )}
                                 
                                 {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}
@@ -643,7 +645,7 @@ class CustomerFullProfile extends Component {
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
                                 Customer Identification
-                                <Button className='repeater-button' onClick={() => { CustomerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
+                                <Button className='repeater-button' onClick={() => { this.props.customerStore.addIdentification() }}><h5><i className='fa fa-plus-circle' /> Add Identification</h5></Button>
                             </h4>
                         </Col>
                     </Row>
@@ -677,7 +679,7 @@ class CustomerFullProfile extends Component {
                     <h4 className='section-heading' style={{textAlign: 'center'}}>
                         Customer Addresses
                         {this.props.displayAddresses === 'multiple' && (
-                        <Button className='repeater-button' onClick={() => { CustomerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
+                        <Button className='repeater-button' onClick={() => { this.props.customerStore.addAddress() }}><h5><i className='fa fa-plus-circle' /> Add Address</h5></Button>
                         )}
                         
                         {/* TODO: make heading equal height, just dumping in empty button to fill space for now */}

@@ -128,10 +128,10 @@ export default class CustomerPicker extends Component {
     selectCashier() {
         let customers = this.props.customerListStore.getItems()
         
-        let cashCustomerName = SettingStore.posSettings['cash_customer']
-        let cashCustomerId = parseInt(SettingStore.posSettings['cash_customer_id'])
-        let cashCustomerGroup = SettingStore.posSettings['cash_customer_group']
-        let cashCustomerGroupId = parseInt(SettingStore.posSettings['cash_customer_group_id'])
+        let cashCustomerName = this.props.settingStore.posSettings['cash_customer']
+        let cashCustomerId = parseInt(this.props.settingStore.posSettings['cash_customer_id'])
+        let cashCustomerGroup = this.props.settingStore.posSettings['cash_customer_group']
+        let cashCustomerGroupId = parseInt(this.props.settingStore.posSettings['cash_customer_group_id'])
         
         let customer = customers.filter((customer) => parseInt(customer['customer_id']) === cashCustomerId)[0]
         

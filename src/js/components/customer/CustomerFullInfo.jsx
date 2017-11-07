@@ -13,7 +13,8 @@ import FormComponent from '../FormComponent.jsx'
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
-    customerService: deps.customerService
+    customerService: deps.customerService,
+    customerStore: deps.customerStore
 }))
 @observer
 class CustomerFullInfo extends Component {
@@ -38,15 +39,35 @@ class CustomerFullInfo extends Component {
         this.onCancel = this.onCancel.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
+        this.onChange = this.onChange.bind(this)
         
         this.state = {
-            data: assign({}, props.data)
+            data: assign({}, props.customerStore.customer)
+        }
+    }
+	
+	componentWillMount() {
+		this.props.customerStore.addChangeListener(this.onChange)
+	}
+	
+	componentWillUnmount() {
+        if (typeof this.onChange === 'function') {
+            this.props.customerStore.removeChangeListener(this.onChange)
+            
+            delete this.onChange
         }
     }
     
-    componentWillReceiveProps(newProps) {
+    /*componentWillReceiveProps(newProps) {
         this.setState({
-            data: assign({}, newProps.data)
+            data: newProps.customerStore.customer
+        })
+    }*/
+	
+	onChange() {
+		console.log('change triggered')
+        this.setState({
+            data: assign({}, this.props.customerStore.customer)
         })
     }
     

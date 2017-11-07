@@ -3,11 +3,12 @@
 // I'm going to have to refactor a bunch of stuff before I can do that though...
 import QcSettingAdapter from './QcSettingAdapter.jsx'
 
-function settingFactory(settingStore) {
-	let adapter = null
+function settingFactory(settingStore, adapter) {
+	adapter = adapter || null
+	
 	switch (QC_SETTING_ADAPTER) {
 		case 'custom':
-			//adapter = CustomSettingAdapter
+			adapter = adapter
 			break
 		default:
 			adapter = QcSettingAdapter

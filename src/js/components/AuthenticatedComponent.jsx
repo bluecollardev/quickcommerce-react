@@ -11,6 +11,7 @@ export default (ComposedComponent) => {
         userStore: deps.userStore
     }))
     @observer
+	// Wrapping this class is causing issues
     class AuthenticatedComponent extends Component {
         static willTransitionTo(transition) {
             if (!this.props.loginStore.isLoggedIn()) {

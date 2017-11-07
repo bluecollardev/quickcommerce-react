@@ -221,7 +221,9 @@ class CustomerIdentity extends Component {
                             <ControlLabel>Expiry</ControlLabel>
                             <FormControl type='text' name={mappings.EXPIRY_DATE} {...this.props.fields(mappings.EXPIRY_DATE, data[mappings.EXPIRY_DATE])} />
                         </FormGroup>
-                        
+                        {console.log('type CHECK')}
+                        {console.log(typeof this.props.settingStore.zones)}
+                        {console.log(JSON.stringify(this.props.settingStore.zones))}
                         <FormGroup className='col-sm-2 flex-md-50 flex-lg-16'>
                             <ControlLabel>Territory</ControlLabel>
                             <Autocomplete
@@ -229,7 +231,7 @@ class CustomerIdentity extends Component {
                                 getItemValue={(item) => {
                                     return item.value
                                 }}
-                                items={this.props.settingStore.zones}
+                                items={this.props.settingStore.getZones()}
                                 renderItem={(item, isHighlighted) => {
                                     return (
                                         <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>

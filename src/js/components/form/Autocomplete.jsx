@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 
-const OccupationAutocomplete = () => {
+const OccupationAutocomplete = (props) => {
 	return (
 		<div />
 	)
 }
 
-const CountryAutocomplete = () => {
+const CountryAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='default_country'
 			getItemValue={(item) => {
 				return item.value
 			}}
-			items={SettingStore.getCountries()}
+			items={props.settingStore.getCountries()}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{item.value}
 					</div>
 				)
@@ -28,7 +28,7 @@ const CountryAutocomplete = () => {
 			}}
 			value={data.default_country}
 			onChange={(event, value) => {
-				this.props.fields('default_country', value)
+				props.fields('default_country', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -39,8 +39,8 @@ const CountryAutocomplete = () => {
 				//this.parseZones(item.id)
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('default_country_id', item.id)
-				this.props.fields('default_country', item.value)
+				props.fields('default_country_id', item.id)
+				props.fields('default_country', item.value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -49,26 +49,26 @@ const CountryAutocomplete = () => {
 					})
 				}))
 				
-				SettingStore.parseZones(item.id)
+				props.settingStore.parseZones(item.id)
 			}}
 			inputProps={
-				assign(this.props.fields('default_country', data.default_country), { className: 'form-control'})
+				assign(props.fields('default_country', data.default_country), { className: 'form-control'})
 			}
 		/>
 	)
 }
 
-const ZoneAutocomplete = () => {
+const ZoneAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='default_zone'
 			getItemValue={(item) => {
 				return item.value
 			}}
-			items={SettingStore.getZones(data.default_country_id)}
+			items={props.settingStore.getZones(data.default_country_id)}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{item.value}
 					</div>
 				)
@@ -80,7 +80,7 @@ const ZoneAutocomplete = () => {
 			}}
 			value={data.default_zone}
 			onChange={(event, value) => {
-				this.props.fields('default_zone', value)
+				props.fields('default_zone', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -89,8 +89,8 @@ const ZoneAutocomplete = () => {
 				}))
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('default_zone_id', item.id)
-				this.props.fields('default_zone', item.value)
+				props.fields('default_zone_id', item.id)
+				props.fields('default_zone', item.value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -100,13 +100,13 @@ const ZoneAutocomplete = () => {
 				}))
 			}}
 			inputProps={
-				assign(this.props.fields('default_zone', data.default_zone), { className: 'form-control'})
+				assign(props.fields('default_zone', data.default_zone), { className: 'form-control'})
 			}
 		/>
 	)
 }
 
-const CustomerAutocomplete = () => {
+const CustomerAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='customer'
@@ -116,7 +116,7 @@ const CustomerAutocomplete = () => {
 			items={this.state.customers}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{[item.firstname, item.lastname].join(' ')}
 					</div>
 				)
@@ -128,7 +128,7 @@ const CustomerAutocomplete = () => {
 			}}
 			value={data.default_customer}
 			onChange={(event, value) => {
-				this.props.fields('default_customer', value)
+				props.fields('default_customer', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -137,8 +137,8 @@ const CustomerAutocomplete = () => {
 				}))
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('default_customer_id', item.customer_id)
-				this.props.fields('default_customer', value)
+				props.fields('default_customer_id', item.customer_id)
+				props.fields('default_customer', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -148,23 +148,23 @@ const CustomerAutocomplete = () => {
 				}))
 			}}
 			inputProps={
-				assign(this.props.fields('default_customer', data.default_customer), { className: 'form-control'})
+				assign(props.fields('default_customer', data.default_customer), { className: 'form-control'})
 			}
 		/>
 	)
 }
 
-const CustomerGroupAutocomplete = () => {
+const CustomerGroupAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='default_customer_group'
 			getItemValue={(item) => {
 				return item.value
 			}}
-			items={SettingStore.customerGroups}
+			items={props.settingStore.customerGroups}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{item.value}
 					</div>
 				)
@@ -176,7 +176,7 @@ const CustomerGroupAutocomplete = () => {
 			}}
 			value={data.default_customer_group}
 			onChange={(event, value) => {
-				this.props.fields('default_customer_group', value)
+				props.fields('default_customer_group', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -185,8 +185,8 @@ const CustomerGroupAutocomplete = () => {
 				}))
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('default_customer_group_id', item.id)
-				this.props.fields('default_customer_group', value)
+				props.fields('default_customer_group_id', item.id)
+				props.fields('default_customer_group', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -196,23 +196,23 @@ const CustomerGroupAutocomplete = () => {
 				}))
 			}}
 			inputProps={
-				assign(this.props.fields('default_customer_group', data.default_customer_group), { className: 'form-control'})
+				assign(props.fields('default_customer_group', data.default_customer_group), { className: 'form-control'})
 			}
 		/>
 	)
 }
 
-const OrderStatusAutocomplete = () => {
+const OrderStatusAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='order_status'
 			getItemValue={(item) => {
 				return item.value
 			}}
-			items={SettingStore.orderStatuses}
+			items={props.settingStore.orderStatuses}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{item.value}
 					</div>
 				)
@@ -224,7 +224,7 @@ const OrderStatusAutocomplete = () => {
 			}}
 			value={data.POS_complete_status}
 			onChange={(event, value) => {
-				this.props.fields('POS_complete_status', value)
+				props.fields('POS_complete_status', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -233,8 +233,8 @@ const OrderStatusAutocomplete = () => {
 				}))
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('POS_complete_status_id', item.id)
-				this.props.fields('POS_complete_status', item.value)
+				props.fields('POS_complete_status_id', item.id)
+				props.fields('POS_complete_status', item.value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -244,29 +244,29 @@ const OrderStatusAutocomplete = () => {
 				}))
 			}}
 			inputProps={
-				assign(this.props.fields('POS_complete_status', data.POS_complete_status), { className: 'form-control'})
+				assign(props.fields('POS_complete_status', data.POS_complete_status), { className: 'form-control'})
 			}
 		/>
 	)
 }
 
-const LanguageAutocomplete = () => {
+const LanguageAutocomplete = (props) => {
 	return (
 		<div />
 	)
 }
 
-const StoreAutocomplete = () => {
+const StoreAutocomplete = (props) => {
 	return (
 		<Autocomplete
 			name='store'
 			getItemValue={(item) => {
 				return item.value
 			}}
-			items={SettingStore.stores}
+			items={props.settingStore.stores}
 			renderItem={(item, isHighlighted) => {
 				return (
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{item.value}
 					</div>
 				)
@@ -278,7 +278,7 @@ const StoreAutocomplete = () => {
 			}}
 			value={data.store}
 			onChange={(event, value) => {
-				this.props.fields('store', value)
+				props.fields('store', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -289,8 +289,8 @@ const StoreAutocomplete = () => {
 				//this.parseZones(item.id)
 			}}
 			onSelect={(value, item) => {
-				this.props.fields('store_id', item.id)
-				this.props.fields('store', value)
+				props.fields('store_id', item.id)
+				props.fields('store', value)
 				
 				this.setState(assign({}, this.state, {
 					data: assign({}, data, {
@@ -300,7 +300,7 @@ const StoreAutocomplete = () => {
 				}))
 			}}
 			inputProps={
-				assign(this.props.fields('store', data.store), { className: 'form-control'})
+				assign(props.fields('store', data.store), { className: 'form-control'})
 			}
 		/>
 	)
