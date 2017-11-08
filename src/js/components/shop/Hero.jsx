@@ -14,7 +14,7 @@ export default class Hero extends Component {
                 <div key={idx} className='slide' style={{backgroundImage: 'url(' + slide.backgroundImage + ')'}}>
                     <div className='container'>
                         <div className='absolute from-top'>
-                            <span className='h1 hidden-xs'>
+                            <span className='h1'>
                                 <i className="cursive">{slide.title}</i>
                                 <br />
                                 {slide.subtitle1}

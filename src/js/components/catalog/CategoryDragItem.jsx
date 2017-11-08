@@ -41,7 +41,7 @@ const CategoryDragItem = React.createClass({
         return connectDragSource(
             <div className='card'
                 onClick={this.onClick}>
-                <Thumbnail src={this.props.item.image} />
+                <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
                 
                 <p className='item-name'>
                     {this.props.item['name']}

@@ -13,7 +13,7 @@ export default class Product extends Component {
     render() {
         return (
             <section className="container main-content">
-                <div className="row padding-top product-section">
+                <div className="row product-section">
                   <div className="col-xs-12">
                     <ProductDetail />
                   </div>
@@ -21,7 +21,6 @@ export default class Product extends Component {
 
                 {/*<GalleryFullwidthWithGap />
                 <GalleryFullwidthNoGap />
-
                 <GalleryBoxedWithGap />
                 <GalleryBoxedNoGap />*/}
             </section>
