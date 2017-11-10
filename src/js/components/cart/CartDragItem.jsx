@@ -41,20 +41,21 @@ const CartDragItem = React.createClass({
         return connectDragSource(
             <div className='card'
                 onClick={this.onClick}>
-                {/*<Thumbnail src={this.props.item.image} />
-                <h5 className='item-brand'>
-                    {this.props.item['manufacturer']}
-                </h5>*/}
+                <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
+                {<h5 className='item-brand'>
+                    {/* TODO: Use mappings! */}
+                    {this.props.item['manufacturer']['name']}
+                </h5>}
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>
-                {/*this.props.item.hasOwnProperty('price') && 
+                {this.props.item.hasOwnProperty('price') && 
                 this.props.item['price'] !== false && 
                 !isNaN(this.props.item['price']) && (
                 <p className='item-price'>
                     {'$' + parseFloat(this.props.item['price']).toFixed(2)}
                 </p>
-                )*/}
+                )}
             </div>
         )
     }

@@ -106,17 +106,19 @@ class CurrentAddress extends Component {
         let zoneName = ''
         let countryName = ''
         
+        // TODO: Do something if the data is wrong or something screws up
         if ((country !== null && typeof country !== 'string') &&
             (zone !== null && typeof zone !== 'string')) {
             let zones = this.props.settingStore.getZones(country[mappings.COUNTRY_ID])
-            
-            zoneName = zones.filter(obj => Number(obj.id) === Number(zone[mappings.ZONE_ID]))[0].value
+            let filteredZones = zones.filter(obj => Number(obj.id) === Number(zone[mappings.ZONE_ID]))
+            zoneName = (filteredZones instanceof Array && filteredZones.length > 0) ? filteredZones[0].value : ''
             state.data[mappings.ZONE_ID] = zone[mappings.ZONE_ID]
             state.data[mappings.ZONE] = zoneName
         }
         
         if (country !== null && typeof country !== 'string') {
-            countryName = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(this.props.getMappedValue(mappings.COUNTRY_ID, state.data)))[0].value
+            let filteredCountries = this.props.settingStore.getCountries().filter(obj => Number(obj.id) === Number(this.props.getMappedValue(mappings.COUNTRY_ID, state.data)))
+            countryName = (filteredCountries instanceof Array && filteredCountries.length > 0) ? filteredCountries[0].value : ''
             state.data[mappings.COUNTRY_ID] = this.props.getMappedValue(mappings.COUNTRY_ID, state.data)
             state.data[mappings.COUNTRY] = countryName
         }

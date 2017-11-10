@@ -1,15 +1,10 @@
 import assign from 'object-assign'
 
 import axios from 'axios'
-//import request from 'reqwest' // TODO: Use axios
-//import when from 'when'
 
 import { BaseService } from './BaseService.jsx'
 
 import CustomerConstants from '../constants/CustomerConstants.jsx'
-
-import CustomerStore from '../stores/CustomerStore.jsx'
-import StarMicronicsStore from '../stores/StarMicronicsStore.jsx'
 
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
@@ -32,7 +27,7 @@ export default class CheckoutService extends BaseService {
         })
         .then(response => {
             let payload = response.data
-            CheckoutStore.setOrder(payload)
+            this.stores.checkout.setOrder(payload)
 
             if (typeof onSuccess === 'function') {
                 onSuccess(payload)
@@ -50,20 +45,20 @@ export default class CheckoutService extends BaseService {
     
     createOrder(onSuccess, onError) {
         // Create an new order
-		CheckoutStore.newOrder()
+		this.stores.checkout.newOrder()
         
         let settings = SettingStore.getSettings().posSettings
 		//return orderId
         axios({
             url: QC_API + 'order/0', // Set ID to 0 to create new...
-            data: CheckoutStore.payload.order, //JSON.stringify(cartProduct),
+            data: this.stores.checkout.payload.order, //JSON.stringify(cartProduct),
             method: 'PATCH',
             //dataType: 'json',
             contentType: 'application/json'
         })
         .then(response => {
             let payload = response.data
-            CheckoutStore.setOrder(payload)
+            this.stores.checkout.setOrder(payload)
 
             if (typeof onSuccess === 'function') {
                 onSuccess(payload)
@@ -138,10 +133,10 @@ export default class CheckoutService extends BaseService {
             })
             .then(response => {
                 let payload = response.data
-                CheckoutStore.setOrder(payload)
+                this.stores.checkout.setOrder(payload)
                 
                 console.log('order patched')
-                console.log(CheckoutStore.payload)
+                console.log(this.stores.checkout.payload)
 
                 if (typeof onSuccess === 'function') {
                     onSuccess(payload)
@@ -204,11 +199,11 @@ export default class CheckoutService extends BaseService {
     clearOrder(onSuccess, onError) {
 		let	that = this
 
-        if (CheckoutStore.payload.hasOwnProperty('order') && CheckoutStore.payload.order !== null) {
-            if (CheckoutStore.payload.order.hasOwnProperty('orderId') && !isNaN(CheckoutStore.payload.order.orderId)) {
+        if (this.stores.checkout.payload.hasOwnProperty('order') && this.stores.checkout.payload.order !== null) {
+            if (this.stores.checkout.payload.order.hasOwnProperty('orderId') && !isNaN(this.stores.checkout.payload.order.orderId)) {
                 axios({
                     //url: QC_RESOURCE_API + 'cart/empty',
-                    url: QC_API + 'order/' + CheckoutStore.payload.order.orderId,
+                    url: QC_API + 'order/' + this.stores.checkout.payload.order.orderId,
                     method: 'DELETE',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -241,10 +236,10 @@ export default class CheckoutService extends BaseService {
         })
         .then(response => {
             let payload = response.data
-            CheckoutStore.setOrder(payload)
+            this.stores.checkout.setOrder(payload)
             
             console.log('item successfully patched to order')
-            console.log(CheckoutStore.payload)
+            console.log(this.stores.checkout.payload)
 
             if (typeof onSuccess === 'function') {
                 onSuccess(payload)
@@ -271,9 +266,9 @@ export default class CheckoutService extends BaseService {
     
     // From here down list utility methods that invoke our mirrored API methods
     doCheckout(onSuccess, onError, id) { // ID is last because we only use it when testing, otherwise grab ID from 'model'
-        id = CheckoutStore.payload.order.orderId || 0
+        id = this.stores.checkout.payload.order.orderId || 0
         console.log('attempting to checkout')
-        let settings = SettingStore.getSettings().posSettings
+        let settings = this.stores.setting.getSettings().posSettings
         
         this.updateOrder(id, {
             action: 'updateOrderStatus',

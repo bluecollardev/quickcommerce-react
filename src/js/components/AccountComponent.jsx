@@ -16,7 +16,6 @@ import AuthenticatedComponent from './AuthenticatedComponent.jsx'
 import SignInForm from './account/SignInForm.jsx'
 import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
 
-/*
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
@@ -26,7 +25,6 @@ import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
     customerStore: deps.customerStore
 }))
 @observer
-*/
 class AccountComponent extends Component {
     constructor(props) {
         super(props)
@@ -87,8 +85,7 @@ class AccountComponent extends Component {
         if (response.success || response.status === 200) {
             if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                 // TODO: This is still using legacy API
-                let data = response.data.data                
-                
+                let data = response.data.data
                 // Account -> User role
                 actions.user.setUser(data)
                 // Account -> Customer role

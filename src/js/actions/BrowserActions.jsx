@@ -37,11 +37,14 @@ export default (dispatcher) => {
             })
         },
         loadOptions: (item) => {
+            // TODO: Replace with mapping!
+            let options = (item['option'] instanceof Array) ? item['option'] : []
+            
             dispatcher.dispatch({
                 actionType: BrowserConstants.LOAD_OPTION,
                 config: assign({}, ProductOptionStep),
                 product: assign({}, item),
-                options: assign({}, item.options), // Option data already loaded as part of product fetch
+                options: options, // Option data already loaded as part of product fetch
                 loaded: true // Set loaded flag to true
             })
         },

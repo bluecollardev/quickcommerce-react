@@ -103,6 +103,26 @@ const CASH_IN_DRAWER = [
     ['ONE HUNDRED', 100.00]
 ]
 
+@inject(deps => ({
+    actions: deps.actions,
+	authService: deps.authService,
+	customerService: deps.customerService,
+    checkoutService: deps.checkoutService,
+    settingService: deps.authService,
+	loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore,
+    checkoutStore: deps.checkoutStore,
+    starMicronicsStore: deps.starMicronicsStore,
+    productStore: deps.productStore,
+	settingStore: deps.settingStore,
+	mappings: deps.mappings, // Per component or global scope?
+	translations: deps.translations, // i8ln transations
+	roles: deps.roles, // App level roles, general authenticated user (not customer!)
+	userRoles: deps.userRoles, // Shortcut or implement via HoC?
+	user: deps.user // Shortcut or implement via HoC?
+}))
+@observer
 class PosComponent extends Component {
     constructor(props) {
         super(props)
@@ -914,7 +934,8 @@ class PosComponent extends Component {
                 console.log('validating current step: ' + stepId)
                 console.log(data)
                 
-                let productId = data['id'] || null
+                // TODO: Replace with mapping!
+                let productId = data['product_id'] || null
                 
                 if (productId === null) {
                     alert('Please select a product to continue')
@@ -938,10 +959,8 @@ class PosComponent extends Component {
                 data = data || null
                 // Store the selection
                 
-                if (data !== null &&
-                    data.hasOwnProperty('id') &&
-                    !Number.isNaN(data.id)) {
-
+                // TODO: Replace with mapping!
+                if (data !== null && data.hasOwnProperty('product_id') && !Number.isNaN(data['product_id'])) {
                     this.optionBrowser.actions.loadOptions(data) // TODO: CONST for prop name?
                 } else {
                     // Do nothing - options only correlate to a browser item
@@ -1407,7 +1426,8 @@ class PosComponent extends Component {
             let isEnded = false
             // Execute the step handler
             this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
-            this.stepper.addItem(item.id, 1, item)
+            // TODO: Replace with mapping!
+            this.stepper.addItem(item['product_id'], 1, item)
         }
     }
     
@@ -2289,7 +2309,7 @@ class PosComponent extends Component {
                 orderTotal = orderTotalValue.toFixed(2) 
             }
         }
-
+        // Render PosComponent return
         return (
             <div className='cart-ui'>
                 <div id='browser'>
@@ -2446,7 +2466,16 @@ class PosComponent extends Component {
                                 {this.props.loggedIn && (
                                 <Row className='account-panel'>
                                     <Col xs={12} md={12} lg={6}>
+                                        {/* There's an error somewhere, loginStore doesn't update userStore like it used to... 
+                                        Maybe I should consolidate them into a single store or something - saving the same data to 
+                                        two stores doesn't really make a lot of sense; it was originally a workaround for something.
                                         <SignInForm
+                                            user = {this.props.userStore.user}
+                                            onCreate = {this.showNewCustomerForm}
+                                            onLoginSuccess = {this.props.onLoginSuccess}
+                                            />*/}
+                                        <SignInForm
+                                            user = {this.props.loginStore.user}
                                             onCreate = {this.showNewCustomerForm}
                                             onLoginSuccess = {this.props.onLoginSuccess}
                                             />
@@ -2842,7 +2871,7 @@ class PosComponent extends Component {
                         <div>
                             <div>
                                 <div>
-                                    <Alert bsStyle='default'>
+                                    <Alert>
                                         <h2 style={{ textAlign: 'center', display: 'block' }}>${this.state.changeAmount} change</h2>
                                         <hr />
                                         <span style={{ textAlign: 'center', display: 'block' }}><b>Out of ${this.state.cashAmount} received</b></span>

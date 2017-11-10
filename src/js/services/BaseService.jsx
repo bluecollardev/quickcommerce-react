@@ -16,7 +16,12 @@ export class BaseService {
         
         this.actions = {} // Private? (TODO: Symbols)
         this.dispatcher = {} // Private? (TODO: Symbols)
-                if (deps !== null) {
+        
+        if (deps !== null) {
+            if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
+                this.dispatcher = deps.dispatcher
+            }
+            
             if (deps.hasOwnProperty('actions') && deps.actions !== null && Object.keys(deps.actions).length > 0) {
                 this.actions = deps.actions //this.actions = new HashProxy(actions)
             }
@@ -25,8 +30,8 @@ export class BaseService {
                 this.services = deps.services //this.services = new HashProxy(services)
             }
             
-            if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
-                this.dispatcher = deps.dispatcher
+            if (deps.hasOwnProperty('stores') && deps.stores !== null && Object.keys(deps.stores).length > 0) {
+                this.stores = deps.stores //this.stores = new HashProxy(stores)
             }
         }   
     }

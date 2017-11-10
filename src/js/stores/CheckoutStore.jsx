@@ -31,7 +31,7 @@ class CheckoutStore extends OrderStore {
         this.payload = {
             order: {},
             orderProducts: [],
-            orderOptions: {},
+            orderOptions: [],
             orderPayments: null,
             orderTotals: {},
             orderCustomer: null,

@@ -7,6 +7,7 @@ export default (ComposedComponent) => {
     @inject(deps => ({
         actions: deps.actions,
         authService: deps.authService,
+        customerService: deps.customerService,
         loginStore: deps.loginStore,
         userStore: deps.userStore
     }))

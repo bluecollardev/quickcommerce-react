@@ -1,12 +1,6 @@
 import assign from 'object-assign'
 
 import axios from 'axios'
-//import request from 'reqwest' // TODO: Use axios
-//import when from 'when'
-
-import CustomerConstants from '../constants/CustomerConstants.jsx'
-
-import CustomerStore from '../stores/CustomerStore.jsx'
 
 import { BaseService } from './BaseService.jsx'
 
@@ -176,7 +170,7 @@ export default class CustomerService extends BaseService {
     put(data, onSuccess, onError) {
         let filterData = false
         let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
-        let customerId = CustomerStore.customer['customer_id'] || null
+        let customerId = this.stores.customer.customer['customer_id'] || null
 		
 		/*// TODO: Let's change the var names... prop/key same thing in JS
         data.forEach(function (prop, key) {										
@@ -241,7 +235,7 @@ export default class CustomerService extends BaseService {
     patch(data, onSuccess, onError) {
         let filterData = false
         let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
-        let customerId = CustomerStore.customer['customer_id'] || null
+        let customerId = this.stores.customer.customer['customer_id'] || null
 		
 		/*// TODO: Let's change the var names... prop/key same thing in JS
         data.forEach(function (prop, key) {										

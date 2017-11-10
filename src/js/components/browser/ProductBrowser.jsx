@@ -370,7 +370,7 @@ export default class ProductBrowser extends Component {
                                             justify='between'>
                                             <Label size='small'>Status</Label>
                                             <Paragraph size='large' margin='none'>
-                                                <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
+                                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
                                             </Paragraph>
                                         </Box>
                                         <Box margin={{top: 'none'}}>
@@ -427,7 +427,7 @@ export default class ProductBrowser extends Component {
                                             justify='between'>
                                             <Label size='small'>Status</Label>
                                             <Paragraph size='large' margin='none'>
-                                                <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
+                                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
                                             </Paragraph>
                                         </Box>
                                         <Box margin={{top: 'none'}}>
@@ -483,7 +483,7 @@ export default class ProductBrowser extends Component {
                                         separator='top'>
                                         <Label size='small' uppercase>Status</Label>
                                         <Paragraph size='large' margin='none'>
-                                            <strong style={{ fontSize: '1.3rem' }}>{item.stock_status}</strong>
+                                            <strong style={{ fontSize: '1.3rem' }}>Some Stock Status</strong>
                                         </Paragraph>
                                     </Box>
                                     <Box pad={{vertical: 'small'}}

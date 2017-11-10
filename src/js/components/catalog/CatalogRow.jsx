@@ -14,6 +14,7 @@ export default class CatalogRow extends Component {
     }
     
     render() {
+        // TODO: Use mappings!
         return (
             <Col xs={12} sm={4}>
                 <CartDragItem 

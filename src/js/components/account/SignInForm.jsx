@@ -62,11 +62,21 @@ class SignInForm extends Component {
         if (this.props.loggedIn) {
             let state = {}
             
-            if (typeof this.props.user !== 'undefined' && 
+            /* TODO: Props aren't being passed down correctly as result of using the Mobx injectors which wrap the components */
+            /*if (typeof this.props.user !== 'undefined' && 
                 this.props.user !== null) {
                 state = this.props.user
                 state.fullName = this.getFullName(this.props.user) 
                 state.displayName = this.getDisplayName(this.props.user)
+            }*/
+            
+            // TODO: Temporary hack to get things working again, just use the userStore
+            // Absolutely sucks that I have to do this, I'm pretty pissed off
+            if (typeof this.props.loginStore.user !== 'undefined' && 
+                this.props.loginStore.user !== null) {
+                state = this.props.loginStore.user
+                state.fullName = this.getFullName(this.props.loginStore.user) 
+                state.displayName = this.getDisplayName(this.props.loginStore.user)
             }
             
             this.setState(state)
@@ -78,11 +88,21 @@ class SignInForm extends Component {
             if (this.props.loggedIn) {
                 let state = {}
                 
-                if (typeof this.props.user !== 'undefined' && 
+                /* TODO: Props aren't being passed down correctly as result of using the Mobx injectors which wrap the components */
+                /*if (typeof this.props.user !== 'undefined' && 
                     this.props.user !== null) {
                     state = this.props.user
-                    state.fullName = this.getFullName(this.props.user) 
+                    state.fullName = this.getFullName(this.props.user)
                     state.displayName = this.getDisplayName(this.props.user)
+                }*/
+                
+                // TODO: Temporary hack to get things working again, just use the userStore
+                // Absolutely sucks that I have to do this, I'm pretty pissed off
+                if (typeof this.props.loginStore.user !== 'undefined' && 
+                    this.props.loginStore.user !== null) {
+                    state = this.props.loginStore.user
+                    state.fullName = this.getFullName(this.props.loginStore.user)
+                    state.displayName = this.getDisplayName(this.props.loginStore.user)
                 }
                 
                 this.setState(state)
