@@ -71,12 +71,7 @@ export default class CreditCardForm extends Component {
                     <div className='credit-card-info'>
                     <Col sm={12} md={6} 
                         className='rccs__demo__content customer-info full-width-inputs'>
-                        <form style={{
-                            maxWidth: '75%',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            float: 'none'
-                            }}>
+                        <form>
                             <FormGroup className='col-sm-6'>
                                 <ControlLabel>Card Number</ControlLabel>
                                 <FormControl type='tel'

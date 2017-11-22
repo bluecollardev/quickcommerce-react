@@ -10,19 +10,18 @@ export default class Contact extends Component {
     
     render() {
         return (
-            <div id="contact" className="container main-content">
-                <div className="line5">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <h3 className="cursive text-center padding-top">~ Questions and Catering ~</h3>
-                            </div>
+          <main className="content-wrapper">{/* Main Content Wrapper */}
+            <div id="contact">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <h3 className="cursive text-center padding-top">Questions? Take aim and shoot!</h3>
                         </div>
                     </div>
                 </div>
                 <div className="container-fluid">
                     <div className="row ftext">
-                        <div className="col-md-12">
+                        <div className="col-md-12 padding-top-3x">
                             <a id="features" />
                             {/*<p>Double click to close me.</p>*/}
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -38,7 +37,7 @@ export default class Contact extends Component {
                                 <input type="text" className="col-md-6 col-xs-12 Email" name="Email" placeholder="Email *" />
                                 <input type="text" className="col-md-12 col-xs-12 Subject" name="Subject" placeholder="Subject" />
                                 <textarea type="text" className="col-md-12 col-xs-12 Message" name="Message" placeholder="Message *" defaultValue={ ""} />
-                                <div className="cBtn col-xs-12">
+                                <div className="cBtn col-xs-12 padding-top">
                                     <a className="btn btn-default" href="#">
                                         <i className="fa fa-times" />Clear Form
                                     </a>&nbsp;
@@ -58,11 +57,11 @@ export default class Contact extends Component {
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i className="fa fa-envelope" />info@phobulous.ca
+                                        <i className="fa fa-envelope" />info@acecoffeeroasters.com
                                     </a>
                                 </li>
                                 <li>
-                                    <i className="fa fa-skype" />Phobulous (Edmonton)
+                                    <i className="fa fa-skype" />Ace Coffee Roasters (Edmonton)
                                 </li>
                                 {/*<li>
                                     <a href="#">
@@ -92,11 +91,15 @@ export default class Contact extends Component {
                             </ul>
                         </div>
                     </div>
+                    
                 </div>
-                <div className="line6">
-                    <iframe src="https://maps.google.com/maps?q=phobulous edmonton&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height={750} frameBorder={0} style={{border: 0}} />
+                <div className="row">
+                    <div className="col-xs-12 padding-top-2x">
+                        <iframe src="https://maps.google.com/maps?q=acecoffeeroasters&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height={750} frameBorder={0} style={{border: 0}} />
+                    </div>
                 </div>
             </div>
+          </main>
         )
     }
 }

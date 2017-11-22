@@ -53,7 +53,7 @@ export default class Products extends ProductBrowser {
         let item = this.props.item || null
         
         return (
-            <div className="col-xs-12 col-sm-10 col-sm-push-1">
+            <div className="col-xs-12">
                 {this.props.displayCategoryFilter && (
                 <CategoryFilterBar
                     items = {this.state.categories}

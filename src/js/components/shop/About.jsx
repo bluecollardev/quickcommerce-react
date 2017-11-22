@@ -10,11 +10,12 @@ export default class About extends Component {
     
     render() {
         return (
-          <section id="about" className="container main-content">
+        <main className="content-wrapper">{/* Main Content Wrapper */}
+          <section id="about" className="container-fluid">
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12">
-                        <h3 className="cursive text-center padding-top">~ About Us ~</h3>
+                        <h3 className="cursive text-center padding-top">About Us</h3>
                     </div>
                 </div>
             </div>
@@ -22,7 +23,7 @@ export default class About extends Component {
                 <div className="row padding-top">
                   <div className="col-md-5 col-sm-6 padding-bottom">
                     <h3>The Brand</h3>
-                    <p className=" space-top">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    <p className=" space-top">Respecting the science and craft of the past, our team of reasters have developed an evolving portfolio of coffees that reflect our passion, philosophy and commitment to sensible roasting... the end goal - delicious artisan coffee.</p>
                   </div>{/* .col-md-5.col-sm-6 */}
                   <div className="col-sm-6 col-md-offset-1 padding-bottom">
                     <h3>Mission</h3>
@@ -34,7 +35,7 @@ export default class About extends Component {
                       </div>
                       <blockquote>
                         <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem.</p>
-                        <cite>C.J. Cameron, Founder M-store Ltd.</cite>
+                        <cite>Joe Parottino, Founder Ace Coffee Roasters</cite>
                       </blockquote>
                     </div>{/* .quotation */}
                   </div>{/* .col-md-6.col-sm-6.col-md-offset-1 */}
@@ -59,8 +60,8 @@ export default class About extends Component {
                         </div>{/* .social-bar */}
                         <img src="img/team/01.jpg" alt="Teammate" />
                       </div>
-                      <h4 className="teammate-name">Jonathan Doe</h4>
-                      <span className="teammate-position">Co-Founder, CEO</span>
+                      <h4 className="teammate-name">Joe Parottino</h4>
+                      <span className="teammate-position">Founder, Managing Director</span>
                     </div>{/* .teammate */}
                   </div>{/* .col-xs-6.col-md-3 */}
                   {/* Teammate */}
@@ -80,8 +81,8 @@ export default class About extends Component {
                         </div>{/* .social-bar */}
                         <img src="img/team/02.jpg" alt="Teammate" />
                       </div>
-                      <h4 className="teammate-name">Branda Murray</h4>
-                      <span className="teammate-position">Marketing Director</span>
+                      <h4 className="teammate-name">Kate</h4>
+                      <span className="teammate-position">Master Roaster</span>
                     </div>{/* .teammate */}
                   </div>{/* .col-xs-6.col-md-3 */}
                   {/* Teammate */}
@@ -123,7 +124,7 @@ export default class About extends Component {
                         <img src="img/team/04.jpg" alt="Teammate" />
                       </div>
                       <h4 className="teammate-name">Suasanna Davis</h4>
-                      <span className="teammate-position">Sales Director</span>
+                      <span className="teammate-position">Sales Manager</span>
                     </div>{/* .teammate */}
                   </div>{/* .col-xs-6.col-md-3 */}
                 </div>{/* .row */}
@@ -141,6 +142,7 @@ export default class About extends Component {
                 </div>
             </div>
           </section>
+        </main>
         )
     }
 }
