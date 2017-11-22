@@ -76,44 +76,51 @@ class CustomerFullInfo extends Component {
         e.stopPropagation()
     
         this.props.triggerAction((formData) => {
+			alert('invoke POST on customerService')
+			confirm(JSON.stringify(formData))
             this.props.customerService.post(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
-        }
+    }
     
     onUpdate(e) {
         e.preventDefault()
         e.stopPropagation()
         
         this.props.triggerAction((formData) => {
+			alert('invoke PUT on customerService')
+			confirm(JSON.stringify(formData))
             this.props.customerService.put(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
-        }
+    }
     
+	// TODO: Move to FormComponent (hint this is in more than a few places)
     onCancel(e) {
         e.preventDefault()
         e.stopPropagation()
         
-        console.log('executing onCancel')
         if (typeof this.props.onCancel === 'function') {
-            console.log('execute handler')
+			console.log('executing onCancel handler')
             let fn = this.props.onCancel
             fn(e)
         }
     }
     
+	// TODO: Move to FormComponent (hint this is in more than a few places)
     onSaveSuccess(response) {
-        console.log('executing onSaveSuccess')
+		alert('response indicates success')
+        confirm(JSON.stringify(response))
         if (typeof this.props.onSaveSuccess === 'function') {
-            console.log('execute handler')
+            console.log('execute onSaveSuccess handler')
             let fn = this.props.onSaveSuccess
             fn(response)
         }
     }
     
+	// TODO: Move to FormComponent (hint this is in more than a few places)
     onError(response) {
         console.log('executing onError')
         if (typeof this.props.onError === 'function') {

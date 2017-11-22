@@ -15,10 +15,7 @@ import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
 export default class CustomerService extends BaseService {
-    /**
-	 * This looks like a legacy handler.
-	 */
-	onSuccess(response) {        
+    onSuccess(response) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
             let data = response.data['data']
             this.actions.customer.setCustomer(data)
@@ -30,70 +27,58 @@ export default class CustomerService extends BaseService {
         }
     }
 	
-	
-	/**
-     * For use with Legacy API.
-     */
-    get(data, onSuccess, onError) {
-		// Get the account
-		axios({
-			url: QC_LEGACY_API + 'account',
-			//url: QC_API + 'customer',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
-            if (response.status === 200) {
-                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                    console.log('set customer data - ' + new Date())
-                    //that.setCustomer(model)
-                }
-            }
-        }).catch(err => {
-            // Do something
-            console.log(err)
-        })
+    setCustomer(data) {
+        // Try using/fetching the customer's default address
+        let addressId = null
+        
+        // If the customer object was returned from qcapi resource services, it will be provided as a property
+        if (data.hasOwnProperty('address') && data.address.hasOwnProperty('address_id')) {
+            addressId = data.address['address_id']
+        // If the customer object was returned from default api services (legacy), it will be provided as an id
+        } else if (data.hasOwnProperty('address_id')) {
+            addressId = data['address_id']
+        }
+        
+        if (!isNaN(addressId)) {
+            // Fetch...
+            axios({
+                url: QC_RESOURCE_API + 'address/' + addressId,
+                method: 'GET',
+                //dataType: 'json',
+                contentType: 'application/json'
+            })
+            .then(response => {
+                let payload = response.data
+                
+                // Set the customer
+                this.actions.customer.setCustomer(data)
+                
+                // Resource API data is wrapped in a data object                
+                this.actions.customer.setBillingAddress({
+                    addresses: [payload.data],
+                    billingAddressId: addressId,
+                    billingAddress: payload.data
+                })
+                
+                this.actions.customer.setShippingAddress({
+                    addresses: [payload.data],
+                    shippingAddressId: addressId,
+                    shippingAddress: payload.data
+                })
+            }).catch(err => {
+                // Do nothing, not a deal-breaker if we couldn't grab an address
+                console.log(err)
+                
+                // TODO: Notify user
+                
+                this.actions.customer.setCustomer(data)
+            })
+            
+        } else {
+            this.actions.customer.setCustomer(data)
+            // TODO: Clear addresses explicitly
+        }
     }
-	
-	/*get(id, onSuccess, onError) {
-		// Get the account
-		axios({
-			//url: INDIGO_BASE_URI + COMMON_CUSTOMERS + id,
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
-			if (response.success || response.status === 200) {
-				if (response.hasOwnProperty('data')) {
-					let customer = response.data['customer']
-					let data = customer
-					
-					if (data.hasOwnProperty('user')) {
-						data = assign({}, data, data['user'])
-						delete data.user
-					}
-					
-					if (typeof onSuccess === 'function') {
-						onSuccess(data) // TODO: Use mappings!
-					}
-				} else {
-					if (typeof onSuccess === 'function') {
-						onSuccess(data)
-					}
-				}
-			} else {
-				if (typeof onError === 'function') {
-					onError(response)
-				}
-			}
-		}).catch(err => {
-			if (typeof onError === 'function') {
-				onError(err)
-			}
-		})
-    }*/
 	
 	fetch(customerId, onSuccess, onError) {
 		axios({
@@ -320,6 +305,31 @@ export default class CustomerService extends BaseService {
 	
 	normalizePayload(data, from, to) {
         return ObjectHelper.recursiveFormatKeys(data, from, to)
+    }
+	
+	/**
+     * For use with Legacy API.
+     */
+    get(data, onSuccess, onError) {
+		// Get the account
+		axios({
+			url: QC_LEGACY_API + 'account',
+			//url: QC_API + 'customer',
+			type: 'GET',
+			dataType: 'json',
+			contentType: 'application/json',
+			async: false
+		}).then(response => {
+            if (response.status === 200) {
+                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
+                    console.log('set customer data - ' + new Date())
+                    //that.setCustomer(model)
+                }
+            }
+        }).catch(err => {
+            // Do something
+            console.log(err)
+        })
     }
     
     /**

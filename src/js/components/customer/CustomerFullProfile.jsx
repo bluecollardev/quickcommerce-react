@@ -9,13 +9,14 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import AuthenticatedComponent from '../AuthenticatedComponent'
+import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
+import FormComponent from '../FormComponent.jsx'
 
-import CustomerInfo from '../customer/CustomerFullInfo.jsx'
+import CustomerInfo from './CustomerFullInfo.jsx'
 // TODO: These need to be moved to inheriting class
-import CustomerContact from '../customer/CustomerContact.jsx'
-import CustomerIdentity from '../customer/CustomerIdentity.jsx'
-import CustomerIncome from '../customer/CustomerIncome.jsx'
+import CustomerContact from './CustomerContact.jsx'
+import CustomerIdentity from './CustomerIdentity.jsx'
+import CustomerIncome from './CustomerIncome.jsx'
 
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
@@ -163,27 +164,36 @@ class CustomerFullProfile extends Component {
     // TODO: Abstract out getForm, triggerAction, dispatch, freezeState, unfreezeState etc.
 	
 	/**
-	 * Grab all subforms and assemble their data into a single object
+	 * Grab all subforms and assembles their data into a single object.
 	 */
     getForm() {
-        console.log('grabbing form data from child form components')
-        console.log(this.profile.getForm())
-        console.log(this.billingAddress.getForm())
-        //console.log(this.shippingAddress.getForm())
-        let formData = {
-            profile: assign({}, this.profile.getForm()),
-            //currentAddress: assign({}, this.currentAddress.getForm()),
-            billingAddress: assign({}, this.billingAddress.getForm()),
-            //shippingAddress: assign({}, this.shippingAddress.getForm()), 
-            //mailingAddress: assign({}, this.mailingAddress.getForm()),
+        console.log('grabbing form data from child form components')		
+        // Always use getSubform to get sub-form data
+		let formData = {
+            profile: assign({}, this.getSubform('profile')),
             addresses: [
-                assign({}, this.billingAddress.getForm())
-            ]
+                assign({}, this.getSubform('billingAddress'))
+            ],
+            billingAddress: assign({}, this.getSubform('billingAddress'))
         }
         
         // Do something?
         return formData
     }
+	
+	/** 
+	 * Type check - we don't want to be calling getForm on a sub-form component that isn't a FormComponent.
+	 * There's no guarantee that markup in an inheriting component will contain the same references / subs.
+	 */
+	getSubform(refProperty) {
+		let prop = this[refProperty] || null
+		// I'm not using a typing lib (it's on my bucket list) so duck type. It'll work just fine for this :)
+		let subFormComponent = (prop !== null && prop.__proto__.hasOwnProperty('getForm')) ? prop : null
+		// 1) Just call, getForm should NEVER accept any parameters!
+		// 2) Don't use call or apply, there's no need to override 'this'
+		// 3) Return an empty object, this method shouldn't try to break stuff
+		return (subFormComponent !== null) ? subFormComponent.getForm() : {} 
+	}
     
     triggerAction(callback) {
         return callback(this.getForm())
@@ -194,6 +204,8 @@ class CustomerFullProfile extends Component {
         e.stopPropagation()
         
         this.triggerAction((formData) => {
+			alert('invoke POST on customerService')
+			confirm(JSON.stringify(formData))
             this.props.customerService.post(formData.profile, this.onCreateSuccess, this.onError)
         })
     }
@@ -203,7 +215,10 @@ class CustomerFullProfile extends Component {
         e.stopPropagation()
         
         this.triggerAction((formData) => {
-            this.props.customerService.put(formData.profile, this.onSaveSuccess, this.onError)
+            alert('invoke PUT on customerService')
+			confirm(JSON.stringify(formData))
+			
+			this.props.customerService.put(formData.profile, this.onSaveSuccess, this.onError)
             
             for (let idx = 0; idx < formData.addresses.length; idx++) {
                 let address = formData.addresses[idx]
@@ -218,14 +233,19 @@ class CustomerFullProfile extends Component {
                 })
                 
                 if (addressId === null) {
-                    this.props.customerAddressService.post(address)
+                    alert('POST to customerService')
+					confirm(JSON.stringify(formData))
+					this.props.customerAddressService.post(address)
                 } else if (!isNaN(addressId)) {
-                    this.props.customerAddressService.put(address)
+                    alert('invoke PUT on customerService')
+					confirm(JSON.stringify(formData))
+					this.props.customerAddressService.put(address)
                 }
             }
         })
     }
     
+	// TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
     onCancel(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -238,6 +258,7 @@ class CustomerFullProfile extends Component {
         }
     }
     
+	// TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
     onCreateSuccess(response) {
         console.log('executing onCreateSuccess')
         if (typeof this.props.onCreateSuccess === 'function') {
@@ -247,15 +268,18 @@ class CustomerFullProfile extends Component {
         }
     }
     
+	// TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
     onSaveSuccess(response) {
-        console.log('executing onSaveSuccess')
+		alert('response indicates success')
+        confirm(JSON.stringify(response))
         if (typeof this.props.onSaveSuccess === 'function') {
-            console.log('execute handler')
+            console.log('execute onSaveSuccess handler')
             let fn = this.props.onSaveSuccess
             fn(response)
         }
     }
     
+	// TODO: Move to FormComponent (hint this is in more than a few places)
     onError(response) {
         console.log('executing onError')
         if (typeof this.props.onError === 'function') {

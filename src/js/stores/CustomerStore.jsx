@@ -3,20 +3,12 @@ import CustomerConstants from '../constants/CustomerConstants.jsx'
 import BaseStore from './BaseStore.jsx'
 //import jwt_decode from 'jwt-decode'
 
-//let instance = null
-
 class CustomerStore extends BaseStore {
     constructor(dispatcher) {
         super(dispatcher)
         
-        /*if (instance !== null) {
-            return instance
-        }*/
-        
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
-        
-        //window.CustomerStore = instance = this
     }
 
     registerToActions(action) {

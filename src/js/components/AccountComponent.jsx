@@ -92,7 +92,7 @@ class AccountComponent extends Component {
                 // Account -> User role
                 actions.user.setUser(data)
                 // Account -> Customer role
-                this.props.customerService.setCustomer(data) 
+                this.props.customerService.setCustomer(data) // TODO: Move me out! This is app / implementation specific
                 
                 window.location.hash = '/'
             }

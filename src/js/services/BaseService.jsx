@@ -24,6 +24,12 @@ export class BaseService {
             if (deps.hasOwnProperty('services') && deps.services !== null && Object.keys(deps.services).length > 0) {
                 this.services = deps.services //this.services = new HashProxy(services)
             }
+			
+			// I'm doing it this way for a reason - I don't really like the way stores are accessed via props using the mobx libs...
+			// Backdoor to stores as opposed to explicitly only calling actions (getters only) is a lot more convenient to work with, and there's hardly any downside to doing it this way, unless you're some kind of framework author / code fascist
+			if (deps.hasOwnProperty('stores') && deps.stores !== null && Object.keys(deps.stores).length > 0) {
+                this.stores = deps.stores //this.stores = new HashProxy(stores)
+            }
             
             if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
                 this.dispatcher = deps.dispatcher

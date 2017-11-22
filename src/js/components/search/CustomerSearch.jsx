@@ -168,7 +168,7 @@ class CustomerSearch extends Component {
             <Col sm={12}>
 				<div className='dark' style={{ paddingTop: '0.5rem', paddingBottom: '1rem' }}>
 					<form>                               
-						<FormGroup className='autocomplete-control-group col-xs-8 col-xs-push-2'>
+						<FormGroup className='autocomplete-control-group position-relative col-xs-12'>
 							<ControlLabel>{this.props.title}</ControlLabel>
 							<Autocomplete
 								name='customer'
