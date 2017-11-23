@@ -64,7 +64,7 @@ class CurrentAddress extends Component {
         
         this.setInitialState = this.setInitialState.bind(this)
         
-		// Turned getAddressString into a static method
+        // Turned getAddressString into a static method
         //this.getAddressString = this.getAddressString.bind(this)
         this.showAddressModal = this.showAddressModal.bind(this)
         this.hideAddressModal = this.hideAddressModal.bind(this)
@@ -90,8 +90,8 @@ class CurrentAddress extends Component {
     }
     
     setInitialState(props) {
-		const mappings = props.mappings || fieldNames
-		
+        const mappings = props.mappings || fieldNames
+        
         let data = this.props.getForm()
         
         let state = assign({}, this.state, {
@@ -304,24 +304,24 @@ class CurrentAddress extends Component {
     
     render() {
         const mappings = this.props.mappings || fieldNames
-		
-		if (this.state === null) {
-			console.log('CurrentAddress component is unable to render - component state is null')
-			console.log('dumping props and state to console')
-			console.log(JSON.stringify(this.props))
-			return null // Don't render
-		}
-		
+        
+        if (this.state === null) {
+            console.log('CurrentAddress component is unable to render - component state is null')
+            console.log('dumping props and state to console')
+            console.log(JSON.stringify(this.props))
+            return null // Don't render
+        }
+        
         let data = this.state.data || null
-		
-		if (data === null) {
-			console.log('CurrentAddress component is unable to render - no data was provided')
-			console.log('dumping props and state to console')
-			console.log(JSON.stringify(this.props))
-			console.log(JSON.stringify(this.state))
-			return null // Don't render
-		}
-		
+        
+        if (data === null) {
+            console.log('CurrentAddress component is unable to render - no data was provided')
+            console.log('dumping props and state to console')
+            console.log(JSON.stringify(this.props))
+            console.log(JSON.stringify(this.state))
+            return null // Don't render
+        }
+        
         return (
             <div>
                 {this.props.title && (

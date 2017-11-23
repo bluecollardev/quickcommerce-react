@@ -9,18 +9,18 @@ import HashTable from './HashTable.js'
  */
 
 export default function HashProxy(obj) {
-	return new Proxy(new HashTable(obj), {
-		get: (hash, key) => {
-			// Ignore non-strings
-			if (typeof key !== 'string') {
-				return undefined
-			}
-			
-			return hash.getItem(key)
-		},
-		set: (hash, key, value) => {
-			hash.setItem(key, value)
-			return true
-		}
-	})
+    return new Proxy(new HashTable(obj), {
+        get: (hash, key) => {
+            // Ignore non-strings
+            if (typeof key !== 'string') {
+                return undefined
+            }
+            
+            return hash.getItem(key)
+        },
+        set: (hash, key, value) => {
+            hash.setItem(key, value)
+            return true
+        }
+    })
 }

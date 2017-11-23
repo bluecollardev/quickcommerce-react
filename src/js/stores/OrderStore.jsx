@@ -38,7 +38,7 @@ export class OrderStore extends BaseStore {
         }
 
         this.items = {}
-		
+        
         this.paymentMethod = null
         this.shippingMethod = null
         this.paymentType = null
@@ -97,28 +97,28 @@ export class OrderStore extends BaseStore {
     getOrderDetails(orderId) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
-	
-	getDetails(orderId) {
+    
+    getDetails(orderId) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
-	
+    
     /**
-	 * Privately invoked.
-	 */
+     * Privately invoked.
+     */
     doCheckout(orderAction) {
         orderAction = orderAction || null
 
         // Only accept 'insert' action to create a new order
-		if (orderAction.action !== 'insert') {
-			// Do something
-		}
+        if (orderAction.action !== 'insert') {
+            // Do something
+        }
         
-		let orderId = this.newOrder()
+        let orderId = this.newOrder()
     }
 
     /**
-	 * Privately invoked.
-	 */
+     * Privately invoked.
+     */
     newOrder() {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
@@ -128,15 +128,15 @@ export class OrderStore extends BaseStore {
         this.emit('set-order')
     }
     
-	clearOrder(onSuccess, onError) {
-		let	that = this
+    clearOrder(onSuccess, onError) {
+        let    that = this
 
         if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
             if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {
             }
         }
-	}
-	
+    }
+    
     setBuiltInCustomer(customer) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
@@ -258,12 +258,12 @@ export class OrderStore extends BaseStore {
      * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
      */
     getOrderTaxRates() {
-    	let data = {}
+        let data = {}
 
-    	for (let idx = 0; idx < CartStore.selection.length; idx++) {
+        for (let idx = 0; idx < CartStore.selection.length; idx++) {
             let item = CartStore.selection[idx]
 
-    		let taxRates = this.getTaxRates(parseFloat(item.data['price']))
+            let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
             // Have we previously set this rate?
             for (let rate in taxRates) { // TODO: Throw exception if not exists!
@@ -273,21 +273,21 @@ export class OrderStore extends BaseStore {
                     data[rate] += (parseFloat(taxRates[rate]['amount']) * item.quantity)
                 }
             }
-    	}
+        }
 
-    	return data
+        return data
     }
 
     /**
      * Mirrors the getTaxes method in in system\library\cart.
      */
     getOrderTaxes() {
-		let data = {}
+        let data = {}
 
-		for (let idx = 0; idx < CartStore.selection.length; idx++) {
+        for (let idx = 0; idx < CartStore.selection.length; idx++) {
             let item = CartStore.selection[idx]
 
-			let taxRates = this.getTaxRates(parseFloat(item.data['price']))
+            let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
             // Have we previously set this rate?
             for (let rate in taxRates) { // TODO: Throw exception if not exists!
@@ -297,10 +297,10 @@ export class OrderStore extends BaseStore {
                     data[rate] += (parseFloat(taxRates[rate]['amount']) * item.quantity)
                 }
             }
-		}
+        }
 
-		return data
-	}
+        return data
+    }
 
     /**
      * Mirrors the calculateTaxes method in system\library\tax.
@@ -311,77 +311,77 @@ export class OrderStore extends BaseStore {
         // TODO: Check for boolean?
 
         if (taxClassId && calculate) {
-			let amount = 0
-			let taxRates = this.getTaxRates(value, taxClassId)
+            let amount = 0
+            let taxRates = this.getTaxRates(value, taxClassId)
 
-			for (let rate in taxRates) {
-				if (calculate !== 'P' && calculate !== 'F') {
-					amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
-				} else if (taxRates[rate]['type'] === calculate) {
-					amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
-				}
-			}
+            for (let rate in taxRates) {
+                if (calculate !== 'P' && calculate !== 'F') {
+                    amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
+                } else if (taxRates[rate]['type'] === calculate) {
+                    amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
+                }
+            }
 
-			return value + amount
-		} else {
-			return value
-		}
+            return value + amount
+        } else {
+            return value
+        }
     }
 
     /**
      * Mirrors the getTax method in system\library\tax.
      */
     calculateTaxes(value, taxClassId) {
-		let amount = 0
+        let amount = 0
         let taxRates = this.getTaxRates(value, taxClassId)
 
         for (let rate in taxRates) {
             amount += taxRates[rate]['amount']
         }
 
-		return amount
-	}
+        return amount
+    }
 
     /**
      * Mirrors the getRates method in system\library\tax.
      * Called by the calculateTaxes (orig. Tax) and getOrderTaxes (orig. (Cart) methods, and is generally only for 'private use'.
      */
     getTaxRates(value, taxClassId) {
-		let rateData = {},
+        let rateData = {},
             rates = this.settings.cartConfig.taxRates['1_1_5_store']
             // TODO: Need to grab store dynamically!!!! 1_1_5 Correlates to languageId = 1, storeId = 1, taxClassId = 5?
 
         // Pretty sure returned data is already filtered by tax class
-		//if (this._isset(rates, taxClassId)) { // As per our note above, disable this conditional
-			//for (let rate in rates[taxClassId]) {
+        //if (this._isset(rates, taxClassId)) { // As per our note above, disable this conditional
+            //for (let rate in rates[taxClassId]) {
             let rateCount = rates.length
             let idx = 0
             for (idx; idx < rateCount; idx++) {
                 let rate = rates[idx]
                 let amount = 0
 
-				if (rateData.hasOwnProperty(rate['taxRateId']) && this._isset(rateData[rate], 'taxRateId')) {
-					amount = rateData[rate['taxRateId']]['amount']
-				}
-
-				if (rate['type'] === 'F') {
-					amount += rates[idx]['rate']
-				} else if (rate['type'] === 'P') {
-					amount += (value / 100 * rate['rate'])
-				}
-
-				rateData[rate['taxRateId']] = {
-                    'rate_id': rate['taxRateId'],
-					'name'       : rate['name'],
-					'rate'       : rate['rate'],
-					'type'       : rate['type'],
-					'amount'     : amount
+                if (rateData.hasOwnProperty(rate['taxRateId']) && this._isset(rateData[rate], 'taxRateId')) {
+                    amount = rateData[rate['taxRateId']]['amount']
                 }
-			}
-		//}
 
-		return rateData
-	}
+                if (rate['type'] === 'F') {
+                    amount += rates[idx]['rate']
+                } else if (rate['type'] === 'P') {
+                    amount += (value / 100 * rate['rate'])
+                }
+
+                rateData[rate['taxRateId']] = {
+                    'rate_id': rate['taxRateId'],
+                    'name'       : rate['name'],
+                    'rate'       : rate['rate'],
+                    'type'       : rate['type'],
+                    'amount'     : amount
+                }
+            }
+        //}
+
+        return rateData
+    }
 }
 
 //export default new OrderStore()

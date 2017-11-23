@@ -52,7 +52,7 @@ export default {
                 flattenCategories(categories, 0)
                 
                 return results
-            },					
+            },                    
             model: {
                 //id: 'category_id',
                 //parentId: 'parent_id',

@@ -13,7 +13,7 @@ const JSONHelper = {
      * @return
      */
     find: function (expr, data) {
-        return jsonPath(data, expr, {resultType: 'VALUE'});
+        return jsonPath(data, expr, {resultType: 'VALUE'})
     },
     /**
      * Method: App.Helpers.JSON.findNode
@@ -26,12 +26,12 @@ const JSONHelper = {
      * @return
      */
     findNode: function (node, data) {
-        var expr;
+        let expr
         
         // Build expression from node
-        expr = "$..*[?(@.name=='TypeOfLoss')]"; // TODO: Implement!
+        expr = "$..*[?(@.name=='TypeOfLoss')]" // TODO: Implement!
         
-        return App.Helpers.JSON.find(expr, data);
+        return JSONHelper.find(expr, data)
     },
     /**
      * Method: App.Helpers.JSON.pathTo
@@ -44,7 +44,7 @@ const JSONHelper = {
      * @return
      */
     pathTo: function (expr, data) {
-        return jsonPath(data, expr, {resultType: 'PATH'});
+        return jsonPath(data, expr, {resultType: 'PATH'})
     },
     /**
      * Method: App.Helpers.JSON.pathToNode
@@ -57,13 +57,13 @@ const JSONHelper = {
      * @return
      */
     pathToNode: function (node, data) {
-        var expr;
+        let expr
         
         // Build expression from node
-        expr = "$..*[?(@.name=='TypeOfLoss')]"; // TODO: Implement!
+        expr = "$..*[?(@.name=='TypeOfLoss')]" // TODO: Implement!
         
-        return App.Helpers.JSON.pathTo(expr, data);
+        return JSONHelper.pathTo(expr, data)
     }
-};
+}
 
-module.exports = JSONHelper;
+module.exports = JSONHelper

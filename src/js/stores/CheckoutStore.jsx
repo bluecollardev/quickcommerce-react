@@ -14,8 +14,8 @@ let instance = null
 class CheckoutStore extends OrderStore {
     constructor(dispatcher) {
         super(dispatcher)
-		
-		if (instance !== null) {
+        
+        if (instance !== null) {
             return instance
         }
 
@@ -56,45 +56,45 @@ class CheckoutStore extends OrderStore {
         // Easy access while developing app
         window.CheckoutStore = instance = this
     }
-	
-	/**
-	 * Not required for anything right now.
-	 */
-	updateStock(orderProduct, orderOptions) {
-		// Update product stock
-		let productId = orderProduct.productId
-		let quantity = orderProduct.quantity
-		let productOptionValueIds = []
+    
+    /**
+     * Not required for anything right now.
+     */
+    updateStock(orderProduct, orderOptions) {
+        // Update product stock
+        let productId = orderProduct.productId
+        let quantity = orderProduct.quantity
+        let productOptionValueIds = []
 
         if (orderOptions instanceof Array &&
             orderOptions.length > 0) {
-			for (let orderOption in orderOptions) {
-				if (orderOption.productOptionValueId) {
-					productOptionValueIds.push(orderOption.productOptionValueId)
-				}
-			}
-		}
+            for (let orderOption in orderOptions) {
+                if (orderOption.productOptionValueId) {
+                    productOptionValueIds.push(orderOption.productOptionValueId)
+                }
+            }
+        }
 
-		this.updateRealStock(productId, productOptionValueIds, quantity)
-	}
-	/**
-	 * Not required for anything right now.
-	 */
-	updateRealStock(productId, productOptionValueIds, quantity) {
-		if (productOptionValueIds instanceof Array &&
+        this.updateRealStock(productId, productOptionValueIds, quantity)
+    }
+    /**
+     * Not required for anything right now.
+     */
+    updateRealStock(productId, productOptionValueIds, quantity) {
+        if (productOptionValueIds instanceof Array &&
             productOptionValueIds.length > 0) {
-		}
-	}
-	
-	/**
-	 * Implement abstract parent method.
-	 */
-	getOrderDetails(orderId) {
+        }
+    }
+    
+    /**
+     * Implement abstract parent method.
+     */
+    getOrderDetails(orderId) {
         orderId = orderId || null
         let orderDetails = {}
 
-		// Get order model
-		let order = this.payload.order || null
+        // Get order model
+        let order = this.payload.order || null
 
         let buildOrderDetails = (order) => {
             if (order === null) return
@@ -105,10 +105,10 @@ class CheckoutStore extends OrderStore {
             let serverOrderProducts = {}
             let orderProducts = []
             
-			for (let serverOrderProduct in serverOrderProducts) {
+            for (let serverOrderProduct in serverOrderProducts) {
                 orderProduct = {}
                 
-				let product = {}
+                let product = {}
                 orderProduct.image = product.image
                 orderProduct.shipping = product.shipping
                 orderProduct.updateStock = product.subtract
@@ -162,114 +162,114 @@ class CheckoutStore extends OrderStore {
             orderDetails = buildOrderDetails(this.payload.order)
         }
 
-		return orderDetails
+        return orderDetails
     }
-	
-	/**
-	 * Implement abstract parent method.
-	 */
-	 newOrder() {
+    
+    /**
+     * Implement abstract parent method.
+     */
+     newOrder() {
         let settings = SettingStore.getSettings().posSettings
 
         this.payload.order = {}
-		
-		let customerType = parseInt(settings['POS_c_type'])
+        
+        let customerType = parseInt(settings['POS_c_type'])
 
         switch (customerType) {
-			case 1:
-				// Use built-in customer
-				this.setBuiltInCustomer()
-				break
+            case 1:
+                // Use built-in customer
+                this.setBuiltInCustomer()
+                break
 
-			case 2:
-				// Use customized customer
-				//this.setCustomCustomer(customer)
-				break
+            case 2:
+                // Use customized customer
+                //this.setCustomCustomer(customer)
+                break
 
-			case 3:
-				// Use an existing customer
-				this.setExistingCustomer()
-				break
+            case 3:
+                // Use an existing customer
+                this.setExistingCustomer()
+                break
 
-			default:
-				break
-		}
+            default:
+                break
+        }
 
         let store = null
         let storeName = null
         let storeUrl = null
-		
-		if (this.payload.storeId) {
-			//store = em.find(PosStore::class, order.getStoreId())
-			//storeName = store && store.getName() ? store.getName() : ''
-			//storeUrl = store && store.getUrl() ? store.getUrl() : ''
-		}
+        
+        if (this.payload.storeId) {
+            //store = em.find(PosStore::class, order.getStoreId())
+            //storeName = store && store.getName() ? store.getName() : ''
+            //storeUrl = store && store.getUrl() ? store.getUrl() : ''
+        }
 
-		if (storeName !== null) {
-			//storeName = settings['config_name'] ? settings['config_name'] : ''
-		}
-		if (storeUrl !== null) {
-			//storeUrl = HTTP_SERVER
-		}
+        if (storeName !== null) {
+            //storeName = settings['config_name'] ? settings['config_name'] : ''
+        }
+        if (storeUrl !== null) {
+            //storeUrl = HTTP_SERVER
+        }
 
         // Specify PATCH action
-		this.payload.order.action = 'insert'
+        this.payload.order.action = 'insert'
         
         this.payload.order.orderId = 0 // Set to zero to trigger create on server
-		this.payload.order.storeId = 0
-		this.payload.order.orderStatusId = parseInt(settings['POS_initial_status_id'])
-		this.payload.order.invoicePrefix = settings['config_invoice_prefix']
+        this.payload.order.storeId = 0
+        this.payload.order.orderStatusId = parseInt(settings['POS_initial_status_id'])
+        this.payload.order.invoicePrefix = settings['config_invoice_prefix']
 
         //let customerId = parseInt(settings['POS_c_id'])
-		//let customerGroupId = parseInt(settings['POS_c_group_id'])
+        //let customerGroupId = parseInt(settings['POS_c_group_id'])
 
         this.payload.order.storeName = storeName
-		this.payload.order.storeUrl = storeUrl
+        this.payload.order.storeUrl = storeUrl
         
-		this.payload.order.shippingMethod = settings['config_shipping_method']
-		this.payload.order.shippingCode = settings['config_shipping_code']
+        this.payload.order.shippingMethod = settings['config_shipping_method']
+        this.payload.order.shippingCode = settings['config_shipping_code']
         
-		this.payload.order.paymentMethod = settings['config_payment_method']
-		this.payload.order.paymentCode = settings['config_payment_code']
-		this.payload.order.comment = ''
-		
+        this.payload.order.paymentMethod = settings['config_payment_method']
+        this.payload.order.paymentCode = settings['config_payment_code']
+        this.payload.order.comment = ''
+        
         this.payload.order.customerId = parseInt(settings['default_customer_id'])
-		this.payload.order.customerGroupId = parseInt(settings['default_customer_group_id'])
-		
+        this.payload.order.customerGroupId = parseInt(settings['default_customer_group_id'])
+        
         this.payload.order.paymentCountryId = parseInt(settings['default_customer_country_id'])
         this.payload.order.paymentCountry = settings['default_customer_country']
-		this.payload.order.paymentZoneId = parseInt(settings['default_customer_zone_id'])
-		this.payload.order.paymentZone = settings['default_customer_zone']
+        this.payload.order.paymentZoneId = parseInt(settings['default_customer_zone_id'])
+        this.payload.order.paymentZone = settings['default_customer_zone']
         
         this.payload.order.shippingCountryId = parseInt(settings['default_customer_country_id'])
         this.payload.order.shippingCountry = settings['default_customer_country']
-		this.payload.order.shippingZoneId = parseInt(settings['default_customer_zone_id'])
-		this.payload.order.shippingZone = settings['default_customer_zone']
-		
+        this.payload.order.shippingZoneId = parseInt(settings['default_customer_zone_id'])
+        this.payload.order.shippingZone = settings['default_customer_zone']
+        
         this.payload.order.currencyCode = settings['config_currency']
-		this.payload.order.currencyId = parseInt(settings['config_currency_id'])
-		
+        this.payload.order.currencyId = parseInt(settings['config_currency_id'])
+        
         this.payload.order.dateAdded = new Date()
-		this.payload.order.dateModified = new Date()
+        this.payload.order.dateModified = new Date()
 
         this.payload.order.defaultSettings = settings
         // END PATCH
         
-		this.payload.total = {}
-		//this.payload.total.orderId = 0
-		this.payload.total.code = 'total'
-		this.payload.total.value = 0
-		this.payload.total.sortOrder = 0 //settings['total_sort_order']
-		this.payload.total.title = 'Total'
+        this.payload.total = {}
+        //this.payload.total.orderId = 0
+        this.payload.total.code = 'total'
+        this.payload.total.value = 0
+        this.payload.total.sortOrder = 0 //settings['total_sort_order']
+        this.payload.total.title = 'Total'
 
-		//return orderId
+        //return orderId
         this.emit('new-order')
     }
-	
-	/**
-	 * Implement abstract parent method.
-	 */
-	setBuiltInCustomer(customer) {
+    
+    /**
+     * Implement abstract parent method.
+     */
+    setBuiltInCustomer(customer) {
         customer = customer || null
         let settings = SettingStore.getSettings().posSettings
         
@@ -328,99 +328,99 @@ class CheckoutStore extends OrderStore {
         }
     }
 
-	/**
-	 * Implement abstract parent method.
-	 */
+    /**
+     * Implement abstract parent method.
+     */
     setCustomCustomer(customer) {
         this.payload.order.firstname = customer['POS_c_firstname']
-		this.payload.order.lastname = customer['POS_c_lastname']
-		this.payload.order.email = customer['POS_c_email']
-		this.payload.order.telephone = customer['POS_c_telephone']
-		this.payload.order.fax = customer['POS_c_fax']
+        this.payload.order.lastname = customer['POS_c_lastname']
+        this.payload.order.email = customer['POS_c_email']
+        this.payload.order.telephone = customer['POS_c_telephone']
+        this.payload.order.fax = customer['POS_c_fax']
 
-		this.payload.order.paymentFirstname = customer['POS_a_firstname']
-		this.payload.order.paymentLastname = customer['POS_a_lastname']
-		this.payload.order.paymentCompany = ''
-		this.payload.order.paymentAddress1 = customer['POS_a_address1']
-		this.payload.order.paymentAddress2 = customer['POS_a_address2']
-		this.payload.order.paymentCity = customer['POS_a_city']
-		this.payload.order.paymentPostcode = customer['POS_a_postcode']
-		this.payload.order.paymentCountryId = customer['POS_a_country_id']
-		this.payload.order.paymentZoneId = customer['POS_a_zone_id']
+        this.payload.order.paymentFirstname = customer['POS_a_firstname']
+        this.payload.order.paymentLastname = customer['POS_a_lastname']
+        this.payload.order.paymentCompany = ''
+        this.payload.order.paymentAddress1 = customer['POS_a_address1']
+        this.payload.order.paymentAddress2 = customer['POS_a_address2']
+        this.payload.order.paymentCity = customer['POS_a_city']
+        this.payload.order.paymentPostcode = customer['POS_a_postcode']
+        this.payload.order.paymentCountryId = customer['POS_a_country_id']
+        this.payload.order.paymentZoneId = customer['POS_a_zone_id']
 
-		this.payload.order.shippingFirstname = customer['POS_a_firstname']
-		this.payload.order.shippingLastname = customer['POS_a_lastname']
-		this.payload.order.shippingAddress1 = customer['POS_a_address1']
-		this.payload.order.shippingAddress2 = customer['POS_a_address2']
-		this.payload.order.shippingCity = customer['POS_a_city']
-		this.payload.order.shippingPostcode = customer['POS_a_postcode']
-		this.payload.order.shippingCountryId = customer['POS_a_country_id']
-		this.payload.order.shippingZoneId = customer['POS_a_zone_id']
+        this.payload.order.shippingFirstname = customer['POS_a_firstname']
+        this.payload.order.shippingLastname = customer['POS_a_lastname']
+        this.payload.order.shippingAddress1 = customer['POS_a_address1']
+        this.payload.order.shippingAddress2 = customer['POS_a_address2']
+        this.payload.order.shippingCity = customer['POS_a_city']
+        this.payload.order.shippingPostcode = customer['POS_a_postcode']
+        this.payload.order.shippingCountryId = customer['POS_a_country_id']
+        this.payload.order.shippingZoneId = customer['POS_a_zone_id']
     }
 
-	/**
-	 * Implement abstract parent method.
-	 */
+    /**
+     * Implement abstract parent method.
+     */
     setExistingCustomer(customer) {
         let customerDetails = customer || CustomerStore.getCustomer()
 
-		if (customerDetails !== null && typeof customerDetails['customer'] !== 'undefined') {
-			let customer = customerDetails['customer']
+        if (customerDetails !== null && typeof customerDetails['customer'] !== 'undefined') {
+            let customer = customerDetails['customer']
 
             try {
                 this.payload.order.customerId = customer['customer_id']
                 this.payload.order.firstname = customer['firstname']
                 this.payload.order.firstname = customer['firstname']
-    			this.payload.order.lastname = customer['lastname']
-    			this.payload.order.email = customer['email']
-    			this.payload.order.telephone = customer['telephone']
-    			this.payload.order.fax = customer['fax']
+                this.payload.order.lastname = customer['lastname']
+                this.payload.order.email = customer['email']
+                this.payload.order.telephone = customer['telephone']
+                this.payload.order.fax = customer['fax']
 
-    			let address = []
+                let address = []
                 
                 // Handle array of billing addresses
                 if (customerDetails['addresses'] instanceof Array && customerDetails['addresses'].length > 1) {
-    				for (let customerAddress in customerDetails['addresses']) {
-    					if (customerAddress['addressId'] === customer['addressId']) {
-    						address = customerAddress
-    						break
-    					}
-    				}
+                    for (let customerAddress in customerDetails['addresses']) {
+                        if (customerAddress['addressId'] === customer['addressId']) {
+                            address = customerAddress
+                            break
+                        }
+                    }
 
                     if (address.length > 0) {
                         this.setBillingAddress(address)
-        			}
+                    }
                 // Single billing address object
-    			} else if (typeof customerDetails['billingAddress'] !== 'undefined' && customerDetails.billingAddress !== null) {
+                } else if (typeof customerDetails['billingAddress'] !== 'undefined' && customerDetails.billingAddress !== null) {
                     this.setBillingAddress(customerDetails.billingAddress)
                 }
                 
                 // Handle array of shipping addresses
                 if (customerDetails['addresses'] instanceof Array && customerDetails['addresses'].length > 1) {
-    				for (let customerAddress in customerDetails['addresses']) {
-    					if (customerAddress['addressId'] === customer['addressId']) {
-    						address = customerAddress
-    						break
-    					}
-    				}
+                    for (let customerAddress in customerDetails['addresses']) {
+                        if (customerAddress['addressId'] === customer['addressId']) {
+                            address = customerAddress
+                            break
+                        }
+                    }
 
                     if (address.length > 0) {
                         this.setShippingAddress(address)
-        			}
+                    }
                 // Single shipping address object
-    			} else if (typeof customerDetails['shippingAddress'] !== 'undefined' && customerDetails.shippingAddress !== null) {
+                } else if (typeof customerDetails['shippingAddress'] !== 'undefined' && customerDetails.shippingAddress !== null) {
                     this.setShippingAddress(customerDetails.shippingAddress)
                 }
             } catch (err) {
                 console.log(JSON.stringify(err))
             }
-		}
+        }
     }
-	
-	/**
-	 * Implement abstract parent method.
-	 */
-	setBillingAddress(address) {
+    
+    /**
+     * Implement abstract parent method.
+     */
+    setBillingAddress(address) {
         let countryId, country, zoneId, zone
         address = address || null
         if (address === null) return
@@ -452,9 +452,9 @@ class CheckoutStore extends OrderStore {
         this.payload.order.paymentZoneId = zoneId
     }
 
-	/**
-	 * Implement abstract parent method.
-	 */
+    /**
+     * Implement abstract parent method.
+     */
     setShippingAddress(address) {
         let countryId, country, zoneId, zone
         address = address || null
@@ -486,11 +486,11 @@ class CheckoutStore extends OrderStore {
         this.payload.order.shippingZone = zone
         this.payload.order.shippingZoneId = zoneId   
     }
-	
-	/**
-	 * Implement abstract parent method.
-	 */
-	createPayloadOption(selection, data) {
+    
+    /**
+     * Implement abstract parent method.
+     */
+    createPayloadOption(selection, data) {
         // Grab the name and option value
         let name = selection.data.option.name
         let type = selection.data.option.type
@@ -513,9 +513,9 @@ class CheckoutStore extends OrderStore {
         }, data)
     }
     
-	/**
-	 * Implement abstract parent method.
-	 */
+    /**
+     * Implement abstract parent method.
+     */
     updatePayloadOption(selectionOption, payloadOption) {
         // TODO: Multiple option types - see my note in method description referring to TS and future complexity
         // The selected product option value
@@ -559,17 +559,17 @@ class CheckoutStore extends OrderStore {
      *
      * Formatted object will look like the array item below:
      * 
-		{
-			"orderOptionId": 2,
-			"orderId": 198,
-			"orderProductId": 4,
-			"productOptionId": "249",
-			"productOptionValueId": "514",
-			"name": "Coffee Package Size",
-			"value": "340g",
-			"type": "select"
-		}
-	],
+        {
+            "orderOptionId": 2,
+            "orderId": 198,
+            "orderProductId": 4,
+            "productOptionId": "249",
+            "productOptionValueId": "514",
+            "name": "Coffee Package Size",
+            "value": "340g",
+            "type": "select"
+        }
+    ],
      * TODO: I may start employing TypeScript in a limited capacity... 
      * static typed objects would be useful for standardizing my data objects; 
      * I like flexible code, but this is something I can see getting out of hand in future versions
@@ -675,7 +675,7 @@ class CheckoutStore extends OrderStore {
         data = this.normalizePayload(data, 'underscore', 'camelcase')
         console.log(data)
 
-    	return data
+        return data
     }
 }
 

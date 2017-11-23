@@ -4,7 +4,7 @@ export default {
     REF_NUMBER: 'ref_no',
     CUSTOMER_ID: 'customer_id',
     CUSTOMER_NAME: 'customer_name',
-	CUSTOMER_ID: 'customer_id',
+    CUSTOMER_ID: 'customer_id',
     RETAILER_ID: 'retailer_id',
     RETAILER_NAME: 'retailer_name',
     DATE_CREATED: 'date_created',

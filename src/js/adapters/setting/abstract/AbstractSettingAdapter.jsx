@@ -1,7 +1,7 @@
 export default class AbstractSettingAdapter {
-	static driver = null
-	
-	constructor(settingStore) {
-		this.store = settingStore
-	}
+    static driver = null
+    
+    constructor(settingStore) {
+        this.store = settingStore
+    }
 }

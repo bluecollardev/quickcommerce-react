@@ -1,56 +1,50 @@
 import axios from 'axios'
-//import request from 'reqwest' // TODO: Use axios
-//import when from 'when'
-
-import LoginConstants from '../constants/LoginConstants.jsx'
-import UserConstants from '../constants/UserConstants.jsx'
-import CustomerConstants from '../constants/CustomerConstants.jsx'
 
 import { BaseService } from './BaseService.jsx'
 
 export default class AuthService extends BaseService {
     login(email, password, onSuccess, onError) {
         if (AUTH_MODE === 'normal') {
-			// Revert to legacy
-			return this.handleAuth(axios({
-				url: QC_LEGACY_API + 'login/',
-				data: JSON.stringify({
-					email: email,
-					password: password
-				}),
-				method: 'POST'
-			}), onSuccess, onError)
-		} else if (AUTH_MODE === 'legacy') {
-			// Revert to legacy
-			return this.handleAuth(axios({
-				url: QC_LEGACY_API + 'login/',
-				data: JSON.stringify({
-					email: email,
-					password: password
-				}),
-				method: 'POST'
-			}), onSuccess, onError)
-		} else if (AUTH_MODE === 'mock') {
-			// No auth mode provided, or using mock data
-			// Fire away... get any user
-			// TODO: This could be user service too depending on a to-be-added mode
-			// How do I make this (and customer selection) easily configurable?
-			
-			// Store auth and current, authorized account
-			// Store auth and current, authorized account
-			this.actions.login.loginUser('DUMMYtoken12345') // Set token
-			this.actions.login.setUser({}) // Set data
-			
-			if (typeof onSuccess === 'undefined') return
-	
-			console.log('executing onResponseReceived onSuccess callback')
-			if (typeof onSuccess === 'function') {
-				let fn = onSuccess
-				fn({})
-			}
-			
-			return this.handleAuth(Promise.resolve({ status: 200, data: { success: true, data: {} } }), onSuccess, onError)
-		}
+            // Revert to legacy
+            return this.handleAuth(axios({
+                url: QC_LEGACY_API + 'login/',
+                data: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+                method: 'POST'
+            }), onSuccess, onError)
+        } else if (AUTH_MODE === 'legacy') {
+            // Revert to legacy
+            return this.handleAuth(axios({
+                url: QC_LEGACY_API + 'login/',
+                data: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+                method: 'POST'
+            }), onSuccess, onError)
+        } else if (AUTH_MODE === 'mock') {
+            // No auth mode provided, or using mock data
+            // Fire away... get any user
+            // TODO: This could be user service too depending on a to-be-added mode
+            // How do I make this (and customer selection) easily configurable?
+            
+            // Store auth and current, authorized account
+            // Store auth and current, authorized account
+            this.actions.login.loginUser('DUMMYtoken12345') // Set token
+            this.actions.login.setUser({}) // Set data
+            
+            if (typeof onSuccess === 'undefined') return
+    
+            console.log('executing onResponseReceived onSuccess callback')
+            if (typeof onSuccess === 'function') {
+                let fn = onSuccess
+                fn({})
+            }
+            
+            return this.handleAuth(Promise.resolve({ status: 200, data: { success: true, data: {} } }), onSuccess, onError)
+        }
     }
 
     logout() {
@@ -86,10 +80,10 @@ export default class AuthService extends BaseService {
                 }
             }).catch(err => {
                 console.log(err)
-				if (typeof onError === 'function') {
-					let fn = onError
-					fn(response.data)
-				}
+                if (typeof onError === 'function') {
+                    let fn = onError
+                    fn(response.data)
+                }
             })
         
         // ex. JWT
@@ -104,29 +98,29 @@ export default class AuthService extends BaseService {
     
     
     fetchAccount(onSuccess) {
-		//let userToken = this.checkToken()
-		//let isLogged = (userToken !== false) ? true : false
-		
-		//if (!isLogged) {
-			// Log in the user
-			// Just fetch the account
-			axios({
-				//url: QC_LEGACY_API + 'login/',
-				url: QC_LEGACY_API + 'account/',
-				method: 'GET',
+        //let userToken = this.checkToken()
+        //let isLogged = (userToken !== false) ? true : false
+        
+        //if (!isLogged) {
+            // Log in the user
+            // Just fetch the account
+            axios({
+                //url: QC_LEGACY_API + 'login/',
+                url: QC_LEGACY_API + 'account/',
+                method: 'GET',
                 headers: {
                     'X-Oc-Session': this.getToken()
                 }
-			})
+            })
             .then(response => {
                 this.onResponseReceived(response, onSuccess)
             }).catch(err => {
                 console.log(err)
             })
-		//}
-		
-		//return isLogged
-	}
+        //}
+        
+        //return isLogged
+    }
     
     onResponseReceived(response, onSuccess, onError) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
@@ -175,13 +169,13 @@ export default class AuthService extends BaseService {
         } else if (false) {
             // Handle JWT object
         }
-	}
+    }
     
-	getToken(onSuccess) {
-		if (!(sessionStorage.hasOwnProperty('userToken'))) {
-			axios({
-				url: QC_LEGACY_API + 'session/',
-				method: 'GET',
+    getToken(onSuccess) {
+        if (!(sessionStorage.hasOwnProperty('userToken'))) {
+            axios({
+                url: QC_LEGACY_API + 'session/',
+                method: 'GET',
             }).then(response => {
                 if (response.status === 200) {
                     if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
@@ -194,44 +188,44 @@ export default class AuthService extends BaseService {
                         }
                     }
                 }
-			}).catch(err => {
+            }).catch(err => {
                 // Do something
                 console.log(err)
             })
-		} else if (typeof onSuccess === 'function') {
+        } else if (typeof onSuccess === 'function') {
             let fn = onSuccess
             fn(sessionStorage.userToken)
         } else {
             // Try not to getToken in this manner, it's not reliable - use the onSuccess callback instead
             return sessionStorage.userToken
         }
-	}
+    }
     
-	clearToken() {
-		if (sessionStorage.hasOwnProperty('userToken')) {
-			sessionStorage.removeItem('userToken')
-		}
-	}
+    clearToken() {
+        if (sessionStorage.hasOwnProperty('userToken')) {
+            sessionStorage.removeItem('userToken')
+        }
+    }
     
-	checkToken() {
-		// TODO: Password is being sent as plain text...
-		let userToken = this.doLoginCheck()
-		return (userToken) ? this.getToken() : false
-	}
-	
+    checkToken() {
+        // TODO: Password is being sent as plain text...
+        let userToken = this.doLoginCheck()
+        return (userToken) ? this.getToken() : false
+    }
+    
     doLoginCheck(displayMessage) {
-		let isLogged = false
-		
+        let isLogged = false
+        
         displayMessage = displayMessage || false
-		//console.log('Current customer has session id ' + this.getToken() + '. Verifying...')
-		axios({
-			url: QC_LEGACY_API + 'checkuser/',
-			type: 'GET',
+        //console.log('Current customer has session id ' + this.getToken() + '. Verifying...')
+        axios({
+            url: QC_LEGACY_API + 'checkuser/',
+            type: 'GET',
             headers: {
                 'X-Oc-Session': this.getToken()
             }
-		})
-		
-		return (isLogged) ? this.getToken() : isLogged
-	}
+        })
+        
+        return (isLogged) ? this.getToken() : isLogged
+    }
 }

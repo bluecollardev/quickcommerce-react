@@ -15,60 +15,60 @@ function undoable(reducer) {
     const { past, present, future } = state
 
     switch (action.type) {
-		case 'UNDO':
-			const previous = past[past.length - 1]
-			const newPast = past.slice(0, past.length - 1)
+        case 'UNDO':
+            const previous = past[past.length - 1]
+            const newPast = past.slice(0, past.length - 1)
 
-			return {
-				past: newPast,
-				present: previous,
-				future: [present, ...future]
-			}
-		case 'REDO':
-			const next = future[0]
-			const newFuture = future.slice(1)
-			return {
-				past: [...past, present],
-				present: next,
-				future: newFuture
-			}
-		default:
-			// Delegate handling the action to the passed reducer
-			const newPresent = reducer(present, action)
-			if (present === newPresent) {
-				return state
-			}
-			return {
-				past: [...past, present],
-				present: newPresent,
-				future: []
-			}
+            return {
+                past: newPast,
+                present: previous,
+                future: [present, ...future]
+            }
+        case 'REDO':
+            const next = future[0]
+            const newFuture = future.slice(1)
+            return {
+                past: [...past, present],
+                present: next,
+                future: newFuture
+            }
+        default:
+            // Delegate handling the action to the passed reducer
+            const newPresent = reducer(present, action)
+            if (present === newPresent) {
+                return state
+            }
+            return {
+                past: [...past, present],
+                present: newPresent,
+                future: []
+            }
     }
   }
 }
 
 const defaultState = {
-	history: {
-		past: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-		present: 9,
-		future: [10]
-	}
+    history: {
+        past: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        present: 9,
+        future: [10]
+    }
 }
 
 const history = (defaultState, action) => {
-	switch (action.type) {
-		case 'UNDO':
-		  return { value: state.value + 1 }
-		case 'REDO':
-		  return { value: state.value - 1 }
-		case 'FREEZE':
-			return
-		case 'THAW':
-			return
-		default:
-		  return state
-	}
-	
+    switch (action.type) {
+        case 'UNDO':
+          return { value: state.value + 1 }
+        case 'REDO':
+          return { value: state.value - 1 }
+        case 'FREEZE':
+            return
+        case 'THAW':
+            return
+        default:
+          return state
+    }
+    
 }
 
 // TODO: This component needs to be unit tested
@@ -80,26 +80,26 @@ export default (ComposedComponent) => {
         }
         
         /**
-		 * We don't need redux but dropping in a simple dispatch mechanism
-		 * will allow us to make/undo state changes in a sane manner
-		 */
-		dispatch(action) {
-			this.setState({}) // Manage state of subforms
-		}
-		
-		/**
-		 * Freeze data, persisting it to localStorage
-		 */
-		freezeState() {
-			
-		}
-		
-		/**
-		 * Thaw frozen data from localStorage, and hydrate the form(s)
-		 */
-		thawState() {
-			
-		}
+         * We don't need redux but dropping in a simple dispatch mechanism
+         * will allow us to make/undo state changes in a sane manner
+         */
+        dispatch(action) {
+            this.setState({}) // Manage state of subforms
+        }
+        
+        /**
+         * Freeze data, persisting it to localStorage
+         */
+        freezeState() {
+            
+        }
+        
+        /**
+         * Thaw frozen data from localStorage, and hydrate the form(s)
+         */
+        thawState() {
+            
+        }
         
         /**
          * Forcefully flushes out any stale state artifacts when the form receives new props
@@ -186,19 +186,19 @@ export default (ComposedComponent) => {
             return callback(this.getForm())
         }
         
-		validate(callback) {
-			return callback()
-		}
-		
-		// Convenience method
-		static getMappedValue(path, data) {
-			return FormHelper.getMappedValue(path, data)
-		}
-		
-		// Convenience method
-		static getObjectPath(str) {
-			return FormHelper.getObjectPath(path, data)
-		}
+        validate(callback) {
+            return callback()
+        }
+        
+        // Convenience method
+        static getMappedValue(path, data) {
+            return FormHelper.getMappedValue(path, data)
+        }
+        
+        // Convenience method
+        static getObjectPath(str) {
+            return FormHelper.getObjectPath(path, data)
+        }
         
         renderErrors() {
             let errors = []

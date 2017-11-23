@@ -24,13 +24,13 @@ import CurrentAddress from './address/CurrentAddress.jsx'
 }))
 @observer
 class SettingComponent extends Component {
-	static defaultProps = {
+    static defaultProps = {
         customers: [{id: null, value: ''}],
         visible: true,
-		open: false
+        open: false
     }
-	
-	constructor(props) {
+    
+    constructor(props) {
         super(props)
         
         this.setInitialState = this.setInitialState.bind(this)
@@ -127,9 +127,9 @@ class SettingComponent extends Component {
         this.setState({ open: false })
         window.location.hash = '/'
     }
-	
-	componentWillMount() {
-		//this.setInitialState(this.props)
+    
+    componentWillMount() {
+        //this.setInitialState(this.props)
         
         this.props.actions.setting.fetchSettings()
         this.props.actions.setting.fetchStores()
@@ -140,16 +140,16 @@ class SettingComponent extends Component {
         this.props.actions.customerList.loadCustomers()
         
         window.addEventListener('hashchange', this.onHashChange)
-		this.onHashChange()
-	}
-	
-	componentWillUnmount() {
-		window.removeEventListener('hashchange', this.onHashChange)
+        this.onHashChange()
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('hashchange', this.onHashChange)
         
         if (this.props.customerListStore.listenerCount('CHANGE') > 0) {
-			this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
+            this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
         }
-	}
+    }
     
     componentWillReceiveProps(newProps) {
         // Update our 'initial' state
@@ -160,14 +160,14 @@ class SettingComponent extends Component {
         this.props.actions.setting.fetchStores()
         
         this.props.actions.customerList.loadCustomers()
-	}
-	
-	onHashChange() {
+    }
+    
+    onHashChange() {
         if (window.location.hash.indexOf('/settings') > -1) {
             this.openSettings()
         }
-	}
-	
+    }
+    
     getCustomerList() {
         let customers = this.props.customerListStore.getItems()
         if (typeof customers === 'undefined' || customers instanceof Array === false || customers.length === 0) {
@@ -187,7 +187,7 @@ class SettingComponent extends Component {
         this.setState({
             customers: this.getCustomerList()
         })
-	}
+    }
     
     // TODO: Move me to a utils class
     matchItemToTerm(item, key, value) {
@@ -375,7 +375,7 @@ class SettingComponent extends Component {
             errors: response.error
         })
     }
-	
+    
     renderErrors() {
         let errors = []
         let count = Object.keys(this.state.errors).length
@@ -396,14 +396,14 @@ class SettingComponent extends Component {
         
         return errors
     }
-	
-	render() {
+    
+    render() {
         let data = this.state.data   
-		if (this.props.loggedIn) {
-			let data = this.state.data
-			let dialogClass = (this.state.visible) ? 'setting-modal in' : 'setting-modal out'
-			return (	
-				<div className='container-fluid'>
+        if (this.props.loggedIn) {
+            let data = this.state.data
+            let dialogClass = (this.state.visible) ? 'setting-modal in' : 'setting-modal out'
+            return (    
+                <div className='container-fluid'>
                     <Modal
                         dialogClassName = {dialogClass}
                         show = {this.state.open}>
@@ -960,13 +960,13 @@ class SettingComponent extends Component {
                         </Modal.Body>
                     </Modal>
                 </div>
-			)
-		}
-		
-		// If we're not logged in don't render the component at all
-		// This only works with React 15+
-		return null
-	}
+            )
+        }
+        
+        // If we're not logged in don't render the component at all
+        // This only works with React 15+
+        return null
+    }
 }
 
 export default FormComponent(SettingComponent)

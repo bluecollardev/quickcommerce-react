@@ -16,62 +16,62 @@ import FormComponent from '../FormComponent.jsx'
 import fieldNames from '../../forms/CustomerIdentityFields.jsx'
 
 import {
-	OccupationAutocomplete,
-	CountryAutocomplete,
-	ZoneAutocomplete,
-	CustomerAutocomplete,
-	CustomerGroupAutocomplete,
-	OrderStatusAutocomplete,
-	LanguageAutocomplete,
-	StoreAutocomplete
+    OccupationAutocomplete,
+    CountryAutocomplete,
+    ZoneAutocomplete,
+    CustomerAutocomplete,
+    CustomerGroupAutocomplete,
+    OrderStatusAutocomplete,
+    LanguageAutocomplete,
+    StoreAutocomplete
 } from '../form/Autocomplete.jsx'
 
 import {
-	SelectList,
-	ContactTypeDropdown,
-	IdTypeDropdown,
-	CustomerRelationDropdown,
-	SalutationDropdown,
-	SuffixDropdown,
-	GenderDropdown,
-	MaritalDropdown,
-	ResidenceTypeDropdown,
-	IncomeTypeDropdown,
-	FrequencyDropdown,
-	AssetTypeDropdown,
-	LiabilityTypeDropdown,
-	StreetTypeDropdown,
-	StreetDirDropdown
+    SelectList,
+    ContactTypeDropdown,
+    IdTypeDropdown,
+    CustomerRelationDropdown,
+    SalutationDropdown,
+    SuffixDropdown,
+    GenderDropdown,
+    MaritalDropdown,
+    ResidenceTypeDropdown,
+    IncomeTypeDropdown,
+    FrequencyDropdown,
+    AssetTypeDropdown,
+    LiabilityTypeDropdown,
+    StreetTypeDropdown,
+    StreetDirDropdown
 } from '../form/Dropdown.jsx'
 
 import {
-	SelectButton,
-	ContactTypeButton,
-	IdTypeButton,
-	CustomerRelationButton,
-	SalutationButton,
-	SuffixButton,
-	GenderButton,
-	MaritalButton,
-	ResidenceTypeButton,
-	IncomeTypeButton,
-	FrequencyButton,
-	AssetTypeButton,
-	LiabilityTypeButton,
-	StreetTypeButton,
-	StreetDirButton
+    SelectButton,
+    ContactTypeButton,
+    IdTypeButton,
+    CustomerRelationButton,
+    SalutationButton,
+    SuffixButton,
+    GenderButton,
+    MaritalButton,
+    ResidenceTypeButton,
+    IncomeTypeButton,
+    FrequencyButton,
+    AssetTypeButton,
+    LiabilityTypeButton,
+    StreetTypeButton,
+    StreetDirButton
 } from '../form/Dropdown.jsx'
 
 import {
-	DateInput,
-	DateTimeInput,
-	TimeInput,
-	NumericInput,
-	TelephoneInput,
-	EmailInput,
-	PostalCodeInput,
-	SinNumberInput,
-	SsnInput
+    DateInput,
+    DateTimeInput,
+    TimeInput,
+    NumericInput,
+    TelephoneInput,
+    EmailInput,
+    PostalCodeInput,
+    SinNumberInput,
+    SsnInput
 } from '../form/Input.jsx'
 
 @inject(deps => ({
@@ -82,15 +82,15 @@ import {
 @observer
 class CustomerIdentity extends Component {
     static defaultProps = {        
-		title: null,
-		data: {
-			identityType: '',
-			nameAsShown: '',
-			value: '',
-			expiryDate: '',
-			territory: '',
-			country: ''
-		}
+        title: null,
+        data: {
+            identityType: '',
+            nameAsShown: '',
+            value: '',
+            expiryDate: '',
+            territory: '',
+            country: ''
+        }
     }
     
     constructor(props) {
@@ -189,19 +189,19 @@ class CustomerIdentity extends Component {
     }
     
     render() {
-		const mappings = this.props.mappings || fieldNames
-		
+        const mappings = this.props.mappings || fieldNames
+        
         let data = this.state.data 
         
         return (
             <div>
                 <form>
                     <Col xs={12} className='col-md-flex col-lg-flex'>
-						{this.props.title && (
-						<h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
+                        {this.props.title && (
+                        <h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
                         )}
-						
-						{/* Only display if purchaser is a company */}
+                        
+                        {/* Only display if purchaser is a company */}
                         <FormGroup style={{ display: 'none' }}>
                             <ControlLabel>Type</ControlLabel>
                             <IdTypeDropdown items={this.props.settingStore.idTypes} componentClass='select' name={mappings.ID_TYPE} {...this.props.fields(mappings.ID_TYPE, data[mappings.ID_TYPE])} />
@@ -377,7 +377,7 @@ class CustomerIdentity extends Component {
                         </FormGroup>
                         {/* Done with DOB */}
                     </Col>
-					
+                    
                     {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
                         <FormGroup>
                             <Button bsStyle='success' onClick={this.onCreate}>Create Account</Button>&nbsp;

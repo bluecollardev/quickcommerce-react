@@ -25,8 +25,8 @@ class CustomerListStore extends BaseStore {
         this.subscribe(() => {
             return this.registerToActions.bind(this)
         })
-		
-		//window.CustomerListStore = this
+        
+        //window.CustomerListStore = this
     }
 
     registerToActions(action) {
@@ -37,7 +37,7 @@ class CustomerListStore extends BaseStore {
             case CustomerListConstants.LOAD_CUSTOMERS:
                 this.handleAction(payload)
                 break
-			case CustomerSearchConstants.SEARCH_CUSTOMERS:
+            case CustomerSearchConstants.SEARCH_CUSTOMERS:
                 this.handleAction(payload)
                 break
             default:

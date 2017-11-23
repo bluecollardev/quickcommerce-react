@@ -15,9 +15,9 @@ import AccountComponent from './AccountComponent.jsx'
 
 export default AuthenticatedComponent(class AuthenticatedAccountComponent extends Component {
     render() {
-		return (
-			<AccountComponent 
-				...this.props />
-		)
-	}
+        return (
+            <AccountComponent 
+                ...this.props />
+        )
+    }
 })

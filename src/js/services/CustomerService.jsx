@@ -16,9 +16,9 @@ import StringHelper from '../helpers/String.js'
 
 export default class CustomerService extends BaseService {
     /**
-	 * This looks like a legacy handler.
-	 */
-	onSuccess(response) {        
+     * This looks like a legacy handler.
+     */
+    onSuccess(response) {        
         if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
             let data = response.data['data']
             this.actions.customer.setCustomer(data)
@@ -29,21 +29,21 @@ export default class CustomerService extends BaseService {
             }
         }
     }
-	
-	
-	/**
+    
+    
+    /**
      * For use with Legacy API.
      */
     get(data, onSuccess, onError) {
-		// Get the account
-		axios({
-			url: QC_LEGACY_API + 'account',
-			//url: QC_API + 'customer',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
+        // Get the account
+        axios({
+            url: QC_LEGACY_API + 'account',
+            //url: QC_API + 'customer',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
             if (response.status === 200) {
                 if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                     console.log('set customer data - ' + new Date())
@@ -55,88 +55,88 @@ export default class CustomerService extends BaseService {
             console.log(err)
         })
     }
-	
-	/*get(id, onSuccess, onError) {
-		// Get the account
-		axios({
-			//url: INDIGO_BASE_URI + COMMON_CUSTOMERS + id,
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
-			if (response.success || response.status === 200) {
-				if (response.hasOwnProperty('data')) {
-					let customer = response.data['customer']
-					let data = customer
-					
-					if (data.hasOwnProperty('user')) {
-						data = assign({}, data, data['user'])
-						delete data.user
-					}
-					
-					if (typeof onSuccess === 'function') {
-						onSuccess(data) // TODO: Use mappings!
-					}
-				} else {
-					if (typeof onSuccess === 'function') {
-						onSuccess(data)
-					}
-				}
-			} else {
-				if (typeof onError === 'function') {
-					onError(response)
-				}
-			}
-		}).catch(err => {
-			if (typeof onError === 'function') {
-				onError(err)
-			}
-		})
-    }*/
-	
-	fetch(customerId, onSuccess, onError) {
-		axios({
-			//url: QC_LEGACY_API + 'account/',
-			url: INDIGO_BASE_URI + COMMON_CUSTOMERS + customerId,
-			method: 'GET'
-		}).then(response => {
-			// Indigo
-			if (response.status === 200) {
-				if (response.hasOwnProperty('data')) {
-					let customer = response.data['customer']
-					let data = customer
-					
-					if (data.hasOwnProperty('user')) {
-						data = assign({}, data, data.user)
-						delete data.user
-					}
-					
-					this.actions.customer.setCustomer(data)
-					
-					if (typeof onSuccess === 'function') {
+    
+    /*get(id, onSuccess, onError) {
+        // Get the account
+        axios({
+            //url: INDIGO_BASE_URI + COMMON_CUSTOMERS + id,
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
+            if (response.success || response.status === 200) {
+                if (response.hasOwnProperty('data')) {
+                    let customer = response.data['customer']
+                    let data = customer
+                    
+                    if (data.hasOwnProperty('user')) {
+                        data = assign({}, data, data['user'])
+                        delete data.user
+                    }
+                    
+                    if (typeof onSuccess === 'function') {
+                        onSuccess(data) // TODO: Use mappings!
+                    }
+                } else {
+                    if (typeof onSuccess === 'function') {
                         onSuccess(data)
                     }
-				} else {
-					this.handleApiError(response)
-				}
-			}
-			
-			// QC API and legacy
-			/*if (response.status === 200) {
-				if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-					let data = response.data['data']
-					this.actions.customer.setCustomer(data)
-				} else {
-					this.handleApiError(response)
-				}
-			}*/
-		}).catch(err => {
-			console.log(err)
-		})
-		
-		//return isLogged
-	}
+                }
+            } else {
+                if (typeof onError === 'function') {
+                    onError(response)
+                }
+            }
+        }).catch(err => {
+            if (typeof onError === 'function') {
+                onError(err)
+            }
+        })
+    }*/
+    
+    fetch(customerId, onSuccess, onError) {
+        axios({
+            //url: QC_LEGACY_API + 'account/',
+            url: INDIGO_BASE_URI + COMMON_CUSTOMERS + customerId,
+            method: 'GET'
+        }).then(response => {
+            // Indigo
+            if (response.status === 200) {
+                if (response.hasOwnProperty('data')) {
+                    let customer = response.data['customer']
+                    let data = customer
+                    
+                    if (data.hasOwnProperty('user')) {
+                        data = assign({}, data, data.user)
+                        delete data.user
+                    }
+                    
+                    this.actions.customer.setCustomer(data)
+                    
+                    if (typeof onSuccess === 'function') {
+                        onSuccess(data)
+                    }
+                } else {
+                    this.handleApiError(response)
+                }
+            }
+            
+            // QC API and legacy
+            /*if (response.status === 200) {
+                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
+                    let data = response.data['data']
+                    this.actions.customer.setCustomer(data)
+                } else {
+                    this.handleApiError(response)
+                }
+            }*/
+        }).catch(err => {
+            console.log(err)
+        })
+        
+        //return isLogged
+    }
     
     /**
      * POST is used for searchList service, so we're
@@ -192,9 +192,9 @@ export default class CustomerService extends BaseService {
         let filterData = false
         let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
         let customerId = CustomerStore.customer['customer_id'] || null
-		
-		/*// TODO: Let's change the var names... prop/key same thing in JS
-        data.forEach(function (prop, key) {										
+        
+        /*// TODO: Let's change the var names... prop/key same thing in JS
+        data.forEach(function (prop, key) {                                        
             // Fry internal references from the view-model
             if (filterKeys.indexOf(key) > -1) {
                 delete data[key]
@@ -257,9 +257,9 @@ export default class CustomerService extends BaseService {
         let filterData = false
         let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
         let customerId = CustomerStore.customer['customer_id'] || null
-		
-		/*// TODO: Let's change the var names... prop/key same thing in JS
-        data.forEach(function (prop, key) {										
+        
+        /*// TODO: Let's change the var names... prop/key same thing in JS
+        data.forEach(function (prop, key) {                                        
             // Fry internal references from the view-model
             if (filterKeys.indexOf(key) > -1) {
                 delete data[key]
@@ -317,8 +317,8 @@ export default class CustomerService extends BaseService {
     delete(data, onSuccess, onError) {
         
     }
-	
-	normalizePayload(data, from, to) {
+    
+    normalizePayload(data, from, to) {
         return ObjectHelper.recursiveFormatKeys(data, from, to)
     }
     
@@ -370,30 +370,30 @@ export default class CustomerService extends BaseService {
      */
     updatePassword() {
         let data, response, url
-		
-		// TODO: Validate or throw error
-		/*if (passwordModel.get('password') !== passwordModel.get('confirm')) {
-			//loader.setMessage('Sorry! The password did not match the confirmation').open()
-			
-			passwordModel.set('password', '')
-			passwordModel.set('confirm', '')
-				
-			setTimeout(function () {
-				//loader.close()
-			}, 3000)
-			
-			return false
-		}*/
-		
-		// Update user
-		axios({
-			url: QC_LEGACY_API + 'account/password',
-			//data: JSON.stringify({ password: passwordModel.get('password'), confirm: passwordModel.get('confirm') }),
-			type: 'PUT',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: true // No async login
-		}).then(response => {
+        
+        // TODO: Validate or throw error
+        /*if (passwordModel.get('password') !== passwordModel.get('confirm')) {
+            //loader.setMessage('Sorry! The password did not match the confirmation').open()
+            
+            passwordModel.set('password', '')
+            passwordModel.set('confirm', '')
+                
+            setTimeout(function () {
+                //loader.close()
+            }, 3000)
+            
+            return false
+        }*/
+        
+        // Update user
+        axios({
+            url: QC_LEGACY_API + 'account/password',
+            //data: JSON.stringify({ password: passwordModel.get('password'), confirm: passwordModel.get('confirm') }),
+            type: 'PUT',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: true // No async login
+        }).then(response => {
             //passwordModel.set('password', '')
             //passwordModel.set('confirm', '')
         }).catch({
@@ -401,7 +401,7 @@ export default class CustomerService extends BaseService {
         })
     }
     
-	/**
+    /**
      * For use with Legacy API.
      */
     handleApiError(response) {
@@ -423,29 +423,29 @@ export default class CustomerService extends BaseService {
             }, 3000)
         }
     }
-	
-	/**
+    
+    /**
      * For use with Legacy API.
      */
     setAddresses() {
-		this.fetchBillingAddress()
-		this.fetchShippingAddress()
+        this.fetchBillingAddress()
+        this.fetchShippingAddress()
     }
     
     /**
      * For use with Legacy API.
      */
     fetchBillingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'paymentaddress',
-			type: 'GET',
-			//async: false,
-			//dataType: 'json',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	payment_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'paymentaddress',
+            type: 'GET',
+            //async: false,
+            //dataType: 'json',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    payment_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -479,20 +479,20 @@ export default class CustomerService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
     
     /**
      * For use with Legacy API.
      */
     fetchShippingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'shippingaddress',
-			type: 'GET',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	payment_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'shippingaddress',
+            type: 'GET',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    payment_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -526,22 +526,22 @@ export default class CustomerService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
     
     /**
      * For use with Legacy API.
      */
     fetchAccount(onSuccess, onError) {
-		var that = this
-			//userToken = that.checkToken(),
-			//isLogged = (userToken !== false) ? true : false
-		
-		//if (!isLogged) {
-			// Log in the user
-			axios({
-				url: QC_LEGACY_API + 'account/',
-				method: 'GET'
-			})
+        var that = this
+            //userToken = that.checkToken(),
+            //isLogged = (userToken !== false) ? true : false
+        
+        //if (!isLogged) {
+            // Log in the user
+            axios({
+                url: QC_LEGACY_API + 'account/',
+                method: 'GET'
+            })
             .then(response => {
                 if (response.status === 200) {
                     if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
@@ -554,8 +554,8 @@ export default class CustomerService extends BaseService {
             }).catch(err => {
                 console.log(err)
             })
-		//}
-		
-		//return isLogged
-	}
+        //}
+        
+        //return isLogged
+    }
 }

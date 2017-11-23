@@ -12,44 +12,44 @@ import { Dropdown, Checkbox, Radio } from 'react-bootstrap'
 import FormComponent from 'quickcommerce-react/components/FormComponent.jsx'
 
 import {
-	OccupationAutocomplete,
-	CountryAutocomplete,
-	ZoneAutocomplete,
-	CustomerAutocomplete,
-	CustomerGroupAutocomplete,
-	OrderStatusAutocomplete,
-	LanguageAutocomplete,
-	StoreAutocomplete
+    OccupationAutocomplete,
+    CountryAutocomplete,
+    ZoneAutocomplete,
+    CustomerAutocomplete,
+    CustomerGroupAutocomplete,
+    OrderStatusAutocomplete,
+    LanguageAutocomplete,
+    StoreAutocomplete
 } from 'quickcommerce-react/components/form/Autocomplete.jsx'
 
 import {
-	SelectList,
-	ContactTypeDropdown,
-	IdTypeDropdown,
-	CustomerRelationDropdown,
-	SalutationDropdown,
-	SuffixDropdown,
-	GenderDropdown,
-	MaritalDropdown,
-	ResidenceTypeDropdown,
-	IncomeTypeDropdown,
-	FrequencyDropdown,
-	AssetTypeDropdown,
-	LiabilityTypeDropdown,
-	StreetTypeDropdown,
-	StreetDirDropdown
+    SelectList,
+    ContactTypeDropdown,
+    IdTypeDropdown,
+    CustomerRelationDropdown,
+    SalutationDropdown,
+    SuffixDropdown,
+    GenderDropdown,
+    MaritalDropdown,
+    ResidenceTypeDropdown,
+    IncomeTypeDropdown,
+    FrequencyDropdown,
+    AssetTypeDropdown,
+    LiabilityTypeDropdown,
+    StreetTypeDropdown,
+    StreetDirDropdown
 } from 'quickcommerce-react/components/form/Dropdown.jsx'
 
 import {
-	DateInput,
-	DateTimeInput,
-	TimeInput,
-	NumericInput,
-	TelephoneInput,
-	EmailInput,
-	PostalCodeInput,
-	SinNumberInput,
-	SsnInput
+    DateInput,
+    DateTimeInput,
+    TimeInput,
+    NumericInput,
+    TelephoneInput,
+    EmailInput,
+    PostalCodeInput,
+    SinNumberInput,
+    SsnInput
 } from 'quickcommerce-react/components/form/Input.jsx'
 
 @inject(deps => ({
@@ -64,12 +64,12 @@ import {
 @observer
 class CustomerIncome extends Component {
     static defaultProps = {        
-		title: 'Income Details',
-		incomeType: '',
-		grossIncome: '',
-		annualIncome: '',
-		per: '',
-		notes: ''
+        title: 'Income Details',
+        incomeType: '',
+        grossIncome: '',
+        annualIncome: '',
+        per: '',
+        notes: ''
     }
     
     constructor(props) {
@@ -158,7 +158,7 @@ class CustomerIncome extends Component {
             <div>
                 <form>
                     <Col xs={12} className='col-md-flex col-sm-flex'>
-						<h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
+                        <h4 className='fieldset-heading flex-md-full flex-lg-full'>{this.props.title}</h4>
                         {/* Only display if purchaser is a company */}
                         <FormGroup>
                             <ControlLabel>Type</ControlLabel>
@@ -185,7 +185,7 @@ class CustomerIncome extends Component {
                             <FormControl type='text' name='annualIncome' {...this.props.fields('annualIncome', data.annualIncome)} />
                         </FormGroup>
                     </Col>
-					
+                    
                     {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
                         <FormGroup>
                             <Dropdown bsStyle='success' onClick={this.onCreate}>Create Account</Dropdown>&nbsp;

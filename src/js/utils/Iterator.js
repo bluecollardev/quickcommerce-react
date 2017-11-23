@@ -4,8 +4,8 @@
  *
  * Basic iterator
  */
-Iterator: function (obj) {
-    var iterator = Object.create({
+export default (obj) => {
+    let iterator = Object.create({
         data: {},
         keys: [],
         index: 0,
@@ -13,58 +13,58 @@ Iterator: function (obj) {
         
         init: function (obj) {
             if (obj) {
-                this.data = obj;
-                this.keys = Object.keys(obj);
-                this.len = this.keys.length;
-                this.index = 0;
+                this.data = obj
+                this.keys = Object.keys(obj)
+                this.len = this.keys.length
+                this.index = 0
             }
             
-            return this;
+            return this
         },
         next: function () {
-            var element,
+            let element,
                 data = this.data,
                 keys = this.keys,
-                index = this.index;
+                index = this.index
                 
             if (!this.hasNext()) {
-                return null;
+                return null
             }
 
-            element = data[keys[index]];
-            this.index++;
+            element = data[keys[index]]
+            this.index++
 
-            return element;
+            return element
         },
         hasNext: function () {
-            var index = this.index,
-                len = this.len;
+            let index = this.index,
+                len = this.len
                     
-            return index < len;
+            return index < len
         },
         rewind: function () {
-            var data = this.data,
+            let data = this.data,
                 keys = this.keys,
-                index = this.index;
+                index = this.index
             
-            this.index = 0;
+            this.index = 0
             
-            return data[keys[index]];
+            return data[keys[index]]
         },
         current: function () {
-            var data = this.data,
+            let data = this.data,
                 keys = this.keys,
-                index = this.index;
+                index = this.index
                 
-            return data[keys[index]];
+            return data[keys[index]]
         },
         key: function () {
-            var keys = this.keys,
-                index = this.index;
+            let keys = this.keys,
+                index = this.index
                 
-            return keys[index];
+            return keys[index]
         }
-    });
+    })
     
-    return iterator.init(obj);
-},
+    return iterator.init(obj)
+}

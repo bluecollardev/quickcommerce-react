@@ -18,8 +18,8 @@ import FormComponent from '../FormComponent.jsx'
 class SignInForm extends Component {
     constructor(props) {
         super(props)
-		
-		this.authHandler = this.props.authHandler || props.authService
+        
+        this.authHandler = this.props.authHandler || props.authService
         
         this.onSubmit = this.onSubmit.bind(this)
         this.onCreate = this.onCreate.bind(this)
@@ -130,27 +130,27 @@ class SignInForm extends Component {
         
         this.props.triggerAction((formData) => {
             console.log('executing onSubmit callback')
-			if (typeof this.props.onSubmit === 'function') {
-				console.log('execute handler')
-				let fn = this.props.onSubmit
-				
-				// onSuccess, onError
-				fn(formData, (response) => {
-					this.onSuccess(response)
-					
-					if (this.state.remember) {
-						this.rememberAccount(formData)
-					} else {
-						this.forgetAccount()
-					}
-				}, this.onError)
-			} else {
-				if (this.state.remember) {
-					this.rememberAccount(formData)
-				} else {
-					this.forgetAccount()
-				}
-			}
+            if (typeof this.props.onSubmit === 'function') {
+                console.log('execute handler')
+                let fn = this.props.onSubmit
+                
+                // onSuccess, onError
+                fn(formData, (response) => {
+                    this.onSuccess(response)
+                    
+                    if (this.state.remember) {
+                        this.rememberAccount(formData)
+                    } else {
+                        this.forgetAccount()
+                    }
+                }, this.onError)
+            } else {
+                if (this.state.remember) {
+                    this.rememberAccount(formData)
+                } else {
+                    this.forgetAccount()
+                }
+            }
         })
     }
     
@@ -170,7 +170,7 @@ class SignInForm extends Component {
     onLogout(e) {
         e.preventDefault()
         e.stopPropagation()
-		
+        
         // Should I change the name of callback to beforeLogout?
         console.log('executing onLogout callback')
         if (typeof this.props.onLogout === 'function') {
@@ -282,7 +282,7 @@ class SignInForm extends Component {
         }
     }
 
-	/*startLogoutTimer() {
+    /*startLogoutTimer() {
         var that = this,
             page = that.getPage(),
             moduleElement = $('#' + that.getId()),
@@ -413,7 +413,7 @@ class SignInForm extends Component {
         that.getSession();
         // TODO: Check auth -- not sure what's best; in the page, embedded in the module?
         //loginWindow.center().open();
-    }*/	
+    }*/    
 }
 
 export default AuthenticatedComponent(FormComponent(SignInForm))

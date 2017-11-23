@@ -31,7 +31,7 @@ export default class CustomerPicker extends Component {
         this.onEdit = this.onEdit.bind(this)
         this.selectCashier = this.selectCashier.bind(this)
         this.getCustomerList = this.getCustomerList.bind(this)
-		this.updateCustomerList = this.updateCustomerList.bind(this)
+        this.updateCustomerList = this.updateCustomerList.bind(this)
 
         this.state = {
             customers: [],
@@ -53,18 +53,18 @@ export default class CustomerPicker extends Component {
 
         this.props.actions.customerList.loadCustomers()
     }
-	
-	updateCustomerList() {
+    
+    updateCustomerList() {
         this.setState({
             customers: this.getCustomerList()
         })
-	}
+    }
 
-	componentWillUnmount() {
-		if (this.props.customerListStore.listenerCount('CHANGE') > 0) {
-			this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
+    componentWillUnmount() {
+        if (this.props.customerListStore.listenerCount('CHANGE') > 0) {
+            this.props.customerListStore.removeListener('CHANGE', this.updateCustomerList)
         }
-	}
+    }
     
     // TODO: Move me to a utils class
     // Also: Why the hell is sometimes this being fed a string and other times an object?

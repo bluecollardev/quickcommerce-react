@@ -50,14 +50,14 @@ class ProfileMenu extends Component {
     render() {
         if (this.props.loggedIn) {
             return (
-				<div className='logo'>
-					<ListItem button>
-						<Avatar src='https://i.pinimg.com/736x/61/6e/c3/616ec3042d9fd9525f118c222c783802---actors-james-bond-actors.jpg' />
-						<ListItemText
-							primary = {<div><a href='#/account/edit'>James Bond</a></div>}
-							secondary = {<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
-					</ListItem>
-				</div>
+                <div className='logo'>
+                    <ListItem button>
+                        <Avatar src='https://i.pinimg.com/736x/61/6e/c3/616ec3042d9fd9525f118c222c783802---actors-james-bond-actors.jpg' />
+                        <ListItemText
+                            primary = {<div><a href='#/account/edit'>James Bond</a></div>}
+                            secondary = {<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
+                    </ListItem>
+                </div>
             )
         } else {
             return null

@@ -19,44 +19,44 @@ import AuthenticatedComponent from '../AuthenticatedComponent'
 @observer
 class UserProfile extends Component {
     // TODO: Invalid default props here...
-	static defaultProps = {
-		pk: 'customer_id',
-		mode: 'edit',
-		displayProfile: true,
-		displayBillingAddress: false,
-		displayShippingAddress: false,
-		displayShippingAddress: false,
-		billingAddressString: '',
-		billingAddress: {},
-		shippingAddressString: '',
-		shippingAddress: {},
-		user: {
-			id: null, 
-			address_id: null, 
-			addresses: [], 
-			firstname: '',
-			middlename: '',
-			lastname: '',
-			company_name: '',
-			email: '',
-			telephone: '',
-			fax: ''
-		},
-		customer: {
-			id: null, 
-			address_id: null, 
-			addresses: [], 
-			firstname: '',
-			middlename: '',
-			lastname: '',
-			company_name: '',
-			email: '',
-			telephone: '',
-			fax: ''
-		}
-	}
-	
-	constructor(props) {
+    static defaultProps = {
+        pk: 'customer_id',
+        mode: 'edit',
+        displayProfile: true,
+        displayBillingAddress: false,
+        displayShippingAddress: false,
+        displayShippingAddress: false,
+        billingAddressString: '',
+        billingAddress: {},
+        shippingAddressString: '',
+        shippingAddress: {},
+        user: {
+            id: null, 
+            address_id: null, 
+            addresses: [], 
+            firstname: '',
+            middlename: '',
+            lastname: '',
+            company_name: '',
+            email: '',
+            telephone: '',
+            fax: ''
+        },
+        customer: {
+            id: null, 
+            address_id: null, 
+            addresses: [], 
+            firstname: '',
+            middlename: '',
+            lastname: '',
+            company_name: '',
+            email: '',
+            telephone: '',
+            fax: ''
+        }
+    }
+    
+    constructor(props) {
         super(props)
     }
 

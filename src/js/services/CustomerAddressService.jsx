@@ -55,27 +55,27 @@ export default class CustomerAddressService extends BaseService {
     
     get(data, onSuccess, onError) {
         var that = this,
-			customer
-		
-		if (sessionId) {
-			customer = dataSources.get('customer.entity') || null
-			if (customer instanceof kendo.data.Model) {
-				if (customer.get('session') === sessionId) {
-					return customer
-				}
-			}
-		} else {
-			return false
-		}
-		
-		// Get the account
-		axios({
-			url: QC_LEGACY_API + 'account/address',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
+            customer
+        
+        if (sessionId) {
+            customer = dataSources.get('customer.entity') || null
+            if (customer instanceof kendo.data.Model) {
+                if (customer.get('session') === sessionId) {
+                    return customer
+                }
+            }
+        } else {
+            return false
+        }
+        
+        // Get the account
+        axios({
+            url: QC_LEGACY_API + 'account/address',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
             if (response.success) {
                 if (response.hasOwnProperty('data')) {
                     // We can specify a target observable as the second param
@@ -129,24 +129,24 @@ export default class CustomerAddressService extends BaseService {
     
     put(data, onSuccess, onError) {
         var that = this,
-			filterData = false,
-			data,
-			response,
-			url
-		
-		console.log('SEND TO SERVER')
-		console.log(data)
+            filterData = false,
+            data,
+            response,
+            url
         
-		// Update user
-		axios({
-			//url: QC_LEGACY_API + 'account/address',
-			url: QC_LEGACY_API + 'account/address/' + data['address_id'], // TODO: Legacy API uses different semantics
-			data: JSON.stringify(data),
-			method: 'PUT',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: true // No async login
-		}).then(response => {
+        console.log('SEND TO SERVER')
+        console.log(data)
+        
+        // Update user
+        axios({
+            //url: QC_LEGACY_API + 'account/address',
+            url: QC_LEGACY_API + 'account/address/' + data['address_id'], // TODO: Legacy API uses different semantics
+            data: JSON.stringify(data),
+            method: 'PUT',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: true // No async login
+        }).then(response => {
             if (response.success) {
                 if (response.hasOwnProperty('data')) {
                     //loader.setMessage('Success! Your information has been updated').open()
@@ -166,8 +166,8 @@ export default class CustomerAddressService extends BaseService {
     }
     
     setAddresses() {
-		this.fetchBillingAddress()
-		this.fetchShippingAddress()
+        this.fetchBillingAddress()
+        this.fetchShippingAddress()
     }
     
     handleApiError(response) {
@@ -178,16 +178,16 @@ export default class CustomerAddressService extends BaseService {
      * Legacy API
      */
     fetchBillingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'paymentaddress',
-			type: 'GET',
-			//async: false,
-			//dataType: 'json',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	payment_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'paymentaddress',
+            type: 'GET',
+            //async: false,
+            //dataType: 'json',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    payment_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -221,20 +221,20 @@ export default class CustomerAddressService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
     
     /**
      * Legacy API
      */
     fetchShippingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'shippingaddress',
-			type: 'GET',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	shipping_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'shippingaddress',
+            type: 'GET',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    shipping_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -268,5 +268,5 @@ export default class CustomerAddressService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
 }

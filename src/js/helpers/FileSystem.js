@@ -1,39 +1,39 @@
 /**********************************************************
  * Namespace: QC.Helpers.FileSystem
  **********************************************************/
-App.Helpers.FileSystem = function (handler) {
-    var that = this, fileSystem;
+export default (handler) => {
+    let fileSystem
     
     fileSystem = Object.create({
         fileSystem: null,
         handler: null,
         init: function (handler) {
-            this.handler = handler;
-            console.log(handler);
+            this.handler = handler
+            console.log(handler)
             
-            return this;
+            return this
         },
         readFile: function (fileName, dirName, callback, options) {
-            options = options || null;
-            this.handler.readFile(fileName, dirName, callback, options);
+            options = options || null
+            this.handler.readFile(fileName, dirName, callback, options)
         },
         readDir: function (dirName, callback, options) {
-            options = options || null;
+            options = options || null
             this.handler.readDir(dirName, callback, options)
         },
         exists: function (path) {
             if (this.handler.hasOwnProperty('exists')) {
-                return this.handler.exists(path);
+                return this.handler.exists(path)
             }
         },
         getFS: function () {
             if (this.fileSystem === null) {
-                this.fileSystem = this.handler.getFS();
+                this.fileSystem = this.handler.getFS()
             }
             
-            return this.fileSystem;
+            return this.fileSystem
         }
-    });
+    })
     
-    return fileSystem.init(handler);
-};
+    return fileSystem.init(handler)
+}

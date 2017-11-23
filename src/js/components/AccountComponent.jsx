@@ -57,27 +57,27 @@ class AccountComponent extends Component {
             window.location.hash = '/account/edit'
         }
     }
-	
-	doLogin(formData, onSuccess, onError) {		
-		this.props.authService.login(
-			formData['account'], 
-			formData['password'], 
-			onSuccess,
-			onError
-		).catch(function(err) {
-			console.log('Error logging in', err)
-		})
-	}
-	
-	doLogout() {
-		try {
+    
+    doLogin(formData, onSuccess, onError) {        
+        this.props.authService.login(
+            formData['account'], 
+            formData['password'], 
+            onSuccess,
+            onError
+        ).catch(function(err) {
+            console.log('Error logging in', err)
+        })
+    }
+    
+    doLogout() {
+        try {
             this.props.authService.logout()
         } catch (err) {
             console.log('Error logging out', err)
         }
         
         window.location.hash = '/account/login'
-	}
+    }
     
     // TODO: Can I move these next group of methods up a level to AuthenticatedComponent?
     onLoginSuccess(response) {
@@ -116,21 +116,21 @@ class AccountComponent extends Component {
     render() {       
         return (
             <div className='container-fluid'>
-				{!this.props.loggedIn && (
+                {!this.props.loggedIn && (
                 <Modal
                     show = {true}>
                     {!this.props.loggedIn && this.props.location.pathname === '/account/login' && false && (
-					<Modal.Header>
+                    <Modal.Header>
                         <Modal.Title>
                             <div className='column_attr clearfix align_center'>
                                 <h2 className='heading-with-border' style={{textAlign: 'center'}}>Sign Into Your Account</h2>
                             </div>
                         </Modal.Title>
                     </Modal.Header>
-					)}
+                    )}
                     <Modal.Body>
                         {this.props.children} 
-						<SignInForm 
+                        <SignInForm 
                             onSubmit = {this.doLogin}
                             onLoginSuccess = {this.onLoginSuccess}
                             onLogout = {this.doLogout}

@@ -64,7 +64,7 @@ class CurrentAddress extends Component {
         
         this.setInitialState = this.setInitialState.bind(this)
         
-		// Turned getAddressString into a static method
+        // Turned getAddressString into a static method
         //this.getAddressString = this.getAddressString.bind(this)
         this.showAddressModal = this.showAddressModal.bind(this)
         this.hideAddressModal = this.hideAddressModal.bind(this)
@@ -218,126 +218,126 @@ class CurrentAddress extends Component {
      * In progress, porting from kPaged address module
      */
     setAddress() {
-        var	that = this,
-			moduleElement = $('#' + that.getId()),
-			page = that.getPage(),
-			block = page.getBlock('center-pane'),
-			viewModel = that.getViewModel(),
-			data = page.getFormData(),
-			addressEventHandler = that.getEventHandler(),
-			addressValidator = block.getValidator(),
-			addressEditPopup,
-			addressLookupPopup,
-			addressEditWindow,
-			addressLookupWindow,
-			addressEditTrigger,
-			addressLookupTrigger,
-			addressDisplay,
-			overrideAddress,
-			overrideAddressReason,
-			addressReviewDate,
-			sources = {},
-			tabs = that.tabs,
-			tab,
-			fields = {},
-			address = [],
-			addressString = [],
-			current
-			
-		tab = tabs.select()
-		fields = {
-			// Civic address fields
-			civic: {
-				suiteNumber: $.trim(viewModel.get('address.suiteNumber')),
-				streetNumber: $.trim(viewModel.get('address.streetNumber')),
-				streetName: $.trim(viewModel.get('address.streetName')),
-				streetType: $.trim(viewModel.get('address.streetType')),
-				streetDirection: $.trim(viewModel.get('address.streetDirection')),
-				poBox: (viewModel.get('address.poBox')) ? 'PO BOX ' + $.trim(viewModel.get('address.poBox')) : ''
-				
-			},
-			// Rural address fields
-			rural: {
-				rr: (viewModel.get('address.rr')) ? 'RR ' + $.trim(viewModel.get('address.rr')) : '',
-				site: (viewModel.get('address.site')) ? 'SITE ' + $.trim(viewModel.get('address.site')) : '',
-				comp: (viewModel.get('address.comp')) ? 'COMP ' + $.trim(viewModel.get('address.comp')) : '',
-				box: (viewModel.get('address.box')) ? 'BOX ' + $.trim(viewModel.get('address.box')) : '',
-				lotNumber: (viewModel.get('address.lotNumber')) ? 'LOT ' + $.trim(viewModel.get('address.lotNumber')) : '',
-				concessionNumber: (viewModel.get('address.concessionNumber')) ? 'CONCESSION ' + $.trim(viewModel.get('address.concessionNumber')) : ''
-			},
-			common: {
-				station: (viewModel.get('address.station')) ? 'STN ' + $.trim(viewModel.get('address.station')) : '',
-				city: $.trim(viewModel.get('address.city')),
-				zone: $.trim(viewModel.get('address.zone')),
-				postcode: $.trim(viewModel.get('address.postcode')),
-				country: $.trim(viewModel.get('address.country'))
-			}
-		}
-		
-		// Create a string representation of the address fields
-		if (tab.index() === 0) {
-			// Civic address selected
-			// Clear all rural values
-			$.each(fields.rural, function (key, value) {
-				viewModel.set(key, '')
-			})
-			
-			if (fields.civic.suiteNumber !== '') {
-				address.push('{suiteNumber}-{streetNumber} {streetName} {streetType} {streetDirection}')
-			} else {
-				address.push('{streetNumber} {streetName} {streetType} {streetDirection}')
-			}
-			address.push('{poBox} {station}')
-		} else if (tab.index() === 1) {
-			// Rural address selected
-			// Clear all civic values
-			$.each(fields.civic, function (key, value) {
-				viewModel.set(key, '') 
-			})
-			
-			if (fields.rural.lot !== '' && fields.rural.concession !== '') {
-				address.push('{lotNumber} {concessionNumber}')
-			}
-			if (fields.rural.site !== '' && fields.rural.comp !== '') {
-				address.push('{site} {comp} {box}')
-			}
-			address.push('{rr} {station}')
-		}
-		
-		// Append city/municipality, zone and postal code
-		address.push('{city} {zone} {postcode}')
+        var    that = this,
+            moduleElement = $('#' + that.getId()),
+            page = that.getPage(),
+            block = page.getBlock('center-pane'),
+            viewModel = that.getViewModel(),
+            data = page.getFormData(),
+            addressEventHandler = that.getEventHandler(),
+            addressValidator = block.getValidator(),
+            addressEditPopup,
+            addressLookupPopup,
+            addressEditWindow,
+            addressLookupWindow,
+            addressEditTrigger,
+            addressLookupTrigger,
+            addressDisplay,
+            overrideAddress,
+            overrideAddressReason,
+            addressReviewDate,
+            sources = {},
+            tabs = that.tabs,
+            tab,
+            fields = {},
+            address = [],
+            addressString = [],
+            current
+            
+        tab = tabs.select()
+        fields = {
+            // Civic address fields
+            civic: {
+                suiteNumber: $.trim(viewModel.get('address.suiteNumber')),
+                streetNumber: $.trim(viewModel.get('address.streetNumber')),
+                streetName: $.trim(viewModel.get('address.streetName')),
+                streetType: $.trim(viewModel.get('address.streetType')),
+                streetDirection: $.trim(viewModel.get('address.streetDirection')),
+                poBox: (viewModel.get('address.poBox')) ? 'PO BOX ' + $.trim(viewModel.get('address.poBox')) : ''
+                
+            },
+            // Rural address fields
+            rural: {
+                rr: (viewModel.get('address.rr')) ? 'RR ' + $.trim(viewModel.get('address.rr')) : '',
+                site: (viewModel.get('address.site')) ? 'SITE ' + $.trim(viewModel.get('address.site')) : '',
+                comp: (viewModel.get('address.comp')) ? 'COMP ' + $.trim(viewModel.get('address.comp')) : '',
+                box: (viewModel.get('address.box')) ? 'BOX ' + $.trim(viewModel.get('address.box')) : '',
+                lotNumber: (viewModel.get('address.lotNumber')) ? 'LOT ' + $.trim(viewModel.get('address.lotNumber')) : '',
+                concessionNumber: (viewModel.get('address.concessionNumber')) ? 'CONCESSION ' + $.trim(viewModel.get('address.concessionNumber')) : ''
+            },
+            common: {
+                station: (viewModel.get('address.station')) ? 'STN ' + $.trim(viewModel.get('address.station')) : '',
+                city: $.trim(viewModel.get('address.city')),
+                zone: $.trim(viewModel.get('address.zone')),
+                postcode: $.trim(viewModel.get('address.postcode')),
+                country: $.trim(viewModel.get('address.country'))
+            }
+        }
+        
+        // Create a string representation of the address fields
+        if (tab.index() === 0) {
+            // Civic address selected
+            // Clear all rural values
+            $.each(fields.rural, function (key, value) {
+                viewModel.set(key, '')
+            })
+            
+            if (fields.civic.suiteNumber !== '') {
+                address.push('{suiteNumber}-{streetNumber} {streetName} {streetType} {streetDirection}')
+            } else {
+                address.push('{streetNumber} {streetName} {streetType} {streetDirection}')
+            }
+            address.push('{poBox} {station}')
+        } else if (tab.index() === 1) {
+            // Rural address selected
+            // Clear all civic values
+            $.each(fields.civic, function (key, value) {
+                viewModel.set(key, '') 
+            })
+            
+            if (fields.rural.lot !== '' && fields.rural.concession !== '') {
+                address.push('{lotNumber} {concessionNumber}')
+            }
+            if (fields.rural.site !== '' && fields.rural.comp !== '') {
+                address.push('{site} {comp} {box}')
+            }
+            address.push('{rr} {station}')
+        }
+        
+        // Append city/municipality, zone and postal code
+        address.push('{city} {zone} {postcode}')
 
-		if (fields.common.country == "USA") {
-			address.push('{country}')
-		}
-		
-		// Replace formatting keys with form values
-		$.each(address, function (idx, format) {
-			current = format
-			if (tab.index() === 0) {
-				$.each(fields.civic, function (key, value) {
-					current = current.replace('{' + key + '}', value)
-				})
-			} else if (tab.index() === 1) {
-				$.each(fields.rural, function (key, value) {
-					current = current.replace('{' + key + '}', value)
-				})
-			}
-			
-			$.each(fields.common, function (key, value) {
-				current = current.replace('{' + key + '}', value)
-			})
-			
-			if ($.trim(current) !== '') {
-				addressString.push($.trim(current))
-			}
-		})
-		
-		// Join address strings
-		addressString = addressString.join('\r\n')
-		
-		that.addressDisplay.attr('readonly', false).val(addressString).attr('readonly', true)
-		$('div[name=addressEditPopup]').data('kendoWindow').close()
+        if (fields.common.country == "USA") {
+            address.push('{country}')
+        }
+        
+        // Replace formatting keys with form values
+        $.each(address, function (idx, format) {
+            current = format
+            if (tab.index() === 0) {
+                $.each(fields.civic, function (key, value) {
+                    current = current.replace('{' + key + '}', value)
+                })
+            } else if (tab.index() === 1) {
+                $.each(fields.rural, function (key, value) {
+                    current = current.replace('{' + key + '}', value)
+                })
+            }
+            
+            $.each(fields.common, function (key, value) {
+                current = current.replace('{' + key + '}', value)
+            })
+            
+            if ($.trim(current) !== '') {
+                addressString.push($.trim(current))
+            }
+        })
+        
+        // Join address strings
+        addressString = addressString.join('\r\n')
+        
+        that.addressDisplay.attr('readonly', false).val(addressString).attr('readonly', true)
+        $('div[name=addressEditPopup]').data('kendoWindow').close()
     }
     
     /**

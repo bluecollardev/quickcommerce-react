@@ -105,25 +105,25 @@ export default class UserService extends BaseService {
     }
     
     get(data, onSuccess, onError) {
-		/*if (sessionId) {
-			customer = dataSources.get('customer.entity') || null
-			if (customer instanceof kendo.data.Model) {
-				if (customer.get('session') === sessionId) {
-					return customer
-				}
-			}
-		} else {
-			return false
-		}*/
-		
-		// Get the account
-		axios({
-			url: QC_LEGACY_API + 'account',
-			type: 'GET',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: false
-		}).then(response => {
+        /*if (sessionId) {
+            customer = dataSources.get('customer.entity') || null
+            if (customer instanceof kendo.data.Model) {
+                if (customer.get('session') === sessionId) {
+                    return customer
+                }
+            }
+        } else {
+            return false
+        }*/
+        
+        // Get the account
+        axios({
+            url: QC_LEGACY_API + 'account',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
             if (response.status === 200) {
                 if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                     console.log('set customer data - ' + new Date())
@@ -180,9 +180,9 @@ export default class UserService extends BaseService {
     put(data, onSuccess, onError) {
         let filterData = false
         let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
-		
-		/*// TODO: Let's change the var names... prop/key same thing in JS
-        data.forEach(function (prop, key) {										
+        
+        /*// TODO: Let's change the var names... prop/key same thing in JS
+        data.forEach(function (prop, key) {                                        
             // Fry internal references from the view-model
             if (filterKeys.indexOf(key) > -1) {
                 delete data[key]
@@ -193,17 +193,17 @@ export default class UserService extends BaseService {
                 delete data[key]
             }
         })*/
-		
-		// Update user
-		axios({
-			url: QC_LEGACY_API + 'account',
-			data: JSON.stringify(data),
-			//method: 'PUT',
-			method: 'POST', // Legacy API sucks and uses POST (3rd party OCAPI)
-			//headers: {
+        
+        // Update user
+        axios({
+            url: QC_LEGACY_API + 'account',
+            data: JSON.stringify(data),
+            //method: 'PUT',
+            method: 'POST', // Legacy API sucks and uses POST (3rd party OCAPI)
+            //headers: {
             //    'X-Oc-Session': this.services.auth.getToken()
             //}
-		}).then(response => {
+        }).then(response => {
             if (response.success) {
                 if (response.hasOwnProperty('data')) {
                     // Do something
@@ -226,30 +226,30 @@ export default class UserService extends BaseService {
     // Use PATCH
     updatePassword() {
         let data, response, url
-		
-		// TODO: Validate or throw error
-		/*if (passwordModel.get('password') !== passwordModel.get('confirm')) {
-			//loader.setMessage('Sorry! The password did not match the confirmation').open()
-			
-			passwordModel.set('password', '')
-			passwordModel.set('confirm', '')
-				
-			setTimeout(function () {
-				//loader.close()
-			}, 3000)
-			
-			return false
-		}*/
-		
-		// Update user
-		axios({
-			url: QC_LEGACY_API + 'account/password',
-			//data: JSON.stringify({ password: passwordModel.get('password'), confirm: passwordModel.get('confirm') }),
-			type: 'PUT',
-			dataType: 'json',
-			contentType: 'application/json',
-			async: true // No async login
-		}).then(response => {
+        
+        // TODO: Validate or throw error
+        /*if (passwordModel.get('password') !== passwordModel.get('confirm')) {
+            //loader.setMessage('Sorry! The password did not match the confirmation').open()
+            
+            passwordModel.set('password', '')
+            passwordModel.set('confirm', '')
+                
+            setTimeout(function () {
+                //loader.close()
+            }, 3000)
+            
+            return false
+        }*/
+        
+        // Update user
+        axios({
+            url: QC_LEGACY_API + 'account/password',
+            //data: JSON.stringify({ password: passwordModel.get('password'), confirm: passwordModel.get('confirm') }),
+            type: 'PUT',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: true // No async login
+        }).then(response => {
             //passwordModel.set('password', '')
             //passwordModel.set('confirm', '')
         }).catch({
@@ -258,8 +258,8 @@ export default class UserService extends BaseService {
     }
     
     setAddresses() {
-		this.fetchBillingAddress()
-		this.fetchShippingAddress()
+        this.fetchBillingAddress()
+        this.fetchShippingAddress()
     }
     
     handleApiError(response) {
@@ -286,16 +286,16 @@ export default class UserService extends BaseService {
      * Legacy API
      */
     fetchBillingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'paymentaddress',
-			type: 'GET',
-			//async: false,
-			//dataType: 'json',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	payment_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'paymentaddress',
+            type: 'GET',
+            //async: false,
+            //dataType: 'json',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    payment_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -329,20 +329,20 @@ export default class UserService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
     
     /**
      * Legacy API
      */
     fetchShippingAddress(onSuccess) {
-		axios({
-			url: QC_LEGACY_API + 'shippingaddress',
-			type: 'GET',
-			//data: JSON.stringify({
-			//	address_id: 1,
-			//	payment_address: 'existing'
-			//})
-		})
+        axios({
+            url: QC_LEGACY_API + 'shippingaddress',
+            type: 'GET',
+            //data: JSON.stringify({
+            //    address_id: 1,
+            //    payment_address: 'existing'
+            //})
+        })
         .then(response => {
             //customerModule.clearCustomer()
             if (response.status === 200 && response.data.success === true) {
@@ -376,22 +376,22 @@ export default class UserService extends BaseService {
         }).catch(err => {
             console.log(err)
         })
-	}
+    }
     
     /**
      * Legacy API
      */
     fetchAccount(onSuccess, onError) {
-		var that = this
-			//userToken = that.checkToken(),
-			//isLogged = (userToken !== false) ? true : false
-		
-		//if (!isLogged) {
-			// Log in the user
-			axios({
-				url: QC_LEGACY_API + 'account/',
-				method: 'GET'
-			})
+        var that = this
+            //userToken = that.checkToken(),
+            //isLogged = (userToken !== false) ? true : false
+        
+        //if (!isLogged) {
+            // Log in the user
+            axios({
+                url: QC_LEGACY_API + 'account/',
+                method: 'GET'
+            })
             .then(response => {
                 if (response.status === 200) {
                     if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
@@ -404,8 +404,8 @@ export default class UserService extends BaseService {
             }).catch(err => {
                 console.log(err)
             })
-		//}
-		
-		//return isLogged
-	}
+        //}
+        
+        //return isLogged
+    }
 }
