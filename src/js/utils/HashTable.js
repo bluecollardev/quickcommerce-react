@@ -98,24 +98,24 @@ export default class HashTable {
         this.items = {}
         this.length = 0
     }
-	
-	// Alias for hasItem
-	has(key) {
+    
+    // Alias for hasItem
+    has(key) {
         return this.hasItem(key)
     }
     
-	// Alias for getItem
+    // Alias for getItem
     get(key) {
         return this.getItem(key)
     }
     
-	// Chainable alias for setItem
+    // Chainable alias for setItem
     set(key, value) {
         this.setItem(key, value)
         return this
     }
     
-	// Chainable alias for removeItem
+    // Chainable alias for removeItem
     remove(key) {
         return (this.removeItem(key) !== undefined) ? this : false
     }

@@ -1,6 +1,6 @@
 // (C) Copyright 2016 Hewlett Packard Enterprise Development LP
 
-export const namespace = 'grommetux-';
+export const namespace = 'grommetux-'
 
 export default {
   ACCORDION: `${namespace}accordion`,
@@ -98,4 +98,4 @@ export default {
   VALUE: `${namespace}value`,
   VIDEO: `${namespace}video`,
   WORLD_MAP: `${namespace}world-map`
-};
+}

@@ -3,20 +3,20 @@
  *
  * Basic queue (FIFO) implementation
  */
-Queue: function () {
-    var queue = Object.create({
+export default () => {
+    let queue = Object.create({
         stack: [],
         
         init: function () {
-            return this;
+            return this
         },
         dequeue: function () {
-            return this.stack.pop();
+            return this.stack.pop()
         },
         enqueue: function (item) {
-            this.stack.unshift(item);
+            this.stack.unshift(item)
         }
-    });
+    })
     
-    return queue.init();
-},
+    return queue.init()
+}

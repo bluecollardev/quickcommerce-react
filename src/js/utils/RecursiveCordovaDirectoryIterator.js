@@ -4,7 +4,7 @@
  * Work in progress...
  * Recursive directory iterator for (Cordova) PhoneGap
  */
-RecursiveCordovaDirectoryIterator: function (obj) {	
+export default (obj) => {    
     var recursiveIterator = Object.create(App.Utilities.Iterator(), {
         _numDirs: {
             value: 0,
@@ -38,18 +38,18 @@ RecursiveCordovaDirectoryIterator: function (obj) {
         },
         iterate: {
             value: function () {
-                var that = this;
+                var that = this
                 
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 512000, function (fileSystem) {
                     window.resolveLocalFileSystemURL(that._rootDir, 
                     function (directoryEntry) {
-                        that.dirSuccess(directoryEntry);
+                        that.dirSuccess(directoryEntry)
                     }, 
                     function (error) {
-                        console.log('uh oh');
-                        console.log(error);
-                    }, { create: false, exclusive: false });
-                });
+                        console.log('uh oh')
+                        console.log(error)
+                    }, { create: false, exclusive: false })
+                })
             },
             enumerable: true,
             configurable: false,
@@ -57,7 +57,7 @@ RecursiveCordovaDirectoryIterator: function (obj) {
         },
         setRootDir: {
             value: function (dir) {
-                this._rootDir = dir;
+                this._rootDir = dir
             },
             enumerable: true,
             configurable: false,
@@ -66,16 +66,16 @@ RecursiveCordovaDirectoryIterator: function (obj) {
         dirSuccess: {
             value: function (dirEntry) {
                 var that = this,
-                    directoryReader = dirEntry.createReader(); // Get a directory reader
+                    directoryReader = dirEntry.createReader() // Get a directory reader
 
                 // Get a list of all the entries in the directory
                 directoryReader.readEntries(
                 function (entries) {
-                    that.readerSuccess(entries);
+                    that.readerSuccess(entries)
                 }, 
                 function (error) {
-                    console.log(error);
-                });
+                    console.log(error)
+                })
             },
             enumerable: true,
             configurable: false,
@@ -83,10 +83,10 @@ RecursiveCordovaDirectoryIterator: function (obj) {
         },
         fileSuccess: {
             value: function (fileEntry) {
-                var that = this;
+                var that = this
                 
-                console.log('file found');
-                console.log(fileEntry);
+                console.log('file found')
+                console.log(fileEntry)
             },
             enumerable: true,
             configurable: true,
@@ -95,36 +95,36 @@ RecursiveCordovaDirectoryIterator: function (obj) {
         readerSuccess: {
             value: function (entries) {
                 var that = this,
-                    i = 0, len = entries.length;
+                    i = 0, len = entries.length
                 
-                for (; i < len; i++) {
+                for (i; i < len; i++) {
                     if (entries[i].isFile) {
-                        that._numFiles++;
+                        that._numFiles++
                         
-                        that.fileSuccess(entries[i]);
+                        that.fileSuccess(entries[i])
                         
                         /*entries[i].file(
                         function (file) {
-                            that.fileSuccess(file);
+                            that.fileSuccess(file)
                         }, 
                         function (error) {
-                            console.log(error);
-                        });*/
+                            console.log(error)
+                        })*/
                     } else if (entries[i].isDirectory) {
-                        that._numDirs++;
-                        that.dirSuccess(entries[i]);
+                        that._numDirs++
+                        that.dirSuccess(entries[i])
                     }
                     if (that._readerTimeout) {
-                        window.clearTimeout(that._readerTimeout);
+                        window.clearTimeout(that._readerTimeout)
                     }
                 }
                 if (that._readerTimeout) {
-                    window.clearTimeout(that._readerTimeout);
+                    window.clearTimeout(that._readerTimeout)
                 }
                 
                 that._readerTimeout = window.setTimeout(function () {
-                    that.done();
-                }, that._millisecondsBetweenReadSuccess);
+                    that.done()
+                }, that._millisecondsBetweenReadSuccess)
             },
             enumerable: true,
             configurable: false,
@@ -134,7 +134,7 @@ RecursiveCordovaDirectoryIterator: function (obj) {
             value: function () {},
             enumerable: true,
             configurable: false,
-            writable: true	
+            writable: true    
         },
         hasChildren: {
             value: function () {
@@ -142,21 +142,21 @@ RecursiveCordovaDirectoryIterator: function (obj) {
                     keys = this.keys,
                     index = this.index,
                     //len = this.len,
-                    type;
+                    type
                 
-                type = data[keys[index]].constructor;
+                type = data[keys[index]].constructor
                 
                 if (type === Object || type === Array) {
                     if (Object.keys(data[keys[index]]).length !== 0) {
-                        return Object.keys(data[keys[index]]).length;
+                        return Object.keys(data[keys[index]]).length
                     }
                 }
                 
-                return false;
+                return false
             },
             enumerable: true,
             configurable: false,
-            writable: true				
+            writable: true                
         },
         getChildren: {
             value: function () {
@@ -164,23 +164,23 @@ RecursiveCordovaDirectoryIterator: function (obj) {
                     keys = this.keys || {},
                     index = this.index,
                     //len = this.len,
-                    type;
+                    type
                     
-                type = data[keys[index]].constructor;
+                type = data[keys[index]].constructor
                 
                 if (type === Object || type === Array) {
                     if (Object.keys(data[keys[index]]).length !== 0) {
-                        return data[keys[index]];
+                        return data[keys[index]]
                     }
                 }
                 
-                return false;
+                return false
             },
             enumerable: true,
             configurable: false,
             writable: true
         }
-    });
+    })
     
-    return recursiveIterator.init(obj);
-},
+    return recursiveIterator.init(obj)
+}

@@ -1,4 +1,4 @@
 /**********************************************************
  * Namespace: QC.Helpers.Date
  **********************************************************/
-App.Helpers.Date = App.Helpers.Date || {};
+export default class DateHelper {}

@@ -58,10 +58,10 @@ class CustomerComponent extends Component {
                                     <h2 className='title'>Create a Customer</h2>
                                 </div>
                                 )}
-							</div>
-						</div>
-					</div>
-				</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 {this.props.location.pathname === '/customer/create' && (
                 <Row>

@@ -26,7 +26,7 @@ class CustomerSearchStore extends BaseStore {
     }
 
     registerToActions(action) {
-		// Clone the action so we can modify it as necessary
+        // Clone the action so we can modify it as necessary
         let payload = JSON.parse(JSON.stringify(action)) 
 
         switch (action.actionType) {

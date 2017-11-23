@@ -80,7 +80,7 @@ export default class BrowserMenu extends Component {
         let renderStep = function (step, idx) {
             steps.push(
                 <Step
-					key = {idx}
+                    key = {idx}
                     stepId = {step.config.stepId}
                     indicator = {step.config.indicator} 
                     title = {step.config.title}

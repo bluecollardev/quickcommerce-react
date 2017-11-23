@@ -1,24 +1,26 @@
 /**
  * Create a namespaced function
  */
-createFunction: function (ns, fn) {
+function createFunction(ns, fn) {
     var nsArray = ns.split(/\./),
         currentNode = this._root,
-        newNS;
+        newNS
         
     while (nsArray.length > 1) {
-        newNS = nsArray.shift();
+        newNS = nsArray.shift()
 
         if (typeof currentNode[newNS] === "undefined") {
-            currentNode[newNS] = {};
+            currentNode[newNS] = {}
         }
         
-        currentNode = currentNode[newNS];
+        currentNode = currentNode[newNS]
     }
 
     if (fn) {
-        currentNode[nsArray.shift()] = fn;
+        currentNode[nsArray.shift()] = fn
     } else {
-        currentNode[nsArray.shift()] = {};
+        currentNode[nsArray.shift()] = {}
     }
 }
+
+export default createFunction

@@ -22,6 +22,26 @@ export default class HtmlHelper {
         return decode(str)
     }
     
+    static decodeHtmlSpecialChars(text) {
+        let entities = [
+            ['amp', '&'],
+            ['apos', '\''],
+            ['#x27', '\''],
+            ['#x2F', '/'],
+            ['#39', '\''],
+            ['#47', '/'],
+            ['lt', '<'],
+            ['gt', '>'],
+            ['nbsp', ' '],
+            ['quot', '"']
+        ]
+
+        for (var i = 0, max = entities.length; i < max; ++i)
+            text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1])
+
+        return text
+    }
+    
     static equalHeights(elements, resize) {
         let heights = []
         let idx = 0
@@ -39,7 +59,7 @@ export default class HtmlHelper {
         for (idx = 0; idx < elements.length; idx++) {
             elements[idx].style.height = Math.max.apply(Math, heights) + 'px'
             if (resize === false) {
-                elements[idx].className = elements[idx].className + ' show';
+                elements[idx].className = elements[idx].className + ' show'
             }
         }
     }

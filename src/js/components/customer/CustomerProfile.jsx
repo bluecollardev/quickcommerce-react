@@ -25,33 +25,33 @@ import AuthenticatedComponent from '../AuthenticatedComponent'
 @observer
 class CustomerProfile extends Component {
     static defaultProps = {
-		pk: 'customer_id',
+        pk: 'customer_id',
         editAccount: false,
         newAccount: true,
-		displayLogin: false,
-		displayProfile: true,
+        displayLogin: false,
+        displayProfile: true,
         displayCurrentAddress: false,
-		displayBillingAddress: false,
-		displayShippingAddress: false,
+        displayBillingAddress: false,
+        displayShippingAddress: false,
         currentAddress: {},
-		billingAddress: {},
-		shippingAddress: {},
-		customer: {
-			id: null,
-			customer_id: null,
-			address_id: null,
-			addresses: [],
-			firstname: '',
-			middlename: '',
-			lastname: '',
-			company_name: '',
-			email: '',
-			telephone: '',
-			fax: ''
-		}
-	}
+        billingAddress: {},
+        shippingAddress: {},
+        customer: {
+            id: null,
+            customer_id: null,
+            address_id: null,
+            addresses: [],
+            firstname: '',
+            middlename: '',
+            lastname: '',
+            company_name: '',
+            email: '',
+            telephone: '',
+            fax: ''
+        }
+    }
     
-	constructor(props) {
+    constructor(props) {
         super(props)
         
         if (this.props.hasOwnProperty('billingAddress') || this.props.hasOwnProperty('currentAddress')) {
@@ -319,74 +319,74 @@ class CustomerProfile extends Component {
 
     render() {
         if (this.props.createAccount) {
-			return (
-				<Col xs={12} className='customer-profile'>
-					{Object.keys(this.state.errors).length > 0 && (
-					<Alert bsStyle='danger' style={{
-						width: '75%',
-						textAlign: 'center',
-						margin: '0 auto'
-					}}>
-						{this.renderErrors()}
-					</Alert>
-					)}
-					
-					<div className='customer-profile-block row customer-info full-width-inputs'>
-						{this.props.children}
-					
-						{this.props.displayProfile && (
-						<CustomerInfo
-							ref = {(profile) => {this.profile = profile}}
-							onCancel = {this.onCancel}
-							onSaveSuccess = {this.onSaveSuccess}
-							mode = 'create'
-							/>
-						)}
-					</div>                
+            return (
+                <Col xs={12} className='customer-profile'>
+                    {Object.keys(this.state.errors).length > 0 && (
+                    <Alert bsStyle='danger' style={{
+                        width: '75%',
+                        textAlign: 'center',
+                        margin: '0 auto'
+                    }}>
+                        {this.renderErrors()}
+                    </Alert>
+                    )}
+                    
+                    <div className='customer-profile-block row customer-info full-width-inputs'>
+                        {this.props.children}
+                    
+                        {this.props.displayProfile && (
+                        <CustomerInfo
+                            ref = {(profile) => {this.profile = profile}}
+                            onCancel = {this.onCancel}
+                            onSaveSuccess = {this.onSaveSuccess}
+                            mode = 'create'
+                            />
+                        )}
+                    </div>                
 
-					{this.props.displayCurrentAddress && (
-					<div className='customer-profile-block row full-width-inputs'>
-						<div className='billing-address'>
-							<CurrentAddress
-								ref = {(address) => {this.billingAddress = address}}
-								title = 'Primary Address'
-								modal = {this.props.modal}
+                    {this.props.displayCurrentAddress && (
+                    <div className='customer-profile-block row full-width-inputs'>
+                        <div className='billing-address'>
+                            <CurrentAddress
+                                ref = {(address) => {this.billingAddress = address}}
+                                title = 'Primary Address'
+                                modal = {this.props.modal}
                                 displaySummary = {true}
                                 displayActions = {true}
-								durationRequired = {this.props.durationRequired}
-								mode = 'create'
-								/>
-						</div>
-					</div>
-					)}
-					
-					{/*this.props.displayShippingAddress && (
-					<div className='customer-profile-block row full-width-inputs'>
-						<div className='shipping-address'>
-							<CurrentAddress
-								ref = {(address) => {this.shippingAddress = address}}
-								title = 'Shipping Address'
-								modal = {this.props.modal}
-								data = {this.props.shippingAddress}
+                                durationRequired = {this.props.durationRequired}
+                                mode = 'create'
+                                />
+                        </div>
+                    </div>
+                    )}
+                    
+                    {/*this.props.displayShippingAddress && (
+                    <div className='customer-profile-block row full-width-inputs'>
+                        <div className='shipping-address'>
+                            <CurrentAddress
+                                ref = {(address) => {this.shippingAddress = address}}
+                                title = 'Shipping Address'
+                                modal = {this.props.modal}
+                                data = {this.props.shippingAddress}
                                 displaySummary = {true}
-								mode = 'create'
-								/>
-						</div>
-					</div>
-					)*/}
-					
-					<div className='customer-profile-block row full-width-inputs align-center'>
-						<Row>
-							<FormGroup className='col-xs-12 col-lg-6'>
-								<Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> Create Account</h4></Button>
-							</FormGroup>
-							
-							<FormGroup className='col-xs-12 col-lg-6'>
-								<Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-							</FormGroup>
-						</Row>
-					</div>
-				</Col>
+                                mode = 'create'
+                                />
+                        </div>
+                    </div>
+                    )*/}
+                    
+                    <div className='customer-profile-block row full-width-inputs align-center'>
+                        <Row>
+                            <FormGroup className='col-xs-12 col-lg-6'>
+                                <Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> Create Account</h4></Button>
+                            </FormGroup>
+                            
+                            <FormGroup className='col-xs-12 col-lg-6'>
+                                <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                            </FormGroup>
+                        </Row>
+                    </div>
+                </Col>
             )
         } else if (this.props.editAccount) {
             return (
@@ -401,57 +401,57 @@ class CustomerProfile extends Component {
                     </Alert>
                     )}
                     
-					<div className='customer-profile-block row customer-info full-width-inputs'>
+                    <div className='customer-profile-block row customer-info full-width-inputs'>
                         {this.props.children}
                     
                         {this.props.displayProfile && (
-						<CustomerInfo
+                        <CustomerInfo
                             ref = {(profile) => {this.profile = profile}}
                             data = {this.props.customer}
                             onCancel = {this.props.onCancel}
                             onSaveSuccess = {this.props.onSaveSuccess}
                             mode = 'edit'
                             />
-						)}
-					</div>                
+                        )}
+                    </div>                
 
                     {this.props.displayCurrentAddress && (
                     <div className='customer-profile-block row full-width-inputs'>
-						<div className='billing-address'>
-							<CurrentAddress
+                        <div className='billing-address'>
+                            <CurrentAddress
                                 ref = {(address) => {this.billingAddress = address}}
                                 title = 'Billing Address'
                                 modal = {this.props.modal}
                                 data = {this.props.billingAddress}
                                 displaySummary = {true}
                                 displayActions = {true}
-								durationRequired = {this.props.durationRequired}
+                                durationRequired = {this.props.durationRequired}
                                 isSubForm = {true}
                                 onUpdate = {this.onBillingAddressUpdate}
                                 mode = 'edit'
-								/>
-						</div>
-					</div>
-					)}
+                                />
+                        </div>
+                    </div>
+                    )}
 
-					{this.props.displayShippingAddress && (
-						<div className='customer-profile-block row full-width-inputs'>
-						<div className='shipping-address'>
-							<CurrentAddress
+                    {this.props.displayShippingAddress && (
+                        <div className='customer-profile-block row full-width-inputs'>
+                        <div className='shipping-address'>
+                            <CurrentAddress
                                 ref = {(address) => {this.shippingAddress = address}}
                                 title = 'Shipping Address'
                                 modal = {this.props.modal}
-								data = {this.props.shippingAddress}
+                                data = {this.props.shippingAddress}
                                 displaySummary = {true}
                                 displayActions = {true}
                                 durationRequired = {this.props.durationRequired}
                                 isSubForm = {true}
                                 onUpdate = {this.onShippingAddressUpdate}
-								mode = 'edit'
-								/>
-						</div>
-					</div>
-					)}
+                                mode = 'edit'
+                                />
+                        </div>
+                    </div>
+                    )}
                     
                     <div className='customer-profile-block row full-width-inputs align-center'>
                         <Row>
@@ -474,12 +474,12 @@ class CustomerProfile extends Component {
                             />
                     </div>
                     */}
-				</Col>
-			)
+                </Col>
+            )
         }
-		
-		// If we're not logged in don't render the component at all
-		// This only works with React 15+
+        
+        // If we're not logged in don't render the component at all
+        // This only works with React 15+
         return null
     }
 }

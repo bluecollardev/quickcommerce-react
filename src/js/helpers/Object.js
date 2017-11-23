@@ -43,15 +43,15 @@ export default class ObjectHelper {
         
         return clone
     }
-	
-	/**
-	 * TODO: A handler like below preserves properties
-	 * if (old_key !== new_key) {
+    
+    /**
+     * TODO: A handler like below preserves properties
+     * if (old_key !== new_key) {
      *     Object.defineProperty(o, new_key, Object.getOwnPropertyDescriptor(o, old_key))
      *     delete o[old_key];
-	 * }
-	 */
-	static recursiveRenameKeys = (data, mappings) => {
+     * }
+     */
+    static recursiveRenameKeys = (data, mappings) => {
         let clone = {}
         /*let modes = ['underscore', 'camelcase', 'hyphenate']
         if (!(modes.indexOf(from) > -1 || !modes.indexOf(to) > -1)) {

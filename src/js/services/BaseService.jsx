@@ -11,7 +11,7 @@ import { Dispatcher } from 'flux'
 //import StringHelper from 'quickcommerce-react/helpers/String.js'
 
 export class BaseService {
-	constructor(deps) {
+    constructor(deps) {
         deps = deps || null
         
         this.actions = {} // Private? (TODO: Symbols)
@@ -35,7 +35,7 @@ export class BaseService {
             }
         }   
     }
-	
+    
     /*get dispatcher() {
         let dispatcher = this._dispatcher || null
         

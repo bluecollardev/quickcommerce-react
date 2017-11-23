@@ -13,21 +13,22 @@ import FormComponent from '../FormComponent.jsx'
 @inject(deps => ({
     actions: deps.actions,
     authService: deps.authService,
-    customerService: deps.customerService
+    customerService: deps.customerService,
+    customerStore: deps.customerStore
 }))
 @observer
 class CustomerFullInfo extends Component {
     static defaultProps = {        
-		id: null, // WTF this shouldn't be nested in here!
-		address_id: null, // WTF this shouldn't be nested in here!
-		addresses: [], // WTF this shouldn't be nested in here!
-		firstname: '',
-		middlename: '',
-		lastname: '',
-		company_name: '',
-		email: '',
-		telephone: '',
-		fax: ''
+        id: null, // WTF this shouldn't be nested in here!
+        address_id: null, // WTF this shouldn't be nested in here!
+        addresses: [], // WTF this shouldn't be nested in here!
+        firstname: '',
+        middlename: '',
+        lastname: '',
+        company_name: '',
+        email: '',
+        telephone: '',
+        fax: ''
     }
     
     constructor(props) {
@@ -38,15 +39,35 @@ class CustomerFullInfo extends Component {
         this.onCancel = this.onCancel.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
+        this.onChange = this.onChange.bind(this)
         
         this.state = {
-            data: assign({}, props.data)
+            data: assign({}, props.customerStore.customer)
         }
     }
     
-    componentWillReceiveProps(newProps) {
+    componentWillMount() {
+        this.props.customerStore.addChangeListener(this.onChange)
+    }
+    
+    componentWillUnmount() {
+        if (typeof this.onChange === 'function') {
+            this.props.customerStore.removeChangeListener(this.onChange)
+            
+            delete this.onChange
+        }
+    }
+    
+    /*componentWillReceiveProps(newProps) {
         this.setState({
-            data: assign({}, newProps.data)
+            data: newProps.customerStore.customer
+        })
+    }*/
+    
+    onChange() {
+        console.log('change triggered')
+        this.setState({
+            data: assign({}, this.props.customerStore.customer)
         })
     }
     
@@ -55,44 +76,51 @@ class CustomerFullInfo extends Component {
         e.stopPropagation()
     
         this.props.triggerAction((formData) => {
+            alert('invoke POST on customerService')
+            confirm(JSON.stringify(formData))
             this.props.customerService.post(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
-        }
+    }
     
     onUpdate(e) {
         e.preventDefault()
         e.stopPropagation()
         
         this.props.triggerAction((formData) => {
+            alert('invoke PUT on customerService')
+            confirm(JSON.stringify(formData))
             this.props.customerService.put(formData, this.onSaveSuccess, this.onError)
         })
         
         this.onSaveSuccess()
-        }
+    }
     
+    // TODO: Move to FormComponent (hint this is in more than a few places)
     onCancel(e) {
         e.preventDefault()
         e.stopPropagation()
         
-        console.log('executing onCancel')
         if (typeof this.props.onCancel === 'function') {
-            console.log('execute handler')
+            console.log('executing onCancel handler')
             let fn = this.props.onCancel
             fn(e)
         }
     }
     
+    // TODO: Move to FormComponent (hint this is in more than a few places)
     onSaveSuccess(response) {
-        console.log('executing onSaveSuccess')
+        alert('response indicates success')
+        confirm(JSON.stringify(response))
         if (typeof this.props.onSaveSuccess === 'function') {
-            console.log('execute handler')
+            console.log('execute onSaveSuccess handler')
             let fn = this.props.onSaveSuccess
             fn(response)
         }
     }
     
+    // TODO: Move to FormComponent (hint this is in more than a few places)
     onError(response) {
         console.log('executing onError')
         if (typeof this.props.onError === 'function') {

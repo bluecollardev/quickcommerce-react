@@ -23,16 +23,12 @@ class SettingStore extends BaseStore {
         }
     }
     
-    constructor(dispatcher) {
+    constructor(dispatcher, adapter) {
         super(dispatcher)
-		
-		/*if (instance !== null) {
-            return instance
-        }*/
-		
-		this.adapter = null
         
-		// TODO: This stuff has moved to QcSettingAdapter
+        this.adapter = adapter || null
+        
+        // TODO: This stuff has moved to QcSettingAdapter
         this.settings = {
             cartConfig: {
                 countries: {}
@@ -132,40 +128,37 @@ class SettingStore extends BaseStore {
         
         this.contactTypes = [{id: null, value: ''}] // Temp?
         this.currencyCodes = [{id: null, value: ''}] // Temp?
-		this.salutations = [{id: null, value: ''}] // Temp?
+        this.salutations = [{id: null, value: ''}] // Temp?
         
-		/*this.countries: [{
-			version: 0,
-			code: 'CA',
-			name: 'Canada',
-			description: null,
-			system: false,
-			id: 1,
-			postalCodeName: 'Postal Code',
-			disabled: false,
-			expired: false,
-			effective: true
-		}, {
-			version: 0,
-			code: 'US',
-			name: 'United States',
-			description: null,
-			system: false,
-			id: 2,
-			postalCodeName: 'Zip Code',
-			disabled: false,
-			expired: false,
-			effective: true
-		}]*/
+        /*this.countries: [{
+            version: 0,
+            code: 'CA',
+            name: 'Canada',
+            description: null,
+            system: false,
+            id: 1,
+            postalCodeName: 'Postal Code',
+            disabled: false,
+            expired: false,
+            effective: true
+        }, {
+            version: 0,
+            code: 'US',
+            name: 'United States',
+            description: null,
+            system: false,
+            id: 2,
+            postalCodeName: 'Zip Code',
+            disabled: false,
+            expired: false,
+            effective: true
+        }]*/
 
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
         
-		// Attach a setting adapter
-		this.adapter = new SettingAdapter(this)
-		
-        // Easy access while developing app
-        //window.SettingStore = instance = this
+        // Attach a setting adapter if it wasn't provided
+        this.adapter = new SettingAdapter(this, adapter)
     }
     
     registerToActions(action) {
@@ -201,24 +194,27 @@ class SettingStore extends BaseStore {
         this.posSettings = assign({}, this.posDefaults, this.posSettings, settings)
         this.freezeSettings(this.posSettings)
     }
-	
-	/**
-	 * Saves default app (POS) settings to localStorage
-	 */
-	freezeSettings(settings) {
+    
+    /**
+     * Saves default app (POS) settings to localStorage
+     */
+    freezeSettings(settings) {
         localStorage.setItem('POS_settings', JSON.stringify(settings))
-	}
-	
-	/**
-	 * Retreives default app (POS) settings from localStorage
-	 */
-	unfreezeSettings() {
-		if (typeof localStorage.getItem('POS_settings') === 'string') {
+    }
+    
+    /**
+     * Retreives default app (POS) settings from localStorage
+     */
+    unfreezeSettings() {
+        if (typeof localStorage.getItem('POS_settings') === 'string') {
             this.posSettings = JSON.parse(localStorage.getItem('POS_settings'))
         }
-	}
-
-    fetchSettings(onSuccess, onError) {
+    }
+    
+    /**
+     * The old way of doing things (formerly fetchSettings)
+     */
+    fetchOcSettings(onSuccess, onError) {
         axios({
             url: QC_API + 'referenceData',
             method: 'GET',
@@ -251,6 +247,23 @@ class SettingStore extends BaseStore {
                 onError()
             }
         })
+    }
+    
+    fetchSettings() {
+        try {            
+            this.adapter.fetchSettings(
+                (settings) => {
+                    // On success
+                    this.emit('settings-loaded', settings)
+                },
+                () => {
+                    // On error
+                    this.emit('settings-loaded-error')
+                }
+            )
+        } catch (err) {
+            console.log(err)
+        }
     }
     
     getConfig() {
@@ -291,43 +304,43 @@ class SettingStore extends BaseStore {
             }
         })
     }
-	
+    
     /**
      * Legacy
      */
-	setStoreId(model) {
-		// Accepts session string or model
-		let storeId = null
-		
-		model = model || false
-		if (model && model instanceof kendo.data.Model) {
-			storeId = model.get('storeId')
-			if (typeof storeId === 'string') {
-				localStorage.setItem('storeId', storeId)
-			}
-		} else if (model && (typeof model === 'string' || typeof model ===  'number')) {
-			model = (typeof model === 'number') ? parseInt(model) : model
-			storeId = model
-			localStorage.setItem('storeId', storeId)
-		}
-	}
-	
+    setStoreId(model) {
+        // Accepts session string or model
+        let storeId = null
+        
+        model = model || false
+        if (model && model instanceof kendo.data.Model) {
+            storeId = model.get('storeId')
+            if (typeof storeId === 'string') {
+                localStorage.setItem('storeId', storeId)
+            }
+        } else if (model && (typeof model === 'string' || typeof model ===  'number')) {
+            model = (typeof model === 'number') ? parseInt(model) : model
+            storeId = model
+            localStorage.setItem('storeId', storeId)
+        }
+    }
+    
     /**
      * Legacy
      */
-	getStoreId() {
-		let that = this
-		
-		if (!(localStorage.hasOwnProperty('storeId'))) {
-			return false
-		}
-		
-		if (localStorage.hasOwnProperty('storeId')) {
-			return localStorage.getItem('storeId')
-		} else {
-			return false
-		}
-	}
+    getStoreId() {
+        let that = this
+        
+        if (!(localStorage.hasOwnProperty('storeId'))) {
+            return false
+        }
+        
+        if (localStorage.hasOwnProperty('storeId')) {
+            return localStorage.getItem('storeId')
+        } else {
+            return false
+        }
+    }
     
     fetchStores(onSuccess, onError) {
         axios({
@@ -378,6 +391,10 @@ class SettingStore extends BaseStore {
             }
         })
     }
+    
+    getDefaultStore() {
+        return SettingStore.defaultStore
+    }    
 
     getStoreData(storeId) {
         /*if (typeof this.stores[storeId] !== 'undefined') {
@@ -424,12 +441,22 @@ class SettingStore extends BaseStore {
         })
     }
     
+    /**
+     * TODO: I need to be refactored cartConfig is specific to the upcoming OC setting adapter
+     */
     getZones(countryId) {
         countryId = countryId || null
         let obj = this.settings.cartConfig.zones
         
         if (countryId !== null && !isNaN(countryId)) {
             return this.zones[countryId]
+        } else if (Object.keys(this.zones).length === 1) {
+            // Default country
+            let zones = this.zones[Object.keys(this.zones)[0]] 
+            // TODO: This works, but if countryId isn't supplied and zones haven't loaded 
+            // it returns an object instead of an array (which is expected); we addressed this
+            // in the return but yeah, this needs to be rewritten
+            return (zones instanceof Array) ? zones : [{id: null, value: ''}]
         }
         
         return [{id: null, value: ''}]
@@ -481,134 +508,134 @@ class SettingStore extends BaseStore {
     }
     
     /**
-	 * Everything below has been pulled from legacy QuickCommerce POS app and needs to be refactored
-	 * Note: File API functions such as resolveLocalFileSystemURL will only work when using Chrome's V8 JS Engine
-	 * Cordova/PhoneGap, Chrome and NWJS all use the V8 engine internally
-	 */
-	loadConfig() {
-		let that = this,
-			configFileDir,
-			configFileName = 'config.ini'
-		
-		
-		if (typeof cordova !== 'undefined') {
-			configFileDir = cordova.file.externalDataDirectory
-		
-			console.log('----------- LOADING CONFIG -----------')
-			console.log('loading config from ' + configFileDir + configFileName)
-			
-			window.resolveLocalFileSystemURL(configFileDir, function (directoryEntry) {
-				File.directoryGetFile(directoryEntry, configFileName, function (file) {
-					let reader = new FileReader()
-					reader.onloadend = function (evt) {
-						console.log('on load end')
-						that.parseConfigFile(reader, function (context, dataDir, fileName) {
-							console.log(dataDir)
-							console.log(fileName)
-						})
-					}
-					reader.readAsText(file)
-				}, { create: false, exclusive: true })
-			}, function (error) {
-				console.log('Error - ', error)
+     * Everything below has been pulled from legacy QuickCommerce POS app and needs to be refactored
+     * Note: File API functions such as resolveLocalFileSystemURL will only work when using Chrome's V8 JS Engine
+     * Cordova/PhoneGap, Chrome and NWJS all use the V8 engine internally
+     */
+    loadConfig() {
+        let that = this,
+            configFileDir,
+            configFileName = 'config.ini'
+        
+        
+        if (typeof cordova !== 'undefined') {
+            configFileDir = cordova.file.externalDataDirectory
+        
+            console.log('----------- LOADING CONFIG -----------')
+            console.log('loading config from ' + configFileDir + configFileName)
+            
+            window.resolveLocalFileSystemURL(configFileDir, function (directoryEntry) {
+                File.directoryGetFile(directoryEntry, configFileName, function (file) {
+                    let reader = new FileReader()
+                    reader.onloadend = function (evt) {
+                        console.log('on load end')
+                        that.parseConfigFile(reader, function (context, dataDir, fileName) {
+                            console.log(dataDir)
+                            console.log(fileName)
+                        })
+                    }
+                    reader.readAsText(file)
+                }, { create: false, exclusive: true })
+            }, function (error) {
+                console.log('Error - ', error)
                 console.log(cordova.file.externalDataDirectory + 'data')
-			})
-		}
-	}
-	
-	parseConfigFile(reader, isFileCallback) {
-		let that = this,
-			page = that.getPage(),
-			lineRegex = /[\r\n]+/g,
-			configRegex = /([\w]+)\s?\=\s?([\w]+)/,
-			isDataDir = false,
-			dataDir = false,
-			fileName,
-			matches
-		
-		let lines = reader.result.split(lineRegex) // tolerate both Windows and Unix linebreaks
-		let pairs,
+            })
+        }
+    }
+    
+    parseConfigFile(reader, isFileCallback) {
+        let that = this,
+            page = that.getPage(),
+            lineRegex = /[\r\n]+/g,
+            configRegex = /([\w]+)\s?\=\s?([\w]+)/,
+            isDataDir = false,
+            dataDir = false,
+            fileName,
+            matches
+        
+        let lines = reader.result.split(lineRegex) // tolerate both Windows and Unix linebreaks
+        let pairs,
             idx = 0,
             key, value
 
         for (idx; idx < lines.length; idx++) {
-        	pairs = lines[idx].match(configRegex)
+            pairs = lines[idx].match(configRegex)
 
-			if (pairs.length === 3) {
-				key = pairs[1]
-				value = pairs[2]
+            if (pairs.length === 3) {
+                key = pairs[1]
+                value = pairs[2]
 
-				switch (key) {
-					case 'store_id':
-						that.setStoreId(value)
-						break
-					case 'control_file':
-						that.setControlFilePrefix(value)
-						break
-				}
-			}
-		}
-	}
+                switch (key) {
+                    case 'store_id':
+                        that.setStoreId(value)
+                        break
+                    case 'control_file':
+                        that.setControlFilePrefix(value)
+                        break
+                }
+            }
+        }
+    }
     
     setControlFilePrefix(model) {
-		// Accepts local string or model
-		let filePrefix = null
-		
-		model = model || false
-		if (model && model instanceof kendo.data.Model) {
-			filePrefix = model.get('controlFilePrefix')
-			if (typeof filePrefix === 'string') {
-				localStorage.setItem('controlFilePrefix', filePrefix)
-			}
-		} else if (model && (typeof model === 'string' || typeof model ===  'number')) {
-			model = (typeof model === 'number') ? parseInt(model) : model
-			filePrefix = model
-			localStorage.setItem('controlFilePrefix', filePrefix)
-		}
-	}
-	
-	getControlFilePrefix() {
-		let that = this
-		
-		if (!(localStorage.hasOwnProperty('controlFilePrefix'))) {
-			return 'control'
-		}
-		
-		if (localStorage.hasOwnProperty('controlFilePrefix')) {
-			return localStorage.getItem('controlFilePrefix')
-		} else {
-			return  'control'
-		}
-	}
-	
-	setConfigFileName(model) {
-		// Accepts session string or model
-		let configFileName = null
-		
-		model = model || false
-		if (model && model instanceof kendo.data.Model) {
-			configFileName = model.get('configFileName')
-			if (typeof configFileName === 'string') {
-				localStorage.setItem('configFileName', configFileName)
-			}
-		} else if (model && (typeof model === 'string' || typeof model ===  'number')) {
-			model = (typeof model === 'number') ? parseInt(model) : model
-			configFileName = model
-			localStorage.setItem('configFileName', configFileName)
-		}
-	}
-	
-	getConfigFileName() {
-		if (!(localStorage.hasOwnProperty('configFileName'))) {
-			return false
-		}
-		
-		if (localStorage.hasOwnProperty('configFileName')) {
-			return localStorage.getItem('configFileName')
-		} else {
-			return false
-		}
-	}
+        // Accepts local string or model
+        let filePrefix = null
+        
+        model = model || false
+        if (model && model instanceof kendo.data.Model) {
+            filePrefix = model.get('controlFilePrefix')
+            if (typeof filePrefix === 'string') {
+                localStorage.setItem('controlFilePrefix', filePrefix)
+            }
+        } else if (model && (typeof model === 'string' || typeof model ===  'number')) {
+            model = (typeof model === 'number') ? parseInt(model) : model
+            filePrefix = model
+            localStorage.setItem('controlFilePrefix', filePrefix)
+        }
+    }
+    
+    getControlFilePrefix() {
+        let that = this
+        
+        if (!(localStorage.hasOwnProperty('controlFilePrefix'))) {
+            return 'control'
+        }
+        
+        if (localStorage.hasOwnProperty('controlFilePrefix')) {
+            return localStorage.getItem('controlFilePrefix')
+        } else {
+            return  'control'
+        }
+    }
+    
+    setConfigFileName(model) {
+        // Accepts session string or model
+        let configFileName = null
+        
+        model = model || false
+        if (model && model instanceof kendo.data.Model) {
+            configFileName = model.get('configFileName')
+            if (typeof configFileName === 'string') {
+                localStorage.setItem('configFileName', configFileName)
+            }
+        } else if (model && (typeof model === 'string' || typeof model ===  'number')) {
+            model = (typeof model === 'number') ? parseInt(model) : model
+            configFileName = model
+            localStorage.setItem('configFileName', configFileName)
+        }
+    }
+    
+    getConfigFileName() {
+        if (!(localStorage.hasOwnProperty('configFileName'))) {
+            return false
+        }
+        
+        if (localStorage.hasOwnProperty('configFileName')) {
+            return localStorage.getItem('configFileName')
+        } else {
+            return false
+        }
+    }
 }
 
 export default new SettingStore()

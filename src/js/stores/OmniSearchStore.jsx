@@ -121,8 +121,8 @@ class OmniSearchStore extends BaseStore {
         .then(response => {
             let payload = response.data
             // TODO: Allow for configurable key in constants, it's not always payload.data...
-			//let normalizedData = normalize(payload.data, that.config.schema)
-			let normalizedData = normalize(payload.content, that.config.schema)
+            //let normalizedData = normalize(payload.data, that.config.schema)
+            let normalizedData = normalize(payload.content, that.config.schema)
 
             // Normalize our data and store the items
             if (typeof key === 'string' && key !== '') {

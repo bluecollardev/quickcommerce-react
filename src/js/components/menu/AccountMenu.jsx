@@ -50,13 +50,13 @@ class AccountMenu extends Component {
                 <div className='row actionButtons'>
                     <ul>
                         {/*<li tabIndex='3'><a href='#/account/edit' className='btn no-bs-style' id='account-button'><i className='fa fa-user'></i><br />
-						</a></li>*/}
+                        </a></li>*/}
                         <li tabIndex='4'><a href='#/settings' className='btn no-bs-style'><i className='fa fa-fw fa-gear' /><br />
                         </a></li>
                         <li tabIndex='5'><a href='#/account/logout' className='btn no-bs-style' id='logout-button' onClick={this.doLogout}><i className='fa fa-sign-out'></i><br />
-						</a></li>
+                        </a></li>
                         <li tabIndex='6'><a href='#/' className='btn no-bs-style' id='orders-button'><i className='fa fa-clipboard'></i><br />
-						</a></li>
+                        </a></li>
                     </ul>
                 </div>
             )
@@ -67,11 +67,11 @@ class AccountMenu extends Component {
                         <li tabIndex='3'><a href='#/' className='btn no-bs-style'><i className='fa fa-fw fa-gear' /><br />
                         </a></li>
                         <li tabIndex='4'><a href='#/account/login' className='btn no-bs-style' id='login-button'><i className='fa fa-sign-in'></i><br />
-						</a></li>
+                        </a></li>
                         {/*<li tabIndex='4'><a href='#/account/register' className='btn no-bs-style' id='account-button'><i className='fa fa-user'></i><br />
-						</a></li>*/}
+                        </a></li>*/}
                         <li tabIndex='6'><a href='#/' className='btn no-bs-style' id='orders-button'><i className='fa fa-clipboard'></i><br />
-						</a></li>
+                        </a></li>
                     </ul>
                 </div>
             )

@@ -2,14 +2,14 @@ import axios from 'axios'
 
 import AbstractUriDriver from './abstract/AbstractUriDriver.jsx'
 
-export default class QcUriDriver extends AbstractUriDriver {	
-	constructor(adapter) {
-		super(adapter)
-		
-		this.settings = {}
-	}
-	
-	fetchSettings(onSuccess, onError) {
+export default class QcUriDriver extends AbstractUriDriver {    
+    constructor(adapter) {
+        super(adapter)
+        
+        this.settings = {}
+    }
+    
+    fetchSettings(onSuccess, onError) {
         axios({
             url: QC_API + 'referenceData',
             method: 'GET',
@@ -31,8 +31,8 @@ export default class QcUriDriver extends AbstractUriDriver {
             }
         })
     }
-	
-	fetchStores(onSuccess, onError) {
+    
+    fetchStores(onSuccess, onError) {
         axios({
             url: QC_RESOURCE_API + 'store',
             method: 'GET',
@@ -81,22 +81,22 @@ export default class QcUriDriver extends AbstractUriDriver {
             }
         })
     }
-	
-	parseStores(data) {
+    
+    parseStores(data) {
         let obj = data
         return Object.keys(obj).map(s => {
             return { id: obj[s]['store_id'], value: obj[s]['name'], data: obj[s] }
         })
     }
-	
-	parseCountries() {
+    
+    parseCountries() {
         let obj = this.settings.cartConfig.countries
         return Object.keys(obj).map(c => {
             return { id: c, value: obj[c] }
         })
     }
-	
-	parseZones() {
+    
+    parseZones() {
         let obj = this.settings.cartConfig.zones
         let zones = {}
         

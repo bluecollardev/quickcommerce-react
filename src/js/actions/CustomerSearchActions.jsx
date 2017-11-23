@@ -8,12 +8,12 @@ import { normalize, denormalize, schema } from 'normalizr'
 const key = 'customers'
 
 const result = new schema.Entity('content', {
-	//idAttribute: 'customer_id'
+    //idAttribute: 'customer_id'
     idAttribute: 'customerId'
 })
 
 const schemaDef = {
-	customers: [result]
+    customers: [result]
 }
 
 export default (dispatcher) => {

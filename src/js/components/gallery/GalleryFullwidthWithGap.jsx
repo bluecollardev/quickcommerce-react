@@ -1,120 +1,132 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import Isotope from 'isotope-layout'
+
+const GalleryItem = (props) => {
+    // TODO: Some kind of adapter...
+    let data = props.data
+    
+    return (
+        <div className="grid-item devices">
+          <a href={data['display_src']} className="gallery-item">
+            <img src={data['thumbnail_src']} alt="Gallery" />
+            <span className="gallery-caption">
+              {/*<h3>Devices Mockup</h3>*/}
+              <p>{data['caption']}</p>
+            </span>
+          </a>
+        </div>
+    )
+}
 
 export default class GalleryFullwidthWithGap extends Component {
-  render() {
-    return (
-      <div className="row">
-        {/* Filters Bar */}
-        <section className="container-fluid padding-top">
-          <div className="filters-bar tablet-center space-top-half">
-            {/* Nav Filters */}
-            <ul className="nav-filters">
-              <li className="active"><a href="#" data-filter="*">All</a> <sup>9</sup></li>
-              <li><a href="#" data-filter=".devices">Devices</a> <sup>2</sup></li>
-              <li><a href="#" data-filter=".packaging">Packaging</a> <sup>2</sup></li>
-              <li><a href="#" data-filter=".fashion">Fashion</a> <sup>3</sup></li>
-              <li><a href="#" data-filter=".paper">Paper &amp; Books</a> <sup>2</sup></li>
-            </ul>{/* .nav-filters */}
-          </div>{/* .filters-bar */}
-        </section>{/* .container */}
-        {/* Gallery Grid Full Width With Gap*/}
-        <section className="container-fluid padding-top-half padding-bottom-2x">
-          <div className="isotope-grid col-3 filter-grid">
-            <div className="grid-sizer" />
-            <div className="gutter-sizer" />
-            {/* Gallery Item */}
-            <div className="grid-item devices">
-              <a href="img/gallery/01.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th01.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Devices Mockup</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item fashion">
-              <a href="img/gallery/02.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th02.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Bart Reed Outware</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item packaging">
-              <a href="img/gallery/03.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th03.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Brand Box</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item paper">
-              <a href="img/gallery/04.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th04.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Flying Books</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item fashion">
-              <a href="img/gallery/05.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th05.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Design Socks</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item packaging">
-              <a href="img/gallery/06.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th06.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Tote Bag</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item devices">
-              <a href="img/gallery/07.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th07.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>iPhone Mockup</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item paper">
-              <a href="img/gallery/08.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th08.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>Leaflet Design</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-            {/* Gallery Item */}
-            <div className="grid-item fashion">
-              <a href="img/gallery/09.jpg" className="gallery-item">
-                <img src="img/gallery/thumbs/th09.jpg" alt="Gallery" />
-                <span className="gallery-caption">
-                  <h3>T-Shirt Mockup</h3>
-                  <p>Lorem ipsum dolor sit amet consectetur.</p>
-                </span>
-              </a>
-            </div>{/* .grid-item */}
-          </div>{/* .isotope-grid */}
-        </section>{/* .container-fluid */}
-      </div>
-    )
-  }
+    constructor(props) {
+        super(props)
+        
+        this.updateIsotope = this.updateIsotope.bind(this)
+        
+        let dataSource = null
+        if (typeof props.dataSource === 'string') {
+            dataSource = JSON.parse(props.dataSource)
+        } else if (typeof props.dataSource === 'object') {
+            dataSource = props.dataSource
+        }
+        
+        let items = []
+        if (dataSource !== null) {
+            items = dataSource.user.media.nodes
+        }
+        
+        this.state = {
+            user: dataSource.user,
+            items: items,
+            grid: null
+        }
+    }
+    
+    componentDidMount() {
+        const node = ReactDOM.findDOMNode(this.grid)
+        
+        if (!this.state.isotope) {
+            const isotope = new Isotope(node, {
+                itemSelector: '.grid-item',
+                transitionDuration: '0.7s',
+                masonry: {
+                    columnWidth: '.grid-sizer',
+                    gutter: '.gutter-sizer'
+                }
+            })
+            
+            this.setState({
+                isotope: isotope
+            }, () => {
+                setTimeout(() => {
+                    this.updateIsotope()
+                }, 333)
+            })
+        } else {
+            this.updateIsotope()
+        }
+        
+        // Filtering
+        /*if (('.filter-grid').length > 0) {
+            let filterGrid = document.querySelector('.filter-grid')
+            document.querySelector('.nav-filters').on('click', 'a', (e) => {
+                e.preventDefault()
+                document.querySelector('.nav-filters li').removeClass('active')
+                (this).parent().addClass('active')
+                let filterValue = (this).attr('data-filter')
+                filterGrid.isotope({ filter: filterValue })
+            })
+        }*/
+    }
+    
+    // update isotope layout
+    componentDidUpdate() {
+        this.updateIsotope()
+    }
+    
+    updateIsotope() {
+        if (this.state.isotope) {
+            this.state.isotope.reloadItems()
+            this.state.isotope.layout()
+        }
+    }
+    
+    render() {
+        let items = this.state.items
+        console.log('gallery items')
+        console.log(items)
+        
+        return (
+            <div className="row">
+                {/* Filters Bar */}
+                {/*<section className="container-fluid padding-top">
+                  <div className="filters-bar tablet-center space-top-half">
+                    <ul className="nav-filters">
+                      <li className="active"><a href="#" data-filter="*">All</a> <sup>9</sup></li>
+                      <li><a href="#" data-filter=".devices">Devices</a> <sup>2</sup></li>
+                      <li><a href="#" data-filter=".packaging">Packaging</a> <sup>2</sup></li>
+                      <li><a href="#" data-filter=".fashion">Fashion</a> <sup>3</sup></li>
+                      <li><a href="#" data-filter=".paper">Paper &amp; Books</a> <sup>2</sup></li>
+                    </ul>
+                  </div>
+                </section>*/}
+                {/* Gallery Grid Full Width With Gap*/}
+                <section className="container-fluid padding-top-half padding-bottom-2x">
+                  <div 
+                    ref = {(grid) => this.grid = grid}
+                    className="isotope-grid col-3 filter-grid">
+                    <div className="grid-sizer" />
+                    <div className="gutter-sizer" />
+                    {items.map(item => (
+                        <GalleryItem 
+                            data = {item} 
+                            />
+                    ))}
+                  </div>
+                </section>
+            </div>
+        )
+    }
 }

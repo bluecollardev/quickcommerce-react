@@ -48,7 +48,7 @@ export default class CheckoutService extends BaseService {
 		this.stores.checkout.newOrder()
         
         let settings = SettingStore.getSettings().posSettings
-		//return orderId
+        //return orderId
         axios({
             url: QC_API + 'order/0', // Set ID to 0 to create new...
             data: this.stores.checkout.payload.order, //JSON.stringify(cartProduct),
@@ -73,37 +73,37 @@ export default class CheckoutService extends BaseService {
     modifyOrder(orderId, orderAction) {
         let orderDetails = null
 
-		try {
-			// in case orderId is 0, create an order, otherwise, update the order
-			if (orderId == 0) {
-				orderDetails = this.doCheckout(orderAction)
-			} else if (orderId > 0) {
-				orderDetails = this.updateOrder(orderId, orderAction)
-			} else {
-				//throw APIException::orderNotExists(orderId)
-			}
+        try {
+            // in case orderId is 0, create an order, otherwise, update the order
+            if (orderId == 0) {
+                orderDetails = this.doCheckout(orderAction)
+            } else if (orderId > 0) {
+                orderDetails = this.updateOrder(orderId, orderAction)
+            } else {
+                //throw APIException::orderNotExists(orderId)
+            }
             
-			let productId = 0
-			if (orderAction.productId) {
-				productId = orderAction.productId
-			} else if (orderAction.orderProduct) {
-				productId = orderAction.orderProduct.productId
-			}
+            let productId = 0
+            if (orderAction.productId) {
+                productId = orderAction.productId
+            } else if (orderAction.orderProduct) {
+                productId = orderAction.orderProduct.productId
+            }
 
             /*result = query.setParameter(1, productId).getArrayResult()
 
-			if (result && count(result) > 0) {
-				orderDetails.setLeftStock([(productId => result[0]['quantity'])])
-			}*/
+            if (result && count(result) > 0) {
+                orderDetails.setLeftStock([(productId => result[0]['quantity'])])
+            }*/
 
-			return orderDetails
-		} catch (exception) {
-			log = this.adapter.getLogger()
-			log.debug(exception.getMessage())
-			log.debug(exception.getTraceAsString())
-		}
+            return orderDetails
+        } catch (exception) {
+            log = this.adapter.getLogger()
+            log.debug(exception.getMessage())
+            log.debug(exception.getTraceAsString())
+        }
 
-		return orderDetails
+        return orderDetails
     }
     
     /**
@@ -111,7 +111,7 @@ export default class CheckoutService extends BaseService {
      * and invoked by modifyOrder
      */
     updateOrder(orderId, orderAction, onSuccess, onError) {
-		let action = orderAction.action
+        let action = orderAction.action
         let updateOps = [
             'update', 
             'updateOrderStatus', 
@@ -121,10 +121,10 @@ export default class CheckoutService extends BaseService {
             'updateNotes'
         ]
 
-		if (action === 'insert') {
-			// add a new order product
-			this.addItem(orderId, orderAction, onSuccess)
-		} else if (updateOps.indexOf(action) !== -1) {
+        if (action === 'insert') {
+            // add a new order product
+            this.addItem(orderId, orderAction, onSuccess)
+        } else if (updateOps.indexOf(action) !== -1) {
             axios({
                 url: QC_API + 'order/' + orderId, // Set ID to 0 to create new...
                 data: orderAction,
@@ -148,35 +148,35 @@ export default class CheckoutService extends BaseService {
                 }
             })
         } else {
-			let after = orderAction.quantityAfter
-			let quantityChange = after - orderAction.quantityBefore
+            let after = orderAction.quantityAfter
+            let quantityChange = after - orderAction.quantityBefore
 
-			let productOptionValueIds = []
-			//sql = "SELECT oo.productOptionValueId FROM " . PosOrderOption::class . " oo WHERE oo.orderProductId = ?1"
-			//foreach (result as record) {
-			//	productOptionValueIds[] = record['productOptionValueId']
-			//}
+            let productOptionValueIds = []
+            //sql = "SELECT oo.productOptionValueId FROM " . PosOrderOption::class . " oo WHERE oo.orderProductId = ?1"
+            //foreach (result as record) {
+            //    productOptionValueIds[] = record['productOptionValueId']
+            //}
 
-			if (action === 'modifyQuantity') {
-				if (after > 0) {
-					// update the quantity for the given order product id
-					//sql = "UPDATE " . PosOrderProduct::class . " op SET op.quantity = " . after . ", op.total = op.price * " . after . " WHERE op.orderProductId = ?1"
-				} else {
-					// Delete the given order product id and options
-					//sql = "DELETE FROM " . PosOrderProduct::class . " op WHERE op.orderProductId = ?1"
-					//sql = "DELETE FROM " . PosOrderOption::class . " op WHERE op.orderProductId = ?1"
-				}
+            if (action === 'modifyQuantity') {
+                if (after > 0) {
+                    // update the quantity for the given order product id
+                    //sql = "UPDATE " . PosOrderProduct::class . " op SET op.quantity = " . after . ", op.total = op.price * " . after . " WHERE op.orderProductId = ?1"
+                } else {
+                    // Delete the given order product id and options
+                    //sql = "DELETE FROM " . PosOrderProduct::class . " op WHERE op.orderProductId = ?1"
+                    //sql = "DELETE FROM " . PosOrderOption::class . " op WHERE op.orderProductId = ?1"
+                }
 
                 this.addItem(orderId, orderAction, onSuccess)
 
-				//this.updateRealStock(orderAction.productId, productOptionValueIds, quantityChange)
-			}
-		}
+                //this.updateRealStock(orderAction.productId, productOptionValueIds, quantityChange)
+            }
+        }
 
-		// re-calculate totals
-		//orderDriver = this.adapter.getOrderDriver()
-		//orderDetails = orderDriver.add(orderId, orderAction.getOrderTaxRates(), orderAction.getShipping())
-	}
+        // re-calculate totals
+        //orderDriver = this.adapter.getOrderDriver()
+        //orderDetails = orderDriver.add(orderId, orderAction.getOrderTaxRates(), orderAction.getShipping())
+    }
     
     // Just an alias for now
     updatePaymentMethod(orderId, orderAction, onSuccess, onError) {
@@ -197,7 +197,7 @@ export default class CheckoutService extends BaseService {
     }
     
     clearOrder(onSuccess, onError) {
-		let	that = this
+        let    that = this
 
         if (this.stores.checkout.payload.hasOwnProperty('order') && this.stores.checkout.payload.order !== null) {
             if (this.stores.checkout.payload.order.hasOwnProperty('orderId') && !isNaN(this.stores.checkout.payload.order.orderId)) {
@@ -224,7 +224,7 @@ export default class CheckoutService extends BaseService {
                 })
             }
         }
-	}
+    }
     
     // TODO: Rename this method, it actually handles all updates
     addItem(orderId, orderAction, onSuccess) {
@@ -250,18 +250,18 @@ export default class CheckoutService extends BaseService {
                 onError()
             }
         })
-	}
+    }
     
     // privately invoked
     /*doCheckout(orderAction) {
         orderAction = orderAction || null
 
         // only accept 'insert' action to create a new order
-		if (orderAction.action !== 'insert') {
-			// Do something
-		}
+        if (orderAction.action !== 'insert') {
+            // Do something
+        }
         
-		let orderId = this.newOrder()
+        let orderId = this.newOrder()
     }*/
     
     // From here down list utility methods that invoke our mirrored API methods
@@ -300,61 +300,61 @@ export default class CheckoutService extends BaseService {
     }
     
     applyRewardPoints(points) {
-		let	isSuccess = false
+        let    isSuccess = false
 
-		if (typeof points === 'undefined' || points === null || !(points > 0)) return false
+        if (typeof points === 'undefined' || points === null || !(points > 0)) return false
 
-		axios({
-			url: QC_RESOURCE_API + 'reward',
-			method: 'POST',
-			async: false,
-			dataType: 'json',
-			data: JSON.stringify({
-				reward: points
-			}),
-			contentType: 'application/json',
-			beforeSend: (request) => {
-				this.setHeaders(request)
-			},
-			success: (response, status, xhr) => {
-				if (response.success) {
-					isSuccess = true
-				} else {
-					if (response.hasOwnProperty('error') && response.error.hasOwnProperty('warning')) {
-						if (response.error.warning === 'error_points') {
-							loader.setMessage('Sorry, you don\'t have enough credits to make this purchase').open()
+        axios({
+            url: QC_RESOURCE_API + 'reward',
+            method: 'POST',
+            async: false,
+            dataType: 'json',
+            data: JSON.stringify({
+                reward: points
+            }),
+            contentType: 'application/json',
+            beforeSend: (request) => {
+                this.setHeaders(request)
+            },
+            success: (response, status, xhr) => {
+                if (response.success) {
+                    isSuccess = true
+                } else {
+                    if (response.hasOwnProperty('error') && response.error.hasOwnProperty('warning')) {
+                        if (response.error.warning === 'error_points') {
+                            loader.setMessage('Sorry, you don\'t have enough credits to make this purchase').open()
 
-							setTimeout(() => {
-								loader.close()
-							}, 3000)
+                            setTimeout(() => {
+                                loader.close()
+                            }, 3000)
 
-							throw new Error('Not enough credits')
-						} else {
-							loader.setMessage(response.error.warning)
+                            throw new Error('Not enough credits')
+                        } else {
+                            loader.setMessage(response.error.warning)
 
-							setTimeout(() => {
-								loader.close()
-							}, 3000)
+                            setTimeout(() => {
+                                loader.close()
+                            }, 3000)
 
-							throw new Error(response.error.warning)
-						}
-					}
+                            throw new Error(response.error.warning)
+                        }
+                    }
 
-					if (eventHandler.hasEvent('checkoutError')) {
-						event = eventHandler.getEvent('checkoutError')
-						// Not sure about the vars...
-						event.dispatch({
-							xhr: xhr,
-							status: status,
-							error: error
-						})
-					}
-				}
-			},
-			complete: () => {
-			}
-		})
+                    if (eventHandler.hasEvent('checkoutError')) {
+                        event = eventHandler.getEvent('checkoutError')
+                        // Not sure about the vars...
+                        event.dispatch({
+                            xhr: xhr,
+                            status: status,
+                            error: error
+                        })
+                    }
+                }
+            },
+            complete: () => {
+            }
+        })
 
-		return isSuccess
-	}
+        return isSuccess
+    }
 }

@@ -105,5 +105,3 @@ export default class ArrayHelper {
         return JSON.stringify(arr1) === JSON.stringify(arr2) 
     }
 }
-
-module.exports = ArrayHelper

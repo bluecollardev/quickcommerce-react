@@ -506,7 +506,7 @@ export class VestProductBrowser extends Component {
                                 
                                 // TODO: Validations!
                                 if (slot.hasOwnProperty('start')) {
-                                    optionsConfig.set('product_option_' + productOptionId, slot.start); // Date												
+                                    optionsConfig.set('product_option_' + productOptionId, slot.start); // Date                                                
                                     // TODO: This isn't necessarily the best place for this but it will suffice for now; it's alright...
                                     //that.getAvailableTracks(null, slot.start);
                                 }
@@ -600,10 +600,10 @@ export class VestProductBrowser extends Component {
 
 
 var steps = [
-				
-			];
-			
-			browser.setSteps(steps);
-			browser.buildSteps();
-			
-			browser.start();
+                
+            ];
+            
+            browser.setSteps(steps);
+            browser.buildSteps();
+            
+            browser.start();

@@ -18,13 +18,13 @@ export default class CategoryFilterBar extends Component {
         e.preventDefault()
         e.stopPropagation()
         
-        if (typeof this.props.onFilterSelected === 'undefined') return false;
+        if (typeof this.props.onFilterSelected === 'undefined') return false
         
         console.log('executing onFilterSelected callback')
         if (typeof this.props.onFilterSelected === 'function') {
             console.log('execute handler')
             let fn = this.props.onFilterSelected
-            fn.call(this, eventKey, e)
+            fn(eventKey, e)
         }
     }
     

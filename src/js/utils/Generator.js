@@ -1,11 +1,11 @@
-import randomSeed from './Random';
+import randomSeed from './Random'
 
-const femaleFirstNames = ['Mary', 'Linda', 'Barbara', 'Maria', 'Lisa', 'Nancy', 'Betty', 'Sandra', 'Sharon'];
-const maleFirstNames = ['James', 'John', 'Robert', 'William', 'David', 'Richard', 'Thomas', 'Paul', 'Mark'];
+const femaleFirstNames = ['Mary', 'Linda', 'Barbara', 'Maria', 'Lisa', 'Nancy', 'Betty', 'Sandra', 'Sharon']
+const maleFirstNames = ['James', 'John', 'Robert', 'William', 'David', 'Richard', 'Thomas', 'Paul', 'Mark']
 const lastNames = [
   'Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Johnson', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson',
   'Thomas', 'Jackson', 'Williams', 'White', 'Harris', 'Davis', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson', 'Clark',
-];
+]
 const usStates = [
   { name: 'Alabama', abbr: 'AL' },
   { name: 'Alaska', abbr: 'AK' },
@@ -66,11 +66,11 @@ const usStates = [
   { name: 'West Virginia', abbr: 'WV' },
   { name: 'Wisconsin', abbr: 'WI' },
   { name: 'Wyoming', abbr: 'WY' },
-];
-const cities = ['New York', 'Los Angeles', 'Chicago', 'Las Vegas', 'Austin', 'Tokyo', 'Rio de Janeiro', 'London', 'Paris'];
-const cars = ['Honda Civic', 'Toyota Corolla', 'Chevrolet Cruze', 'Honda Accord', 'Nissan Altima', 'Kia Optima', 'Audi A4', 'BMW 750'];
-const positions = ['CEO', 'IT Manager', 'Ombudsman', 'CMO', 'Controller', 'HR Manager', 'Shipping Manager', 'Sales Assistant', 'HR Assistant'];
-const lenders = ['TD Auto Finance', 'Carfinco', 'RBC'];
+]
+const cities = ['New York', 'Los Angeles', 'Chicago', 'Las Vegas', 'Austin', 'Tokyo', 'Rio de Janeiro', 'London', 'Paris']
+const cars = ['Honda Civic', 'Toyota Corolla', 'Chevrolet Cruze', 'Honda Accord', 'Nissan Altima', 'Kia Optima', 'Audi A4', 'BMW 750']
+const positions = ['CEO', 'IT Manager', 'Ombudsman', 'CMO', 'Controller', 'HR Manager', 'Shipping Manager', 'Sales Assistant', 'HR Assistant']
+const lenders = ['TD Auto Finance', 'Carfinco', 'RBC']
 
 const generateDate = ({
   random,
@@ -78,10 +78,10 @@ const generateDate = ({
   month = rand => Math.floor(rand() * 12),
   day = rand => Math.floor(rand() * 30) + 1,
 }) => {
-  const getPart = part => (typeof part === 'function' ? part(random) : part);
-  const date = new Date(Date.UTC(getPart(year), getPart(month), getPart(day)));
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-};
+  const getPart = part => (typeof part === 'function' ? part(random) : part)
+  const date = new Date(Date.UTC(getPart(year), getPart(month), getPart(day)))
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
 
 export const defaultColumnValues = {
   dealNumber: ['10234'],
@@ -112,7 +112,7 @@ export const defaultColumnValues = {
   ],
   city: cities,
   car: cars
-};
+}
 
 export const defaultNestedColumnValues = {
   user: [
@@ -124,7 +124,7 @@ export const defaultNestedColumnValues = {
   position: positions,
   city: cities,
   car: cars.map(car => ({ model: car })),
-};
+}
 
 export const globalSalesValues = {
   region: ['Asia', 'Europe', 'North America', 'South America', 'Australia', 'Africa'],
@@ -143,7 +143,7 @@ export const globalSalesValues = {
     year: 2016,
     month: () => Math.floor(random() * 3) + 1,
   }),
-};
+}
 
 export const employeeValues = {
   sex: ['M', 'F'],
@@ -168,7 +168,7 @@ export const employeeValues = {
     random,
     year: () => Math.floor(random() * 30) + 1960,
   }),
-};
+}
 
 export const employeeTaskValues = {
   priority: ['High', 'Low', 'Normal'],
@@ -215,41 +215,41 @@ export const employeeTaskValues = {
     year: 2016,
     month: () => Math.floor(random() * 2) + (new Date(record.startDate)).getMonth(),
   }),
-};
+}
 
 export function generateRows({
   columnValues = defaultColumnValues,
   length,
   random = randomSeed(329972281),
 }) {
-  const data = [];
-  const columns = Object.keys(columnValues);
+  const data = []
+  const columns = Object.keys(columnValues)
 
   for (let i = 0; i < length; i += 1) {
-    const record = {};
+    const record = {}
 
     columns.forEach((column) => {
-      let values = columnValues[column];
+      let values = columnValues[column]
 
       if (typeof values === 'function') {
-        record[column] = values({ random, index: i, record });
-        return;
+        record[column] = values({ random, index: i, record })
+        return
       }
 
       while (values.length === 2 && typeof values[1] === 'object') {
-        values = values[1][record[values[0]]];
+        values = values[1][record[values[0]]]
       }
 
-      const value = values[Math.floor(random() * values.length)];
+      const value = values[Math.floor(random() * values.length)]
       if (typeof value === 'object') {
-        record[column] = Object.assign({}, value);
+        record[column] = Object.assign({}, value)
       } else {
-        record[column] = value;
+        record[column] = value
       }
-    });
+    })
 
-    data.push(record);
+    data.push(record)
   }
 
-  return data;
+  return data
 }
