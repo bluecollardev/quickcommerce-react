@@ -199,7 +199,7 @@ export default class CustomerPicker extends Component {
                         />
                     </FormGroup>
                     
-                    <FormGroup className='col-xs-12 col-lg-6'>
+                    <FormGroup className='customer-picker-default col-xs-12 col-lg-6'>
                         <ControlLabel>&nbsp;</ControlLabel>
                         <Button block bsStyle='danger' onClick={this.selectCashier}>
                             <h4><i className='fa fa-money' /> Cash Sales</h4>
@@ -207,7 +207,7 @@ export default class CustomerPicker extends Component {
                     </FormGroup>
                     
                     {!this.props.displayActions && (
-                    <FormGroup className='col-xs-12 col-md-6'>
+                    <FormGroup className='customer-picker-create col-xs-12 col-md-6'>
                         <Button block onClick={this.onCreate}>
                             <h5><i className='fa fa-user-plus' /> New Customer</h5>
                         </Button>
@@ -215,7 +215,7 @@ export default class CustomerPicker extends Component {
                     )}
                     
                     {!this.props.displayActions && (
-                    <FormGroup className='col-xs-12 col-md-6'>
+                    <FormGroup className='customer-picker-edit col-xs-12 col-md-6'>
                         <Button block onClick={this.onEdit}>
                             <h5><i className='fa fa-edit' /> Edit Customer</h5>
                         </Button>

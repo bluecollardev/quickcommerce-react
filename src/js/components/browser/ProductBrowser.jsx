@@ -305,6 +305,7 @@ export default class ProductBrowser extends Component {
     }
 
     render() {
+        // Render ProductBrowser
         let rowComponent = this.configureRow(this.props.customRowComponent)
         let item = this.props.item || null
 

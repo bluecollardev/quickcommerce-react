@@ -41,7 +41,8 @@ const CategoryDragItem = React.createClass({
         return connectDragSource(
             <div className='card'
                 onClick={this.onClick}>
-                <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
+                {/* Looks like these are cached... may need to rethink my approach this should be overridden */}
+                <Thumbnail src={this.props.item.image} />
                 
                 <p className='item-name'>
                     {this.props.item['name']}
