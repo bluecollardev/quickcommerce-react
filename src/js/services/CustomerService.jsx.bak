@@ -63,6 +63,36 @@ export default class CustomerService extends BaseService {
         }
     }
     
+    /**
+     * For use with Legacy API.
+     */
+    getAccount(onSuccess, onError) {
+        // Get the account
+        axios({
+            url: QC_LEGACY_API + 'account',
+            //url: QC_API + 'customer',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                console.log('set customer data - ' + new Date())
+                this.setCustomer(payload)
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            () => {
+                
+            },
+            // Use legacy API compatibility
+            true)
+        }).catch(err => {
+            this.handleError('', onError, err)
+        })
+    }
+    
     get(id, onSuccess, onError) {
         // Get the account
         axios({
@@ -128,10 +158,14 @@ export default class CustomerService extends BaseService {
      * using PATCH / PUT for update operations.
      */
     post(formData, onSuccess, onError) {        
+        let filterData = false
+        let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
+        
         let data = {
             customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
         }
         
+        // Create customer
         axios({
             url: QC_API + 'customer/-1',
             data: data,
@@ -153,13 +187,21 @@ export default class CustomerService extends BaseService {
      * using PATCH / PUT for create & update operations
      */
     put(formData, onSuccess, onError) {
+        let filterData = false
+        let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
+        
+        let id = this.stores.customer.customer['customer_id'] || null
+        
+        /*// TODO: Let's change the var names... prop/key same thing in JS
+        data.forEach(function (prop, key) {
+            // Fry internal references from the view-model
+            if (filterKeys.indexOf(key) > -1) {
+                delete data[key]
+            }
+        })*/
+        
         let data = {
             customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-        }
-
-		let id = this.stores.customer.customer['customer_id'] || null
-		if (typeof id === 'undefined' || isNaN(id)) {
-            throw new Error('Invalid ID: supplied value must be an integer!')
         }
         
         if (id !== null) {
@@ -187,14 +229,14 @@ export default class CustomerService extends BaseService {
      * using PATCH / PUT for create & update operations
      */
     patch(formData, onSuccess, onError) {
-        let data = {
-            customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-        }
-
-		let id = this.stores.customer.customer['customer_id'] || null
+        let id = this.stores.customer.customer['customer_id'] || null
 		if (typeof id === 'undefined' || isNaN(id)) {
 			throw new Error('Invalid ID: supplied value must be an integer!')
 		}
+        
+        let data = {
+            customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
+        }
         
         if (id !== null) {
             axios({
@@ -217,7 +259,8 @@ export default class CustomerService extends BaseService {
         }
     }
     
-    delete(id, onSuccess, onError) {   
+    delete(data, onSuccess, onError) {
+        
     }
     
     normalizePayload(data, from, to) {
@@ -317,36 +360,6 @@ export default class CustomerService extends BaseService {
         this.fetchBillingAddress()
         this.fetchShippingAddress()
     }
-
-	/**
-     * For use with Legacy API.
-     */
-    getAccount(onSuccess, onError) {
-        // Get the account
-        axios({
-            url: QC_LEGACY_API + 'account',
-            //url: QC_API + 'customer',
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json',
-            async: false
-        }).then(response => {
-            this.handleResponse(response, 
-            // onSuccess
-            ((payload) => {
-                console.log('set customer data - ' + new Date())
-                this.setCustomer(payload)
-            }).bind(this), // Bind to current context
-            // onError - fail silently
-            () => {
-                
-            },
-            // Use legacy API compatibility
-            true)
-        }).catch(err => {
-            this.handleError('', onError, err)
-        })
-    }
     
     /**
      * For use with Legacy API.
@@ -369,7 +382,7 @@ export default class CustomerService extends BaseService {
                 }).bind(this), // Bind to current context
                 // onError - fail silently
                 (err) => {
-                    this.handleError('', onError, err)
+                    this.handleError, onError, err)
                 },
                 // Use legacy API compatibility
                 true)
