@@ -8,22 +8,60 @@ import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
-export default class CustomerService extends BaseService {
-    /**
-     * This looks like a legacy handler.
-     */
-    onSuccess(response) {        
-        if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-            let data = response.data['data']
+export default class CustomerService extends BaseService {    
+    // TODO: Move to consuming project
+    setCustomer(data) {
+        // Try using/fetching the customer's default address
+        let addressId = null
+        
+        // If the customer object was returned from qcapi resource services, it will be provided as a property
+        if (data.hasOwnProperty('address') && data.address.hasOwnProperty('address_id')) {
+            addressId = data.address['address_id']
+        // If the customer object was returned from default api services (legacy), it will be provided as an id
+        } else if (data.hasOwnProperty('address_id')) {
+            addressId = data['address_id']
+        }
+        
+        if (!isNaN(addressId)) {
+            // Fetch...
+            axios({
+                url: QC_RESOURCE_API + 'address/' + addressId,
+                method: 'GET',
+                //dataType: 'json',
+                contentType: 'application/json'
+            })
+            .then(response => {
+                let payload = response.data
+                
+                // Set the customer
+                this.actions.customer.setCustomer(data)
+                
+                // Resource API data is wrapped in a data object                
+                this.actions.customer.setBillingAddress({
+                    addresses: [payload.data],
+                    billingAddressId: addressId,
+                    billingAddress: payload.data
+                })
+                
+                this.actions.customer.setShippingAddress({
+                    addresses: [payload.data],
+                    shippingAddressId: addressId,
+                    shippingAddress: payload.data
+                })
+            }).catch(err => {
+                // Do nothing, not a deal-breaker if we couldn't grab an address
+                console.log(err)
+                
+                // TODO: Notify user
+                
+                this.actions.customer.setCustomer(data)
+            })
+            
+        } else {
             this.actions.customer.setCustomer(data)
-        } else if (response.hasOwnProperty('data')) {
-            // Check to see if user is already logged?
-            if (response.data.success === false) {
-                this.handleApiError(response)
-            }
+            // TODO: Clear addresses explicitly
         }
     }
-    
     
     /**
      * For use with Legacy API.
@@ -45,8 +83,7 @@ export default class CustomerService extends BaseService {
                 }
             }
         }).catch(err => {
-            // Do something
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -83,9 +120,7 @@ export default class CustomerService extends BaseService {
                 }
             }
         }).catch(err => {
-            if (typeof onError === 'function') {
-                onError(err)
-            }
+            this.handleError('', onError, err)
         })
     }*/
     
@@ -126,7 +161,7 @@ export default class CustomerService extends BaseService {
                 }
             }*/
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
         
         //return isLogged
@@ -156,25 +191,9 @@ export default class CustomerService extends BaseService {
             //    'X-Oc-Session': this.services.auth.getToken()
             //} // Legacy API
         }).then(response => {
-            if (response.success || response.status === 200) {
-                if (response.hasOwnProperty('data')) {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                } else {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                }
-            } else {
-                if (typeof onError === 'function') {
-                    onError(response)
-                }
-            }
+            this.handleResponse(response, onSuccess, onError)
         }).catch(err => {
-            if (typeof onSuccess === 'function') {
-                onError()
-            }
+            this.handleError('', onError, err)
         })
     }
     
@@ -220,26 +239,9 @@ export default class CustomerService extends BaseService {
                 //    'X-Oc-Session': this.services.auth.getToken()
                 //}
             }).then(response => {
-                // TODO: Patch is not returning a success / fail
-                if (response.success || response.status === 200) {
-                    if (response.hasOwnProperty('data')) {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    } else {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    }
-                } else {
-                    if (typeof onError === 'function') {
-                        onError(response)
-                    }
-                }
+                this.handleResponse(response, onSuccess, onError)
             }).catch(err => {
-                if (typeof onSuccess === 'function') {
-                    onError()
-                }
+                this.handleError('', onError, err)
             })
         }
     }
@@ -286,26 +288,9 @@ export default class CustomerService extends BaseService {
                 //   'X-Oc-Session': this.services.auth.getToken()
                 //}
             }).then(response => {
-                // TODO: Is patch still not returning a success / fail?
-                if (response.success || response.status === 200) {
-                    if (response.hasOwnProperty('data')) {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    } else {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    }
-                } else {
-                    if (typeof onError === 'function') {
-                        onError(response)
-                    }
-                }
+                this.handleResponse(response, onSuccess, onError)
             }).catch(err => {
-                if (typeof onSuccess === 'function') {
-                    onError()
-                }
+                this.handleError('', onError, err)
             })           
         }
     }
@@ -355,8 +340,7 @@ export default class CustomerService extends BaseService {
                 }
             }           
         }).catch(err => {
-            // Do something
-            console.log(err)
+            this.handleError('', onError, err)
         })
         
     }
@@ -392,8 +376,8 @@ export default class CustomerService extends BaseService {
         }).then(response => {
             //passwordModel.set('password', '')
             //passwordModel.set('confirm', '')
-        }).catch({
-            // Do something
+        }).catch(err => {
+            this.handleError('', onError, err)
         })
     }
     
@@ -473,7 +457,7 @@ export default class CustomerService extends BaseService {
                 }
             }
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -520,7 +504,7 @@ export default class CustomerService extends BaseService {
                 }
             }
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -544,11 +528,11 @@ export default class CustomerService extends BaseService {
                         let data = response.data['data']
                         this.actions.customer.setCustomer(data)
                     } else {
-                        that.handleApiError(response)
+                        this.handleApiError(response)
                     }
                 }
             }).catch(err => {
-                console.log(err)
+                this.handleError('', onError, err)
             })
         //}
         

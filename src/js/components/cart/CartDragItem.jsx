@@ -42,10 +42,10 @@ const CartDragItem = React.createClass({
             <div className='card'
                 onClick={this.onClick}>
                 <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
-                {<h5 className='item-brand'>
+                <h5 className='item-brand'>
                     {/* TODO: Use mappings! */}
                     {this.props.item['manufacturer']['name']}
-                </h5>}
+                </h5>
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>

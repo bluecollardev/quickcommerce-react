@@ -7,20 +7,6 @@ import CustomerConstants from '../constants/CustomerConstants.jsx'
 import { BaseService } from './BaseService.jsx'
 
 export default class CustomerAddressService extends BaseService {
-    onSuccess(response) {        
-        if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {            
-            //var model = new Entity()
-            //that.setData(response.data, model)
-            let data = response.data['data']
-            this.actions.customer.setCustomer(data)
-        } else if (response.hasOwnProperty('data')) {
-            // Check to see if user is already logged?
-            if (response.data.success === false) {
-                this.handleApiError(response)
-            }
-        }
-    }
-    
     processResponse(onSuccess, onError) {
         //customerModule.clearCustomer()
         if (response.status === 200 && response.data.success === true) {
@@ -89,6 +75,8 @@ export default class CustomerAddressService extends BaseService {
             } else {
                 //loader.close()
             }
+        }).catch(err =>  {
+            this.handleError('', onError, err)
         })
     }
     
@@ -121,18 +109,16 @@ export default class CustomerAddressService extends BaseService {
             } else {
                 // Do something
             }
-        }).catch({
-            // Do something
+        }).catch(err => {
+            this.handleError('', onError, err)
         })
-        
     }
     
     put(data, onSuccess, onError) {
-        var that = this,
-            filterData = false,
-            data,
-            response,
-            url
+        let that = this
+        let filterData = false
+        let response
+        let url
         
         console.log('SEND TO SERVER')
         console.log(data)
@@ -147,13 +133,7 @@ export default class CustomerAddressService extends BaseService {
             contentType: 'application/json',
             async: true // No async login
         }).then(response => {
-            if (response.success) {
-                if (response.hasOwnProperty('data')) {
-                    //loader.setMessage('Success! Your information has been updated').open()
-                }
-            } else {
-                // Do something
-            }
+            this.handleResponse(response, onSuccess, onError)
         })
     }
     
@@ -168,10 +148,6 @@ export default class CustomerAddressService extends BaseService {
     setAddresses() {
         this.fetchBillingAddress()
         this.fetchShippingAddress()
-    }
-    
-    handleApiError(response) {
-        // Do something
     }
     
     /**
@@ -219,7 +195,7 @@ export default class CustomerAddressService extends BaseService {
                 }
             }
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     

@@ -35,9 +35,8 @@ export default class CheckoutService extends BaseService {
 
             //this.emit('unblock-ui')
         }).catch(err => {
-            if (typeof onError === 'function') {
-                onError()
-            }
+            let msg = 'error patching item to order'
+            this.handleError(msg, onError, err)
             
             //this.emit('unblock-ui')
         })
@@ -64,44 +63,35 @@ export default class CheckoutService extends BaseService {
                 onSuccess(payload)
             }
         }).catch(err => {
-            if (typeof onError === 'function') {
-                onError()
-            }
+            let msg = 'error patching item to order'
+            this.handleError(msg, onError, err)
         })
     }
     
     modifyOrder(orderId, orderAction) {
         let orderDetails = null
-
-        try {
-            // in case orderId is 0, create an order, otherwise, update the order
-            if (orderId == 0) {
-                orderDetails = this.doCheckout(orderAction)
-            } else if (orderId > 0) {
-                orderDetails = this.updateOrder(orderId, orderAction)
-            } else {
-                //throw APIException::orderNotExists(orderId)
-            }
-            
-            let productId = 0
-            if (orderAction.productId) {
-                productId = orderAction.productId
-            } else if (orderAction.orderProduct) {
-                productId = orderAction.orderProduct.productId
-            }
-
-            /*result = query.setParameter(1, productId).getArrayResult()
-
-            if (result && count(result) > 0) {
-                orderDetails.setLeftStock([(productId => result[0]['quantity'])])
-            }*/
-
-            return orderDetails
-        } catch (exception) {
-            log = this.adapter.getLogger()
-            log.debug(exception.getMessage())
-            log.debug(exception.getTraceAsString())
+        
+        // in case orderId is 0, create an order, otherwise, update the order
+        if (orderId == 0) {
+            orderDetails = this.doCheckout(orderAction)
+        } else if (orderId > 0) {
+            orderDetails = this.updateOrder(orderId, orderAction)
+        } else {
+            //throw APIException::orderNotExists(orderId)
         }
+        
+        let productId = 0
+        if (orderAction.productId) {
+            productId = orderAction.productId
+        } else if (orderAction.orderProduct) {
+            productId = orderAction.orderProduct.productId
+        }
+
+        /*result = query.setParameter(1, productId).getArrayResult()
+
+        if (result && count(result) > 0) {
+            orderDetails.setLeftStock([(productId => result[0]['quantity'])])
+        }*/
 
         return orderDetails
     }
@@ -142,29 +132,19 @@ export default class CheckoutService extends BaseService {
                     onSuccess(payload)
                 }
             }).catch(err => {
-                console.log('error patching order')
-                if (typeof onError === 'function') {
-                    onError()
-                }
+                let msg = 'error patching item to order'
+                this.handleError(msg, onError, err)
             })
         } else {
             let after = orderAction.quantityAfter
             let quantityChange = after - orderAction.quantityBefore
 
             let productOptionValueIds = []
-            //sql = "SELECT oo.productOptionValueId FROM " . PosOrderOption::class . " oo WHERE oo.orderProductId = ?1"
-            //foreach (result as record) {
-            //    productOptionValueIds[] = record['productOptionValueId']
-            //}
 
             if (action === 'modifyQuantity') {
                 if (after > 0) {
                     // update the quantity for the given order product id
                     //sql = "UPDATE " . PosOrderProduct::class . " op SET op.quantity = " . after . ", op.total = op.price * " . after . " WHERE op.orderProductId = ?1"
-                } else {
-                    // Delete the given order product id and options
-                    //sql = "DELETE FROM " . PosOrderProduct::class . " op WHERE op.orderProductId = ?1"
-                    //sql = "DELETE FROM " . PosOrderOption::class . " op WHERE op.orderProductId = ?1"
                 }
 
                 this.addItem(orderId, orderAction, onSuccess)
@@ -197,7 +177,7 @@ export default class CheckoutService extends BaseService {
     }
     
     clearOrder(onSuccess, onError) {
-        let    that = this
+        //let that = this
 
         if (this.stores.checkout.payload.hasOwnProperty('order') && this.stores.checkout.payload.order !== null) {
             if (this.stores.checkout.payload.order.hasOwnProperty('orderId') && !isNaN(this.stores.checkout.payload.order.orderId)) {
@@ -213,14 +193,12 @@ export default class CheckoutService extends BaseService {
                         onSuccess(payload)
                     }
 
-                    that.createOrder()
+                    this.createOrder()
                 }).catch(err => {
-                    console.log('error patching item to order')
-                    if (typeof onError === 'function') {
-                        onError()
-                    }
+                    let msg = 'error patching item to order'
+                    this.handleError(msg, onError, err)
 
-                    that.createOrder()
+                    this.createOrder()
                 })
             }
         }
@@ -245,10 +223,8 @@ export default class CheckoutService extends BaseService {
                 onSuccess(payload)
             }
         }).catch(err => {
-            console.log('error patching item to order')
-            if (typeof onError === 'function') {
-                onError()
-            }
+            let msg = 'error patching item to order'
+            this.handleError(msg, onError, err)
         })
     }
     
@@ -291,9 +267,7 @@ export default class CheckoutService extends BaseService {
                     }
                     //this.createOrder()
                 }).catch(err => {
-                    if (typeof onError === 'function') {
-                        onError()
-                    }
+                    this.handleError('', onError, err)
                 })
             })
         })

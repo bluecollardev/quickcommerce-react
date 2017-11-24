@@ -131,8 +131,7 @@ export default class UserService extends BaseService {
                 }
             }
         }).catch(err => {
-            // Do something
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -171,8 +170,7 @@ export default class UserService extends BaseService {
                 }
             }           
         }).catch(err => {
-            // Do something
-            console.log(err)
+            this.handleError('', onError, err)
         })
         
     }
@@ -210,8 +208,7 @@ export default class UserService extends BaseService {
                 }
             }
         }).catch(err => {
-            // Do something
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -252,8 +249,8 @@ export default class UserService extends BaseService {
         }).then(response => {
             //passwordModel.set('password', '')
             //passwordModel.set('confirm', '')
-        }).catch({
-            // Do something
+        }).catch(err => {
+            this.handleError('', onError, err)
         })
     }
     
@@ -327,7 +324,7 @@ export default class UserService extends BaseService {
                 }
             }
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -374,7 +371,7 @@ export default class UserService extends BaseService {
                 }
             }
         }).catch(err => {
-            console.log(err)
+            this.handleError('', onError, err)
         })
     }
     
@@ -402,7 +399,7 @@ export default class UserService extends BaseService {
                     }
                 }
             }).catch(err => {
-                console.log(err)
+                this.handleError('', onError, err)
             })
         //}
         

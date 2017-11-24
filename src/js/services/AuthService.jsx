@@ -189,8 +189,8 @@ export default class AuthService extends BaseService {
                     }
                 }
             }).catch(err => {
-                // Do something
-                console.log(err)
+                let msg = 'error fetching token'
+                this.handleError(msg, onError, err)
             })
         } else if (typeof onSuccess === 'function') {
             let fn = onSuccess

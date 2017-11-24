@@ -36,6 +36,67 @@ export class BaseService {
         }   
     }
     
+    handleResponse(response, onSuccess, onError, legacy = false) {
+        if (legacy) {
+            this.handleLegacyResponse(response, onSuccess, onError)
+            return
+        }
+            
+        if (response.success || response.status === 200) {
+            if (response.hasOwnProperty('data')) {
+                if (typeof onSuccess === 'function') {
+                    onSuccess(response.data)
+                }
+            } else {
+                if (typeof onSuccess === 'function') {
+                    onSuccess()
+                }
+            }
+        } else {
+            this.handleApiError(response, onError)
+        }
+    }
+    
+    handleLegacyResponse(response, onSuccess, onError) {
+        if (response.success || response.status === 200) {
+            if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
+                if (typeof onSuccess === 'function') {
+                    onSuccess(response.data.data)
+                }
+            } else if (response.hasOwnProperty('data')) {
+                if (typeof onSuccess === 'function') {
+                    onSuccess(response.data)
+                }
+            } else {
+                if (typeof onSuccess === 'function') {
+                    onSuccess()
+                }
+            }
+            
+        } else {
+            this.handleApiError(response, onError)
+        }
+    }
+    
+    handleError(message, onError, data) {
+        console.log('ERROR!')
+        console.log(message)
+        console.log(data)
+        if (typeof onError === 'function') {
+            onError(message, data) // TODO: Type check
+        } else {
+            // Catch and re-throw
+            throw new Error(message)
+        }
+    }
+    
+    // Override me on an as needed basis in inheriting classes
+    handleApiError(response, onError) {
+        if (typeof onError === 'function') {
+            onError(data) // TODO: Type check
+        }
+    }
+    
     /*get dispatcher() {
         let dispatcher = this._dispatcher || null
         

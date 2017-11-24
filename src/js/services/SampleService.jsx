@@ -39,9 +39,7 @@ export class SampleService extends BaseService {
                 }
             }
         }).catch(err => {
-            if (typeof onSuccess === 'function') {
-                onError()
-            }
+            this.handleError('', onError, err)
         })
     }
     
@@ -69,9 +67,7 @@ export class SampleService extends BaseService {
                 }
             }
         }).catch(err => {
-            if (typeof onSuccess === 'function') {
-                onError()
-            }
+            this.handleError('', onError, err)
         })
     }
     
@@ -107,9 +103,7 @@ export class SampleService extends BaseService {
                 }
             }
         }).catch(err => {
-            if (typeof onSuccess === 'function') {
-                onError()
-            }
+            this.handleError('', onError, err)
         })
     }
     
@@ -146,9 +140,7 @@ export class SampleService extends BaseService {
                     }
                 }
             }).catch(err => {
-                if (typeof onSuccess === 'function') {
-                    onError()
-                }
+                this.handleError('', onError, err)
             })
         }
     }
@@ -186,9 +178,7 @@ export class SampleService extends BaseService {
                     }
                 }
             }).catch(err => {
-                if (typeof onSuccess === 'function') {
-                    onError()
-                }
+                this.handleError('', onError, err)
             })       
         }
     }
