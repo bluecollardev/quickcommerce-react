@@ -274,7 +274,7 @@ export default class CheckoutService extends BaseService {
     }
     
     applyRewardPoints(points) {
-        let    isSuccess = false
+        let isSuccess = false
 
         if (typeof points === 'undefined' || points === null || !(points > 0)) return false
 

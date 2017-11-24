@@ -76,12 +76,18 @@ export default class CustomerService extends BaseService {
             contentType: 'application/json',
             async: false
         }).then(response => {
-            if (response.status === 200) {
-                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                    console.log('set customer data - ' + new Date())
-                    //that.setCustomer(model)
-                }
-            }
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                console.log('set customer data - ' + new Date())
+                this.setCustomer(payload)
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            () => {
+                
+            },
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -124,42 +130,34 @@ export default class CustomerService extends BaseService {
         })
     }*/
     
-    fetch(customerId, onSuccess, onError) {
+    fetch(url, customerId, onSuccess, onError) {
         axios({
-            //url: QC_LEGACY_API + 'account/',
-            url: INDIGO_BASE_URI + COMMON_CUSTOMERS + customerId,
+            url: QC_LEGACY_API + 'account/',
+            //url: INDIGO_BASE_URI + COMMON_CUSTOMERS + customerId,
             method: 'GET'
         }).then(response => {
-            // Indigo
-            if (response.status === 200) {
-                if (response.hasOwnProperty('data')) {
-                    let customer = response.data['customer']
-                    let data = customer
-                    
-                    if (data.hasOwnProperty('user')) {
-                        data = assign({}, data, data.user)
-                        delete data.user
-                    }
-                    
-                    this.actions.customer.setCustomer(data)
-                    
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(data)
-                    }
-                } else {
-                    this.handleApiError(response)
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                let data = payload['customer']
+                
+                if (data.hasOwnProperty('user')) {
+                    data = assign({}, data, data.user)
+                    delete data.user
                 }
-            }
-            
-            // QC API and legacy
-            /*if (response.status === 200) {
-                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                    let data = response.data['data']
-                    this.actions.customer.setCustomer(data)
-                } else {
-                    this.handleApiError(response)
+                
+                this.actions.customer.setCustomer(data)
+                
+                if (typeof onSuccess === 'function') {
+                    onSuccess(data)
                 }
-            }*/
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            (() => {
+               this.refetchAccount() 
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -213,11 +211,6 @@ export default class CustomerService extends BaseService {
             if (filterKeys.indexOf(key) > -1) {
                 delete data[key]
             }
-            
-            // Fry any kendo.data.DataSource objects attached to the view-model
-            if (prop instanceof kendo.data.DataSource) {
-                delete data[key]
-            }
         })*/
         
         console.log('converting payload to camelcase')
@@ -262,11 +255,6 @@ export default class CustomerService extends BaseService {
             if (filterKeys.indexOf(key) > -1) {
                 delete data[key]
             }
-            
-            // Fry any kendo.data.DataSource objects attached to the view-model
-            if (prop instanceof kendo.data.DataSource) {
-                delete data[key]
-            }
         })*/
         
         console.log('converting payload to camelcase')
@@ -277,6 +265,7 @@ export default class CustomerService extends BaseService {
         if (customerId !== null) {
             // Update user
             axios({
+                // Don't need to support legacy for this method anymore
                 //url: QC_LEGACY_API + 'account',
                 //data: JSON.stringify(data), // Legacy
                 url: QC_API + 'customer/' + customerId,
@@ -317,28 +306,21 @@ export default class CustomerService extends BaseService {
             contentType: 'application/json',
             async: false, // No async login
         }).then(response => {
-            if (response.status === 200) {
-                if (response.hasOwnProperty('data') && response.data.success) {
-                    axios({
-                        url: QC_LEGACY_API + 'account',
-                        type: 'GET',
-                        dataType: 'json',
-                        contentType: 'application/json'
-                    }).then(response => {
-                        console.log('executing onSuccess callback')
-                        if (typeof onSuccess === 'function') {
-                            let fn = onSuccess
-                            fn.call(this, response.data)
-                        }
-                    })
-                } else {
-                    console.log('executing onError callback')
-                    if (typeof onError === 'function') {
-                        let fn = onError
-                        fn.call(this, response.data)
-                    }
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                this.fetchAccount()
+                
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
                 }
-            }           
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            ((err) => {
+               //this.fetchAccount()
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -384,7 +366,7 @@ export default class CustomerService extends BaseService {
     /**
      * For use with Legacy API.
      */
-    handleApiError(response) {
+    refetchAccount(response) {
         // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid
         // Having to base my action on text returned is weak
         if (response.data.error === 'User already is logged') {
@@ -425,11 +407,11 @@ export default class CustomerService extends BaseService {
             //    address_id: 1,
             //    payment_address: 'existing'
             //})
-        })
-        .then(response => {
-            //customerModule.clearCustomer()
-            if (response.status === 200 && response.data.success === true) {
-                let payload = (response.data.hasOwnProperty('data')) ? response.data.data : {}
+        }).then(response => {
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                payload = payload || {}
                 // Get address from returned array of addresses by ID
                 let addressId = (payload.hasOwnProperty('address_id')) ? payload.address_id : false
                 let addresses = (payload.hasOwnProperty('addresses') && payload.addresses instanceof Array) ? payload.addresses : []
@@ -455,7 +437,17 @@ export default class CustomerService extends BaseService {
                         })
                     }
                 }
-            }
+                
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
+                }
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            ((err) => {
+                this.handleError('', onError, err)
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -472,11 +464,10 @@ export default class CustomerService extends BaseService {
             //    address_id: 1,
             //    payment_address: 'existing'
             //})
-        })
-        .then(response => {
-            //customerModule.clearCustomer()
-            if (response.status === 200 && response.data.success === true) {
-                let payload = (response.data.hasOwnProperty('data')) ? response.data.data : {}
+        }).then(response => {
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
                 // Get address from returned array of addresses by ID
                 let addressId = (payload.hasOwnProperty('address_id')) ? payload.address_id : false
                 let addresses = (payload.hasOwnProperty('addresses') && payload.addresses instanceof Array) ? payload.addresses : []
@@ -502,7 +493,17 @@ export default class CustomerService extends BaseService {
                         })
                     }
                 }
-            }
+                
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
+                }
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            ((err) => {
+                this.handleError('', onError, err)
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -512,25 +513,27 @@ export default class CustomerService extends BaseService {
      * For use with Legacy API.
      */
     fetchAccount(onSuccess, onError) {
-        var that = this
-            //userToken = that.checkToken(),
-            //isLogged = (userToken !== false) ? true : false
+        let that = this
+        //userToken = that.checkToken(),
+        //isLogged = (userToken !== false) ? true : false
         
         //if (!isLogged) {
             // Log in the user
             axios({
                 url: QC_LEGACY_API + 'account/',
                 method: 'GET'
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                        let data = response.data['data']
-                        this.actions.customer.setCustomer(data)
-                    } else {
-                        this.handleApiError(response)
-                    }
-                }
+            }).then(response => {
+                this.handleResponse(response, 
+                // onSuccess
+                ((payload) => {
+                    this.setCustomer(payload)
+                }).bind(this), // Bind to current context
+                // onError - fail silently
+                (err) => {
+                    this.handleError, onError, err)
+                },
+                // Use legacy API compatibility
+                true)
             }).catch(err => {
                 this.handleError('', onError, err)
             })
