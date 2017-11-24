@@ -2,20 +2,13 @@ import UserConstants from '../constants/UserConstants.jsx'
 
 import BaseStore from './BaseStore.jsx'
 
-let instance = null
-
 class UserStore extends BaseStore {    
     constructor(dispatcher) {
         super(dispatcher)
         
-        if (instance !== null) {
-            return instance
-        }
-        
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
-        
-        window.UserStore = instance = this
+		this.isLoggedIn = this.isLoggedIn.bind(this)
     }
 
     registerToActions(action) {
@@ -38,7 +31,7 @@ class UserStore extends BaseStore {
     }
 }
 
+UserStore.PK = 'user_id'
 UserStore.user = null
 
-export default new UserStore()
 export { UserStore }

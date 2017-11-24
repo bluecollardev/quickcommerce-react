@@ -33,15 +33,15 @@ export default class AuthService extends BaseService {
             // Store auth and current, authorized account
             // Store auth and current, authorized account
             this.actions.login.loginUser('DUMMYtoken12345') // Set token
-            this.actions.login.setUser({}) // Set data
+            this.actions.user.setUser({}) // Set data
             
             if (typeof onSuccess === 'undefined') return
     
-            console.log('executing onResponseReceived onSuccess callback')
+            /*console.log('executing onResponseReceived onSuccess callback')
             if (typeof onSuccess === 'function') {
                 let fn = onSuccess
                 fn({})
-            }
+            }*/
             
             return this.handleAuth(Promise.resolve({ status: 200, data: { success: true, data: {} } }), onSuccess, onError)
         }
@@ -128,7 +128,7 @@ export default class AuthService extends BaseService {
             this.getToken(token => {
                 // Store auth and current, authorized account
                 this.actions.login.loginUser(token) // Set token
-                this.actions.login.setUser(data) // Set data
+                this.actions.user.setUser(data) // Set data
                 
                 if (typeof onSuccess === 'undefined') return
         

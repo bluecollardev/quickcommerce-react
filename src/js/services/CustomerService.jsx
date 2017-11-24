@@ -63,20 +63,25 @@ export default class CustomerService extends BaseService {
         }
     }
     
+	/**
+	 * Retrieves a Customer.
+	 */
     get(id, onSuccess, onError) {
         // Get the account
         axios({
-            url: QC_API + 'customer/' + id,
-            type: 'GET',
+            //url: QC_LEGACY_API + 'account/',
+			url: QC_API + 'customer/' + id,
             dataType: 'json',
             contentType: 'application/json',
-            async: false
+            async: false,
+			method: 'GET',
         }).then(response => {
             this.handleResponse(response, 
             // onSuccess
             ((payload) => {
-                console.log('set customer data - ' + new Date())
-                this.setCustomer(payload)
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
+                }
             }).bind(this), // Bind to current context
             // onError - fail silently
             (() => {
@@ -88,43 +93,33 @@ export default class CustomerService extends BaseService {
             this.handleError('', onError, err)
         })
     }
-
+	
+	/**
+	 * Retrieves a Customer and saves a local copy in CustomerStore.
+	 */
 	fetch(id, onSuccess, onError) {
-        axios({
-            url: QC_LEGACY_API + 'account/',
-            method: 'GET'
-        }).then(response => {
-            this.handleResponse(response, 
-            // onSuccess
-            ((payload) => {
-                let data = payload['customer']
+        this.get(id, 
+		// onSuccess
+		((payload) => {
+			let data = payload['customer']
                 
-                if (data.hasOwnProperty('user')) {
-                    data = assign({}, data, data.user)
-                    delete data.user
-                }
-                
-                this.actions.customer.setCustomer(data)
-                
-                if (typeof onSuccess === 'function') {
-                    onSuccess(data)
-                }
-            }).bind(this), // Bind to current context
-            // onError - fail silently
-            (() => {
-               this.refetchAccount() 
-            }).bind(this),
-            // Use legacy API compatibility
-            true)
-        }).catch(err => {
-            this.handleError('', onError, err)
-        })
-        
-        //return isLogged
+			if (data.hasOwnProperty('user')) {
+				data = assign({}, data, data.user)
+				delete data.user
+			}
+			
+			this.actions.customer.setCustomer(data)
+			
+			if (typeof onSuccess === 'function') {
+				onSuccess(data)
+			}
+		}).bind(this),
+		onError)
     }
     
     /**
-     * POST is used for searchList service, so we're
+     * Creates a new Customer.
+	 * POST is used for searchList service, so we're
      * using PATCH / PUT for update operations.
      */
     post(formData, onSuccess, onError) {        
@@ -219,25 +214,6 @@ export default class CustomerService extends BaseService {
     
     delete(id, onSuccess, onError) {   
     }
-    
-    normalizePayload(data, from, to) {
-        return ObjectHelper.recursiveFormatKeys(data, from, to)
-    }
-
-	filterKeys(data) {
-		let filterData = false
-        let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
-        
-		// TODO: Let's change the var names... prop/key same thing in JS
-        data.forEach(function (prop, key) {
-            // Fry internal references from the view-model
-            if (filterKeys.indexOf(key) > -1) {
-                delete data[key]
-            }
-        })
-
-		return data
-	}
     
     /**
      * For use with Legacy API. Replaced with post()
@@ -349,7 +325,7 @@ export default class CustomerService extends BaseService {
     }
     
     /**
-     * For use with Legacy API.
+     * For use with Legacy API. In here just for backward compatibility. Move to UserService.
      */
     fetchAccount(onSuccess, onError) {
         let that = this
@@ -382,7 +358,7 @@ export default class CustomerService extends BaseService {
     }
 
 	/**
-     * For use with Legacy API.
+     * For use with Legacy API. In here just for backward compatibility. Move to UserService.
      */
     refetchAccount(response) {
         // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid

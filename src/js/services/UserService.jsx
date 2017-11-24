@@ -7,18 +7,6 @@ import CustomerConstants from '../constants/CustomerConstants.jsx'
 import { BaseService } from './BaseService.jsx'
 
 export default class UserService extends BaseService {
-    onSuccess(response) {        
-        if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-            let data = response.data['data']
-            this.actions.customer.setCustomer(data)
-        } else if (response.hasOwnProperty('data')) {
-            // Check to see if user is already logged?
-            if (response.data.success === false) {
-                this.handleApiError(response)
-            }
-        }
-    }
-    
     processResponse(onSuccess, onError) {
         //customerModule.clearCustomer()
         if (response.status === 200 && response.data.success === true) {
@@ -51,7 +39,7 @@ export default class UserService extends BaseService {
         }
     }
     
-    setCustomer(data) {
+    setUser(data) {
         // Try using/fetching the customer's default address
         let addressId = null
         
@@ -75,47 +63,42 @@ export default class UserService extends BaseService {
                 let payload = response.data
                 
                 // Set the customer
-                this.actions.customer.setCustomer(data)
+                this.actions.user.setUser(data)
                 
-                // Resource API data is wrapped in a data object                
-                this.actions.customer.setBillingAddress({
-                    addresses: [payload.data],
-                    billingAddressId: addressId,
-                    billingAddress: payload.data
-                })
-                
-                this.actions.customer.setShippingAddress({
-                    addresses: [payload.data],
-                    shippingAddressId: addressId,
-                    shippingAddress: payload.data
-                })
+                this.setBillingAddress(addressId, payload.data)
+                this.setShippingAddress(addressId, payload.data)
             }).catch(err => {
                 // Do nothing, not a deal-breaker if we couldn't grab an address
                 console.log(err)
                 
                 // TODO: Notify user
-                
-                this.actions.customer.setCustomer(data)
+                this.actions.user.setUser(data)
             })
             
         } else {
-            this.actions.customer.setCustomer(data)
+            this.actions.user.setUser(data)
             // TODO: Clear addresses explicitly
         }
     }
+	
+	setBillingAddress(addressId, data) {
+		// Resource API data is wrapped in a data object                
+		this.actions.user.setBillingAddress({
+			addresses: [data],
+			billingAddressId: addressId,
+			billingAddress: data
+		})
+	}
+	
+	setShippingAddress(addressId, data) {
+		this.actions.user.setShippingAddress({
+			addresses: [payload.data],
+			shippingAddressId: addressId,
+			shippingAddress: payload.data
+		})
+	}
     
-    get(data, onSuccess, onError) {
-        /*if (sessionId) {
-            customer = dataSources.get('customer.entity') || null
-            if (customer instanceof kendo.data.Model) {
-                if (customer.get('session') === sessionId) {
-                    return customer
-                }
-            }
-        } else {
-            return false
-        }*/
-        
+    get(id, onSuccess, onError) {
         // Get the account
         axios({
             url: QC_LEGACY_API + 'account',
@@ -124,12 +107,18 @@ export default class UserService extends BaseService {
             contentType: 'application/json',
             async: false
         }).then(response => {
-            if (response.status === 200) {
-                if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                    console.log('set customer data - ' + new Date())
-                    //that.setCustomer(model)
-                }
-            }
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                console.log('set user data - ' + new Date())
+                this.setUser(payload)
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            (() => {
+               //this.refetchAccount() 
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
@@ -174,49 +163,68 @@ export default class UserService extends BaseService {
         })
         
     }
-    
-    put(data, onSuccess, onError) {
-        let filterData = false
-        let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
+	
+    put(formData, onSuccess, onError) {
+        /*let data = {
+            userDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
+        }*/
+		
+		let data = JSON.stringify(formData)
+
+		let id = this.stores.user.user['user_id'] || null
+		if (typeof id === 'undefined' || isNaN(id)) {
+            throw new Error('Invalid ID: supplied value must be an integer!')
+        }
         
-        /*// TODO: Let's change the var names... prop/key same thing in JS
-        data.forEach(function (prop, key) {                                        
-            // Fry internal references from the view-model
-            if (filterKeys.indexOf(key) > -1) {
-                delete data[key]
-            }
-            
-            // Fry any kendo.data.DataSource objects attached to the view-model
-            if (prop instanceof kendo.data.DataSource) {
-                delete data[key]
-            }
-        })*/
-        
-        // Update user
-        axios({
-            url: QC_LEGACY_API + 'account',
-            data: JSON.stringify(data),
-            //method: 'PUT',
-            method: 'POST', // Legacy API sucks and uses POST (3rd party OCAPI)
-            //headers: {
-            //    'X-Oc-Session': this.services.auth.getToken()
-            //}
-        }).then(response => {
-            if (response.success) {
-                if (response.hasOwnProperty('data')) {
-                    // Do something
-                }
-            }
-        }).catch(err => {
-            this.handleError('', onError, err)
-        })
+        if (id !== null) {
+            axios({
+                //url: QC_LEGACY_API + 'account',
+                url: QC_API + 'user/' + id,
+                //data: JSON.stringify(data), // Legacy
+				data: data,
+				dataType: 'json',
+				contentType: 'application/json',
+                //method: 'PUT'
+                method: 'POST' // Yup the legacy API is kind of whack
+                //headers: {
+                //    'X-Oc-Session': this.services.auth.getToken()
+                //}
+            }).then(response => {
+                this.handleResponse(response, onSuccess, onError)
+            }).catch(err => {
+                this.handleError('', onError, err)
+            })
+        }
     }
     
-    patch(data, onSuccess, onError) {
+    patch(formData, onSuccess, onError) {
+        /* Example converting payload to camelcase
+        data = {
+            detailObj: this.normalizePayload(data, 'underscore', 'camelcase')
+        }*/
+		
+        let id = this.stores.user.user['user_id'] || null
+		if (typeof id === 'undefined' || isNaN(id)) {
+			throw new Error('Invalid ID: supplied value must be an integer!')
+		}
         
+        if (id !== null) {
+            axios({
+                //url: QC_LEGACY_API + 'account',
+                url: QC_API + 'user/' + id,
+                data: data,
+                method: 'PATCH',
+                dataType: 'json',
+                contentType: 'application/json'
+            }).then(response => {
+                this.handleResponse(response, onSuccess, onError)
+            }).catch(err => {
+                this.handleError('', onError, err)
+            })
+        }
     }
     
-    delete(data, onSuccess, onError) {
+    delete(id, onSuccess, onError) {
         
     }
     
@@ -254,11 +262,6 @@ export default class UserService extends BaseService {
         })
     }
     
-    setAddresses() {
-        this.fetchBillingAddress()
-        this.fetchShippingAddress()
-    }
-    
     handleApiError(response) {
         // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid
         // Having to base my action on text returned is weak
@@ -280,33 +283,58 @@ export default class UserService extends BaseService {
     }
     
     /**
-     * Legacy API
+     * For use with Legacy API. In here just for backward compatibility. Delete from CustomerService.
      */
     fetchAccount(onSuccess, onError) {
-        var that = this
-            //userToken = that.checkToken(),
-            //isLogged = (userToken !== false) ? true : false
+        let that = this
+        //userToken = that.checkToken(),
+        //isLogged = (userToken !== false) ? true : false
         
         //if (!isLogged) {
             // Log in the user
             axios({
                 url: QC_LEGACY_API + 'account/',
                 method: 'GET'
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-                        let data = response.data['data']
-                        this.actions.customer.setCustomer(data)
-                    } else {
-                        that.handleApiError(response)
-                    }
-                }
+            }).then(response => {
+                this.handleResponse(response, 
+                // onSuccess
+                ((payload) => {
+                    this.setUser(payload)
+                }).bind(this), // Bind to current context
+                // onError - fail silently
+                (err) => {
+                    this.handleError('', onError, err)
+                },
+                // Use legacy API compatibility
+                true)
             }).catch(err => {
                 this.handleError('', onError, err)
             })
         //}
         
         //return isLogged
+    }
+
+	/**
+     * For use with Legacy API. In here just for backward compatibility. Delete from CustomerService.
+     */
+    refetchAccount(response) {
+        // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid
+        // Having to base my action on text returned is weak
+        if (response.data.error === 'User already is logged') {
+            console.log('User logged in... fetch account')
+            //that.doLogout() 
+            //that.doLogin()
+            
+            //if (this.state.logged && this.state.displayName === '') {
+                // We're logged in but account hasn't been set, so fetch user data from the server
+                this.fetchAccount()
+            //}
+        } else {
+            //loader.setMessage(response.responseJSON.error.warning).open()
+            setTimeout(function () {
+                //loader.close()
+            }, 3000)
+        }
     }
 }

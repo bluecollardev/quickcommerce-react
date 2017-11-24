@@ -26,12 +26,6 @@ export default (dispatcher) => {
             dispatcher.dispatch({
                 actionType: LoginConstants.LOGOUT_USER
             })
-        },
-        setUser: (data) => {
-            dispatcher.dispatch({
-                actionType: LoginConstants.SET_USER,
-                user: data
-            })
         }
     }
 }

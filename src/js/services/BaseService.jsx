@@ -41,8 +41,9 @@ export class BaseService {
             this.handleLegacyResponse(response, onSuccess, onError)
             return
         }
-            
-        if (response.success || response.status === 200) {
+		
+		// 200 OK, 201 Created
+        if (response.success || response.status === 200 || response.status === 201) {
             if (response.hasOwnProperty('data')) {
                 if (typeof onSuccess === 'function') {
                     onSuccess(response.data)
@@ -58,7 +59,7 @@ export class BaseService {
     }
     
     handleLegacyResponse(response, onSuccess, onError) {
-        if (response.success || response.status === 200) {
+        if (response.success || response.status === 200 || response.status === 201) {
             if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
                 if (typeof onSuccess === 'function') {
                     onSuccess(response.data.data)
@@ -96,6 +97,25 @@ export class BaseService {
             onError(data) // TODO: Type check
         }
     }
+	
+	normalizePayload(data, from, to) {
+        return ObjectHelper.recursiveFormatKeys(data, from, to)
+    }
+
+	filterKeys(data) {
+		let filterData = false
+        let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
+        
+		// TODO: Let's change the var names... prop/key same thing in JS
+        data.forEach(function (prop, key) {
+            // Fry internal references from the view-model
+            if (filterKeys.indexOf(key) > -1) {
+                delete data[key]
+            }
+        })
+
+		return data
+	}
     
     /*get dispatcher() {
         let dispatcher = this._dispatcher || null
