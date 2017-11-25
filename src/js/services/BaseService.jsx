@@ -11,27 +11,29 @@ import { Dispatcher } from 'flux'
 //import StringHelper from 'quickcommerce-react/helpers/String.js'
 
 export class BaseService {
+	// BaseService constructor
     constructor(deps) {
         deps = deps || null
         
         this.actions = {} // Private? (TODO: Symbols)
         this.dispatcher = {} // Private? (TODO: Symbols)
         
+		// TODO: Ensure actions are a HashProxy?
         if (deps !== null) {
             if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
                 this.dispatcher = deps.dispatcher
             }
             
             if (deps.hasOwnProperty('actions') && deps.actions !== null && Object.keys(deps.actions).length > 0) {
-                this.actions = deps.actions //this.actions = new HashProxy(actions)
+                this.actions = deps.actions
             }
             
             if (deps.hasOwnProperty('services') && deps.services !== null && Object.keys(deps.services).length > 0) {
-                this.services = deps.services //this.services = new HashProxy(services)
+                this.services = deps.services
             }
             
             if (deps.hasOwnProperty('stores') && deps.stores !== null && Object.keys(deps.stores).length > 0) {
-                this.stores = deps.stores //this.stores = new HashProxy(stores)
+                this.stores = deps.stores
             }
         }   
     }

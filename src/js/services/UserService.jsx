@@ -97,21 +97,25 @@ export default class UserService extends BaseService {
 			shippingAddress: payload.data
 		})
 	}
-    
+	
+	/**
+	 * Retrieves a User.
+	 */
     get(id, onSuccess, onError) {
         // Get the account
         axios({
-            url: QC_LEGACY_API + 'account',
-            type: 'GET',
+            //url: QC_LEGACY_API + 'account/',
+			url: QC_API + 'user/' + id,
             dataType: 'json',
             contentType: 'application/json',
-            async: false
+			method: 'GET'
         }).then(response => {
             this.handleResponse(response, 
             // onSuccess
             ((payload) => {
-                console.log('set user data - ' + new Date())
-                this.setUser(payload)
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
+                }
             }).bind(this), // Bind to current context
             // onError - fail silently
             (() => {
@@ -122,6 +126,24 @@ export default class UserService extends BaseService {
         }).catch(err => {
             this.handleError('', onError, err)
         })
+    }
+	
+	/**
+	 * Retrieves a User and saves a local copy in UserStore.
+	 */
+	fetch(id, onSuccess, onError) {
+        this.get(id, 
+		// onSuccess
+		((payload) => {
+			let data = payload['user']
+			
+			this.actions.user.setUser(data)
+			
+			if (typeof onSuccess === 'function') {
+				onSuccess(data)
+			}
+		}).bind(this),
+		onError)
     }
     
     post(data, onSuccess, onError) {

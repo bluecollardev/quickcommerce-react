@@ -31,7 +31,6 @@ export default class AuthService extends BaseService {
             // How do I make this (and customer selection) easily configurable?
             
             // Store auth and current, authorized account
-            // Store auth and current, authorized account
             this.actions.login.loginUser('DUMMYtoken12345') // Set token
             this.actions.user.setUser({}) // Set data
             
