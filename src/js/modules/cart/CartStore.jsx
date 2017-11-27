@@ -3,7 +3,7 @@ import assign from 'object-assign'
 import { EventEmitter } from 'events'
 import { Dispatcher } from 'flux'
 
-import ArrayHelper from '../helpers/Array.js'
+import ArrayHelper from '../../helpers/Array.js'
 
 class CartStore extends EventEmitter {
     constructor(dispatcher) {
@@ -441,3 +441,4 @@ CartStore.nextKey = 0
 CartStore.dispatchToken = null
 
 export default CartStore
+export { CartStore }

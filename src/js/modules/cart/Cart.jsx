@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import {inject, observer, Provider} from 'mobx-react'
+
 import { DropTarget } from 'react-dnd'
 import classNames from 'classnames'
 

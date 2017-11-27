@@ -20,89 +20,77 @@ import Label from 'grommet/components/Label'
 import Paragraph from 'grommet/components/Paragraph'
 import NumberInput from 'grommet/components/NumberInput'
 
-//import ArrayHelper from '../helpers/Array.js'
-import ObjectHelper from '../helpers/Object.js'
-//import StringHelper from '../helpers/String.js'
+//import ArrayHelper from '../../helpers/Array.js'
+import ObjectHelper from '../../helpers/Object.js'
+//import StringHelper from '../../helpers/String.js'
 
-import AuthenticatedComponent from './AuthenticatedComponent.jsx'
+import Stepper from '../../components/stepper/BrowserStepper.jsx'
 
-import TopMenu from './menu/TopMenu.jsx'
-import AccountMenu from './menu/AccountMenu.jsx'
-
-import DragDropContainer from './cart/DragDropContainer.jsx'
-import DragDropCartRow from './cart/DragDropCartRow.jsx'
-import CartDropTarget from './cart/CartDropTarget.jsx'
-import CartDragItem from './cart/CartDragItem.jsx'
-import CatalogRow from './catalog/CatalogRow.jsx'
-import CategoryRow from './catalog/CategoryRow.jsx'
-import ProductRow from './catalog/ProductRow.jsx'
-import ProductOptionRow from '../components/catalog/ProductOptionRow.jsx'
-
-import Stepper from './stepper/BrowserStepper.jsx'
-
-import ProductBrowser from './browser/ProductBrowser.jsx'
+/*import ProductBrowser from './browser/ProductBrowser.jsx'
 import BrowserMenu from './browser/BrowserMenu.jsx'
 import CustomerPicker from './customer/CustomerPicker.jsx'
 import SignInForm from './account/SignInForm.jsx'
 import CreditCardForm from './payment/CreditCardForm.jsx'
-import CustomerProfile from './customer/AuthenticatedCustomerProfile.jsx'
+import CustomerProfile from './customer/AuthenticatedCustomerProfile.jsx'*/
 
-import Keypad from './common/Keypad.jsx'
-import Notes from './common/Notes.jsx'
+import Notes from '../../components/common/Notes.jsx'
 
-import Cart from '../modules/Cart.jsx'
-import InternalCartStore from '../modules/CartStore.jsx'
-
-// Dirty global hack to maintain store instance until I refactor 
-// this component to use context or switch from flux to redux
-window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore : window.CartStore
-
-let CartStore = window.CartStore
-
-import ToggleDisplay from 'react-toggle-display'
-import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
-
-import Factory from '../factory/Factory.jsx'
-
-import StringHelper from '../helpers/String.js'
-import ArrayHelper from '../helpers/Array.js'
-import JSONHelper from '../helpers/JSON.js'
-import UrlHelper from '../helpers/URL.js'
-
-let fluxFactory = new Factory()
-
-let categories = [] // Empty init containers
-let products = [] // Empty init containers
+import StringHelper from '../../helpers/String.js'
+import ArrayHelper from '../../helpers/Array.js'
+import JSONHelper from '../../helpers/JSON.js'
+import UrlHelper from '../../helpers/URL.js'
 
 // Pre-configured step types
-import CategoryStep from '../steps/Category.jsx'
-import ProductStep from '../steps/Product.jsx'
-import ProductOptionStep from '../steps/ProductOption.jsx'
+import CategoryStep from '../../steps/Category.jsx'
+import ProductStep from '../../steps/Product.jsx'
+import ProductOptionStep from '../../steps/ProductOption.jsx'
 
 export default (ComposedComponent) => {
-    return class PosContext extends Component {
+    @inject(deps => ({
+        actions: deps.actions,
+        authService: deps.authService,
+        customerService: deps.customerService,
+        checkoutService: deps.checkoutService,
+        settingService: deps.authService,
+        loginStore: deps.loginStore,
+        userStore: deps.userStore,
+        customerStore: deps.customerStore,
+        catalogStore: deps.catalogStore,
+        cartStore: deps.cartStore,
+        checkoutStore: deps.checkoutStore,
+        starMicronicsStore: deps.starMicronicsStore,
+        productStore: deps.productStore,
+        settingStore: deps.settingStore,
+        mappings: deps.mappings, // Per component or global scope?
+        translations: deps.translations, // i8ln transations
+        roles: deps.roles, // App level roles, general authenticated user (not customer!)
+        userRoles: deps.userRoles, // Shortcut or implement via HoC?
+        user: deps.user // Shortcut or implement via HoC?
+    }))
+    @observer
+    class PosContext extends Component {
         constructor(props) {
             super(props)
             
-            this.getSelection = this.getSelection.bind(this)
-            this.hasItems = this.hasItems.bind(this)
+            //this.getSelection = this.getSelection.bind(this)
+            //this.hasItems = this.hasItems.bind(this)
             this.configureSteps = this.configureSteps.bind(this)
             this.setStep = this.setStep.bind(this)
-            this.addToCart = this.addToCart.bind(this)
-            this.quickAddToCart = this.quickAddToCart.bind(this)
+            //this.addToCart = this.addToCart.bind(this)
+            //this.quickAddToCart = this.quickAddToCart.bind(this)
             this.onComplete = this.onComplete.bind(this)
             this.updateNotes = this.updateNotes.bind(this)
             this.updatePaymentMethod = this.updatePaymentMethod.bind(this)
             this.updateShippingMethod = this.updateShippingMethod.bind(this)
             this.continueShopping = this.continueShopping.bind(this)
-            this.refresh = this.refresh.bind(this)
+            //this.refresh = this.refresh.bind(this)
             this.showNewCustomerForm = this.showNewCustomerForm.bind(this)
             this.hideNewCustomerForm = this.hideNewCustomerForm.bind(this)
             this.showEditCustomerForm = this.showEditCustomerForm.bind(this)
             this.hideEditCustomerForm = this.hideEditCustomerForm.bind(this)
             this.changeCustomer = this.changeCustomer.bind(this)
-            this.showLoginForm = this.showLoginForm.bind(this)
-            this.hideLoginForm = this.hideLoginForm.bind(this)
+            //this.showLoginForm = this.showLoginForm.bind(this)
+            //this.hideLoginForm = this.hideLoginForm.bind(this)
             this.showOrder = this.showOrder.bind(this)
             this.hideModal = this.hideModal.bind(this)
             this.showScanModal = this.showScanModal.bind(this)
@@ -121,22 +109,22 @@ export default (ComposedComponent) => {
             this.showCompleteModal = this.showCompleteModal.bind(this)
             this.hideCompleteModal = this.hideCompleteModal.bind(this)
             this.onSaleComplete = this.onSaleComplete.bind(this)
-            this.reset = this.reset.bind(this)
+            //this.reset = this.reset.bind(this)
             this.categoryClicked = this.categoryClicked.bind(this)
             this.itemClicked = this.itemClicked.bind(this)
-            this.addToCartClicked = this.addToCartClicked.bind(this)
+            //this.addToCartClicked = this.addToCartClicked.bind(this)
             this.optionClicked = this.optionClicked.bind(this)
             this.itemDropped = this.itemDropped.bind(this)
             this.stepClicked = this.stepClicked.bind(this)
             this.selectPaymentMethod = this.selectPaymentMethod.bind(this)
             this.toggleCustomPaymentAmount = this.toggleCustomPaymentAmount.bind(this)
             this.getChangeAmounts = this.getChangeAmounts.bind(this)
-            this.getTotal = this.getTotal.bind(this)
+            //this.getTotal = this.getTotal.bind(this)
             this.categoryFilterSelected = this.categoryFilterSelected.bind(this)
             this.openDrawer = this.openDrawer.bind(this)
             this.calculateChange = this.calculateChange.bind(this)
             this.selectChangePreset = this.selectChangePreset.bind(this)
-            this.renderOptions = this.renderOptions.bind(this)
+            //this.renderOptions = this.renderOptions.bind(this)
             this.renderPlainTxtOptions = this.renderPlainTxtOptions.bind(this)
             this.renderCashOptions = this.renderCashOptions.bind(this)
             this.renderPaymentOptions = this.renderPaymentOptions.bind(this)
@@ -372,7 +360,7 @@ export default (ComposedComponent) => {
             })*/
             
             // We call this data because it's not a complete item, just a POJO
-            CartStore.on('item-added', (itemId, quantity, item) => {
+            this.props.cartStore.on('item-added', (itemId, quantity, item) => {
                 console.log('item added to order')
                 console.log(item)
                 
@@ -406,7 +394,7 @@ export default (ComposedComponent) => {
                                     if (selectedOptions instanceof Array && selectedOptions.length > 0) {
                                         let selectedOption = selectedOptions[0]
                                         // TODO: Make this method static
-                                        let optionPrice = CartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                        let optionPrice = this.props.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
                                         optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
                                     }
                                 }
@@ -471,8 +459,8 @@ export default (ComposedComponent) => {
                                     
                                 })*/
                                 
-                                // Update our CartStore
-                                //CartStore.updateItem()
+                                // Update our this.props.cartStore
+                                //this.props.cartStore.updateItem()
                             }
                             
                             props.checkoutStore.setOrder(payload)
@@ -484,7 +472,7 @@ export default (ComposedComponent) => {
                 }
             })
             
-            CartStore.on('item-changed', (item, quantity, oldQuantity) => {
+            this.props.cartStore.on('item-changed', (item, quantity, oldQuantity) => {
                 console.log('item quantity changed')
                 console.log(item)
                 console.log('qty: ' + quantity)
@@ -528,7 +516,7 @@ export default (ComposedComponent) => {
                                         let selectedOption = selectedOptions[0]
                                         
                                         // TODO: Make this method static
-                                        let optionPrice = CartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                        let optionPrice = this.props.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
                                         optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
                                     }
                                 }
@@ -565,7 +553,7 @@ export default (ComposedComponent) => {
                 }
             })
             
-            CartStore.on('product-options-changed', (item, quantity, product) => {
+            this.props.cartStore.on('product-options-changed', (item, quantity, product) => {
                 console.log('product options changed')
                 console.log(item)
                 console.log('qty: ' + quantity)
@@ -615,7 +603,7 @@ export default (ComposedComponent) => {
                 }
             })
 
-            CartStore.on('item-removed', (item) => {
+            this.props.cartStore.on('item-removed', (item) => {
                 console.log('item removed')
                 console.log(item)
 
@@ -652,13 +640,13 @@ export default (ComposedComponent) => {
                 }
             })
 
-            CartStore.on('cart-reset', () => {
+            this.props.cartStore.on('cart-reset', () => {
                 console.log('reset checkout store - cart was reset') // TODO: Have clear and reset, they aren't really the same thing
 
                 props.checkoutService.clearOrder()
             })
 
-            CartStore.on('cart-cleared', () => {
+            this.props.cartStore.on('cart-cleared', () => {
                 console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
 
                 // Don't reset, which deletes order, just create a new order
@@ -667,7 +655,7 @@ export default (ComposedComponent) => {
                 })
             })
             
-            let categoryData = []
+            /*let categoryData = []
             let productData = []
 
             for (var key in categories) {
@@ -684,13 +672,13 @@ export default (ComposedComponent) => {
                     item.id = key
                     productData.push(item)
                 }
-            }
+            }*/
 
             this.state = {
                 blockUi: false,
                 chooseQuantity: false,
-                data: { categories: categoryData, products: productData },
-                initialSelection: CartStore.getSelection(),
+                data: { categories: [], products: [] },
+                initialSelection: this.props.cartStore.getSelection(),
                 canSubmit: false,
                 createAccount: false,
                 editAccount: false,
@@ -1166,7 +1154,7 @@ export default (ComposedComponent) => {
                     },
                     store: this.props.settingStore.getStoreData(),
                     order: this.props.checkoutStore.getOrderDetails(),
-                    items: CartStore.selection, // Should already be available via getOrderDetails? Just a thought....
+                    items: this.props.cartStore.selection, // Should already be available via getOrderDetails? Just a thought....
                     totals: this.props.checkoutStore.getTotals(),
                     total: this.props.checkoutStore.getTotal()
                 }
@@ -1292,7 +1280,7 @@ export default (ComposedComponent) => {
                     },
                     store: this.props.settingStore.getStoreData(),
                     order: this.props.checkoutStore.getOrderDetails(),
-                    items: CartStore.selection, // Should already be available via getOrderDetails? Just a thought....
+                    items: this.props.cartStore.selection, // Should already be available via getOrderDetails? Just a thought....
                     totals: this.props.checkoutStore.getTotals(),
                     total: this.props.checkoutStore.getTotal()
                 }
@@ -1612,7 +1600,7 @@ export default (ComposedComponent) => {
         }
         
         renderReceipt(cached = true) {
-            cached = cached || true
+            /*cached = cached || true
             let render = false
             
             if (this.state.hasOwnProperty('checkout') &&
@@ -1741,11 +1729,11 @@ export default (ComposedComponent) => {
                 </span>
             )
 
-            return output
+            return output*/
         }
         
         renderCachedReceipt(cached = true) {
-            cached = cached || true
+            /*cached = cached || true
             let render = false
             
             if (this.state.hasOwnProperty('prevCheckout') &&
@@ -1853,7 +1841,7 @@ export default (ComposedComponent) => {
                 )
             }
 
-            return output
+            return output*/
         }
         
         renderEndOfDayReport(data) {
@@ -2110,18 +2098,18 @@ export default (ComposedComponent) => {
         
         render() {
             let props = Object.assign({}, this.props, {
-                getSelection: this.getSelection,
-                hasItems: this.hasItems,
+                //getSelection: this.getSelection,
+                //hasItems: this.hasItems,
                 configureSteps: this.configureSteps,
                 setStep: this.setStep,
-                addToCart: this.addToCart,
-                quickAddToCart: this.quickAddToCart,
+                //addToCart: this.addToCart,
+                //quickAddToCart: this.quickAddToCart,
                 onComplete: this.onComplete,
                 updateNotes: this.updateNotes,
                 updatePaymentMethod: this.updatePaymentMethod,
                 updateShippingMethod: this.updateShippingMethod,
                 continueShopping: this.continueShopping,
-                refresh: this.refresh,
+                //refresh: this.refresh,
                 showNewCustomerForm: this.showNewCustomerForm,
                 hideNewCustomerForm: this.hideNewCustomerForm,
                 showEditCustomerForm: this.showEditCustomerForm,
@@ -2147,17 +2135,17 @@ export default (ComposedComponent) => {
                 showCompleteModal: this.showCompleteModal,
                 hideCompleteModal: this.hideCompleteModal,
                 onSaleComplete: this.onSaleComplete,
-                reset: this.reset,
+                //reset: this.reset,
                 categoryClicked: this.categoryClicked,
                 itemClicked: this.itemClicked,
-                addToCartClicked: this.addToCartClicked,
+                //addToCartClicked: this.addToCartClicked,
                 optionClicked: this.optionClicked,
                 itemDropped: this.itemDropped,
                 stepClicked: this.stepClicked,
                 selectPaymentMethod: this.selectPaymentMethod,
                 toggleCustomPaymentAmount: this.toggleCustomPaymentAmount,
                 getChangeAmounts: this.getChangeAmounts,
-                getTotal: this.getTotal,
+                //getTotal: this.getTotal,
                 categoryFilterSelected: this.categoryFilterSelected,
                 openDrawer: this.openDrawer,
                 calculateChange: this.calculateChange,
@@ -2169,6 +2157,27 @@ export default (ComposedComponent) => {
                 renderPlainTxtOrder: this.renderPlainTxtOrder,
                 renderPlainTxtReceipt: this.renderPlainTxtReceipt,
             })
+            
+            let steps = this.stepper.getSteps() // Stepper extends store, we're good
+
+            let options = false
+            // TODO: This is wrong, should be checking ID or something
+            if (this.state.hasOwnProperty('product') && this.state.product !== null && this.state.product.hasOwnProperty('price')) {
+                let price = (parseFloat(this.state.product.price)).toFixed(2)
+                if (typeof this.state.product.options !== 'undefined' && 
+                this.state.product.options instanceof Array && 
+                this.state.product.options.length > 0) {
+                    options = this.state.product.options
+                }
+            }
+            
+            let orderTotal = 0.00
+            if (this.props.checkoutStore.payload.orderTotals instanceof Array && this.props.checkoutStore.payload.orderTotals.length > 0) {
+                let orderTotalValue = parseFloat(this.props.checkoutStore.getTotal().value)
+                if (!isNaN(orderTotalValue)) {
+                    orderTotal = orderTotalValue.toFixed(2) 
+                }
+            }
             
             return (
                 <ComposedComponent
@@ -2458,7 +2467,7 @@ export default (ComposedComponent) => {
                         </Modal.Body>
                     </Modal>
 
-                    <Modal
+                    {/*<Modal
                       show   = {!!this.state.chooseQuantity}
                       onHide = {this.hideQuantity}>
                         <Modal.Header>
@@ -2479,9 +2488,11 @@ export default (ComposedComponent) => {
                                 </Button>
                             </FormGroup>
                         </Modal.Body>
-                    </Modal>
+                    </Modal>*/}
                 </ComposedComponent>
             )
         }
     }
+    
+    return PosContext
 }
