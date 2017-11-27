@@ -112,11 +112,9 @@ export default class Cart extends Component {
         
         this.configureSteps = this.configureSteps.bind(this)
         this.setStep = this.setStep.bind(this)
-        this.categoryClicked = this.categoryClicked.bind(this)
         this.itemClicked = this.itemClicked.bind(this)
         this.addToCartClicked = this.addToCartClicked.bind(this)
         this.optionClicked = this.optionClicked.bind(this)
-        this.itemDropped = this.itemDropped.bind(this)
         this.stepClicked = this.stepClicked.bind(this)
         
         // Store our stepper instance
@@ -165,7 +163,7 @@ export default class Cart extends Component {
             settings: {}
         }
         
-        this.stepper.on('item-added', (item, quantity, oldQuantity) => {
+        /*this.stepper.on('item-added', (item, quantity, oldQuantity) => {
             console.log('browser item added, add it to our cart')
             let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
             console.log(item)
@@ -177,7 +175,7 @@ export default class Cart extends Component {
             let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
             console.log(item)
             //cart.updateItem(item['product_option_value_id'], 1, item, product)
-        })
+        })*/
     }
     
     componentDidMount() {
@@ -201,143 +199,12 @@ export default class Cart extends Component {
             })
         })*/
         
-        let settings = this.props.settingStore.getSettings().posSettings
-
-        settings['pinned_category_id'] = 204 // 'New' category
-        let categoryId = null
-        
-        if (typeof this.topCategoryBrowser !== 'undefined') {
-            console.log('TOP CATEGORY BROWSER')
-            console.log(this.topCategoryBrowser)
-            this.topCategoryBrowser.actions.loadTopCategories() // Browser load categories via refs
-        }
-        
-        if (typeof this.props.match !== 'undefined' && 
-            typeof this.props.match.params !== 'undefined' && 
-            typeof this.props.match.params.cat !== 'undefined' && !isNaN(this.props.match.params.cat)) {
-            console.log('load category id: ' + this.props.match.params.cat)
-            categoryId = parseInt(this.props.match.params.cat)
-        } else if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
-            categoryId = parseInt(settings['pinned_category_id'])
-        } else {
-            //categoryId = null
-            categoryId = 204
-        }
-        
-        // Just load browser products, don't trigger any steps
-        this.newArrivalsBrowser.actions.loadProducts(categoryId)
+        //let settings = this.props.settingStore.getSettings().posSettings
     }
     
     configureSteps() {
         // An array of step functions
-        return [{
-            config: assign({}, CategoryStep, {
-                stepId: 'shop',
-                indicator: '1',
-                title: 'Choose Category'
-            }),
-            before: (stepId, step) => {
-                console.log('load category step...')
-                return true
-            },
-            action: (step, data, done) => {
-                this.topCategoryBrowser.actions.loadCategories()
-
-                if (done) {
-                    // Process checkout if done
-                    this.onComplete()
-                }
-            },
-            validate: (stepId, stepDescriptor, data) => {
-                console.log('validating current step: ' + stepId)
-                console.log(data)
-                
-                let categoryId = data['category_id'] || null
-                
-                if (categoryId === null) {
-                    alert('Please select a category to continue')
-                    return false
-                }
-                
-                return true
-            }
-        },
-        {
-            config: assign({}, ProductStep, {
-                stepId: 'cart',
-                indicator: '2',
-                title: 'Choose Product'
-            }),
-            before: (stepId, step) => {
-                console.log('load product step...')
-                return true
-            },
-            action: (step, data, done) => {
-                data = data || null                
-                if (data !== null &&
-                    data.hasOwnProperty('category_id') &&
-                    !Number.isNaN(data.category_id)) {
-
-                    this.newArrivalsBrowser.actions.loadProducts(data.category_id) // TODO: CONST for prop name?
-                } else {
-                    this.newArrivalsBrowser.actions.loadProducts()
-                }
-
-                if (done) {
-                    // Process checkout if done
-                    this.onComplete()
-                }
-            },
-            validate: (stepId, stepDescriptor, data) => {
-                console.log('validating current step: ' + stepId)
-                console.log(data)
-                
-                let productId = data['id'] || null
-                
-                if (productId === null) {
-                    alert('Please select a product to continue')
-                    return false
-                }
-                
-                return true
-            }
-        },
-        {
-            config: assign({}, ProductOptionStep, {
-                stepId: 'options',
-                indicator: '3',
-                title: 'Customize Product'
-            }),
-            before: (stepId, step) => {
-                console.log('load option step...')
-                return true
-            },
-            action: (step, data, done) => {
-                data = data || null
-                // Store the selection
-                
-                if (data !== null &&
-                    data.hasOwnProperty('id') &&
-                    !Number.isNaN(data.id)) {
-
-                    this.optionBrowser.actions.loadOptions(data) // TODO: CONST for prop name?
-                } else {
-                    // Do nothing - options only correlate to a browser item
-                    // TODO: This is being triggered when clicking a browser item, but there's no data object...
-                }
-
-                if (done) {
-                    // Process checkout if done
-                    this.onComplete()
-                }
-            },
-            validate: (stepId, stepDescriptor, data) => {
-                console.log('validating current step: ' + stepId)
-                console.log(data)
-                
-                return true
-            }
-        },
+        return [
         /*{
             config: {
                 stepId: 'checkout',
@@ -361,7 +228,7 @@ export default class Cart extends Component {
     }
     
     setStep(stepId, stepDescriptor, data) {
-        data = data || null
+        /*data = data || null
         let title = (data !== null && data.hasOwnProperty('name')) ? data.name : ''
         let price = (data !== null && data.hasOwnProperty('price') && !isNaN(data.price)) ? Number(data.price).toFixed(2) : 0.00
         
@@ -370,7 +237,7 @@ export default class Cart extends Component {
             title: title,
             itemPrice: price,
             item: data
-        })
+        })*/
     }
     
     stepClicked(stepProps) {
@@ -378,7 +245,7 @@ export default class Cart extends Component {
         // We can't get it by index because the Step argument for this method is the config prop
         // provided to the Step component, not an instance of BrowserStepDescriptor.
         // Maybe I'll change this later...
-        if (this.stepper.getSteps() instanceof Array) {            
+        /*if (this.stepper.getSteps() instanceof Array) {            
             let stepDescriptor = this.stepper.getStepById(stepProps.stepId) || null
 
             if (stepDescriptor !== null) {
@@ -388,19 +255,7 @@ export default class Cart extends Component {
                 this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepProps.stepId))
                 
             }
-        }
-    }
-    
-    categoryClicked(e, item) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        //let stepId = 'cart'
-        //let stepDescriptor = this.stepper.getStepById(stepId) || null
-        
-        console.log(item);
-        // Just load browser products, don't trigger any steps
-        this.newArrivalsBrowser.actions.loadProducts(item['category_id'])
+        }*/
     }
   
     itemClicked(e, item) {
@@ -455,23 +310,6 @@ export default class Cart extends Component {
 
         this.stepper.addOption(item['product_option_value_id'], 1, item, product)
         this.forceUpdate() // Redraw, options have changed
-    }
-    
-    categoryFilterSelected(categoryId, e) {
-        categoryId = (!Number.isNaN(parseInt(categoryId))) ? parseInt(categoryId) : null // Ensure conversion
-
-        let stepId = 'cart'
-        let stepDescriptor = this.stepper.getStepById(stepId) || null
-
-        if (stepDescriptor !== null) {
-            let data = {
-                category_id: categoryId
-            }
-
-            let isEnded = false
-            // Execute the step handler
-            this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
-        }
     }
     
     addToCart(e) {
@@ -545,7 +383,7 @@ export default class Cart extends Component {
     }
     
     render() {
-        let steps = this.stepper.getSteps() // Stepper extends store, we're good
+        //let steps = this.stepper.getSteps() // Stepper extends store, we're good
         
         return (
             <main className="content-wrapper">{/* Main Content Wrapper */}
@@ -744,7 +582,7 @@ export default class Cart extends Component {
                                 </Button>
                                 )*/}
                                 
-                                <Row>
+                                {/*<Row>
                                     <Col xs={12} md={6}>
                                         <Button
                                           block
@@ -769,7 +607,7 @@ export default class Cart extends Component {
                                             <h4><i className='fa fa-print' /> End of Day</h4>
                                         </Button>
                                     </Col>
-                                </Row>                                
+                                </Row>*/}                               
                             </Col>
                         </Row>
                     </div>{/* .col-sm-8 */}

@@ -50,6 +50,7 @@ import HtmlHelper from '../../helpers/HTML.js'
 export default class ProductBrowser extends Component {
     static defaultProps = {
         onItemClicked: () => {},
+        onAddToCartClicked: () => {},
         onFilterSelected: () => {},
         onStepClicked: () => {}
     }
@@ -299,6 +300,7 @@ export default class ProductBrowser extends Component {
         }
 
         rowComponent.defaultProps.onItemClicked = fn
+        rowComponent.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
         rowComponent.defaultProps.stepper = this.props.stepper
 
         return rowComponent

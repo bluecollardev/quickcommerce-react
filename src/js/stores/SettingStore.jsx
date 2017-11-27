@@ -9,8 +9,6 @@ import BaseStore from './BaseStore.jsx'
 
 import { FileSystem, File, FileTransfer } from '../helpers/Cordova.js'
 
-let instance = null
-
 class SettingStore extends BaseStore {
     static defaultStore = {
         id: 0,

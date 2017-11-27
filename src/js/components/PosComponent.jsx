@@ -840,8 +840,6 @@ class PosComponent extends Component {
             console.log(item)
             //cart.updateItem(item['product_option_value_id'], 1, item, product)
         })
-        
-        
     }
     
     componentDidUpdate(prevProps, prevState) {
