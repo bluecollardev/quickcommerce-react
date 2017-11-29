@@ -18,6 +18,11 @@ class CartStore extends EventEmitter {
         }
         
         this.subscribe(() => this.registerToActions.bind(this))
+        
+        this.items = {}
+        this.selection = []
+        this.nextKey = 0
+        this.dispatchToken = null
     }
     
     subscribe(actionSubscribe) {
@@ -434,11 +439,6 @@ class CartStore extends EventEmitter {
         return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
     }
 }
-
-CartStore.items = {}
-CartStore.selection = []
-CartStore.nextKey = 0
-CartStore.dispatchToken = null
 
 export default CartStore
 export { CartStore }

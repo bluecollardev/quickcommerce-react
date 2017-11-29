@@ -5,8 +5,6 @@ import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'r
 
 import StringHelper from '../../helpers/String.js'
 
-import Cart from '../../modules/Cart.jsx'
-
 @inject(deps => ({
     actions: deps.actions,
     checkoutStore: deps.checkoutStore,
@@ -48,7 +46,7 @@ class DragDropContainer extends Component {
 
         // Sub-totals
         for (let idx = 0; idx < totals.length; idx++) {
-            if (totals[idx].code === total.code) continue // Ignore the final total OpenCart sux goat dick what a fucking dumb way to output totals!
+            if (totals[idx].code === total.code) continue
 
             // Set the total title
             let subTotalTitle = ''

@@ -20,9 +20,6 @@ import ProductRow4x from 'quickcommerce-react/components/catalog/ProductRow4x.js
 import Keypad from 'quickcommerce-react/components/common/Keypad.jsx'
 import Notes from 'quickcommerce-react/components/common/Notes.jsx'
 
-import Cart from 'quickcommerce-react/modules/Cart.jsx'
-import InternalCartStore from 'quickcommerce-react/modules/CartStore.jsx'
-
 import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
 
 import Factory from 'quickcommerce-react/factory/Factory.jsx'
@@ -49,7 +46,6 @@ export default class Catalog extends Component {
         this.categoryFilterSelected = this.categoryFilterSelected.bind(this)
         this.categoryClicked = this.categoryClicked.bind(this)
         this.itemClicked = this.itemClicked.bind(this)
-        this.addToCartClicked = this.addToCartClicked.bind(this)
         this.optionClicked = this.optionClicked.bind(this)
         this.itemDropped = this.itemDropped.bind(this)
         this.stepClicked = this.stepClicked.bind(this)
@@ -57,6 +53,7 @@ export default class Catalog extends Component {
         // Store our stepper instance
         // Stepper maintains its own state and store
         this.stepper = new Stepper()
+        this.stepper.setSteps(this.configureSteps())
     }
     
     componentDidMount() {
@@ -125,7 +122,7 @@ export default class Catalog extends Component {
                 return true
             },
             action: (step, data, done) => {
-                this.topCategoryBrowser.actions.loadCategories()
+                //this.topCategoryBrowser.actions.loadCategories()
 
                 if (done) {
                     // Process checkout if done
@@ -357,76 +354,6 @@ export default class Catalog extends Component {
             // Execute the step handler
             this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
         }
-    }
-    
-    addToCart(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        let quantity = 0
-        
-        if (this.state.chooseQuantity) {
-            // If the keypad popup modal is open, use its value
-            quantity = parseFloat(this.popupKeypad.getForm().value)
-        } else {
-            quantity = parseFloat(this.keypad.getForm().value)
-        }
-        
-        if (!isNaN(quantity) && quantity > 0) {
-            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            let item = this.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
-            
-            //alert('Adding ' + quantity + 'x ' + item.data.name + '(s) to the order.')
-            cart.addItem(item.id, quantity, item)
-            this.keypad.component.clear()
-            
-            this.stepper.start()
-            
-            let settings = this.props.settingStore.getSettings().posSettings
-            if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
-                console.log('pinned category, auto select category : ' + settings['pinned_category'])
-                this.categoryClicked(null, {
-                    category_id: settings['pinned_category_id']
-                })
-            } else {
-                this.setStep('shop')
-            }
-        } else {
-            alert('Please enter the desired quantity.')
-        }
-    }
-    
-    quickAddToCart(e) {
-        this.addToCart(e) // Add to cart
-        this.popupKeypad.component.clear()
-        
-        // Close quantity keypad popup modal
-        this.setState({
-            chooseQuantity: false
-        })
-    }
-    
-    addToCartClicked(e, item) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        /*let stepId = 'options'
-        let stepDescriptor = this.stepper.getStepById(stepId) || null
-
-        if (stepDescriptor !== null) {
-            let data = item
-            
-            let isEnded = false
-            // Execute the step handler
-            this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
-            this.stepper.addItem(item.id, 1, item)
-        }*/
-        
-        this.stepper.addItem(item.id, 0, item) // Don't set a quantity just register the item
-        
-        this.setState({
-            chooseQuantity: true
-        })
     }
     
     render() {

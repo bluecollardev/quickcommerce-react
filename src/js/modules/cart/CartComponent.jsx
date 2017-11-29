@@ -17,7 +17,7 @@ import DragDropCartRow from './DragDropCartRow.jsx'
 import CartDropTarget from './CartDropTarget.jsx'
 import CartDragItem from './CartDragItem.jsx'
 
-import Keypad from '../components/common/Keypad.jsx'
+import Keypad from '../../components/common/Keypad.jsx'
 
 import Cart from './Cart.jsx'
 //import CartStore from './CartStore.jsx' // TODO: Create internally if not provided
@@ -46,64 +46,18 @@ class CartComponent extends Component {
     constructor(props) {
         super(props)
         
-        this.getCart = this.getCart.bind(this)
-        this.getSelection = this.getSelection.bind(this)
-        this.hasItems = this.hasItems.bind(this)
         this.itemClicked = this.itemClicked.bind(this)
         this.optionClicked = this.optionClicked.bind(this)
         this.itemDropped = this.itemDropped.bind(this)
-        this.addToCart = this.addToCart.bind(this)
-        this.quickAddToCart = this.quickAddToCart.bind(this)
-        this.refresh = this.refresh.bind(this)
-        this.reset = this.reset.bind(this)
         this.renderOptions = this.renderOptions.bind(this)
         
         let actions = this.props.actions
-        
-        actions.setting.fetchStore(8)
-        
-        props.settingStore.on('store-info-loaded', (id, payload) => {
-            props.checkoutStore.stores[id] = payload
-        }) // Load ACE bar store data so we don't have to later
-        
-        actions.setting.fetchSettings()
-        
-        props.settingStore.on('settings-loaded', (payload) => {
-            props.checkoutStore.settings = payload
-
-            // We only wanna do this once, so stick 'er right up top
-           props.checkoutService.createOrder({
-                action: 'insert'
-                //orderTaxRates: this.orderTaxRates
-            })
-        })
-        
-        
-        // We call this data because it's not a complete item, just a POJO
-        props.cartStore.on('item-added', () => {})
-        
-        props.cartStore.on('item-changed', () => {})
-        
-        props.cartStore.on('product-options-changed', () => {})
-
-        props.cartStore.on('item-removed', () => {})
-
-        props.cartStore.on('cart-reset', () => {
-            props.checkoutService.clearOrder()
-        })
-
-        props.cartStore.on('cart-cleared', () => {
-            console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
-
-            // Don't reset, which deletes order, just create a new order
-            props.checkoutService.createOrder({
-                action: 'insert'
-            })
-        })
+        // Thiis actually might be a better place...
+        //actions.setting.fetchStore(8)
+        //actions.setting.fetchSettings()
 
         this.state = {
             chooseQuantity: false,
-            initialSelection: props.cartStore.getSelection(),
             canSubmit: false,
             settings: {}
         }
@@ -111,23 +65,6 @@ class CartComponent extends Component {
     
     componentDidMount() {
         let settings = this.props.settingStore.getSettings().posSettings
-    }
-    
-    getCart() {
-        if (typeof this.cart.getDecoratedComponentInstance === 'function') {
-            return this.cart.getDecoratedComponentInstance()
-        }
-        
-        return this.cart
-    }
-    
-    getSelection() {
-        return this.props.cartStore.getSelection()
-    }
-    
-    hasItems() {
-        let selection = this.props.cartStore.getSelection() || null
-        return (selection instanceof Array && selection.length > 0)
     }
     
     itemClicked(e, item) {
@@ -140,56 +77,6 @@ class CartComponent extends Component {
     
     optionClicked(item) {
         //let cart = this.getCart()
-    }
-    
-    addToCart(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        let quantity = 0
-        
-        if (this.state.chooseQuantity) {
-            // If the keypad popup modal is open, use its value
-            quantity = parseFloat(this.popupKeypad.getForm().value)
-        } else {
-            quantity = parseFloat(this.keypad.getForm().value)
-        }
-        
-        if (!isNaN(quantity) && quantity > 0) {
-            let cart = this.getCart()
-            //let item = this.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
-            
-            //alert('Adding ' + quantity + 'x ' + item.data.name + '(s) to the order.')
-            cart.addItem(item.id, quantity, item)
-            this.keypad.component.clear()
-        } else {
-            alert('Please enter the desired quantity.')
-        }
-    }
-    
-    quickAddToCart(e) {
-        this.addToCart(e) // Add to cart
-        this.popupKeypad.component.clear()
-        
-        // Close quantity keypad popup modal
-        this.setState({
-            chooseQuantity: false
-        })
-    }
-    
-    refresh() {
-        this.keypad.setField('value', 0)
-        
-        let cart = this.getCart()
-        
-        this.setState({ canSubmit : !cart.isEmpty() })
-    }
-    
-    reset() {
-        this.keypad.setField('value', 0)
-        
-        let cart = this.getCart()
-        cart.emptyCart()
     }
     
     rowIterator(context, row) {

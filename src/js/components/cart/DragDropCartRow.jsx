@@ -69,13 +69,19 @@ class DragDropCartRow extends Component {
         return (
             <tr>
                 <td key='name' className='cart-product-col'>
-                    <div className='cart-product-delete'>
+                    <div className='cart-product-delete item-remove'>
                         <Button 
                           bsSize   = 'small'
                           bsStyle  = 'danger'
                           onClick  = {this.props.removeItem}>
-                            <i className='fa fa-remove' />
+                            <i className="material-icons remove_shopping_cart" />
                         </Button>
+                        {/*<Button 
+                              bsSize   = 'small'
+                              bsStyle  = 'danger'
+                              onClick  = {this.props.removeItem}>
+                                <i className='fa fa-remove' />
+                        </Button>*/}
                     </div>
                     <strong className='cart-product-name'>{data['name']}</strong><br />
                     <div className='cart-product-detail'>
@@ -89,9 +95,11 @@ class DragDropCartRow extends Component {
                         ${price}
                     </div>
                 </td>
-                <td style={{width: '40px'}}>
-                    <div className='form-group form-group-sm' style={{width: '40px'}}>
-                        {this.props.item.quantity}
+                <td style={{width: '100px'}}>
+                    <div className='count-input form-group form-group-sm' style={{width: '100px'}}>
+                        <a className="incr-btn" data-action="decrease" href="#">–</a>
+                        <input className="quantity" type="text" defaultValue={this.props.item.quantity} />
+                        <a className="incr-btn" data-action="increase" href="#">+</a>
                     </div>
                 </td>    
             </tr>

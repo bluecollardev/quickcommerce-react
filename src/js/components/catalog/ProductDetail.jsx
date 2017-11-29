@@ -17,7 +17,6 @@ export default class ProductDetail extends Component {
         super(props)
         
         this.getDescription = this.getDescription.bind(this)
-        this.addToCart = this.addToCart.bind(this)
         this.toggleOptions = this.toggleOptions.bind(this)
         this.configureRow = this.configureRow.bind(this)
         
@@ -61,31 +60,6 @@ export default class ProductDetail extends Component {
         }
         
         return { __html: '' }
-    }
-    
-    addToCart(e) {
-        e.preventDefault()
-        
-        if (typeof this.refs.parallax !== 'undefined') {
-            this.refs.parallax.scrollTo(0) // Scroll subscription up
-        }
-        
-        let input = document.querySelectorAll('#product-form input[type=number]')[0]
-        let quantity = parseInt(input.value)
-        console.log('adding ' + quantity + ' items to cart')
-        
-        let item = this.state.product
-        CartStore.addItem(item.id, quantity, item)
-        
-        window.location.hash = '/category'
-        
-        let scrollDuration = 111
-        let scrollStep = -window.scrollY / (scrollDuration / 15),
-            scrollInterval = setInterval(() => {
-            if (window.scrollY !== 0) {
-                window.scrollBy(0, scrollStep)
-            } else clearInterval(scrollInterval)
-        }, 15)
     }
     
     configureRow(rowComponent) {

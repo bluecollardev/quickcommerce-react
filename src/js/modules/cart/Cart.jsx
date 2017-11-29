@@ -18,7 +18,6 @@ let cartTarget = {
         const item = monitor.getItem()
         component.props.onItemDropped(item.id)
     }
-
 }
 
 function collect(connect, monitor) {
@@ -43,8 +42,8 @@ class Cart extends Component {
         this.onChange = this.onChange.bind(this)
         this.addItem = this.addItem.bind(this)
         this.removeItem = this.removeItem.bind(this)
-        this.getSelection = this.getSelection.bind(this)
-        this.isEmpty = this.isEmpty.bind(this)
+        //this.getSelection = this.getSelection.bind(this)
+        //this.isEmpty = this.isEmpty.bind(this)
         this.emptyCart = this.emptyCart.bind(this)
         this.clearCart = this.clearCart.bind(this)
         this.reset = this.reset.bind(this)
@@ -54,15 +53,12 @@ class Cart extends Component {
     
     getInitialState() {
         return {
-            selection: []
+            selection: this.props.cartStore.getSelection()
         }
     }
     
     componentDidMount() {
-        this.props.actions.cart.init({
-            items: this.props.items,
-            selection: this.props.selection
-        })
+        this.props.actions.cart.init(this.props.items, this.props.cartStore.getSelection())
         
         this.props.cartStore.on('ready', this.refresh)
         this.props.cartStore.on('change', this.onChange)
@@ -106,14 +102,6 @@ class Cart extends Component {
         this.props.actions.cart.addOption(key, quantity, item, product)
     }
     
-    getSelection() {
-        return this.props.cartStore.getSelection()
-    }
-    
-    isEmpty() {
-        return this.props.cartStore.isEmpty()
-    }
-    
     emptyCart() {
         this.props.actions.cart.emptyCart()
     }
@@ -128,12 +116,13 @@ class Cart extends Component {
     
     render() {
         const { position, isOver, canDrop, connectDropTarget } = this.props
-
-        let context = this.props.iterator(),
-            Container = this.props.containerComponent,
-            Row = this.props.rowComponent
+        
+        const Container = this.props.containerComponent
+        const Row = this.props.rowComponent
+        
+        let context = this.props.iterator()    
             
-        if (this.isEmpty()) {
+        if (this.props.cartStore.isEmpty()) {
             return connectDropTarget(
                 <div className='dnd-target-wrapper'>
                     <div>

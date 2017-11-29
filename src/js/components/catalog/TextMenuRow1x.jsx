@@ -16,9 +16,6 @@ export default class TextMenuRow1x extends Component {
     }
     
     render() {
-        console.log('rendering product row')
-        console.log('props.data')
-        console.log(this.props.data)
         return (
             <Col xs={12} sm={12}>
                 <CartDragItem

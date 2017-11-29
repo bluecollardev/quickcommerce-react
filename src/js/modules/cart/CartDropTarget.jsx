@@ -37,7 +37,7 @@ class CartDropTarget extends Component {
             </div>
         )
     }
-})
+}
 
 CartDropTarget.propTypes = {
     onItemDropped: React.PropTypes.func

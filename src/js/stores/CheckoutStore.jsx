@@ -5,7 +5,6 @@ import { normalize, denormalize, schema } from 'normalizr'
 import { OrderStore } from './OrderStore.jsx'
 import CustomerStore from './CustomerStore.jsx'
 import SettingStore from './SettingStore.jsx'
-import CartStore from '../modules/CartStore.jsx'
 
 import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 
@@ -601,7 +600,8 @@ class CheckoutStore extends OrderStore {
         ]
      */
     getOrderOptions(productId, orderProductId) {
-        orderProductId = orderProductId || null
+        throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
+        /*orderProductId = orderProductId || null
         let cartProducts = CartStore.getSelection()
         let data = []
         
@@ -675,7 +675,7 @@ class CheckoutStore extends OrderStore {
         data = this.normalizePayload(data, 'underscore', 'camelcase')
         console.log(data)
 
-        return data
+        return data*/
     }
 }
 

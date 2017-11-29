@@ -2,12 +2,12 @@
 
 export default (dispatcher) => {
     return {
-        init() {
+        init(items, selection) {
             dispatcher.dispatch({
                 actionType: 'cart-initialize',
                 config: {
-                    items: this.props.items || {},
-                    selection: this.props.selection || []
+                    items: items || {},
+                    selection: selection || []
                 }
             })
         },

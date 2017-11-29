@@ -5,8 +5,6 @@ import { normalize, denormalize, schema } from 'normalizr'
 import BaseStore from './BaseStore.jsx'
 import CustomerStore from './CustomerStore.jsx'
 import SettingStore from './SettingStore.jsx'
-import CartStore from '../modules/CartStore.jsx'
-
 import OrderConstants from '../constants/OrderConstants.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
@@ -258,7 +256,8 @@ export class OrderStore extends BaseStore {
      * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
      */
     getOrderTaxRates() {
-        let data = {}
+        throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
+        /*let data = {}
 
         for (let idx = 0; idx < CartStore.selection.length; idx++) {
             let item = CartStore.selection[idx]
@@ -275,7 +274,7 @@ export class OrderStore extends BaseStore {
             }
         }
 
-        return data
+        return data*/
     }
 
     /**

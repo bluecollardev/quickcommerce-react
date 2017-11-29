@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
 
+/**
+ * This higher-order component wraps an existing component, decorating it with methods needed to interact
+ * with the shopping cart.
+ */
 export default (ComposedComponent) => {
     @inject(deps => ({
         actions: deps.actions,
@@ -25,38 +29,81 @@ export default (ComposedComponent) => {
     }))
     @observer
     class CartContext extends Component {
+        constructor(props) {
+            super(props)
+            
+            this.state = {
+                blockUi: false,
+                chooseQuantity: false,
+                settings: {}
+            }
+        }
+        
         getSelection() {
             return this.props.cartStore.getSelection()
         }
         
+        isEmpty() {
+            return this.props.cartStore.isEmpty()
+        }
+        
         hasItems() {
-            let selection = this.getSelection() || null
+            let selection = this.props.cartStore.getSelection() || null
             return (selection instanceof Array && selection.length > 0)
         }
         
         addToCart(e) {
+            // CartContext.addToCart
             e.preventDefault()
             e.stopPropagation()
             
             let quantity = 0
             
-            if (this.state.chooseQuantity) {
-                // If the keypad popup modal is open, use its value
-                quantity = parseFloat(this.popupKeypad.getForm().value)
-            } else {
-                quantity = parseFloat(this.keypad.getForm().value)
+            switch (this.props.addToCartMode) {
+                case 'instant':
+                    // Temporarily store the selected product's information
+                    quantity = 1
+                    
+                    break
+                case 'popup':
+                    if (!(this.state.chooseQuantity)) {
+                        quantity = parseFloat(this.keypad.getForm().value)
+                    }
+                    
+                    break
+                case 'normal':
+                    if (this.state.chooseQuantity) {
+                        // If the keypad popup modal is open, use its value
+                        quantity = parseFloat(this.popupKeypad.getForm().value)
+                    } else {
+                        quantity = parseFloat(this.keypad.getForm().value)
+                    }
+                    
+                    break
+                default:
+                    if (this.state.chooseQuantity) {
+                        // If the keypad popup modal is open, use its value
+                        quantity = parseFloat(this.popupKeypad.getForm().value)
+                    } else {
+                        quantity = parseFloat(this.keypad.getForm().value)
+                    }
+                    
+                    break
             }
             
             if (!isNaN(quantity) && quantity > 0) {
-                let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-                let item = this.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
+                let item = this.wrappedInstance.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
                 
                 //alert('Adding ' + quantity + 'x ' + item.data.name + '(s) to the order.')
-                cart.addItem(item.id, quantity, item)
-                this.keypad.component.clear()
+                this.props.actions.cart.addItem(item.id, quantity, item)
                 
-                // TODO: Callback
-                /*this.stepper.start()
+                if (this.wrappedInstance.hasOwnProperty('keypad')) {
+                    this.wrappedInstance.keypad.component.clear()
+                }
+                
+                if (this.wrappedInstance.hasOwnProperty('stepper')) {
+                    this.wrappedInstance.stepper.start()
+                }
                 
                 let settings = this.props.settingStore.getSettings().posSettings
                 if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
@@ -65,16 +112,19 @@ export default (ComposedComponent) => {
                         category_id: settings['pinned_category_id']
                     })
                 } else {
-                    this.setStep('shop')
-                }*/
+                    //this.setStep('shop') // TODO: Uncomment
+                }
             } else {
                 alert('Please enter the desired quantity.')
             }
         }
         
         quickAddToCart(e) {
+            // Home component quickAddToCart
             this.addToCart(e) // Add to cart
-            this.popupKeypad.component.clear()
+            if (this.wrappedInstance.hasOwnProperty('popupKeypad')) {
+                this.wrappedInstance.popupKeypad.component.clear()
+            }
             
             // Close quantity keypad popup modal
             this.setState({
@@ -82,52 +132,100 @@ export default (ComposedComponent) => {
             })
         }
         
-        refresh() {
-            this.keypad.setField('value', 0)
+        addToCartClicked(e, item) {
+            // Home component addToCartClicked
+            e.preventDefault()
+            e.stopPropagation()
             
-            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            this.setState({ canSubmit : !cart.isEmpty() })
-        }
-        
-        reset() {
-            this.keypad.setField('value', 0)
-            
-            let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            cart.emptyCart()
-            
-            this.checkoutNotes.component.clear()
+            /*let stepId = 'options'
+            let stepDescriptor = this.wrappedInstance.stepper.getStepById(stepId) || null
 
-            let stepId = 'shop'
-            let stepDescriptor = this.stepper.getStepById(stepId) || null
-
-            if (typeof stepDescriptor !== null) {
-                let data = {}
+            if (stepDescriptor !== null) {
+                let data = item
                 
                 let isEnded = false
                 // Execute the step handler
-                this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+                this.wrappedInstance.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+                this.wrappedInstance.stepper.addItem(item.id, 1, item)
+            }*/
+            
+            switch (this.props.addToCartMode) {
+                case 'instant':
+                    // Temporarily store the selected product's information
+                    if (this.wrappedInstance.hasOwnProperty('stepper')) {
+                        this.wrappedInstance.stepper.addItem(item['product_id'], 1, item)
+                    }
+                    
+                    this.addToCart(e) // Add the item to the cart
+                    
+                    break
+                case 'popup':
+                    // Temporarily store the selected product's information (yes, that's right, zero quantity)
+                    if (this.wrappedInstance.hasOwnProperty('stepper')) {
+                        this.wrappedInstance.stepper.addItem(item['product_id'], 0, item) // Don't set a quantity just register the item
+                    }
+                    
+                    // And open the Keypad / Quantity selection modal
+                    this.setState({
+                        chooseQuantity: true
+                    })
+                    
+                    break
+                case 'normal':
+                    // Go to the product detail page / component
+                    break
+                default:
+                    break
+            }
+        }
+        
+        refresh() {
+            if (this.wrappedInstance.hasOwnProperty('keypad')) {
+                this.wrappedInstance.keypad.setField('value', 0)
+            }
+            
+            this.setState({ canSubmit: !this.props.cartStore.isEmpty() })
+        }
+        
+        reset() {
+            if (this.wrappedInstance.hasOwnProperty('keypad')) {
+                this.keypad.setField('value', 0)
+            }
+            
+            this.props.actions.cart.emptyCart()
+            
+            if (this.wrappedInstance.hasOwnProperty('checkoutNotes')) {
+                this.wrappedInstance.checkoutNotes.component.clear()
+            }
+
+            if (this.wrappedInstance.hasOwnProperty('stepper')) {
+                let stepId = 'shop'
+                let stepDescriptor = this.wrappedInstance.stepper.getStepById(stepId) || null
+
+                if (typeof stepDescriptor !== null) {
+                    let data = {}
+                    
+                    let isEnded = false
+                    // Execute the step handler
+                    this.wrappedInstance.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+                }
             }
         }
         
         getTotal() {
             let total = 0
-
-            if (typeof this.refs.cart !== 'undefined' && this.refs.cart !== null) {
-                let cart = (typeof this.refs.cart.getDecoratedComponentInstance === 'function') ? this.refs.cart.getDecoratedComponentInstance() : this.refs.cart
-            }
-
             return total
         }
         
         rowIterator(context, row) {
             if (!context) {
                 return {
-                    total : 0
+                    total: 0
                 }
             } else {
                 const price = Number(row.data['price'])
                 return {
-                    total : Number(context.total) + Number(row.quantity) * price
+                    total: Number(context.total) + Number(row.quantity) * price
                 }
             }
         }
@@ -136,11 +234,13 @@ export default (ComposedComponent) => {
             let props = Object.assign({}, this.props, {
                 getSelection: this.getSelection.bind(this),
                 addToCart: this.addToCart.bind(this),
-                quickAddToCart: this.quickAddToCart.bind(this)
+                quickAddToCart: this.quickAddToCart.bind(this),
+                addToCartClicked: this.addToCartClicked.bind(this)
             })
             
             return (
                 <ComposedComponent
+                    ref = {(instance) => this.wrappedInstance = instance}
                     {...props}
                     />
             )
