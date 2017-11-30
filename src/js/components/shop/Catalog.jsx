@@ -362,48 +362,7 @@ export default class Catalog extends Component {
         
         return (
             <main className="content-wrapper">{/* Main Content Wrapper */}
-                {/* Page Title */}
-                {/*<section className="container padding-top-3x">
-                  <h1 className="space-top-half tablet-center">Shop Boxed Filters Top</h1>
-                </section>*/}{/* .container-fluid */}
-                {/* Move this out into custom module */}
-                <section className="entryModule entryModule--saloni triggrParallx">
-                  <div className="entryModule__tile entryModule__tile--latter slideUp" style={{transform: 'matrix(1, 0, 0, 1, 0, -30)'}}>
-                    <div className="tileBg animateInView animateInView--pix isInView" data-delay="narrow" />
-                  </div>
-                  {/* entryModule__tile--latter */}
-                  <div className="entryModule__tile entryModule__tile--former slideDown--slow" style={{transform: 'matrix(1, 0, 0, 1, 0, 100)'}}>
-                    <div className="tileBg animateInView animateInView--pix isInView" />
-                  </div>
-                  {/* entryModule__tile--former */}
-                  <div className="entryModule__text slideUp--slow" style={{transform: 'matrix(1, 0, 0, 1, 0, -9.95)'}}>
-                    <h3>
-                      <span className="small">
-                        <div className="animateInView animateInView--text isInView" data-delay="medium">
-                          <span>COFFEE, MERCH  &amp; MORE</span>
-                        </div> {/* fieldEntry-text */}
-                      </span>{/* small */}
-                      <span className="big">
-                        <div className="animateInView animateInView--text isInView">
-                          <span>ONLINE OUTLET</span>
-                        </div> {/* fieldEntry-text */}
-                      </span>{/* big */}
-                    </h3>
-                    <p>Respecting the science and craft of the past, our team of reasters have developed an evolving portfolio of coffees that reflect our passion, philosophy and commitment to sensible roasting... the end goal - delicious artisan coffee.</p>
-                    <div className="btn animateInView isInView">
-                      <span className="btn__bg" />
-                      <a className="btn__link" href="#/category">
-                        <span className="buttonText">BROWSE ALL PRODUCTS
-                        </span>
-                        {/* buttonText */}
-                      </a>
-                      {/* a */}
-                    </div>
-                    {/* btn */}
-                  </div>
-                  {/* entryModule__text */}
-                </section>
-                
+    }
                 <CatalogFilterBar
                     items = {categories}
                     onFilterSelected = {this.props.onFilterSelected}
@@ -428,7 +387,7 @@ export default class Catalog extends Component {
                             resultsPerPage = {15}
                             customRowComponent = {ProductRow4x}
                             onItemClicked = {this.itemClicked}
-                            onAddToCartClicked = {this.addToCartClicked}
+                            onAddToCartClicked = {this.props.addToCartClicked}
                             onFilterSelected = {this.categoryFilterSelected}
                             onStepClicked = {this.stepClicked} 
                             />

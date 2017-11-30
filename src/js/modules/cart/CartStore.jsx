@@ -99,6 +99,19 @@ class CartStore extends EventEmitter {
     getSelection() {
         return this.selection
     }
+    
+    getCount() {
+        // TODO: This isn't working right yet
+        let total = 0
+        
+        if (this.selection instanceof Array && this.selection.length > 0) {
+            total = this.selection.reduce((total, selection) => {
+                return total + parseInt(selection.quantity)
+            }, total)
+        }
+        
+        return total
+    }
 
     isEmpty() {
         return !this.selection.length
@@ -111,11 +124,14 @@ class CartStore extends EventEmitter {
     addItem(key, quantity, item, silent) {
         // Cart store addItem
         silent = silent || false
-        let data = (item.hasOwnProperty('data')) ? item.data : null
+        let data = null
+        let options = []
         
         if (this.items.hasOwnProperty(key)) {
             data = this.items[key]
         } else {
+            data = (item.hasOwnProperty('data')) ? item.data : null
+            
             this.items[key] = data
         }
 
@@ -127,7 +143,11 @@ class CartStore extends EventEmitter {
                 // Now make sure the selected options are a match...
                 // If it isn't an exact match, we're going to assume a different 
                 // configuration for the same product, so skip this and create a new item
-                if (ArrayHelper.jsonSameMembers(item.options, this.selection[selectionKey].options)) {
+                
+                // Consider empty options property to be an empty array
+                options = (item.options instanceof Array) ? item.options : options
+                
+                if (ArrayHelper.jsonSameMembers(options, this.selection[selectionKey].options)) {
                     exists = true
                 }
             }
@@ -150,7 +170,7 @@ class CartStore extends EventEmitter {
                 id: key,
                 quantity: Number(quantity),
                 data: data,
-                options: [...item.options],
+                options: [...options],
                 _index: this.selection.length,
                 _key: this.nextKey++
             })

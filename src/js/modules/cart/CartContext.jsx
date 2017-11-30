@@ -52,49 +52,58 @@ export default (ComposedComponent) => {
             return (selection instanceof Array && selection.length > 0)
         }
         
-        addToCart(e) {
+        addToCart(e, item, quantity) {
             // CartContext.addToCart
             e.preventDefault()
             e.stopPropagation()
             
-            let quantity = 0
+            quantity = (!isNaN(quantity)) ? Number(quantity) : null
             
-            switch (this.props.addToCartMode) {
-                case 'instant':
-                    // Temporarily store the selected product's information
-                    quantity = 1
-                    
-                    break
-                case 'popup':
-                    if (!(this.state.chooseQuantity)) {
-                        quantity = parseFloat(this.keypad.getForm().value)
-                    }
-                    
-                    break
-                case 'normal':
-                    if (this.state.chooseQuantity) {
-                        // If the keypad popup modal is open, use its value
-                        quantity = parseFloat(this.popupKeypad.getForm().value)
-                    } else {
-                        quantity = parseFloat(this.keypad.getForm().value)
-                    }
-                    
-                    break
-                default:
-                    if (this.state.chooseQuantity) {
-                        // If the keypad popup modal is open, use its value
-                        quantity = parseFloat(this.popupKeypad.getForm().value)
-                    } else {
-                        quantity = parseFloat(this.keypad.getForm().value)
-                    }
-                    
-                    break
+            if (quantity === null) {
+                quantity = 0
+                
+                switch (this.props.addToCartMode) {
+                    case 'instant':
+                        // Temporarily store the selected product's information
+                        quantity = 1
+                        
+                        break
+                    case 'popup':
+                        if (!(this.state.chooseQuantity)) {
+                            quantity = parseFloat(this.keypad.getForm().value)
+                        }
+                        
+                        break
+                    case 'normal':
+                        if (this.state.chooseQuantity) {
+                            // If the keypad popup modal is open, use its value
+                            quantity = parseFloat(this.popupKeypad.getForm().value)
+                        } else {
+                            quantity = parseFloat(this.keypad.getForm().value)
+                        }
+                        
+                        break
+                    default:
+                        if (this.state.chooseQuantity) {
+                            // If the keypad popup modal is open, use its value
+                            quantity = parseFloat(this.popupKeypad.getForm().value)
+                        } else {
+                            quantity = parseFloat(this.keypad.getForm().value)
+                        }
+                        
+                        break
+                }
             }
             
-            if (!isNaN(quantity) && quantity > 0) {
-                let item = this.wrappedInstance.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
+            if (!isNaN(quantity) && quantity > -1) {
+                if (this.wrappedInstance.hasOwnProperty('stepper')) {
+                    item = this.wrappedInstance.stepper.getItem(0) // Hardcoded to zero indexed item, should be fine because we explicitly clear the stepper selection
+                }
                 
-                //alert('Adding ' + quantity + 'x ' + item.data.name + '(s) to the order.')
+                item = item || null
+                
+                if (item === null) throw new Error('Attempted to add non-item to cart!')
+                
                 this.props.actions.cart.addItem(item.id, quantity, item)
                 
                 if (this.wrappedInstance.hasOwnProperty('keypad')) {
@@ -132,7 +141,7 @@ export default (ComposedComponent) => {
             })
         }
         
-        addToCartClicked(e, item) {
+        addToCartClicked(e, item, quantity) {
             // Home component addToCartClicked
             e.preventDefault()
             e.stopPropagation()
@@ -156,7 +165,7 @@ export default (ComposedComponent) => {
                         this.wrappedInstance.stepper.addItem(item['product_id'], 1, item)
                     }
                     
-                    this.addToCart(e) // Add the item to the cart
+                    this.addToCart(e, item, quantity) // Add the item to the cart
                     
                     break
                 case 'popup':
@@ -172,7 +181,7 @@ export default (ComposedComponent) => {
                     
                     break
                 case 'normal':
-                    // Go to the product detail page / component
+                    // Go to the product detail page / component (unless we're there already?)
                     break
                 default:
                     break
