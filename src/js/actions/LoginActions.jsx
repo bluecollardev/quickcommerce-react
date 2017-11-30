@@ -21,8 +21,9 @@ export default (dispatcher) => {
         },
         logoutUser: () => {
             sessionStorage.removeItem('userToken')
+            sessionStorage.removeItem('refreshToken')
+            sessionStorage.removeItem('userCreds')
             sessionStorage.removeItem('user')
-            sessionStorage.removeItem('creds')
             
             dispatcher.dispatch({
                 actionType: LoginConstants.LOGOUT_USER
@@ -34,7 +35,7 @@ export default (dispatcher) => {
                 userCreds = (typeof userCreds === 'string') ? userCreds : userCreds
                 
                 dispatcher.dispatch({
-                    actionType: LoginConstants.LOGIN_USER,
+                    actionType: LoginConstants.SET_CREDS,
                     userCreds: userCreds
                 })
             
