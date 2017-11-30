@@ -244,6 +244,8 @@ class SignInForm extends Component {
     }
     
     render() {
+		let useSso = this.props.sso || false
+		
         if (this.props.loggedIn) {
             return (
                 <div className='account-welcome'>
@@ -272,15 +274,19 @@ class SignInForm extends Component {
                     </Alert>
                     )}
                     <form>
-                        <FormGroup className='display-block'>
+                        {!useSso && (
+						<FormGroup className='display-block'>
                             <ControlLabel>Username (E-mail Address)</ControlLabel>
                             <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
                         </FormGroup>
-                        
+						)}
+						
+                        {!useSso && (
                         <FormGroup className='display-block'>
                             <ControlLabel>Password</ControlLabel>
                             <FormControl type='password' {...this.props.fields('password', this.state.password)} />
                         </FormGroup>
+						)}
                         
                         <FormGroup className='display-block'>
                             {this.props.displayActions && (
@@ -288,14 +294,20 @@ class SignInForm extends Component {
                                 <h4><i className='fa fa-user-plus' /> Create Account</h4>
                             </Button>
                             )}
+							
+							{!useSso && (
                             <Button block bsStyle='success' onClick={this.onSubmit}>
                                 <h4><i className='fa fa-sign-in' /> Sign In</h4>
                             </Button>
+							)}
                         </FormGroup>
-                        <FormGroup style={{ display: 'flex', alignItems: 'center' }}>
+						
+                        {!useSso && (
+						<FormGroup style={{ display: 'flex', alignItems: 'center' }}>
                             <FormControl onClick={this.toggleRemember} style={{ display: 'inline-block', width: '24px', marginRight: '1rem' }} type='checkbox' checked={this.state.remember} />
                             <ControlLabel style={{ display: 'inline-block', paddingTop: '0.35rem' }}>Remember Me</ControlLabel>
                         </FormGroup>
+						)}
                     </form>
                 </div>
             )
