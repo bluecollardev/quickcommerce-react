@@ -63,10 +63,34 @@ export default class ProductBrowser extends Component {
         this.onChange = this.onChange.bind(this)
 
         this.state = this.getInitialState()
-        this.dispatcher = new Dispatcher()
-        this.store = new BrowserStore(this.dispatcher)
-        this.actions = BrowserActions(this.dispatcher)
+        
+		// Initialize or set ProductBrowser dispatcher
+		if (!props.hasOwnProperty('dispatcher')) {
+			this.dispatcher = new Dispatcher()
+		} else {
+			this.dispatcher = props.dispatcher
+		}
+		
+		// Initialize or set ProductBrowser store
+		if (!props.hasOwnProperty('store')) {
+			this.store = new BrowserStore(this.dispatcher)
+		} else {
+			this.store = props.store
+		}
+		
+		// Initialize or set ProductBrowser actions
+		if (!props.hasOwnProperty('actions')) {
+			this.actions = BrowserActions(this.dispatcher)
+		} else {
+			this.actions = props.actions
+		}
     }
+	
+	// Need to pass in non-default actions, this component needs some work, right now it's a fucking hassle to get it working 
+	// in any manner other than with Quick Commerce endpoints
+	setActions(actions) {
+		this.actions = actions
+	}
 
     // TODO: Fry anything we don't need in here!
     getInitialState() {
@@ -104,11 +128,17 @@ export default class ProductBrowser extends Component {
         }
     }
     
+	// ProductBrowser.onChange
     onChange() {
         // Grab our items and update our component state whenever the BrowserStore is updated
         let items = this.store.getItems()
         let categories = this.store.getCategories()
         let options = this.store.getOptions()
+		
+		/*console.log('product browser state change detected')
+		console.log(categories)
+		console.log(items)
+		console.log(options)*/
 
         this.setState({
             categories: categories,
@@ -310,6 +340,9 @@ export default class ProductBrowser extends Component {
         // Render ProductBrowser
         let rowComponent = this.configureRow(this.props.customRowComponent)
         let item = this.props.item || null
+		
+		console.log('product browser render triggered')
+		console.log(this.state)
 
         return (
             <div className='browser-container'>

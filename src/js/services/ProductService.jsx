@@ -16,7 +16,7 @@ class ProductService extends BaseService {
     get(id, onSuccess, onError) {
         // Get the account
         axios({
-            url: QC_RESOURCE_API + 'product/' + id,
+            url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
             dataType: 'json',
             contentType: 'application/json',
             async: false,
@@ -58,9 +58,6 @@ class ProductService extends BaseService {
 		onError)
     }
     
-    /**
-     * Override parent implementation.
-     */
     post(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
@@ -68,35 +65,18 @@ class ProductService extends BaseService {
         }*/
         
         axios({
-            url: QC_RESOURCE_API + 'product/' + id,
+            url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
             data: data,
             dataType: 'json',
             method: 'PATCH',
             contentType: 'application/json'
         }).then(response => {
-            if (response.success || response.status === 200) {
-                if (response.hasOwnProperty('data')) {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                } else {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                }
-            } else {
-                if (typeof onError === 'function') {
-                    onError(response)
-                }
-            }
+            this.handleResponse(response, onSuccess, onError)
         }).catch(err => {
             this.handleError('', onError, err)
         })
     }
     
-    /**
-     * Override parent implementation.
-     */
     put(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
@@ -105,30 +85,16 @@ class ProductService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: QC_RESOURCE_API + 'product/' + id,
+                url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
                 contentType: 'application/json'
             }).then(response => {
-                if (response.success || response.status === 200) {
-                    if (response.hasOwnProperty('data')) {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    } else {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    }
-                } else {
-                    if (typeof onError === 'function') {
-                        onError(response)
-                    }
-                }
-            }).catch(err => {
-                this.handleError('', onError, err)
-            })
+				this.handleResponse(response, onSuccess, onError)
+			}).catch(err => {
+				this.handleError('', onError, err)
+			})
         }
     }
     
@@ -143,37 +109,23 @@ class ProductService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: QC_RESOURCE_API + 'product/' + id,
+                url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
                 contentType: 'application/json'
             }).then(response => {
-                if (response.success || response.status === 200) {
-                    if (response.hasOwnProperty('data')) {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    } else {
-                        if (typeof onSuccess === 'function') {
-                            onSuccess(response.data)
-                        }
-                    }
-                } else {
-                    if (typeof onError === 'function') {
-                        onError(response)
-                    }
-                }
-            }).catch(err => {
-                this.handleError('', onError, err)
-            })       
+            this.handleResponse(response, onSuccess, onError)
+			}).catch(err => {
+				this.handleError('', onError, err)
+			})       
         }
     }
     
     /**
      * Override parent implementation.
      */
-    delete(id) {
+    delete(id, onSuccess, onError) {
     }
 }
 

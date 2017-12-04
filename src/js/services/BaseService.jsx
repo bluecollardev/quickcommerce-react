@@ -82,9 +82,9 @@ export class BaseService {
     }
     
     handleError(message, onError, data) {
-        console.log('ERROR!')
-        console.log(message)
-        console.log(data)
+        console.log('handle ERROR!')
+        //console.log(message)
+        //console.log(data)
         if (typeof onError === 'function') {
             onError(message, data) // TODO: Type check
         } else {
