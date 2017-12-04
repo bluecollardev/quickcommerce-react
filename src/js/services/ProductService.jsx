@@ -1,74 +1,61 @@
 import assign from 'object-assign'
+
 import axios from 'axios'
+
+import { BaseService } from './BaseService.jsx'
 
 import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
 import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
 import StringHelper from 'quickcommerce-react/helpers/String.js'
 
-export class SampleService extends BaseService {
+class ProductService extends BaseService {
     /**
+	 * Retrieves a Product.
      * Override parent implementation.
-     */
-    onSuccess() {
-    }
-    
-    /**
-     * Override parent implementation.
-     */
+	 */
     get(id, onSuccess, onError) {
+        // Get the account
         axios({
-            url: ''
-            type: 'GET',
+            url: QC_RESOURCE_API + 'product/' + id,
             dataType: 'json',
             contentType: 'application/json',
-            async: false
+            async: false,
+			method: 'GET',
         }).then(response => {
-            if (response.success || response.status === 200) {
-                if (response.hasOwnProperty('data')) {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                } else {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
                 }
-            } else {
-                if (typeof onError === 'function') {
-                    onError(response)
-                }
-            }
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            (() => {
+               //this.refetchAccount() 
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
         }).catch(err => {
             this.handleError('', onError, err)
         })
     }
     
     /**
-     * Get the entity and execute a callback / set to store.
-     */
-    fetch(id, onSuccess, onError) {
-        axios({
-            url: '',
-            method: 'GET'
-        }).then(response => {
-            if (response.success || response.status === 200) {
-                if (response.hasOwnProperty('data')) {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                } else {
-                    if (typeof onSuccess === 'function') {
-                        onSuccess(response.data)
-                    }
-                }
-            } else {
-                if (typeof onError === 'function') {
-                    onError(response)
-                }
-            }
-        }).catch(err => {
-            this.handleError('', onError, err)
-        })
+	 * Retrieves a Product and saves a local copy in ProductStore.
+	 */
+	fetch(id, onSuccess, onError) {
+        this.get(id, 
+		// onSuccess
+		((payload) => {
+			let data = payload
+                
+			this.actions.product.setProduct(data)
+			
+			if (typeof onSuccess === 'function') {
+				onSuccess(data)
+			}
+		}).bind(this),
+		onError)
     }
     
     /**
@@ -81,7 +68,7 @@ export class SampleService extends BaseService {
         }*/
         
         axios({
-            url: '',
+            url: QC_RESOURCE_API + 'product/' + id,
             data: data,
             dataType: 'json',
             method: 'PATCH',
@@ -118,7 +105,7 @@ export class SampleService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: '',
+                url: QC_RESOURCE_API + 'product/' + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
@@ -156,7 +143,7 @@ export class SampleService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: '',
+                url: QC_RESOURCE_API + 'product/' + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
@@ -190,4 +177,4 @@ export class SampleService extends BaseService {
     }
 }
 
-export default SampleService
+export default ProductService

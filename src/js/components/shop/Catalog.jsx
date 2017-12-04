@@ -56,30 +56,10 @@ export default class Catalog extends Component {
         this.stepper.setSteps(this.configureSteps())
     }
     
-    componentDidMount() {
-        /*let orderButton = document.getElementById('cart-button')
-        console.log('order button')
-        console.log(orderButton)
-        
-        orderButton.addEventListener('click', (e) => {
-            e.preventDefault()
-            
-            let scrollDuration = 666
-            let scrollStep = -window.scrollY / (scrollDuration / 15),
-                scrollInterval = setInterval(() => {
-                if (window.scrollY !== 0) {
-                    window.scrollBy(0, scrollStep)
-                } else clearInterval(scrollInterval)
-            }, 15)
-            
-            this.setState({
-                cart: 1
-            })
-        })*/
-        
+    componentDidMount() {        
         let settings = this.props.settingStore.getSettings().posSettings
 
-        settings['pinned_category_id'] = 204 // 'New' category
+        settings['pinned_category_id'] = null // 'New' category
         let categoryId = null
         
         // Load categories
@@ -98,15 +78,10 @@ export default class Catalog extends Component {
             categoryId = parseInt(this.props.match.params.cat)
         } else if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
             categoryId = parseInt(settings['pinned_category_id'])
-        } else {
-            //categoryId = null
-            categoryId = 204
         }
         
         // Just load browser products, don't trigger any steps
         this.catalogBrowser.actions.loadProducts(categoryId)
-        
-        
     }
     
     configureSteps() {
@@ -298,7 +273,10 @@ export default class Catalog extends Component {
         
         this.props.actions.product.setProduct(item)
         
-        window.location.hash = '#/product'
+        // TODO: Leave this in as log if debug mode
+        console.log('opening product page for item:')
+        console.log(item)
+        window.location.hash = '#/product/' + item['product_id'] + '/' + item['name'] // TODO: Use mappings! And use websafe/SEO URL (currently unavailable)
         
         /*let stepId = 'options'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
@@ -361,8 +339,8 @@ export default class Catalog extends Component {
         let categories = this.props.catalogStore.getCategories()
         
         return (
-            <main className="content-wrapper">{/* Main Content Wrapper */}
-    }
+            <main className="content-wrapper">
+                {/* Main Content Wrapper */}
                 <CatalogFilterBar
                     items = {categories}
                     onFilterSelected = {this.props.onFilterSelected}

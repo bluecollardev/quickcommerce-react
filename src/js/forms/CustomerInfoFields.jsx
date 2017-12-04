@@ -1,11 +1,12 @@
 export default {
     CUSTOMER_ID: 'customer_id',
-    USER_NAME: 'user_name',
+    USER_NAME: 'username',
+    COMPANY_NAME: 'company_name',
     DISPLAY_NAME: 'display_name',
     PREFERRED_NAME: 'preferred_name',
-    FIRST_NAME: 'first_name',
-    MIDDLE_NAME: 'middle_name',
-    LAST_NAME: 'last_name',
+    FIRST_NAME: 'firstname',
+    MIDDLE_NAME: 'middlename',
+    LAST_NAME: 'lastname',
     INITIAL: 'initial',
     TITLE: 'title',
     SALUTATION: 'title',
@@ -17,10 +18,11 @@ export default {
     DOB_DAY: 'dob_day',
     DOB: 'dob',
     SIN: 'sin',
-    COMPANY_NAME: 'company_name',
     EMAIL: 'email',
     MOBILE: 'mobile',
     TELEPHONE: 'telephone',
     PASSWORD: 'password',
-    CONFIRM: 'confirm'
+    CONFIRM: 'confirm',
+    AGREE: 'confirm',
+    LANGUAGE: 'lang'
 }

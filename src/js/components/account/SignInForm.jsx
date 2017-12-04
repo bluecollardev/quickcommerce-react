@@ -284,12 +284,14 @@ class SignInForm extends Component {
                         
                         <FormGroup className='display-block'>
                             {this.props.displayActions && (
-                            <Button block onClick={this.onCreate}>
-                                <h4><i className='fa fa-user-plus' /> Create Account</h4>
+                            <Button block onClick={this.onCreate} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
+                                {/*<h4><i className='fa fa-user-plus' /> Create Account</h4>*/}
+                                <span><i className='fa fa-user-plus' /> Create Account</span>
                             </Button>
                             )}
-                            <Button block bsStyle='success' onClick={this.onSubmit}>
-                                <h4><i className='fa fa-sign-in' /> Sign In</h4>
+                            <Button block bsStyle='success' onClick={this.onSubmit} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
+                                {/*<h4><i className='fa fa-sign-in' /> Sign In</h4>*/}
+                                <span><i className='fa fa-sign-in' /> Sign In</span>
                             </Button>
                         </FormGroup>
                         <FormGroup style={{ display: 'flex', alignItems: 'center' }}>

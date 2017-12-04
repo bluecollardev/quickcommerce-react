@@ -175,12 +175,44 @@ class BrowserStore extends EventEmitter {
         return this.items[this.config.key]
     }
     
+    getItem() {
+        
+    }
+    
     getCategories() {
         return this.items['categories']
     }
     
     getOptions() {
         return this.items['options']
+    }
+    
+    getProductOptions() {
+        return this.getOptions()
+    }
+    
+    getProductOptionValues(productOptionId) {
+        let values = []
+        
+        let productOption = this.items['options'].filter(option => {
+            return option['product_option_id'] === productOptionId
+        })
+        
+        if (productOption.length === 1) {
+            values = productOption[0]['product_option_values']
+        }
+        
+        return values
+    }
+    
+    getOption(productOptionId) {
+        let productOption = this.items['options'].filter(option => {
+            return option['product_option_id'] === productOptionId
+        })
+        
+        if (productOption.length === 1) {
+            return productOption.option
+        }
     }
     
     buildDataStore() {

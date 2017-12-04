@@ -19,6 +19,8 @@ export default class ProductOptionRow extends Component {
         super(props)
         
         this.configureRow = this.configureRow.bind(this)
+        
+        console.log('init row')
     }
     
     configureRow(rowComponent) {
@@ -44,27 +46,35 @@ export default class ProductOptionRow extends Component {
     }
     
     render() {
+        // Render ProductOptionRow
         let rowComponent = this.configureRow(ProductOptionValue)
-        let data = this.props.data['option_value'] || []
+        // TODO: Use mapping or POJO
+        let data = this.props.data['product_option_values'] || []
         if (data instanceof Array && data.length > 0) {
-            data = data.map(optionValue => {
-                optionValue = assign({}, optionValue, {
+            data = data.map(value => {
+                let optionValue = {
+                    name: value['option_value']['description'][0]['name'],
+                    image: value['option_value']['image'],
+                    price: value['price'],
                     option: assign({}, this.props.data),
                     product: assign({}, this.props.data.product)
-                })
+                }
                 
-                delete optionValue['option']['option_value'] // Kill ref
-                delete optionValue['option']['product'] // Kill ref
+                //delete optionValue['option']['option_value'] // Kill ref
+                //delete optionValue['option']['product'] // Kill ref
                 
                 return optionValue
             })
         }
         
+        console.log('rendering row')
+        console.log(data)
+        
         return (
             <Col xs={12}>
                 <div className='card product-options-card row'>
                     <p className='item-name'>
-                        {this.props.data['name']}
+                        {/*this.props.data['name']*/}Option
                     </p>
                     <Grid fluid={true} className='product-option-grid'>
                         <Griddle

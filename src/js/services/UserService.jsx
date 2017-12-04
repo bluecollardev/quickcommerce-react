@@ -6,7 +6,7 @@ import CustomerConstants from '../constants/CustomerConstants.jsx'
 
 import { BaseService } from './BaseService.jsx'
 
-export default class UserService extends BaseService {
+class UserService extends BaseService {
     processResponse(onSuccess, onError) {
         //customerModule.clearCustomer()
         if (response.status === 200 && response.data.success === true) {
@@ -360,3 +360,5 @@ export default class UserService extends BaseService {
         }
     }
 }
+
+export default UserService

@@ -56,7 +56,7 @@ export default class ProductOptionValue extends Component {
                 <Col xs={12} sm={3} md={3} lg={3}>
                     <div className={['card', selected].join(' ')}
                         onClick = {this.onClick.bind(this, this.props.data)}>
-                        <Thumbnail src={this.props.data.image} />
+                        <Thumbnail src={QC_IMAGES_URI + this.props.data.image} />
                         <p className='item-name'>
                             {this.props.data['name']}
                         </p>

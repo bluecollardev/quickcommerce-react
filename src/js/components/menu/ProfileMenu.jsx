@@ -8,15 +8,16 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
 import Avatar from 'material-ui/Avatar'
+import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 import List, { ListItem, ListItemText } from 'material-ui/List'
 
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
-@inject(deps => ({
+/*@inject(deps => ({
     actions: deps.actions,
     authService: deps.authService
 }))
-@observer
+@observer*/
 class ProfileMenu extends Component {
     constructor(props) {
         super(props)
@@ -48,22 +49,39 @@ class ProfileMenu extends Component {
     }
     
     render() {
-        if (this.props.loggedIn) {
-            return (
-                <div className='logo'>
-                    <ListItem button>
-                        <Avatar src='https://i.pinimg.com/736x/61/6e/c3/616ec3042d9fd9525f118c222c783802---actors-james-bond-actors.jpg' />
-                        <ListItemText
-                            primary = {<div><a href='#/account/edit'>James Bond</a></div>}
-                            secondary = {<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
-                    </ListItem>
-                </div>
-            )
-        } else {
-            return null
-        }
+        return (
+            <div className='logo'>
+                <ListItem button>
+                    {!this.props.loggedIn && (
+                    <Avatar>
+                        <AccountCircleIcon />
+                    </Avatar>
+                    )}
+                    
+                    {this.props.loggedIn && (
+                    <Avatar src='https://i.pinimg.com/736x/61/6e/c3/616ec3042d9fd9525f118c222c783802---actors-james-bond-actors.jpg' />
+                    )}
+                    
+                    {!this.props.loggedIn && (
+                    <ListItemText
+                        secondary = {<div><a href='#/account/login' onClick={this.showSignInForm}>Sign In</a></div>} />
+                    )}
+                    
+                    {!this.props.loggedIn && (
+                    <ListItemText
+                        secondary = {<div><a href='#/account/register' onClick={this.showRegistrationForm}>New Account</a></div>} />
+                    )}
+                    
+                    {this.props.loggedIn && (
+                    <ListItemText
+                        primary = {<div><a href='#/account/edit'>James Bond</a></div>}
+                        secondary = {<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
+                    )}
+                </ListItem>
+            </div>
+        )
     }   
 }
 
-export default AuthenticatedComponent(ProfileMenu)
+export default ProfileMenu
 export { ProfileMenu }

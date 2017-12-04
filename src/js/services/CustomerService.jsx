@@ -8,7 +8,7 @@ import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
-export default class CustomerService extends BaseService {    
+class CustomerService extends BaseService {    
     // TODO: Move to consuming project
     setCustomer(data) {
         // Try using/fetching the customer's default address
@@ -495,3 +495,5 @@ export default class CustomerService extends BaseService {
         })
     }
 }
+
+export default CustomerService

@@ -113,7 +113,7 @@ class AccountComponent extends Component {
     render() {       
         return (
             <div className='container-fluid'>
-                {!this.props.loggedIn && (
+                {!this.props.loginStore.isLoggedIn() && (
                 <Modal
                     show = {true}>
                     {!this.props.loggedIn && this.props.location.pathname === '/account/login' && false && (
@@ -177,7 +177,7 @@ class AccountComponent extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*/}
                 
                 {this.props.location.pathname === '/account/login' && (
                 <div className='section_wrapper mcb-section-inner full-width-inputs'>
@@ -216,9 +216,9 @@ class AccountComponent extends Component {
                 {!this.props.loggedIn && this.props.location.pathname === '/account/register' && (
                 <Row>
                     <CustomerProfile
-                        customer = {this.props.customer}
-                        billingAddress = {this.props.billingAddress}
-                        shippingAddress = {this.props.shippingAddress}
+                        customer = {this.props.customerStore.customer}
+                        billingAddress = {this.props.customerStore.billingAddress}
+                        shippingAddress = {this.props.customerStore.shippingAddress}
                         editAccount = {false}
                         createAccount = {true}
                         displayProfile = {true}
@@ -234,9 +234,9 @@ class AccountComponent extends Component {
                 {this.props.loggedIn && this.props.location.pathname === '/account/edit' && (
                 <Row>
                     <CustomerProfile
-                        customer = {this.props.customer}
-                        billingAddress = {this.props.billingAddress}
-                        shippingAddress = {this.props.shippingAddress}
+                        customer = {this.props.customerStore.customer}
+                        billingAddress = {this.props.customerStore.billingAddress}
+                        shippingAddress = {this.props.customerStore.shippingAddress}
                         editAccount = {true}
                         createAccount = {false}
                         displayProfile = {true}
@@ -248,10 +248,10 @@ class AccountComponent extends Component {
                     </CustomerProfile>
                 </Row>
                 )}
-                */}
             </div>
         )
     }
 }
 
 export default AccountComponent
+export { AccountComponent }

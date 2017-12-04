@@ -11,6 +11,12 @@ import { Button, Checkbox, Radio, } from 'react-bootstrap'
 
 import HtmlHelper from 'quickcommerce-react/helpers/HTML.js'
 
+import ProductGalleryFullwidthWithGap from '../gallery/ProductGalleryFullwidthWithGap.jsx'
+import GalleryFullwidthWithGap from '../gallery/GalleryFullwidthWithGap.jsx'
+import GalleryFullwidthNoGap from '../gallery/GalleryFullwidthNoGap.jsx'
+import GalleryBoxedWithGap from '../gallery/GalleryBoxedWithGap.jsx'
+import GalleryBoxedNoGap from '../gallery/GalleryBoxedNoGap.jsx'
+
 export default class ProductSummary extends Component {
     constructor(props) {
         super(props)
@@ -103,6 +109,15 @@ export default class ProductSummary extends Component {
            options = this.state.product.options
         }
         
+        let images = []
+        
+        if (this.state.product) {
+            // TODO: Use mappings!
+            if (this.state.product.hasOwnProperty('images')) {
+                images = this.state.product['images']
+            }
+        }
+        
         return (
             <div className="summary entry-summary">
                 {/* Microdata */}
@@ -110,15 +125,16 @@ export default class ProductSummary extends Component {
                 <link itemProp="availability" href="http://schema.org/InStock" />*/}
                 <div className="product-details">
                     <div className="row">
-                      <div className="col-sm-12 col-md-3 featured_image top_row" 
-                        style={{
-                            backgroundImage: 'url(' + QC_IMAGES_URI + this.state.product.image + ')',
-                            backgroundSize: 'cover', 
-                            height: 450
-                        }}>
-                        <div className="product_section">
-                          &nbsp;
-                        </div>
+                      <div className="col-sm-12 col-md-3">
+                        <div className="row featured_image top_row" 
+                            style={{
+                                backgroundImage: 'url(' + QC_IMAGES_URI + this.state.product.image + ')',
+                                backgroundSize: 'cover', 
+                                height: 450
+                            }} />
+                        <ProductGalleryFullwidthWithGap 
+                            dataSource={images}
+                            {...this.props} />
                       </div>
                       <div className="col-sm-12 col-md-8 top_row">
                         {/*<div className="row">

@@ -1526,10 +1526,10 @@ export default (ComposedComponent) => {
         }
         
         onSettingsLoaded(payload) {
+            // PosContext.onSettingsLoaded
             let { customerStore, checkoutStore, checkoutService } = this.props
             
             checkoutStore.settings = payload
-
             // We only wanna do this once, so stick 'er right up top
             checkoutService.createOrder({
                 action: 'insert'

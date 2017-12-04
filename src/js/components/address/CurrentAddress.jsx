@@ -324,6 +324,8 @@ class CurrentAddress extends Component {
             return null // Don't render
         }
         
+        const settingStore = this.props.settingStore
+        
         return (
             <div>
                 {this.props.title && (
@@ -487,14 +489,14 @@ class CurrentAddress extends Component {
                             </FormGroup>
                             
                             {/* Common Address Fields */}
-                            <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
+                            <FormGroup className='form-element form-select autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Country*</ControlLabel>
                                 <Autocomplete
                                     name={mappings.COUNTRY}
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
-                                    items={this.state.countries}
+                                    items={this.props.settingStore.getCountries()}
                                     renderItem={(item, isHighlighted) => {
                                         return (
                                             <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -512,8 +514,8 @@ class CurrentAddress extends Component {
                                         this.props.field(mappings.COUNTRY, value)
                                         
                                         this.setState(assign({}, this.state, {
-                                            data: assign({}, this.state.data, {
-                                                [mappings.COUNTRY]: value
+                                            data: assign({}, data, {
+                                                country: value
                                             })
                                         }))
                                         
@@ -531,7 +533,7 @@ class CurrentAddress extends Component {
                                             })
                                         }))
                                         
-                                        this.props.settingStore.parseZones(item.id)
+                                        this.props.settingStore.getZones(item.id)
                                     }}
                                     inputProps={
                                         assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
@@ -539,14 +541,14 @@ class CurrentAddress extends Component {
                                 />
                                 <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
                             </FormGroup>
-                            <FormGroup className='autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
+                            <FormGroup className='form-element form-select autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Prov.*</ControlLabel>
                                 <Autocomplete
                                     name={mappings.ZONE}
                                     getItemValue={(item) => {
                                         return item.value
                                     }}
-                                    items={this.state.zones}
+                                    items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
                                     renderItem={(item, isHighlighted) => {
                                         return (
                                             <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
@@ -564,8 +566,8 @@ class CurrentAddress extends Component {
                                         this.props.fields(mappings.ZONE, value)
                                         
                                         this.setState(assign({}, this.state, {
-                                            data: assign({}, this.data, {
-                                                zone: value
+                                            data: assign({}, data, {
+                                                [mappings.ZONE]: value
                                             })
                                         }))
                                     }}
@@ -576,8 +578,8 @@ class CurrentAddress extends Component {
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
                                         this.setState(assign({}, this.state, {
                                             data: assign({}, data, {
-                                                zone_id: item.id,
-                                                zone: value 
+                                                [mappings.ZONE_ID]: item.id,
+                                                [mappings.ZONE]: value 
                                             })
                                         }))
                                     }}
