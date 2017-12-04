@@ -21,11 +21,30 @@ export default (dispatcher) => {
         },
         logoutUser: () => {
             sessionStorage.removeItem('userToken')
+            sessionStorage.removeItem('refreshToken')
+            sessionStorage.removeItem('userCreds')
             sessionStorage.removeItem('user')
             
             dispatcher.dispatch({
                 actionType: LoginConstants.LOGOUT_USER
             })
+        },
+		setCreds: () => {
+            try {
+                let savedCreds = sessionStorage.getItem('userCreds')
+                userCreds = (typeof userCreds === 'string') ? userCreds : userCreds
+                
+                dispatcher.dispatch({
+                    actionType: LoginConstants.SET_CREDS,
+                    userCreds: userCreds
+                })
+            
+                if (savedCreds !== userCreds) {
+                    sessionStorage.setItem('userCreds', userCreds)
+                }
+            } catch (err) {
+                console.log(err)
+            } 
         }
     }
 }
