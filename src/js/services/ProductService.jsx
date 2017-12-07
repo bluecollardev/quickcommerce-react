@@ -4,23 +4,21 @@ import axios from 'axios'
 
 import { BaseService } from './BaseService.jsx'
 
-import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
-import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
-import StringHelper from 'quickcommerce-react/helpers/String.js'
+import ArrayHelper from '../helpers/Array.js'
+import ObjectHelper from '../helpers/Object.js'
+import StringHelper from '../helpers/String.js'
 
 class ProductService extends BaseService {
     /**
-	 * Retrieves a Product.
-     * Override parent implementation.
-	 */
+     * Retrieves a Product.
+     */
     get(id, onSuccess, onError) {
-        // Get the account
         axios({
-            url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
+            url: QC_RESOURCE_API + 'product/' + id,
+            type: 'GET',
             dataType: 'json',
             contentType: 'application/json',
-            async: false,
-			method: 'GET',
+            async: false
         }).then(response => {
             this.handleResponse(response, 
             // onSuccess
@@ -39,11 +37,37 @@ class ProductService extends BaseService {
             this.handleError('', onError, err)
         })
     }
+	
+	getCollection(onSuccess, onError) {
+		axios({
+            url: QC_RESOURCE_API + 'product/',
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false
+        }).then(response => {
+            this.handleResponse(response, 
+            // onSuccess
+            ((payload) => {
+                if (typeof onSuccess === 'function') {
+                    onSuccess(payload)
+                }
+            }).bind(this), // Bind to current context
+            // onError - fail silently
+            (() => {
+               //this.refetchAccount() 
+            }).bind(this),
+            // Use legacy API compatibility
+            true)
+        }).catch(err => {
+            this.handleError('', onError, err)
+        })
+	}
     
     /**
 	 * Retrieves a Product and saves a local copy in ProductStore.
-	 */
-	fetch(id, onSuccess, onError) {
+     */
+    fetch(id, onSuccess, onError) {
         this.get(id, 
 		// onSuccess
 		((payload) => {
@@ -57,7 +81,24 @@ class ProductService extends BaseService {
 		}).bind(this),
 		onError)
     }
+	
+	/**
+	 * Retrieves Products and saves a local copy in ProductStore.
+	 */
+	fetchCollection(onSuccess, onError) {
+        this.getCollection(((payload) => {
+			let data = payload
+                
+			this.actions.product.setProducts(data)
+			
+			if (typeof onSuccess === 'function') {
+				onSuccess(data)
+			}
+		}).bind(this), onError)
+    }
     
+    /**
+     */
     post(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
@@ -65,7 +106,7 @@ class ProductService extends BaseService {
         }*/
         
         axios({
-            url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
+            url: QC_RESOURCE_API + 'product/' + id,
             data: data,
             dataType: 'json',
             method: 'PATCH',
@@ -77,6 +118,8 @@ class ProductService extends BaseService {
         })
     }
     
+    /**
+     */
     put(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
@@ -85,7 +128,7 @@ class ProductService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
+                url: QC_RESOURCE_API + 'product/' + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
@@ -99,7 +142,6 @@ class ProductService extends BaseService {
     }
     
     /**
-     * Override parent implementation.
      */
     patch(data, onSuccess, onError) {
         /* Example converting payload to camelcase
@@ -109,7 +151,7 @@ class ProductService extends BaseService {
         
         if (data.id !== null) {
             axios({
-                url: INDIGO_BASE_URI + COMMON_INVENTORY + id,
+                url: QC_RESOURCE_API + 'product/' + id,
                 data: data,
                 method: 'PATCH',
                 dataType: 'json',
@@ -123,7 +165,6 @@ class ProductService extends BaseService {
     }
     
     /**
-     * Override parent implementation.
      */
     delete(id, onSuccess, onError) {
     }

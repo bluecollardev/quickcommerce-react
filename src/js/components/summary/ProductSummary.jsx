@@ -23,20 +23,21 @@ export default class ProductSummary extends Component {
         
         this.getDescription = this.getDescription.bind(this)
         this.toggleOptions = this.toggleOptions.bind(this)
-        this.configureRow = this.configureRow.bind(this)
         this.updateImageDimensions = this.updateImageDimensions.bind(this)
         
-        let product = sessionStorage.getItem('selectedProduct')
-        if (typeof product === 'string' && product !== '') {
+		// TODO: Type-check props
+        let item = sessionStorage.getItem('selectedProduct')
+		
+        if (typeof item === 'string' && item !== '') {
             this.state = {
                 showOptions: false,
-                product: JSON.parse(product)
+                item: JSON.parse(item)
             }
         } else {
-            console.log('no product to show')
+            console.log('no item to show')
             this.state = {
                 showOptions: false,
-                product: null
+                item: null
             }
         }
     }
@@ -48,12 +49,12 @@ export default class ProductSummary extends Component {
     }
     
     componentDidUpdate() {
-        let product = sessionStorage.getItem('selectedProduct')
-        if (this.state.product === null) {
-            // If there's a product in session grab it (we probably triggered it from another page)
-            if (typeof product === 'string' && product !== '') {
+        let item = sessionStorage.getItem('selectedProduct')
+        if (this.state.item === null) {
+            // If there's a item in session grab it (we probably triggered it from another page)
+            if (typeof item === 'string' && item !== '') {
                 this.setState({
-                    product: JSON.parse(product)
+                    item: JSON.parse(item)
                 })
             }
         }
@@ -78,62 +79,31 @@ export default class ProductSummary extends Component {
     }
     
     getDescription() {
-        if (typeof this.state.product.description === 'string') {
-            const html = HtmlHelper.decodeHtmlSpecialChars(this.state.product.description)
+        if (typeof this.state.item.description === 'string') {
+            const html = HtmlHelper.decodeHtmlSpecialChars(this.state.item.description)
             return { __html: html }
         }
         
         return { __html: '' }
     }
     
-    configureRow(rowComponent) {
-        let that = this
-        let fn = null
-
-        if (this.props.hasOwnProperty('onItemClicked') &&
-            typeof this.props.onItemClicked === 'function') {
-
-            // Wrap the function in a generic handler so we can pass in custom args
-            let callback = fn = this.props.onItemClicked
-            fn = function () {
-                // What's the current step?
-                let step = BrowserActions.getCurrentStep()
-
-                // Make sure there's a next step before calling it into action
-                // Also, subtract a step to account for zero index
-                if (that.props.stepper.currentStep < (that.props.stepper.steps.length - 1)) {
-                    that.props.stepper.next()
-                }
-
-                // Execute our handler
-                callback(arguments[0])
-            }
-        } else {
-            fn = this.props.onItemClicked
-        }
-
-        rowComponent.defaultProps.onItemClicked = fn
-
-        return rowComponent
-    }
-    
     render() {
         // Render Product component
         let description = this.getDescription()
-        let price = (parseFloat(this.state.product.price)).toFixed(2)
+        let price = (parseFloat(this.state.item.price)).toFixed(2)
         let options = false
-        if (typeof this.state.product.options !== 'undefined' && 
-        this.state.product.options instanceof Array && 
-        this.state.product.options.length > 0) {
-           options = this.state.product.options
+        if (typeof this.state.item.options !== 'undefined' && 
+        this.state.item.options instanceof Array && 
+        this.state.item.options.length > 0) {
+           options = this.state.item.options
         }
         
         let images = []
         
-        if (this.state.product) {
+        if (this.state.item) {
             // TODO: Use mappings!
-            if (this.state.product.hasOwnProperty('images')) {
-                images = this.state.product['images']
+            if (this.state.item.hasOwnProperty('images')) {
+                images = this.state.item['images']
             }
         }
         
@@ -149,7 +119,9 @@ export default class ProductSummary extends Component {
                             ref={(image) => this.featuredImage = image}
                             className="row featured_image top_row" 
                             style={{
-                                backgroundImage: 'url(' + QC_IMAGES_URI + this.state.product.image + ')',
+                                backgroundImage: 'url(' + QC_IMAGES_URI + this.state.item.image + ')',
+                                backgroundSize: 'cover', 
+                                height: 450
                             }} />
                         <ProductGalleryFullwidthWithGap 
                             dataSource={images}

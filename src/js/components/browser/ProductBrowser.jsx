@@ -86,7 +86,7 @@ export default class ProductBrowser extends Component {
 		}
     }
 	
-	// Need to pass in non-default actions, this component needs some work, right now it's a fucking hassle to get it working 
+	// Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working 
 	// in any manner other than with Quick Commerce endpoints
 	setActions(actions) {
 		this.actions = actions

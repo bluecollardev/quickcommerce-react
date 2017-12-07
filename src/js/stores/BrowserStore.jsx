@@ -134,6 +134,18 @@ class BrowserStore extends EventEmitter {
             
         return exists
     }
+	
+	hasItems() {
+		let config = this.config || null
+		
+		if (config !== null && this.config.hasOwnProperty('key')) {
+			if (typeof this.config.key === 'string') {
+				return this.has(this.config.key)
+			}
+		}
+		
+		return false
+    }
     
     handleAction(payload) {
         try {
@@ -175,8 +187,12 @@ class BrowserStore extends EventEmitter {
         return this.items[this.config.key]
     }
     
-    getItem() {
-        
+	getItemAtIndex(idx) {
+        return this.items[this.config.key][idx]
+    }
+	
+    getItem(id) {
+        return this.items[this.config.key]
     }
     
     getCategories() {

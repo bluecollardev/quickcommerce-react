@@ -99,7 +99,7 @@ export default class CatalogFilterBar extends Component {
         
         return (
             <section className="container-fluid">
-              <div className="filters-bar padding-top-3x">
+              <div className="filters-bar">
                 <div className="column">
                   {/* Nav Filters */}
                   <ul className="nav-filters">
