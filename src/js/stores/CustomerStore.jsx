@@ -139,7 +139,19 @@ class CustomerStore extends BaseStore {
     }
 }
 
-CustomerStore.customer = null
+CustomerStore.customer = {
+    customer_id: null,
+    firstname: '',
+    middlename: '',
+    lastname: '',
+    company_name: '',
+    display_name: '',
+    email: '',
+    telephone: '',
+    fax: '',
+    address_id: null
+    // TODO: Append full model
+}
 CustomerStore.billingAddressString = ''
 CustomerStore.billingAddress = {
     firstname: '',

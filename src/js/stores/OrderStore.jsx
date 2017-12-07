@@ -9,46 +9,14 @@ import OrderConstants from '../constants/OrderConstants.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
 export class OrderStore extends BaseStore {
-    constructor(dispatcher) {
-        super(dispatcher)
-
-        this.stores = SettingStore.stores
-
-        // Order payload
-        this.payload = {
-            order: {},
-            orderProducts: [],
-            orderOptions: {},
-            orderPayments: null,
-            orderTotals: {},
-            orderCustomer: null,
-            shipping: null,
-            leftStock: null
-        }
-
-        // System settings
-        this.config = null
-        this.settings = {
-            cartConfig: {
-                countries: {}
-            },
-            posConfig: {}
-        }
-
-        this.items = {}
-        
-        this.paymentMethod = null
-        this.shippingMethod = null
-        this.paymentType = null
-
-        // Just monkey patch the parent method
-        this.subscribe(() => this.registerToActions.bind(this))
+    constructor(dispatcher, stores) {
+        super(dispatcher, stores)
     }
-
+    
     registerToActions(action) {
         switch (action.actionType) {
             case OrderConstants.NEW_ORDER:
-                this.newOrder()
+                this.newOrder(action.customer)
                 break
             case OrderConstants.SET_ORDER:
                 // This doesn't do anything right now
@@ -111,13 +79,13 @@ export class OrderStore extends BaseStore {
             // Do something
         }
         
-        let orderId = this.newOrder()
+        let orderId = this.newOrder(orderAction.customer)
     }
 
     /**
      * Privately invoked.
      */
-    newOrder() {
+    newOrder(customer) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
     
@@ -256,11 +224,11 @@ export class OrderStore extends BaseStore {
      * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
      */
     getOrderTaxRates() {
-        throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
-        /*let data = {}
+        //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
+        let data = {}
 
-        for (let idx = 0; idx < CartStore.selection.length; idx++) {
-            let item = CartStore.selection[idx]
+        for (let idx = 0; idx < this.getDependentStore('cart').selection.length; idx++) {
+            let item = this.getDependentStore('cart').selection[idx]
 
             let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
@@ -274,7 +242,7 @@ export class OrderStore extends BaseStore {
             }
         }
 
-        return data*/
+        return data
     }
 
     /**
@@ -283,8 +251,8 @@ export class OrderStore extends BaseStore {
     getOrderTaxes() {
         let data = {}
 
-        for (let idx = 0; idx < CartStore.selection.length; idx++) {
-            let item = CartStore.selection[idx]
+        for (let idx = 0; idx < this.getDependentStore('cart').selection.length; idx++) {
+            let item = this.getDependentStore('cart').selection[idx]
 
             let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
@@ -382,6 +350,3 @@ export class OrderStore extends BaseStore {
         return rateData
     }
 }
-
-//export default new OrderStore()
-// Not a singleton store, this is an abstract class to inherit from

@@ -232,7 +232,7 @@ class PosComponent extends Component {
             
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && 
@@ -281,7 +281,7 @@ class PosComponent extends Component {
         props.checkoutStore.on('set-order-status', () => {
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
@@ -308,7 +308,7 @@ class PosComponent extends Component {
         props.checkoutStore.on('set-payment-method', () => {
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
@@ -335,7 +335,7 @@ class PosComponent extends Component {
         props.checkoutStore.on('set-shipping-method', () => {
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
@@ -362,7 +362,7 @@ class PosComponent extends Component {
         props.checkoutStore.on('set-notes', () => {
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
@@ -394,7 +394,7 @@ class PosComponent extends Component {
             
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to props.checkoutStore
-                props.checkoutStore.setExistingCustomer()
+                props.checkoutStore.setExistingCustomer(props.customerStore.customer)
                 
                 // Payloard order exists
                 if (props.checkoutStore.payload.hasOwnProperty('order') && props.checkoutStore.payload.order !== null) {
@@ -1113,7 +1113,7 @@ class PosComponent extends Component {
         
         if (typeof this.props.customerStore.customer !== 'undefined' && this.props.customerStore.customer !== null) {
             // Just handle, customer should be set to this.props.checkoutStore
-            this.props.checkoutStore.setExistingCustomer()
+            this.props.checkoutStore.setExistingCustomer(props.customerStore.customer)
             
             // Payloard order exists
             if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {

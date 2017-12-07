@@ -435,7 +435,7 @@ class CustomerProfile extends Component {
                     )}
 
                     {this.props.displayShippingAddress && (
-                        <div className='customer-profile-block row full-width-inputs'>
+                    <div className='customer-profile-block row full-width-inputs'>
                         <div className='shipping-address'>
                             <CurrentAddress
                                 ref = {(address) => {this.shippingAddress = address}}

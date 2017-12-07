@@ -44,9 +44,9 @@ export default class CheckoutService extends BaseService {
     
     createOrder(onSuccess, onError) {
         // Create an new order
-		this.stores.checkout.newOrder()
+		this.actions.checkout.newOrder(this.stores.customer.customer)
         
-        let settings = SettingStore.getSettings().posSettings
+        let settings = this.stores.setting.getSettings().posSettings
         //return orderId
         axios({
             url: QC_API + 'order/0', // Set ID to 0 to create new...
@@ -237,7 +237,7 @@ export default class CheckoutService extends BaseService {
             // Do something
         }
         
-        let orderId = this.newOrder()
+        let orderId = this.actions.checkout.newOrder(this.stores.customer.customer)
     }*/
     
     // From here down list utility methods that invoke our mirrored API methods

@@ -3,21 +3,15 @@ import assign from 'object-assign'
 import { normalize, denormalize, schema } from 'normalizr'
 
 import { OrderStore } from './OrderStore.jsx'
-import CustomerStore from './CustomerStore.jsx'
-import SettingStore from './SettingStore.jsx'
 
 import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 
-let instance = null
+import HashProxy from '../utils/HashProxy.js'
 
 class CheckoutStore extends OrderStore {
-    constructor(dispatcher) {
-        super(dispatcher)
+    constructor(dispatcher, stores) {
+        super(dispatcher, stores)
         
-        if (instance !== null) {
-            return instance
-        }
-
         this.starPrinter = {
             isConnected: false,
             name: null,
@@ -25,14 +19,13 @@ class CheckoutStore extends OrderStore {
             macAddress: null
         }
 
-
         // Order payload
         this.payload = {
             order: {},
             orderProducts: [],
             orderOptions: [],
             orderPayments: null,
-            orderTotals: {},
+            orderTotals: [],
             orderCustomer: null,
             shipping: null,
             leftStock: null
@@ -48,12 +41,13 @@ class CheckoutStore extends OrderStore {
 
         this.billingAddress = null
         this.shippingAddress = null
-
+        
+        this.paymentMethod = null
+        this.shippingMethod = null
+        this.paymentType = null
+        
         // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
-
-        // Easy access while developing app
-        window.CheckoutStore = instance = this
     }
     
     /**
@@ -83,6 +77,24 @@ class CheckoutStore extends OrderStore {
         if (productOptionValueIds instanceof Array &&
             productOptionValueIds.length > 0) {
         }
+    }
+    
+    orderIsSet() {
+        let payload = this.payload
+        let order = null
+        
+        if (payload === null) {
+            throw new Error('Invalid payload property on CheckoutStore - payload cannot be null.')
+        }
+        
+        if (payload.hasOwnProperty('order') && payload.order !== null) {
+            let order = payload.order
+            if (order.hasOwnProperty('orderId') && !isNaN(order.orderId)) {
+                return (order.orderId > 0) ? order.orderId : false // Explicitly return boolean false
+            }
+        }
+        
+        return false
     }
     
     /**
@@ -167,8 +179,9 @@ class CheckoutStore extends OrderStore {
     /**
      * Implement abstract parent method.
      */
-     newOrder() {
-        let settings = SettingStore.getSettings().posSettings
+     newOrder(customer) {
+         // TODO: Wait For!
+        let settings = this.getDependentStore('setting').getSettings().posSettings
 
         this.payload.order = {}
         
@@ -187,7 +200,7 @@ class CheckoutStore extends OrderStore {
 
             case 3:
                 // Use an existing customer
-                this.setExistingCustomer()
+                this.setExistingCustomer(customer) // TODO: This doesn't work anymore, must pass in customer, store logic shouldn't be coupled
                 break
 
             default:
@@ -219,8 +232,8 @@ class CheckoutStore extends OrderStore {
         this.payload.order.orderStatusId = parseInt(settings['POS_initial_status_id'])
         this.payload.order.invoicePrefix = settings['config_invoice_prefix']
 
-        //let customerId = parseInt(settings['POS_c_id'])
-        //let customerGroupId = parseInt(settings['POS_c_group_id'])
+        let customerId = parseInt(settings['POS_c_id'])
+        let customerGroupId = parseInt(settings['POS_c_group_id'])
 
         this.payload.order.storeName = storeName
         this.payload.order.storeUrl = storeUrl
@@ -251,6 +264,7 @@ class CheckoutStore extends OrderStore {
         this.payload.order.dateAdded = new Date()
         this.payload.order.dateModified = new Date()
 
+        console.log('remember to re-add settings to order')
         this.payload.order.defaultSettings = settings
         // END PATCH
         
@@ -269,8 +283,9 @@ class CheckoutStore extends OrderStore {
      * Implement abstract parent method.
      */
     setBuiltInCustomer(customer) {
+        let settings = this.getDependentStore('setting').getSettings().posSettings
+        
         customer = customer || null
-        let settings = SettingStore.getSettings().posSettings
         
         if (customer !== null) {
             this.payload.order.firstname = customer['firstname']
@@ -361,7 +376,7 @@ class CheckoutStore extends OrderStore {
      * Implement abstract parent method.
      */
     setExistingCustomer(customer) {
-        let customerDetails = customer || CustomerStore.getCustomer()
+        let customerDetails = customer
 
         if (customerDetails !== null && typeof customerDetails['customer'] !== 'undefined') {
             let customer = customerDetails['customer']
@@ -600,9 +615,9 @@ class CheckoutStore extends OrderStore {
         ]
      */
     getOrderOptions(productId, orderProductId) {
-        throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
-        /*orderProductId = orderProductId || null
-        let cartProducts = CartStore.getSelection()
+        //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
+        orderProductId = orderProductId || null
+        let cartProducts = this.getDependentStore('cart').getSelection()
         let data = []
         
         // Get the orderProduct that corresponds to the provided orderProductId
@@ -675,9 +690,9 @@ class CheckoutStore extends OrderStore {
         data = this.normalizePayload(data, 'underscore', 'camelcase')
         console.log(data)
 
-        return data*/
+        return data
     }
 }
 
-export default new CheckoutStore()
+export default CheckoutStore
 export { CheckoutStore }

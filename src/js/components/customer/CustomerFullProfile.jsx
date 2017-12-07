@@ -93,12 +93,22 @@ class CustomerFullProfile extends Component {
         this.onCreateSuccess = this.onCreateSuccess.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
+        this.onShipToBillingAddressChange = this.onShipToBillingAddressChange.bind(this)
         
         this.renderErrors = this.renderErrors.bind(this)
         
         this.state = {
-            errors: {}
+            errors: {},
+            shipToBillingAddress: true
         }
+    }
+    
+    onShipToBillingAddressChange(e) {
+        this.setState({
+            shipToBillingAddress: e.target.value
+        }, () => {
+            alert('changed shiptobillingaddress: shipToBillingAddress = ' + this.state.shipToBillingAddress)
+        })
     }
     
     componentWillReceiveProps(newProps) {
@@ -525,12 +535,21 @@ class CustomerFullProfile extends Component {
                                 nameRequired = {false}
                                 mode = 'create'
                                 />
+                            <hr />
+                            <div className='form-group'>
+                                <label className='radio radio-inline'>
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} onClick={this.onShipToBillingAddressChange} /> Ship to this address
+                                </label>
+                                <label className='radio radio-inline'>
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} onClick={this.onShipToBillingAddressChange} /> Ship to different address
+                                </label>
+                            </div>
                         </div>
                     </div>
                     )}
                     
                     {/* If single / shipping / billing address */}
-                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='shipping-address'>
                             <CurrentAddress
@@ -751,6 +770,15 @@ class CustomerFullProfile extends Component {
                                 nameRequired = {false}
                                 mode = 'edit'
                                 />
+                            <hr />
+                            <div className='form-group'>
+                                <label className='radio radio-inline'>
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} onClick={this.onShipToBillingAddressChange} /> Ship to this address
+                                </label>
+                                <label className='radio radio-inline'>
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} onClick={this.onShipToBillingAddressChange} /> Ship to different address
+                                </label>
+                            </div>
                         </div>
                     </div>
                     )}

@@ -12,87 +12,83 @@ export default class Contact extends Component {
         return (
           <main className="content-wrapper">{/* Main Content Wrapper */}
             <div id="contact">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <h3 className="cursive text-center padding-top">Questions? Take aim and shoot!</h3>
+                <section className='fw-section slide account-slide text-center'>
+                    <span className='h1'>
+                        <i className="cursive"><strong>Have a question?</strong></i>
+                        <br />
+                        Take aim and shoot.
+                    </span>
+                </section>
+                
+                <section className="container space-top-3x padding-bottom-2x">
+                  {/*<h1>Contacts</h1>*/}
+                  <div className="row padding-top">
+                    <div className="col-sm-5 padding-bottom-2x">
+                      <ul className="list-icon">
+                        <li>
+                          <i className="material-icons location_on" />
+                          10055 80 Ave NW, Edmonton, AB T6E 1T3
+                        </li>
+                        <li>
+                          <i className="material-icons phone" />
+                          +(1) 414-1200
+                        </li>
+                        {/*<li>
+                          <i className="material-icons phone_iphone" />
+                          001 (800) 333-6578
+                        </li>*/}
+                        <li>
+                          <i className="material-icons email" />
+                          <a href="mailto:info@acecoffeeroasters.com">info@acecoffeeroasters.com</a>
+                        </li>
+                        <li>
+                          <i className="socicon-skype" />
+                          <a href="#">acecoffeeroasters</a>
+                        </li>
+                      </ul>{/* .list-icon */}
+                      <p>Store hours: <span className="text-gray">8am - 4pm, Fri - Sun</span></p>
+                      <span className="display-inline" style={{marginBottom: 6}}>Social accounts: &nbsp;&nbsp;</span>
+                      <div className="social-bar display-inline">
+                        <a href="#" className="sb-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
+                          <i className="socicon-facebook" />
+                        </a>
+                        <a href="#" className="sb-google-plus" data-toggle="tooltip" data-placement="top" title data-original-title="Google+">
+                          <i className="socicon-googleplus" />
+                        </a>
+                        <a href="#" className="sb-twitter" data-toggle="tooltip" data-placement="top" title="Twitter">
+                          <i className="socicon-twitter" />
+                        </a>
+                        <a href="#" className="sb-instagram" data-toggle="tooltip" data-placement="top" title data-original-title="Instagram">
+                          <i className="socicon-instagram" />
+                        </a>
+                      </div>{/* .social-bar */}
+                    </div>{/* .col-sm-5 */}
+                    <div className="col-sm-7 padding-bottom-2x">
+                      <form method="post" className="ajax-form">
+                        <div className="contact-form container">
+                          <div className="row">
+                            <div className="col-sm-6">
+                              <div className="form-element">
+                                <input type="text" className="form-control" name="name" placeholder="Name" />
+                              </div>
+                            </div>
+                            <div className="col-sm-6">
+                              <div className="form-element">
+                                <input type="email" className="form-control" name="email" placeholder="E-mail" />
+                              </div>
+                            </div>
+                          </div>{/* .row */}
+                          <div className="form-element">
+                            <textarea rows={6} className="form-control" name="message" placeholder="Message" defaultValue={""} />
+                          </div>
+                          <button type="submit" className="btn btn-primary btn-block waves-effect waves-light space-top-none">Send Message</button>
                         </div>
-                    </div>
-                </div>
-                <div className="container-fluid">
-                    <div className="row ftext">
-                        <div className="col-md-12 padding-top-3x">
-                            <a id="features" />
-                            {/*<p>Double click to close me.</p>*/}
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                        </div>
-                    </div>
-                </div>
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-md-9 col-xs-12 forma">
-                            <form>
-                                <input type="text" className="col-md-6 col-xs-12 name" name="name" placeholder="Name *" />
-                                <input type="text" className="col-md-6 col-xs-12 Email" name="Email" placeholder="Email *" />
-                                <input type="text" className="col-md-12 col-xs-12 Subject" name="Subject" placeholder="Subject" />
-                                <textarea type="text" className="col-md-12 col-xs-12 Message" name="Message" placeholder="Message *" defaultValue={ ""} />
-                                <div className="cBtn col-xs-12 padding-top">
-                                    <a className="btn btn-default" href="#">
-                                        <i className="fa fa-times" />Clear Form
-                                    </a>&nbsp;
-                                    <a className="btn btn-primary" href="#">
-                                        <i className="fa fa-share" />Send Message
-                                    </a>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="col-md-3 col-xs-12 cont">
-                            <ul>
-                                <li>
-                                    <i className="fa fa-home" />5512 Lorem Edmonton
-                                </li>
-                                <li>
-                                    <i className="fa fa-phone" />+1 800 789 50 1
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-envelope" />info@acecoffeeroasters.com
-                                    </a>
-                                </li>
-                                <li>
-                                    <i className="fa fa-skype" />Ace Coffee Roasters (Edmonton)
-                                </li>
-                                {/*<li>
-                                    <a href="#">
-                                        <i className="fa fa-twitter" />Twitter
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-facebook-square" />Facebook
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-dribbble" />Dribbble
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-flickr" />Flickr
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i className="fa fa-youtube-play" />YouTube
-                                    </a>
-                                </li>*/}
-                            </ul>
-                        </div>
-                    </div>
-                    
-                </div>
+                        <div className="status-message" />
+                      </form>
+                    </div>{/* .col-sm-7 */}
+                  </div>{/* .row */}
+                </section>
+
                 <div className="row">
                     <div className="col-xs-12 padding-top-2x">
                         <iframe src="https://maps.google.com/maps?q=acecoffeeroasters&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height={750} frameBorder={0} style={{border: 0}} />

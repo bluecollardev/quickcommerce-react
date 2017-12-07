@@ -161,8 +161,18 @@ export default (ComposedComponent) => {
             // Stepper maintains its own state and store
             this.stepper = new Stepper()
             
-            props.actions.setting.fetchStore(8)
-            props.actions.setting.fetchSettings()
+            // TODO: For now this code block must be executed in the component wrapped by PosContext
+            /*console.log('PosContext is loading settings...')
+            props.settingStore.on('settings-loaded', (payload) => {
+                console.log('PosContext SETTINGS LOADED')
+                props.checkoutStore.settings = payload
+
+                // We only wanna do this once, so stick 'er right up top
+               props.checkoutService.createOrder({
+                    action: 'insert'
+                    //orderTaxRates: this.orderTaxRates
+                })
+            })*/
             
             /*let categoryData = []
             let productData = []
@@ -1547,7 +1557,7 @@ export default (ComposedComponent) => {
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (checkoutStore.payload.hasOwnProperty('order') && 
@@ -1598,7 +1608,7 @@ export default (ComposedComponent) => {
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
@@ -1627,7 +1637,7 @@ export default (ComposedComponent) => {
             
             if (typeof props.customerStore.customer !== 'undefined' && props.customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
@@ -1656,7 +1666,7 @@ export default (ComposedComponent) => {
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
@@ -1685,7 +1695,7 @@ export default (ComposedComponent) => {
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
@@ -1720,22 +1730,16 @@ export default (ComposedComponent) => {
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer()
+                checkoutStore.setExistingCustomer(customerStore.customer)
                 
-                // Payloard order exists
-                if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
-                    // Do we update?
-                    if (checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(checkoutStore.payload.order.orderId) &&
-                        checkoutStore.payload.order.orderId > 0) {
-                        checkoutService.updateOrder(checkoutStore.payload.order.orderId, assign({}, checkoutStore.payload.order, {
-                            action: 'update',
-                            defaultSettings: this.getDefaultSettings()
-                        }), (payload) => {
-                            checkoutStore.setOrder(payload)
-                            //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
-                        })
-                    }
+                if (checkoutStore.orderIsSet()) {
+                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, assign({}, checkoutStore.payload.order, {
+                        action: 'update',
+                        defaultSettings: this.getDefaultSettings()
+                    }), (payload) => {
+                        checkoutStore.setOrder(payload)
+                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+                    })
                 }
             }
         }
@@ -1746,111 +1750,107 @@ export default (ComposedComponent) => {
             console.log('item added to order')
             console.log(item)
             
-            // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
-            if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
-                if (checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(checkoutStore.payload.order.orderId)) {
-                    let orderProduct = assign({}, item.data, {
-                        product_id: parseInt(itemId),
-                        quantity: quantity
-                    })
-                    
-                    let optionTotal = 0.00 
-                    // Get the prices off of the selected options and add them to the product price
-                    let orderOptions = checkoutStore.getOrderOptions(parseInt(itemId)) || null
-                    
-                    if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
-                        // Not sure if I want to finalize this as an array or an object so I'm accounting for either
-                        if (Object.keys(orderOptions).length > 0) {
-                            //for (let idx = 0; idx < orderOptions.length; idx++) {
-                            for (let key in Object.keys(orderOptions)) {
-                                let orderOption = orderOptions[key]
-                                
-                                // Get the product option value using the selected option's productOptionValueId
-                                let productOptionId = Number(orderOption.productOptionId)
-                                let productOptionValueId = Number(orderOption.productOptionValueId)
-                                
-                                let productOptions = item.data['options']
-                                let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
-                                
-                                if (selectedOptions instanceof Array && selectedOptions.length > 0) {
-                                    let selectedOption = selectedOptions[0]
-                                    // TODO: Make this method static
-                                    let optionPrice = this.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
-                                    optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
-                                }
+            if (checkoutStore.orderIsSet()) {
+                let orderProduct = assign({}, item.data, {
+                    product_id: parseInt(itemId),
+                    quantity: quantity
+                })
+                
+                let optionTotal = 0.00 
+                // Get the prices off of the selected options and add them to the product price
+                let orderOptions = checkoutStore.getOrderOptions(parseInt(itemId)) || null
+                
+                if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
+                    // Not sure if I want to finalize this as an array or an object so I'm accounting for either
+                    if (Object.keys(orderOptions).length > 0) {
+                        //for (let idx = 0; idx < orderOptions.length; idx++) {
+                        for (let key in Object.keys(orderOptions)) {
+                            let orderOption = orderOptions[key]
+                            
+                            // Get the product option value using the selected option's productOptionValueId
+                            let productOptionId = Number(orderOption.productOptionId)
+                            let productOptionValueId = Number(orderOption.productOptionValueId)
+                            
+                            let productOptions = item.data['options']
+                            let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
+                            
+                            if (selectedOptions instanceof Array && selectedOptions.length > 0) {
+                                let selectedOption = selectedOptions[0]
+                                // TODO: Make this method static
+                                let optionPrice = this.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
                             }
-                        }                        
+                        }
+                    }                        
+                }
+                
+                let orderProductPrice = parseFloat(item.data['price']) + optionTotal
+                
+                let orderTaxRates = checkoutStore.getOrderTaxRates()
+                
+                let lineTotal = orderProductPrice * quantity
+                let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                let lineTax = checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+
+                // We're mutating the supplied data object by design
+                orderProduct = assign(orderProduct, {
+                    price: orderProductPrice,
+                    total: lineTotal,
+                    tax: lineTax
+                })
+
+                checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
+                    action: 'insert',
+                    orderProduct: orderProduct,
+                    orderProductId: 0,
+                    orderOptions: orderOptions, // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
+                    productId: parseInt(itemId),
+                    orderTaxRates: orderTaxRates,
+                    defaultSettings: this.getDefaultSettings()
+                }, (payload) => {
+                    let onSuccess = (payload) => {
+                        // Format the return payload
+                        /* Returned JSON payload
+                        "orderProducts": [
+                            {
+                                "orderProductId": 4,
+                                "orderId": 198,
+                                "productId": 3381,
+                                "name": "Ceni Subscription",
+                                "model": "Ceni Subscription",
+                                "quantity": 1,
+                                "price": "111.1100",
+                                "total": "111.1100",
+                                "tax": "5.5555",
+                                "reward": 0
+                            }
+                        ],
+                        "orderOptions": [
+                            {
+                                "orderOptionId": 2,
+                                "orderId": 198,
+                                "orderProductId": 4,
+                                "productOptionId": "249",
+                                "productOptionValueId": "514",
+                                "name": "Coffee Package Size",
+                                "value": "340g",
+                                "type": "select"
+                            }
+                        ]*/
+                        
+                        /*orderProducts.reduce((list, item, index) => {
+                            
+                        })*/
+                        
+                        // Update our this.cartStore
+                        //this.cartStore.updateItem()
                     }
                     
-                    let orderProductPrice = parseFloat(item.data['price']) + optionTotal
-                    
-                    let orderTaxRates = checkoutStore.getOrderTaxRates()
-                    
-                    let lineTotal = orderProductPrice * quantity
-                    let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
-                    let lineTax = checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
-
-                    // We're mutating the supplied data object by design
-                    orderProduct = assign(orderProduct, {
-                        price: orderProductPrice,
-                        total: lineTotal,
-                        tax: lineTax
-                    })
-
-                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
-                        action: 'insert',
-                        orderProduct: orderProduct,
-                        orderProductId: 0,
-                        orderOptions: orderOptions, // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
-                        productId: parseInt(itemId),
-                        orderTaxRates: orderTaxRates,
-                        defaultSettings: this.getDefaultSettings()
-                    }, (payload) => {
-                        let onSuccess = (payload) => {
-                            // Format the return payload
-                            /* Returned JSON payload
-                            "orderProducts": [
-                                {
-                                    "orderProductId": 4,
-                                    "orderId": 198,
-                                    "productId": 3381,
-                                    "name": "Ceni Subscription",
-                                    "model": "Ceni Subscription",
-                                    "quantity": 1,
-                                    "price": "111.1100",
-                                    "total": "111.1100",
-                                    "tax": "5.5555",
-                                    "reward": 0
-                                }
-                            ],
-                            "orderOptions": [
-                                {
-                                    "orderOptionId": 2,
-                                    "orderId": 198,
-                                    "orderProductId": 4,
-                                    "productOptionId": "249",
-                                    "productOptionValueId": "514",
-                                    "name": "Coffee Package Size",
-                                    "value": "340g",
-                                    "type": "select"
-                                }
-                            ]*/
-                            
-                            /*orderProducts.reduce((list, item, index) => {
-                                
-                            })*/
-                            
-                            // Update our this.cartStore
-                            //this.cartStore.updateItem()
-                        }
-                        
-                        checkoutStore.setOrder(payload)
-                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId, onSuccess)
-                    })
-                } else {
-                    // Create a new order
-                }
+                    checkoutStore.setOrder(payload)
+                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId, onSuccess)
+                })
+            } else {
+                // Create a new order
             }
         }
         
@@ -1863,77 +1863,77 @@ export default (ComposedComponent) => {
             console.log('old qty: ' + oldQuantity)
             
             // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
-            if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
-                if (checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(checkoutStore.payload.order.orderId)) {
-                    let orderProductId = 0
-                    for (let idx = 0; idx < checkoutStore.payload.orderProducts.length; idx++) {
-                        if (parseInt(checkoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['id'])) {
-                            orderProductId = checkoutStore.payload.orderProducts[idx].orderProductId
-                        }
+            if (checkoutStore.orderIsSet()) {
+                let orderProductId = 0
+                for (let idx = 0; idx < checkoutStore.payload.orderProducts.length; idx++) {
+                    // TODO: Use mappings!
+                    if (parseInt(checkoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['product_id'])) {
+                        orderProductId = checkoutStore.payload.orderProducts[idx].orderProductId
                     }
-                    
-                    let orderProduct = assign({}, item.data, {
-                        product_id: parseInt(item.data['id']),
-                        quantity: quantity
-                    })
-                    
-                    let optionTotal = 0.00 
-                    // Get the prices off of the selected options and add them to the product price
-                    let orderOptions = checkoutStore.getOrderOptions(parseInt(item.data['id'])) || null
-                    
-                    if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
-                        // Not sure if I want to finalize this as an array or an object so I'm accounting for either
-                        if (Object.keys(orderOptions).length > 0) {
-                            //for (let idx = 0; idx < orderOptions.length; idx++) {
-                            for (let key in Object.keys(orderOptions)) {
-                                let orderOption = orderOptions[key]
-                                
-                                // Get the product option value using the selected option's productOptionValueId
-                                let productOptionId = Number(orderOption.productOptionId)
-                                let productOptionValueId = Number(orderOption.productOptionValueId)
-                                
-                                let productOptions = item.data['options']
-                                let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
-                                
-                                if (selectedOptions instanceof Array && selectedOptions.length > 0) {
-                                    let selectedOption = selectedOptions[0]
-                                    
-                                    // TODO: Make this method static
-                                    let optionPrice = this.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
-                                    optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
-                                }
-                            }
-                        }                        
-                    }
-                    
-                    let orderProductPrice = parseFloat(item.data['price']) + optionTotal
-                    
-                    let lineTotal = orderProductPrice * quantity
-                    let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
-                    let lineTax = checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
-                    
-                    orderProduct = assign(orderProduct, item.data, {
-                        total: lineTotal,
-                        tax: lineTax
-                    })
-
-                    let orderTaxRates = checkoutStore.getOrderTaxRates()
-                    //let orderOptions = checkoutStore.getOrderOptions()
-
-                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
-                        action: 'modifyQuantity',
-                        orderProduct: orderProduct,
-                        orderProductId: orderProductId,
-                        //orderOptions: orderOptions,
-                        quantityBefore: oldQuantity,
-                        quantityAfter: quantity,
-                        orderTaxRates: orderTaxRates
-                    }, (payload) => {
-                        checkoutStore.setOrder(payload)
-                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
-                    })
                 }
+                
+                // TODO: Use mappings!
+                let orderProduct = assign({}, item.data, {
+                    product_id: parseInt(item.data['product_id']),
+                    quantity: quantity
+                })
+                
+                let optionTotal = 0.00 
+                // Get the prices off of the selected options and add them to the product price
+                // TODO: Use mappings!
+                let orderOptions = checkoutStore.getOrderOptions(parseInt(item.data['product_id'])) || null
+                
+                if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
+                    // Not sure if I want to finalize this as an array or an object so I'm accounting for either
+                    if (Object.keys(orderOptions).length > 0) {
+                        //for (let idx = 0; idx < orderOptions.length; idx++) {
+                        for (let key in Object.keys(orderOptions)) {
+                            let orderOption = orderOptions[key]
+                            
+                            // Get the product option value using the selected option's productOptionValueId
+                            let productOptionId = Number(orderOption.productOptionId)
+                            let productOptionValueId = Number(orderOption.productOptionValueId)
+                            
+                            let productOptions = item.data['options']
+                            let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
+                            
+                            if (selectedOptions instanceof Array && selectedOptions.length > 0) {
+                                let selectedOption = selectedOptions[0]
+                                
+                                // TODO: Make this method static
+                                let optionPrice = this.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
+                                optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
+                            }
+                        }
+                    }                        
+                }
+                
+                let orderProductPrice = parseFloat(item.data['price']) + optionTotal
+                
+                let lineTotal = orderProductPrice * quantity
+                let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+                let lineTax = checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+                
+                orderProduct = assign(orderProduct, item.data, {
+                    total: lineTotal,
+                    tax: lineTax
+                })
+
+                let orderTaxRates = checkoutStore.getOrderTaxRates()
+                //let orderOptions = checkoutStore.getOrderOptions()
+
+                checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
+                    action: 'modifyQuantity',
+                    orderProduct: orderProduct,
+                    orderProductId: orderProductId,
+                    //orderOptions: orderOptions,
+                    quantityBefore: oldQuantity,
+                    quantityAfter: quantity,
+                    orderTaxRates: orderTaxRates
+                }, (payload) => {
+                    checkoutStore.setOrder(payload)
+                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+                })
             }
         }
         
@@ -1944,48 +1944,47 @@ export default (ComposedComponent) => {
             console.log(item)
             console.log('qty: ' + quantity)
 
-            if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
-                if (checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(checkoutStore.payload.order.orderId)) {
-                    let lineTotal = item['price'] * quantity
-                    let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
-                    let lineTax = checkoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
-                    
-                    let orderProductId = 0
-                    // Grab associated orderProduct
-                    let orderProduct = checkoutStore.payload.orderProducts.filter(orderProduct => {
-                        return orderProduct.productId === parseInt(product['id'])
-                    })
-                    
-                    if (orderProduct instanceof Array && orderProduct.length === 1) {
-                        orderProductId = orderProduct[0].orderProductId
-                    }
-
-                    /*let orderProduct = assign({}, item, {
-                        product_id: parseInt(item['id']),
-                        quantity: quantity, // TODO: Inject quantity
-                        total: lineTotal,
-                        tax: lineTax
-                    })*/
-                    
-                    // TODO: Promises would probably work better here
-                    let orderTaxRates = checkoutStore.getOrderTaxRates()
-                    let orderOptions = checkoutStore.getOrderOptions(parseInt(product['id']), orderProductId)
-
-                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
-                        action: 'update',
-                        //orderProduct: orderProduct,
-                        orderProductId: orderProductId,
-                        orderOptions: orderOptions,
-                        //quantityBefore: oldQuantity,
-                        //quantityAfter: quantity,
-                        orderTaxRates: orderTaxRates,
-                        defaultSettings: this.getDefaultSettings()
-                    }, (payload) => {
-                        checkoutStore.setOrder(payload)
-                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
-                    })
+            if (checkoutStore.orderIsSet()) {
+                let lineTotal = item['price'] * quantity
+                let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
+                let lineTax = checkoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
+                
+                let orderProductId = 0
+                // Grab associated orderProduct
+                let orderProduct = checkoutStore.payload.orderProducts.filter(orderProduct => {
+                    // TODO: Use mappings
+                    return orderProduct.productId === parseInt(product['product_id'])
+                })
+                
+                if (orderProduct instanceof Array && orderProduct.length === 1) {
+                    orderProductId = orderProduct[0].orderProductId
                 }
+
+                /*let orderProduct = assign({}, item, {
+                    product_id: parseInt(item['id']),
+                    quantity: quantity, // TODO: Inject quantity
+                    total: lineTotal,
+                    tax: lineTax
+                })*/
+                
+                // TODO: Promises would probably work better here
+                let orderTaxRates = checkoutStore.getOrderTaxRates()
+                // TODO: Use mappings!
+                let orderOptions = checkoutStore.getOrderOptions(parseInt(product['product_id']), orderProductId)
+
+                checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
+                    action: 'update',
+                    //orderProduct: orderProduct,
+                    orderProductId: orderProductId,
+                    orderOptions: orderOptions,
+                    //quantityBefore: oldQuantity,
+                    //quantityAfter: quantity,
+                    orderTaxRates: orderTaxRates,
+                    defaultSettings: this.getDefaultSettings()
+                }, (payload) => {
+                    checkoutStore.setOrder(payload)
+                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+                })
             }
         }
         
@@ -1995,36 +1994,33 @@ export default (ComposedComponent) => {
             console.log('item removed')
             console.log(item)
 
-            if (checkoutStore.payload.hasOwnProperty('order') && checkoutStore.payload.order !== null) {
-                if (checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                    !isNaN(checkoutStore.payload.order.orderId)) {
-                    let orderProductId = 0
-                    for (let idx = 0; idx < checkoutStore.payload.orderProducts.length; idx++) {
-                        if (parseInt(checkoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
-                            orderProductId = checkoutStore.payload.orderProducts[idx].orderProductId
-                        }
+            if (checkoutStore.orderIsSet()) {
+                let orderProductId = 0
+                for (let idx = 0; idx < checkoutStore.payload.orderProducts.length; idx++) {
+                    if (parseInt(checkoutStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+                        orderProductId = checkoutStore.payload.orderProducts[idx].orderProductId
                     }
-
-                    let data = assign({}, item, {
-                        product_id: parseInt(item['id']),
-                        quantity: 0
-                    })
-
-                    let orderTaxRates = checkoutStore.getOrderTaxRates()
-                    //let orderOptions = checkoutStore.getOrderOptions()
-
-                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
-                        action: 'modifyQuantity',
-                        orderProduct: data,
-                        orderProductId: orderProductId,
-                        quantityAfter: 0,
-                        orderTaxRates: orderTaxRates,
-                        //orderOptions: orderOptions
-                    }, (payload) => {
-                        checkoutStore.setOrder(payload)
-                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
-                    })
                 }
+
+                let data = assign({}, item, {
+                    product_id: parseInt(item['id']),
+                    quantity: 0
+                })
+
+                let orderTaxRates = checkoutStore.getOrderTaxRates()
+                //let orderOptions = checkoutStore.getOrderOptions()
+
+                checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
+                    action: 'modifyQuantity',
+                    orderProduct: data,
+                    orderProductId: orderProductId,
+                    quantityAfter: 0,
+                    orderTaxRates: orderTaxRates,
+                    //orderOptions: orderOptions
+                }, (payload) => {
+                    checkoutStore.setOrder(payload)
+                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+                })
             }
         }
         
@@ -2134,7 +2130,7 @@ export default (ComposedComponent) => {
             
             if (typeof this.props.customerStore.customer !== 'undefined' && this.props.customerStore.customer !== null) {
                 // Just handle, customer should be set to this.props.checkoutStore
-                this.props.checkoutStore.setExistingCustomer()
+                this.props.checkoutStore.setExistingCustomer(customerStore.customer)
                 
                 // Payloard order exists
                 if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {

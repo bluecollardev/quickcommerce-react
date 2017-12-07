@@ -4,7 +4,8 @@ export default (dispatcher) => {
     return {
         newOrder: () => {
             dispatcher.dispatch({
-                actionType: CheckoutConstants.NEW_ORDER
+                actionType: CheckoutConstants.NEW_ORDER,
+                customer: customer
             })
         },
         setOrder: (order) => {

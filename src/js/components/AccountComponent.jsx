@@ -34,6 +34,12 @@ class AccountComponent extends Component {
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
         this.onLoginError = this.onLoginError.bind(this)
         this.onCreateSuccess = this.onCreateSuccess.bind(this)
+        this.getSignInMode = this.getSignInMode.bind(this)
+        
+        this.state = {
+            createAccount: false,
+            shipToBillingAddress: true
+        }
     }
     
     componentWillMount() {
@@ -54,6 +60,22 @@ class AccountComponent extends Component {
         if (this.props.location.pathname === '/account/register' && this.props.loggedIn) {
             window.location.hash = '/account/edit'
         }
+    }
+    
+    onShipToBillingAddressChange(e) {
+        this.setState({
+            shipToBillingAddress: e.target.value
+        })
+    }
+    
+    getSignInMode() {
+        const modes = ['overlay', 'fullpage', 'inline'] // No inline yet
+        
+        if (modes.indexOf(this.props.signInMode) > -1) {
+            return this.props.signInMode
+        }
+        
+        return AccountComponent.defaultProps.signInMode
     }
     
     doLogin(formData, onSuccess, onError) {        
@@ -113,7 +135,7 @@ class AccountComponent extends Component {
     render() {       
         return (
             <div className='container-fluid'>
-                {!this.props.loginStore.isLoggedIn() && (
+                {this.getSignInMode() === 'overlay' && !this.props.loginStore.isLoggedIn() && (
                 <Modal
                     show = {true}>
                     {!this.props.loggedIn && this.props.location.pathname === '/account/login' && false && (
@@ -251,6 +273,18 @@ class AccountComponent extends Component {
             </div>
         )
     }
+}
+
+
+AccountComponent.propTypes = {
+    //onItemClicked: React.PropTypes.func,
+    //onFilterSelected: React.PropTypes.func,
+    //onStepClicked: React.PropTypes.func
+    signInMode: React.PropTypes.string
+}
+
+AccountComponent.defaultProps = {
+    signInMode: 'overlay'
 }
 
 export default AccountComponent

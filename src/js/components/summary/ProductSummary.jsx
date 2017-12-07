@@ -24,6 +24,7 @@ export default class ProductSummary extends Component {
         this.getDescription = this.getDescription.bind(this)
         this.toggleOptions = this.toggleOptions.bind(this)
         this.configureRow = this.configureRow.bind(this)
+        this.updateImageDimensions = this.updateImageDimensions.bind(this)
         
         let product = sessionStorage.getItem('selectedProduct')
         if (typeof product === 'string' && product !== '') {
@@ -40,6 +41,12 @@ export default class ProductSummary extends Component {
         }
     }
     
+    componentDidMount() {
+        // Equalize images, etc.
+        window.addEventListener('resize', this.updateImageDimensions)
+        this.updateImageDimensions()
+    }
+    
     componentDidUpdate() {
         let product = sessionStorage.getItem('selectedProduct')
         if (this.state.product === null) {
@@ -50,6 +57,18 @@ export default class ProductSummary extends Component {
                 })
             }
         }
+    }
+    
+    componentWillUnmount() {
+        // Equalize images, etc.
+        window.removeEventListener('resize', this.updateImageDimensions)
+    }
+    
+    updateImageDimensions() {
+        // Keep it square
+        console.log('updating featured image height')
+        console.log(this.featuredImage.offsetWidth)
+        this.featuredImage.style.height = this.featuredImage.offsetWidth + 'px'
     }
     
     toggleOptions() {
@@ -125,18 +144,18 @@ export default class ProductSummary extends Component {
                 <link itemProp="availability" href="http://schema.org/InStock" />*/}
                 <div className="product-details">
                     <div className="row">
-                      <div className="col-sm-12 col-md-3">
-                        <div className="row featured_image top_row" 
+                      <div className="product_images col-xs-12 col-sm-4 col-md-4">
+                        <div 
+                            ref={(image) => this.featuredImage = image}
+                            className="row featured_image top_row" 
                             style={{
                                 backgroundImage: 'url(' + QC_IMAGES_URI + this.state.product.image + ')',
-                                backgroundSize: 'cover', 
-                                height: 450
                             }} />
                         <ProductGalleryFullwidthWithGap 
                             dataSource={images}
                             {...this.props} />
                       </div>
-                      <div className="col-sm-12 col-md-8 top_row">
+                      <div className="col-sm-12 col-sm-8 col-md-8 top_row">
                         {/*<div className="row">
                           <div className="col-sm-12 columns">
                             <div className="product_section">

@@ -5,9 +5,14 @@ import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
 
+import HashProxy from '../utils/HashProxy.js'
+
 export default class BaseStore extends EventEmitter {
-    constructor(dispatcher) {
+    constructor(dispatcher, stores) {
         super()
+        
+        // HashProxy of flux stores (to waitFor)
+        this._stores = stores || new HashProxy()
         
         dispatcher = dispatcher || null
         if (dispatcher instanceof Dispatcher) {
@@ -16,6 +21,10 @@ export default class BaseStore extends EventEmitter {
             this.dispatcher = new Dispatcher()  // TODO: Hmmm... maybe I shouldn't just create a random dispatcher that's attached to the base store
             // This is just in here until I decide how to handle the case where it isn't provided
         }
+    }
+    
+    getDependentStore(key) {
+        return this._stores[key]
     }
 
     subscribe(actionSubscribe) {

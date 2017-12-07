@@ -2,9 +2,10 @@ import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 
 export default (dispatcher) => {
     return {
-        newOrder: () => {
+        newOrder: (customer) => {
             dispatcher.dispatch({
-                actionType: CheckoutConstants.NEW_ORDER
+                actionType: CheckoutConstants.NEW_ORDER,
+                customer: customer
             })
         },
         setOrder: (order) => {
@@ -28,7 +29,8 @@ export default (dispatcher) => {
         },
         setExistingCustomer: () => {
             dispatcher.dispatch({
-                actionType: CheckoutConstants.SET_EXISTING_CUSTOMER
+                actionType: CheckoutConstants.SET_EXISTING_CUSTOMER,
+                customer: customer
             })
         },
         setBillingAddress: (data) => {
