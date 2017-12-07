@@ -139,8 +139,8 @@ class BrowserStore extends EventEmitter {
 		let config = this.config || null
 		
 		if (config !== null && this.config.hasOwnProperty('key')) {
-			if (typeof this.config.key === 'string') {
-				return this.has(this.config.key)
+			if (typeof this.config[key] === 'string') {
+				return this.has(this.config[key])
 			}
 		}
 		

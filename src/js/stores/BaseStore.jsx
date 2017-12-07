@@ -7,7 +7,7 @@ import StringHelper from '../helpers/String.js'
 
 import HashProxy from '../utils/HashProxy.js'
 
-export default class BaseStore extends EventEmitter {
+class BaseStore extends EventEmitter {
     constructor(dispatcher, stores) {
         super()
         
@@ -35,7 +35,8 @@ export default class BaseStore extends EventEmitter {
         this.dispatchToken = this.dispatcher.register(actionSubscribe())
     }
 
-    emitChange() {
+    // TODO: Standardize events with constants
+	emitChange() {
         this.emit('CHANGE')
     }
 
@@ -47,16 +48,49 @@ export default class BaseStore extends EventEmitter {
         this.removeListener('CHANGE', cb)
     }
     
-    normalizePayload(data, from, to) {
+    static normalizePayload = (data, from, to) => {
         return ObjectHelper.recursiveFormatKeys(data, from, to)
     }
+	
+	static resolveCodeTypes = (data, returnProp, ignoreValues) => {
+		// TODO: Need a mechanism to configure how code types are parsed... callback? Override?
+		returnProp = (typeof returnProp === 'string' && returnProp.length > 0) ? returnProp : BaseStore.CODETYPE_NAME
+		
+		for (let prop in data) {
+			let value = data[prop]
+			
+			// Is value a code type?
+			// Null check first - hasOwnProperty check on a null will throw a runtime error
+			if (data[prop] !== null) {
+				if (data[prop].hasOwnProperty('code') && 
+					data[prop].hasOwnProperty('version') &&
+					data[prop].hasOwnProperty('name') &&
+					data[prop].hasOwnProperty(returnProp)) {
+					value = data[prop][returnProp]
+				}
+			}
+			
+			data[prop] = value
+		}
+		
+		return data
+	}
     
     /**
-     * TODO: I am a utility method move me out of here!
+     * TODO: I am a utility method move me out of here?
      */
-    _isset(array, value) {
-        return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
+	static isset = (array, value) => {
+		return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
+	}
+	
+	_isset(array, value) {
+        return BaseStore.isset(array, value)
     }
 }
 
 BaseStore.dispatchToken = null
+BaseStore.CODETYPE_NAME = 'name'
+BaseStore.CODETYPE_ID = 'id'
+BaseStore.CODETYPE_CODE = 'code'
+
+export default BaseStore

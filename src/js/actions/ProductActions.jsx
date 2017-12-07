@@ -7,28 +7,18 @@ export default (dispatcher) => {
                 actionType: ProductConstants.SET_PRODUCT,
                 product: data
             })
-            
-            /*this.setState({
-                logged: true,
-                displayName: (
-                    typeof data !== 'undefined' && 
-                    typeof data['display_name'] === 'string') ? data['display_name'] : '',
-                fullName: [data['firstname'], data['middlename'], data['lastname']].join(' ')
-            })*/
+        },
+		setProducts: (data) => {
+            dispatcher.dispatch({
+                actionType: ProductConstants.SET_PRODUCTS,
+                products: data
+            })
         },
         updateProduct: (data) => {
             dispatcher.dispatch({
                 actionType: ProductConstants.UPDATE_PRODUCT,
                 product: data
             })
-            
-            /*this.setState({
-                logged: true,
-                displayName: (
-                    typeof data !== 'undefined' && 
-                    typeof data['display_name'] === 'string') ? data['display_name'] : '',
-                fullName: [data['firstname'], data['middlename'], data['lastname']].join(' ')
-            })*/
         }
     }
 }

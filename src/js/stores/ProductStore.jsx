@@ -50,6 +50,8 @@ class ProductStore extends BaseStore {
                 this.emitChange()
                 
                 break
+			case ProductConstants.SET_PRODUCTS:
+                break
             default:
                 break
         }
