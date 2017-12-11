@@ -189,6 +189,18 @@ export class OrderStore extends BaseStore {
         return total
     }
     
+    getSubTotal() {
+        let totals = this.getTotals() || null
+        let total = {
+            title: 'Sub-Total',
+            value: 0.00
+        }
+
+        total = totals.shift() || total
+
+        return total
+    }
+    
     processSelectionOptions(item, callback) {
         // Process selected item options
         if (item.options instanceof Array) {

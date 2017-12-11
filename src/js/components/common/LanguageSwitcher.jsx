@@ -15,6 +15,19 @@ export default class LanguageSwitcher extends Component {
     }
     componentDidMount() {
         document.addEventListener('click', this.onBlur)
+        
+        let langSwitcher = $('.lang-switcher'),
+			langToggle = $('.lang-toggle')
+        
+        langToggle.on('click', function() {
+            $(this).parent().toggleClass('open')
+        })
+        langSwitcher.on('click', function(e) {
+        e.stopPropagation()
+        })
+        $(document).on('click', function(e) {
+            langSwitcher.removeClass('open')
+        })
     }
     
     componentWillUnmount() {

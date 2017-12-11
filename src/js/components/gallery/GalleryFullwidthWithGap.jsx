@@ -68,6 +68,34 @@ export default class GalleryFullwidthWithGap extends Component {
             this.updateIsotope()
         }
         
+        let galleryThumb = $('.product-gallery-thumblist a')
+        let galleryPreview = $('.product-gallery-preview > li')
+
+        galleryThumb.on('click', (e) => {
+            let target = $(this).attr('href')
+
+            galleryThumb.parent().removeClass('active')
+            $(this).parent().addClass('active')
+            galleryPreview.removeClass('current')
+            $(target).addClass('current')
+
+            e.preventDefault()
+        })
+        
+        // Gallery Popup
+        let $galleryItem = $('.gallery-item')
+        
+        if ($galleryItem.length > 0) {
+            $galleryItem.magnificPopup({
+              type: 'image',
+              mainClass: 'mfp-fade',
+              removalDelay: 500,
+              gallery: {
+                enabled: true
+              }
+            })
+        }
+        
         // Filtering
         /*if (('.filter-grid').length > 0) {
             let filterGrid = document.querySelector('.filter-grid')

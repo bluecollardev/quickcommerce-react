@@ -1,6 +1,70 @@
 import React, { Component } from 'react'
 
 export default class Toolbar extends Component {
+    constructor(props) {
+        super(props)
+        
+        this.countDownFunc = this.countDownFunc.bind(this)
+    }
+    
+    // TODO: Consider aking me a utility!
+    countDownFunc(items, trigger) {
+        items.each(() => {
+            let countDown = $(this),
+                dateTime = $(this).data('date-time')
+
+            let countDownTrigger = (trigger) ? trigger : countDown
+            countDownTrigger.downCount({
+                date: dateTime,
+                offset: +10
+            })
+        })
+    }
+        
+    componentDidMount() {
+        // Sidebar Toggle on Mobile
+        /*let sidebar = document.querySelector('.sidebar'),
+            sidebarToggle = document.querySelector('.sidebar-toggle')
+        
+        sidebarToggle.addEventListener('click', (e) => {
+            e.target.classList.add('sidebar-open')
+            sidebar.classList.add('open')
+        })
+        
+        document.querySelector('.sidebar-close').addEventListener('click', () => {
+            sidebarToggle.classList.remove('sidebar-open')
+            sidebar.classList.remove('open')
+        })
+        
+        this.countDownFunc(document.querySelector('.countdown'))*/
+        // TODO: Code above doesn't exist in this theme?
+        
+        // Toggle Mobile Menu
+        let menuToggle = document.querySelector('.mobile-menu-toggle'),
+            mobileMenu = document.querySelector('.mobile-menu-wrapper')
+        
+        menuToggle.addEventListener('click', (e) => {
+            e.target.toggleClass('active')
+            mobileMenu.toggleClass('open')
+        })
+
+        // Toggle Submenu
+        let hasSubmenu = document.querySelectorAll('.menu-item-has-children > a')
+
+        function closeSubmenu() {
+            hasSubmenu.parentNode.classList.remove('active')
+        }
+        
+        hasSubmenu.addEventListener('click', (e) => {
+            if (e.target.parentNode.is('.active')) {
+                closeSubmenu()
+            } else {
+                closeSubmenu()
+                e.target.parentNode.classList.add('active')
+            }
+        })
+    }
+    
     render() {
         return (
             <div className="toolbar-wrapper">

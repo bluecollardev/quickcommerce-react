@@ -6,6 +6,8 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio, } from 'react-bootstrap'
 
+import noUiSlider from 'nouislider'
+
 export default class CatalogFilterBar extends Component {
     constructor(props) {
         super(props)
@@ -16,8 +18,46 @@ export default class CatalogFilterBar extends Component {
         this.onFiltersToggleClicked = this.onFiltersToggleClicked.bind(this)
         this.onBlur = this.onBlur.bind(this)
     }
+    
     componentDidMount() {
         //document.addEventListener('click', this.onBlur)
+        
+        let rangeSlider  = document.querySelector('.ui-range-slider')
+        
+        if (typeof rangeSlider !== 'undefined' && rangeSlider !== null) {
+            let dataStartMin = parseInt(rangeSlider.parentNode.getAttribute('data-start-min'), 10),
+                dataStartMax = parseInt(rangeSlider.parentNode.getAttribute('data-start-max'), 10),
+                dataMin = parseInt(rangeSlider.parentNode.getAttribute('data-min'), 10),
+                dataMax = parseInt(rangeSlider.parentNode.getAttribute('data-max'), 10),
+                dataStep = parseInt(rangeSlider.parentNode.getAttribute('data-step'), 10)
+            
+            let valueMin = document.querySelector('.ui-range-value-min span'),
+                valueMax = document.querySelector('.ui-range-value-max span'),
+                valueMinInput = document.querySelector('.ui-range-value-min input'),
+                valueMaxInput = document.querySelector('.ui-range-value-max input')
+            
+            noUiSlider.create(rangeSlider, {
+                start: [ dataStartMin, dataStartMax ],
+                connect: true,
+                step: dataStep,
+                range: {
+                    'min': dataMin,
+                    'max': dataMax
+                }
+            })
+            
+            rangeSlider.noUiSlider.on('update', (values, handle) => {
+                let value = values[handle]
+                if (handle) {
+                    valueMax.innerHTML  = Math.round(value)
+                    valueMaxInput.value = Math.round(value)
+                } else {
+                    valueMin.innerHTML  = Math.round(value)
+                    valueMinInput.value = Math.round(value)
+                }
+            })
+
+        }
     }
     
     componentWillUnmount() {

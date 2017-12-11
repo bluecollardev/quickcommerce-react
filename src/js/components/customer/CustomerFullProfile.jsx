@@ -103,14 +103,6 @@ class CustomerFullProfile extends Component {
         }
     }
     
-    onShipToBillingAddressChange(e) {
-        this.setState({
-            shipToBillingAddress: e.target.value
-        }, () => {
-            alert('changed shiptobillingaddress: shipToBillingAddress = ' + this.state.shipToBillingAddress)
-        })
-    }
-    
     componentWillReceiveProps(newProps) {
         if (this.props.hasOwnProperty('billingAddress') || this.props.hasOwnProperty('currentAddress')) {
             // currentAddress and billingAddress are aliases
@@ -207,6 +199,22 @@ class CustomerFullProfile extends Component {
     
     triggerAction(callback) {
         return callback(this.getForm())
+    }
+    
+    onShipToBillingAddressChange(e) {
+        let shipToBilling = false
+        
+        if (e.target.value === 'billing') {
+            shipToBilling = true
+        } else if (e.target.value === 'shipping') {
+            shipToBilling = false
+        }
+        
+        this.setState({
+            shipToBillingAddress: shipToBilling
+        }, () => {
+            console.log('changed shiptobillingaddress: shipToBillingAddress = ' + this.state.shipToBillingAddress)
+        })
     }
     
     onCreate(e) {
@@ -379,6 +387,11 @@ class CustomerFullProfile extends Component {
                             onCancel = {this.onCancel}
                             onSaveSuccess = {this.onSaveSuccess}
                             displayPassword = {this.props.displayPassword}
+                            displayDateOfBirth = {this.props.displayDateOfBirth}
+                            displaySIN = {this.props.displaySIN}
+                            displayGender = {this.props.displayGender}
+                            displayMarital = {this.props.displayMarital}
+                            displayLanguage = {this.props.displayLanguage}
                             mode = 'create'
                             />
                         )}
@@ -538,10 +551,10 @@ class CustomerFullProfile extends Component {
                             <hr />
                             <div className='form-group'>
                                 <label className='radio radio-inline'>
-                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} onClick={this.onShipToBillingAddressChange} /> Ship to this address
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} value='billing' onClick={this.onShipToBillingAddressChange} /> Ship to this address
                                 </label>
                                 <label className='radio radio-inline'>
-                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} onClick={this.onShipToBillingAddressChange} /> Ship to different address
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} value='shipping' onClick={this.onShipToBillingAddressChange} /> Ship to different address
                                 </label>
                             </div>
                         </div>
@@ -569,8 +582,8 @@ class CustomerFullProfile extends Component {
                     {this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
                         <FormGroup>
-                            <Button bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> Create Account</h4></Button>&nbsp;
-                            <Button onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='primary' onClick={this.onCreate}><span><i className='fa fa-check' /> Create Account</span></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>&nbsp;
                         </FormGroup>
                     </div>
                     )}
@@ -617,6 +630,11 @@ class CustomerFullProfile extends Component {
                             onCancel = {this.props.onCancel}
                             onSaveSuccess = {this.props.onSaveSuccess}
                             displayPassword = {this.props.displayPassword}
+                            displayDateOfBirth = {this.props.displayDateOfBirth}
+                            displaySIN = {this.props.displaySIN}
+                            displayGender = {this.props.displayGender}
+                            displayMarital = {this.props.displayMarital}
+                            displayLanguage = {this.props.displayLanguage}
                             mode = 'edit'
                             />
                         )}
@@ -773,10 +791,10 @@ class CustomerFullProfile extends Component {
                             <hr />
                             <div className='form-group'>
                                 <label className='radio radio-inline'>
-                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} onClick={this.onShipToBillingAddressChange} /> Ship to this address
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} value='billing' onClick={this.onShipToBillingAddressChange} /> Ship to this address
                                 </label>
                                 <label className='radio radio-inline'>
-                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} onClick={this.onShipToBillingAddressChange} /> Ship to different address
+                                    <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} value='shipping' onClick={this.onShipToBillingAddressChange} /> Ship to different address
                                 </label>
                             </div>
                         </div>
@@ -784,7 +802,7 @@ class CustomerFullProfile extends Component {
                     )}
                     
                     {/* If single / shipping / billing address */}
-                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && (
+                    {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
                     <div className='customer-profile-block row full-width-inputs'>
                         <div className='shipping-address'>
                             <CurrentAddress
@@ -803,8 +821,8 @@ class CustomerFullProfile extends Component {
                     {this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
                         <FormGroup>
-                            <Button bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> Update Account</h4></Button>&nbsp;
-                            <Button onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='primary' onClick={this.onUpdate}><span><i className='fa fa-check' /> Update Account</span></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>&nbsp;
                         </FormGroup>
                     </div>
                     )}
