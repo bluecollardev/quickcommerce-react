@@ -151,6 +151,7 @@ class Cart extends Component {
                             key = {item._key}
                             item = {item}
                             columns = {this.props.columns}
+                            onItemClicked = {this.props.onItemClicked}
                             removeItem = {()  => this.removeItem(item._index)}
                             setItemQty = {qty => this.updateQuantity(item._index, qty)} />
                       )
@@ -167,6 +168,7 @@ Cart.propTypes = {
     selection         : React.PropTypes.array,
     onItemDropped     : React.PropTypes.func,
     onItemAdded       : React.PropTypes.func,
+    onItemClicked     : React.PropTypes.func,
     onItemRemoved     : React.PropTypes.func,
     onItemQtyChanged  : React.PropTypes.func,
     onChange          : React.PropTypes.func,
@@ -179,6 +181,7 @@ Cart.propTypes = {
 Cart.defaultProps = {
     items               : {},
     selection           : [],
+    onItemClicked       : () => {},
     onItemDropped       : () => {},
     onItemAdded         : () => {},
     onItemRemoved       : () => {},

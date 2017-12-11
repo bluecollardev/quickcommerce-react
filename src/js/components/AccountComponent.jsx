@@ -35,10 +35,10 @@ class AccountComponent extends Component {
         this.onLoginError = this.onLoginError.bind(this)
         this.onCreateSuccess = this.onCreateSuccess.bind(this)
         this.getSignInMode = this.getSignInMode.bind(this)
+        this.toggleRegistration = this.toggleRegistration.bind(this)
         
         this.state = {
-            createAccount: false,
-            shipToBillingAddress: true
+            createAccount: false
         }
     }
     
@@ -62,12 +62,6 @@ class AccountComponent extends Component {
         }
     }
     
-    onShipToBillingAddressChange(e) {
-        this.setState({
-            shipToBillingAddress: e.target.value
-        })
-    }
-    
     getSignInMode() {
         const modes = ['overlay', 'fullpage', 'inline'] // No inline yet
         
@@ -76,6 +70,18 @@ class AccountComponent extends Component {
         }
         
         return AccountComponent.defaultProps.signInMode
+    }
+    
+    toggleRegistration(e) {
+        // TODO: Properly type-check
+        if (typeof e !== 'undefined') {
+            e.preventDefault()
+            e.stopPropagation()
+        }
+        
+        this.setState({
+            createAccount: !this.state.createAccount
+        })
     }
     
     doLogin(formData, onSuccess, onError) {        
@@ -243,6 +249,7 @@ class AccountComponent extends Component {
                         shippingAddress = {this.props.customerStore.shippingAddress}
                         editAccount = {false}
                         createAccount = {true}
+                        displayActions = {true}
                         displayProfile = {true}
                         displayCurrentAddress = {true}
                         displayBillingAddress = {true}
@@ -261,6 +268,7 @@ class AccountComponent extends Component {
                         shippingAddress = {this.props.customerStore.shippingAddress}
                         editAccount = {true}
                         createAccount = {false}
+                        displayActions = {true}
                         displayProfile = {true}
                         displayCurrentAddress = {true}
                         displayBillingAddress = {true}

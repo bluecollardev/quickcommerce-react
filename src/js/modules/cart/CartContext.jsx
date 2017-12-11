@@ -37,6 +37,18 @@ export default (ComposedComponent) => {
                 chooseQuantity: false,
                 settings: {}
             }
+            
+            this.getSelection = this.getSelection.bind(this)
+            this.isEmpty = this.isEmpty.bind(this)
+            this.hasItems = this.hasItems.bind(this)
+            this.addToCart = this.addToCart.bind(this)
+            this.quickAddToCart = this.quickAddToCart.bind(this)
+            this.addToCartClicked = this.addToCartClicked.bind(this)
+            this.refresh = this.refresh.bind(this)
+            this.reset = this.reset.bind(this)
+            this.getTotal = this.getTotal.bind(this)
+            this.doCheckout = this.doCheckout.bind(this)
+            // TODO: rowIterator does not appear to be used
         }
         
         getSelection() {
@@ -226,6 +238,12 @@ export default (ComposedComponent) => {
             return total
         }
         
+        doCheckout() {
+            this.props.showChargeModal(() => {
+                window.location.href = '#/checkout'
+            })
+        }
+        
         rowIterator(context, row) {
             if (!context) {
                 return {
@@ -241,10 +259,12 @@ export default (ComposedComponent) => {
         
         render() {
             let props = Object.assign({}, this.props, {
-                getSelection: this.getSelection.bind(this),
-                addToCart: this.addToCart.bind(this),
-                quickAddToCart: this.quickAddToCart.bind(this),
-                addToCartClicked: this.addToCartClicked.bind(this)
+                getSelection: this.getSelection,
+                addToCart: this.addToCart,
+                quickAddToCart: this.quickAddToCart,
+                addToCartClicked: this.addToCartClicked,
+                getTotal: this.getTotal,
+                doCheckout: this.doCheckout
             })
             
             return (

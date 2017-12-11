@@ -45,6 +45,9 @@ import CategoryStep from '../../steps/Category.jsx'
 import ProductStep from '../../steps/Product.jsx'
 import ProductOptionStep from '../../steps/ProductOption.jsx'
 
+import CURRENCY from './Currency.jsx'
+import CASH_IN_DRAWER from './CashInDrawer.jsx'
+
 export default (ComposedComponent) => {
     @inject(deps => ({
         steps: deps.steps,
@@ -146,8 +149,7 @@ export default (ComposedComponent) => {
             props.checkoutStore.on('set-shipping-method', this.onSetShippingMethod.bind(this))
             props.checkoutStore.on('set-notes', this.onSetNotes.bind(this))  
             
-            // TODO: This is commented out - I forget why...
-            //props.checkoutStore.on('set-order', this.onSetOrder.bind(this))
+            props.checkoutStore.on('set-order', this.onSetOrder.bind(this))
             
             // We call this data because it's not a complete item, just a POJO
             props.cartStore.on('item-added', this.onItemAdded.bind(this))
@@ -566,7 +568,7 @@ export default (ComposedComponent) => {
             this.setState({ code: null })
         }
         
-        showChargeModal() {
+        showChargeModal(onComplete) {
             this.setState({ 
                 charge: 1,
                 checkout: {
@@ -580,6 +582,8 @@ export default (ComposedComponent) => {
                     totals: this.props.checkoutStore.getTotals(),
                     total: this.props.checkoutStore.getTotal()
                 }
+            }, () => {
+                onComplete()
             })
         }
         
@@ -1022,7 +1026,7 @@ export default (ComposedComponent) => {
         }
         
         renderReceipt(cached = true) {
-            /*cached = cached || true
+            cached = cached || true
             let render = false
             
             if (this.state.hasOwnProperty('checkout') &&
@@ -1151,11 +1155,11 @@ export default (ComposedComponent) => {
                 </span>
             )
 
-            return output*/
+            return output
         }
         
         renderCachedReceipt(cached = true) {
-            /*cached = cached || true
+            cached = cached || true
             let render = false
             
             if (this.state.hasOwnProperty('prevCheckout') &&
@@ -1263,7 +1267,7 @@ export default (ComposedComponent) => {
                 )
             }
 
-            return output*/
+            return output
         }
         
         renderEndOfDayReport(data) {
@@ -1721,7 +1725,7 @@ export default (ComposedComponent) => {
         
         // TODO: This was commented out - I forget why...
         onSetOrder() {
-            let { customerStore, checkoutStore, checkoutService } = this.props
+            /*let { customerStore, checkoutStore, checkoutService } = this.props
             
             console.log('checkout change detected')
             console.log(customerStore.customer)
@@ -1741,7 +1745,7 @@ export default (ComposedComponent) => {
                         //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
                     })
                 }
-            }
+            }*/
         }
         
         onItemAdded(itemId, quantity, item) {
@@ -2216,6 +2220,8 @@ export default (ComposedComponent) => {
                 openDrawer: this.openDrawer,
                 calculateChange: this.calculateChange,
                 selectChangePreset: this.selectChangePreset,
+                renderReceipt: this.renderReceipt,
+                renderCachedReceipt: this.renderCachedReceipt,
                 renderPlainTxtOptions: this.renderPlainTxtOptions,
                 renderCashOptions: this.renderCashOptions,
                 renderPaymentOptions: this.renderPaymentOptions,
@@ -2249,6 +2255,7 @@ export default (ComposedComponent) => {
                 <ComposedComponent
                     {...props}
                     steps = {steps}
+                    state = {this.state}
                     stepper = {this.stepper}
                     ref = {(component) => this.component = component}>
                     <Modal

@@ -28,6 +28,9 @@ import ObjectHelper from '../../helpers/Object.js'
 import JSONHelper from '../../helpers/JSON.js'
 import UrlHelper from '../../helpers/URL.js'
 
+/**
+ * TODO: This is really AbstractCartComponent
+ */
 @inject(deps => ({
     actions: deps.actions,
 	settingService: deps.authService,
@@ -67,8 +70,20 @@ class CartComponent extends Component {
         let settings = this.props.settingStore.getSettings().posSettings
     }
     
+    /**
+     * onItemClicked must be implemented in the extending class.
+     */
     itemClicked(e, item) {
-        //let cart = this.getCart()
+        // CartComponent itemClicked
+        e.preventDefault()
+        e.stopPropagation()
+        
+        // If the Quick Add button was clicked
+        if (e.target.type === 'button') {
+            this.addToCartClicked(e, item)
+        }
+        
+        this.props.actions.product.setProduct(item)
     }
     
     itemDropped(item) {
@@ -156,6 +171,7 @@ class CartComponent extends Component {
                                 iterator = {this.rowIterator}
                                 containerComponent = {containerComponent}
                                 rowComponent = {rowComponent}
+                                onItemClicked = {this.props.onCartItemClicked}
                                 onItemDropped = {this.itemDropped} />
                         </div>
                     </Col>
