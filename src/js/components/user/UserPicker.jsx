@@ -6,7 +6,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-
 export default class UserPicker extends Component {
     constructor(props) {
         super(props)
@@ -53,8 +52,6 @@ export default class UserPicker extends Component {
         )
     }   
 }
-
-
 
 
 

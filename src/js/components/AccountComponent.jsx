@@ -283,7 +283,6 @@ class AccountComponent extends Component {
     }
 }
 
-
 AccountComponent.propTypes = {
     //onItemClicked: React.PropTypes.func,
     //onFilterSelected: React.PropTypes.func,

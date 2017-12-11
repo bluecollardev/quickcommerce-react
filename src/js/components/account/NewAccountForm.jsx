@@ -31,5 +31,3 @@ export default class NewAccountForm extends Component {
 
 
 
-
-

@@ -26,7 +26,7 @@ class BrowserStore extends EventEmitter {
         this.availableDates = [] // VEST as well
         this.unavailableDates = [] // Bookings
         
-        // Just monkey patch the parent method
+       
         this.subscribe(() => this.registerToActions.bind(this))
     }
     

@@ -6,7 +6,7 @@ class UserStore extends BaseStore {
     constructor(dispatcher) {
         super(dispatcher)
         
-        // Just monkey patch the parent method
+       
         this.subscribe(() => this.registerToActions.bind(this))
 		this.isLoggedIn = this.isLoggedIn.bind(this)
     }

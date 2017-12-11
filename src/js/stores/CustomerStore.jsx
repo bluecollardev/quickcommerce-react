@@ -7,7 +7,7 @@ class CustomerStore extends BaseStore {
     constructor(dispatcher) {
         super(dispatcher)
         
-        // Just monkey patch the parent method
+       
         this.subscribe(() => this.registerToActions.bind(this))
     }
 

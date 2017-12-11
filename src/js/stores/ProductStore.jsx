@@ -9,7 +9,7 @@ class ProductStore extends BaseStore {
     constructor(dispatcher) {
         super(dispatcher)
         
-        // Just monkey patch the parent method
+       
         this.subscribe(() => this.registerToActions.bind(this))
         
         if (typeof localStorage.getItem('selectedProduct') === 'string') {

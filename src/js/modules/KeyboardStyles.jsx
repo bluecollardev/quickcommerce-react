@@ -7,7 +7,6 @@ const hairlineWidth = StyleSheet.hairlineWidth
 
 export const BG_COLOR = '#d2d5dc'
 
-
 export default StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
@@ -21,7 +20,6 @@ export default StyleSheet.create({
         flexDirection: 'row'
     }
 })
-
 
 export const keyStyle = StyleSheet.create({
     wrapper: {

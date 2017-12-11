@@ -22,7 +22,7 @@ class StarMicronicsStore extends BaseStore {
             macAddress: null
         }
 
-        // Just monkey patch the parent method
+       
         //this.subscribe(() => this.registerToActions.bind(this))
         
         // Easy access while developing app

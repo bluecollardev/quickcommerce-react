@@ -152,7 +152,7 @@ class SettingStore extends BaseStore {
             effective: true
         }]*/
 
-        // Just monkey patch the parent method
+       
         this.subscribe(() => this.registerToActions.bind(this))
         
         // Attach a setting adapter if it wasn't provided

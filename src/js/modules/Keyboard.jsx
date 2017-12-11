@@ -8,7 +8,6 @@ import { View, Text, Image, TouchableHighlight } from 'react-native'
 
 import styles, { keyStyle, BG_COLOR } from './KeyboardStyles.jsx'
 
-
 const numberKeys = [
     [
         { mainText: '1', otherText: '' },
@@ -26,7 +25,6 @@ const numberKeys = [
         { mainText: '9', otherText: 'WXYZ' }
     ]
 ]
-
 
 class Keyboard extends Component {
 
@@ -181,18 +179,12 @@ class Keyboard extends Component {
     }
 }
 
-
 Keyboard.propTypes = {
-    // 是否显示小数点符号
     keyboardType: PropTypes.oneOf(['number-pad', 'decimal-pad']),
-    // 点击键盘按键
     onKeyPress: PropTypes.func,
-    // 点击删除按钮
     onDelete: PropTypes.func,
-    // 长按删除按钮
     onClear: PropTypes.func
 }
-
 
 Keyboard.defaultProps = {
     keyboardType: 'number-pad',
@@ -200,6 +192,5 @@ Keyboard.defaultProps = {
     onDelete: () => {},
     onClear: () => {}
 }
-
 
 export default Keyboard

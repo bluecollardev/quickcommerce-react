@@ -612,7 +612,6 @@ class CurrentAddress extends Component {
                 </div>
                 )}
 
-
                 {this.state.address && this.props.modal && (
                 <Modal
                     bsClass = 'modal'

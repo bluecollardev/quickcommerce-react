@@ -2404,7 +2404,6 @@ export default (ComposedComponent) => {
                                         </Alert>
                                     </div>
 
-
                                     <form>
                                         <FormGroup>
                                             <Button block bsStyle='default' onClick={this.showReceiptModal}><h4><i className='fa fa-eye' /> View Receipt</h4></Button>

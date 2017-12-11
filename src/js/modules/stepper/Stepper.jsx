@@ -48,7 +48,7 @@ class Stepper extends BaseStore {
         
         this.reject = onReject
         
-        // Just monkey patch the parent method
+       
         //this.subscribe(() => this.registerToActions.bind(this))
     }
     

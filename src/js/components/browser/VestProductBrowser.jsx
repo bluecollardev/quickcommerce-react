@@ -598,7 +598,6 @@ export class VestProductBrowser extends Component {
 
 
 
-
 var steps = [
                 
             ];

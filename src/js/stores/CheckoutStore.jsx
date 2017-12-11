@@ -9,6 +9,10 @@ import CheckoutConstants from '../constants/CheckoutConstants.jsx'
 import HashProxy from '../utils/HashProxy.js'
 
 class CheckoutStore extends OrderStore {
+	/**
+	 * OrderStore is intended to be abstract, and just passes on the constructor args to BaseStore.
+	 * For now, at any rate, it needs to be defined in inheriting classes.
+	 */
     constructor(dispatcher, stores) {
         super(dispatcher, stores)
         
@@ -46,7 +50,6 @@ class CheckoutStore extends OrderStore {
         this.shippingMethod = null
         this.paymentType = null
         
-        // Just monkey patch the parent method
         this.subscribe(() => this.registerToActions.bind(this))
     }
     
@@ -156,7 +159,6 @@ class CheckoutStore extends OrderStore {
 
             return orderDetails
         }
-
 
         if (orderId !== null) {
             if (order !== null && orderId > 0) {

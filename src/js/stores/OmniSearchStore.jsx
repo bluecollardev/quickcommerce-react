@@ -19,7 +19,7 @@ class OmniSearchStore extends BaseStore {
 
         this.fluxFactory = new FluxFactory()
 
-        // Just monkey patch the parent method
+       
         this.subscribe(() => {
             return this.registerToActions.bind(this)
         })

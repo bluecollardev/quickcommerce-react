@@ -148,7 +148,6 @@ const EmploymentTypeDropdown = (props) => {
     )
 }
 
-
 const EmploymentStatusDropdown = (props) => {
     return (
         <SelectList {...props} />

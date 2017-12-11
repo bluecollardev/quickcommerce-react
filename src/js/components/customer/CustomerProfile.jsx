@@ -9,7 +9,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-
 import CurrentAddress from '../address/CurrentAddress.jsx'
 import ShippingAddress from '../address/ShippingAddress.jsx'
 import CustomerInfo from '../customer/CustomerInfo.jsx'

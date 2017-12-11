@@ -19,8 +19,8 @@ export class OrderStore extends BaseStore {
                 this.newOrder(action.customer)
                 break
             case OrderConstants.SET_ORDER:
-                // This doesn't do anything right now
-                this.payload = action.order
+                //this.payload = action.order
+                this.setOrder(action.order)
                 break
             case OrderConstants.SET_BUILTIN_CUSTOMER:
                 this.setBuiltInCustomer(action.customer)
@@ -90,7 +90,7 @@ export class OrderStore extends BaseStore {
     }
     
     setOrder(orderPayload) {
-        this.payload = orderPayload
+        this.payload = orderPayload // TODO: Use mappings(?)
         this.emit('set-order')
     }
     

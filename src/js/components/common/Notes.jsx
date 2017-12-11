@@ -162,7 +162,6 @@ export default FormComponent(class Notes extends Component {
                 </div>
                 )}
 
-
                 {this.state.notes && this.props.modal && (
                 <Modal
                   show   = {!!this.state.notes}
