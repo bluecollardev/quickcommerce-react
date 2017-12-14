@@ -67,9 +67,11 @@ export default class ProductSummary extends Component {
     
     updateImageDimensions() {
         // Keep it square
-        console.log('updating featured image height')
-        console.log(this.featuredImage.offsetWidth)
-        this.featuredImage.style.height = this.featuredImage.offsetWidth + 'px'
+		if (typeof this.featuredImage !== 'undefined' && this.featuredImage !== null) {
+			console.log('updating featured image height')
+			console.log(this.featuredImage.offsetWidth)
+			this.featuredImage.style.height = this.featuredImage.offsetWidth + 'px'
+		}
     }
     
     toggleOptions() {

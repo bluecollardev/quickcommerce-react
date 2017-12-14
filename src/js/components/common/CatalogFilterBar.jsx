@@ -65,8 +65,8 @@ export default class CatalogFilterBar extends Component {
     }
     
     onFilterSelected(eventKey) {
-        //e.preventDefault()
-        //e.stopPropagation()
+        e.preventDefault()
+        e.stopPropagation()
         
         if (typeof this.props.onFilterSelected === 'undefined') return false
         
@@ -136,132 +136,105 @@ export default class CatalogFilterBar extends Component {
     
     render() {
         let items = this.renderItems()
+		let { tags, priceRange, types, sort } = this.props
         
         return (
-            <section className="container-fluid">
-              <div className="filters-bar">
-                <div className="column">
+            <section className='container-fluid'>
+              <div className='filters-bar'>
+                <div className='column'>
                   {/* Nav Filters */}
-                  <ul className="nav-filters">
+                  <ul className='nav-filters'>
                     {items}
                   </ul>{/* .nav-filters */}
                 </div>{/* .column */}
-                <div className="column">
-                  <a rel="filters" className="filters-toggle" data-toggle="filters"
+                <div className='column'>
+                  <a rel='filters' className='filters-toggle' data-toggle='filters'
                     onClick = {this.onFiltersToggleClicked}
                     ref = {(toggle) => this.criteriaFilterToggle = toggle}>
-                    <i className="material-icons filter_list" />
+                    <i className='material-icons filter_list' />
                     Filters
                   </a>
-                  <a rel="search-box" className="search-btn" data-toggle="filters"
+                  <a rel='search-box' className='search-btn' data-toggle='filters'
                     onClick = {this.onFiltersToggleClicked}
                     ref = {(toggle) => this.searchFilterToggle = toggle}>
-                    <i className="material-icons search" />
+                    <i className='material-icons search' />
                   </a>
                 </div>
               </div>{/* .filters-bar */}
-              <div className="row filters"
+              <div className='row filters'
                 ref = {(wrap) => this.filtersWrap = wrap}>
-                <div className="col-xs-12 filters-pane" id="filters"
+                <div className='col-xs-12 filters-pane' id='filters'
                   ref = {(filters) => this.filtersPane = filters}>
-                  <div className="row">
-                    <div className="col-md-3">
+                  <div className='row'>
+                    <div className='col-md-3'>
                       {/* Sorting Widget */}
-                      <div className="widget widget-sorting">
-                        <h3 className="widget-title">Sort By</h3>
+                      <div className='widget widget-sorting'>
+                        <h3 className='widget-title'>Sort By</h3>
                         <ul>
-                          <li className="active"><a href="#">
-                              <i className="material-icons sort" />
-                              Default
+						{Object.keys(sort).map((key, idx) => (
+						  <li key={idx} rel={key} className='active'><a href='#'>
+                              <i className='material-icons' />
+                              {sort[key]}
                             </a></li>
-                          <li><a href="#">
-                              <i className="material-icons favorite_border" />
-                              Popularity
-                            </a></li>
-                          <li><a href="#">
-                              <i className="material-icons vertical_align_top" />
-                              Last entries
-                            </a></li>
-                          <li><a href="#">
-                              <i className="material-icons star_border" />
-                              Avarage rating
-                            </a></li>
-                          <li><a href="#">
-                              <i className="material-icons sort_by_alpha" />
-                              Alphabetically
-                            </a></li>
-                        </ul>
+                        ))}
+						</ul>
                       </div>{/* .widget.widget-sorting */}
                     </div>
-                    <div className="col-md-2">
-                      <div className="widget widget-color">
-                        <h3 className="widget-title">Types</h3>
+                    <div className='col-md-2'>
+                      <div className='widget widget-color'>
+                        <h3 className='widget-title'>Types</h3>
                         <ul>
-                          <li><a href="#">
-                              <span className="color" style={{backgroundColor: '#93c4ef'}} />
-                              Single Origin
+						{Object.keys(types).map((key, idx) => (
+                          <li key={idx} rel={key}><a href='#'>
+                              <span className='color' style={{backgroundColor: '#93c4ef'}} />
+                              {types[key]}
                             </a></li>
-                          <li><a href="#">
-                              <span className="color" style={{backgroundColor: '#a7c04d'}} />
-                              Fair Trade
-                            </a></li>
-                          <li><a href="#">
-                              <span className="color" style={{backgroundColor: '#ef0568'}} />
-                              Espresso
-                            </a></li>
-                          <li><a href="#">
-                              <span className="color" style={{backgroundColor: '#ffce2b'}} />
-                              Decaf
-                            </a></li>
+						))}
                         </ul>
                       </div>{/* .widget.widget-color */}
                     </div>
-                    <div className="col-md-3">
+                    <div className='col-md-3'>
                       {/* Price Range Widget */}
                       {/* Please note: Only one Range Slider allowed on the page! */}
-                      <div className="widget widget-catesgories">
-                        <h3 className="widget-title">Price Range</h3>
-                        <form method="post" className="price-range-slider" data-start-min={250} data-start-max={650} data-min={0} data-max={1000} data-step={1}>
-                          <div className="ui-range-slider" />
-                          <footer className="ui-range-slider-footer">
-                            <div className="column">
-                              <button type="submit" className="btn btn-ghost btn-sm btn-default">Filter</button>
+                      <div className='widget widget-catesgories'>
+                        <h3 className='widget-title'>Price Range</h3>
+                        <form method='post' className='price-range-slider' data-start-min={priceRange.startMin} data-start-max={priceRange.startMax} data-min={priceRange.min} data-max={priceRange.max} data-step={priceRange.step}>
+                          <div className='ui-range-slider' />
+                          <footer className='ui-range-slider-footer'>
+                            <div className='column'>
+                              <button type='submit' className='btn btn-ghost btn-sm btn-default'>Filter</button>
                             </div>
-                            <div className="column">
-                              <div className="ui-range-values">
-                                <div className="ui-range-value-min">
+                            <div className='column'>
+                              <div className='ui-range-values'>
+                                <div className='ui-range-value-min'>
                                   $<span />
-                                  <input type="hidden" />
+                                  <input type='hidden' />
                                 </div> -
-                                <div className="ui-range-value-max">
+                                <div className='ui-range-value-max'>
                                   $<span />
-                                  <input type="hidden" />
+                                  <input type='hidden' />
                                 </div>
                               </div>
                             </div>
                           </footer>
-                        </form>{/* .price-range-slider */}
-                      </div>{/* .widget.widget-categories */}
+                        </form>
+                      </div>
                     </div>
-                    <div className="col-md-3 col-md-offset-1">
+                    <div className='col-md-3 col-md-offset-1'>
                       {/* Tags Widget */}
-                      <div className="widget widget-tags">
-                        <h3 className="widget-title">Popular Tags</h3>
-                        <a href="#">Espresso</a>
-                        <a href="#">Tamper</a>
-                        <a href="#">Decaf</a>
-                        <a href="#">Single Origin</a>
-                        <a href="#">Cold Brew</a>
-                        <a href="#">Popular</a>
-                        <a href="#">New</a>
-                      </div>{/* .widget.widget-price */}
+                      <div className='widget widget-tags'>
+                        <h3 className='widget-title'>Popular Tags</h3>
+                        {tags.map((value, idx) => (
+						<a key={idx} rel={value} href='#'>{value}</a>
+						))}
+                      </div>
                     </div>
-                  </div>{/* .row */}
-                </div>{/* .col-xs-12.filters-pane#filters */}
-                <form className="col-xs-12 filters-pane" id="search-box">
-                  <input type="text" className="form-control" placeholder="Type and hit enter" />
-                </form>{/* .col-xs-12.filters-pane#search-box */}
-              </div>{/* .row.filters */}
+                  </div>
+                </div>
+                <form className='col-xs-12 filters-pane' id='search-box'>
+                  <input type='text' className='form-control' placeholder='Type and hit enter' />
+                </form>
+              </div>
             </section>
         )
     }

@@ -4,6 +4,7 @@ import { Dispatcher } from 'flux'
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
 import StringHelper from '../helpers/String.js'
+import SpringDateHelper from '../helpers/SpringDate.js'
 
 import HashProxy from '../utils/HashProxy.js'
 
@@ -70,8 +71,59 @@ class BaseStore extends EventEmitter {
 				}
 			}
 			
-			data[prop] = value
+			data[prop] = value // If null just assign
 		}
+		
+		return data
+	}
+	
+	static resolveDateObjects = (data, format) => {
+		for (let prop in data) {
+			let value = data[prop]
+			
+			// Is value a code type?
+			// Null check first - hasOwnProperty check on a null will throw a runtime error
+			if (data[prop] !== null) {
+				if (data[prop].hasOwnProperty('day') && 
+					data[prop].hasOwnProperty('month') &&
+					data[prop].hasOwnProperty('year') &&
+					data[prop].hasOwnProperty('value')) {
+					value = SpringDateHelper.convertToDate(data[prop])
+				}
+			}
+			
+			data[prop] = value // If null just assign
+		}
+		
+		return data
+	}
+	
+	static resolveCurrencyObjects = (data, format) => {
+		for (let prop in data) {
+			let value = data[prop]
+			
+			// Is value a code type?
+			// Null check first - hasOwnProperty check on a null will throw a runtime error
+			if (data[prop] !== null) {
+				if (data[prop].hasOwnProperty('currency') && 
+					data[prop].hasOwnProperty('value')) {
+					value = ['$' + parseFloat(data[prop].value).toFixed(2), data[prop].currency].join(' ')
+				}
+			}
+			
+			data[prop] = value // If null just assign
+		}
+		
+		return data
+	}
+	
+	static resolveDomainObjects = (data, returnProp, ignoreValues) => {
+		// Resolve code types
+		data = BaseStore.resolveCodeTypes(data, returnProp, ignoreValues)
+		// Resolve dates
+		data = BaseStore.resolveDateObjects(data)
+		// Resolve currency
+		data = BaseStore.resolveCurrencyObjects(data)
 		
 		return data
 	}

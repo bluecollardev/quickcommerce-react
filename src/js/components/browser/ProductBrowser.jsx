@@ -60,10 +60,8 @@ export default class ProductBrowser extends Component {
 
         this.configureRow = this.configureRow.bind(this)
         this.getInitialState = this.getInitialState.bind(this)
-        this.onChange = this.onChange.bind(this)
-
-        this.state = this.getInitialState()
-        
+        this.loadBrowserData = this.loadBrowserData.bind(this)
+		
 		// Initialize or set ProductBrowser dispatcher
 		if (!props.hasOwnProperty('dispatcher')) {
 			this.dispatcher = new Dispatcher()
@@ -84,6 +82,10 @@ export default class ProductBrowser extends Component {
 		} else {
 			this.actions = props.actions
 		}
+		
+		this.store.addChangeListener(this.loadBrowserData)
+        
+		this.state = this.getInitialState()
     }
 	
 	// Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working 
@@ -93,8 +95,8 @@ export default class ProductBrowser extends Component {
 	}
 
     // TODO: Fry anything we don't need in here!
-    getInitialState() {
-        let state = {
+    getInitialState() {		
+		let state = {
             categories: [],
             items: [],
             options: [],
@@ -103,16 +105,15 @@ export default class ProductBrowser extends Component {
             unavailableDates: [], // Bookings,
             stepForward: false
         }
-
-        return state
+        
+		return state
     }
 
     componentDidMount() {
-        // Subscribe to BrowserStore to listen for changes when the component is mounted
-        this.store.addChangeListener(this.onChange)
-        
         //let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
+		
+		this.loadBrowserData()
     }
     
     componentDidUpdate() {
@@ -121,15 +122,13 @@ export default class ProductBrowser extends Component {
     }
     
     componentWillUnmount() {
-        if (typeof this.onChange === 'function') {
-            this.store.removeChangeListener(this.onChange)
-            
-            //delete this.onChange // Don't think that's necessary
+        if (typeof this.loadBrowserData === 'function') {
+            this.store.removeChangeListener(this.loadBrowserData)
         }
     }
     
-	// ProductBrowser.onChange
-    onChange() {
+	// ProductBrowser.loadBrowserData
+    loadBrowserData() {
         // Grab our items and update our component state whenever the BrowserStore is updated
         let items = this.store.getItems()
         let categories = this.store.getCategories()

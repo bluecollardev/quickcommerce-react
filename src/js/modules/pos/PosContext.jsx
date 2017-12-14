@@ -219,27 +219,35 @@ export default (ComposedComponent) => {
         }
         
         componentWillUnmount() {
-            this.props.settingStore.removeEventListener('store-info-loaded', this.onStoreInfoLoaded)
-            this.props.settingStore.removeEventListener('settings-loaded', this.onSettingsLoaded)
-            
-            this.props.checkoutStore.removeEventListener('block-ui', this.onBlockUI)
-            this.props.checkoutStore.removeEventListener('unblock-ui', this.onUnblockUI)
-            this.props.checkoutStore.removeEventListener('set-customer', this.onSetCustomer)
-            this.props.checkoutStore.removeEventListener('set-order-status', this.onSetOrderStatus)
-            this.props.checkoutStore.removeEventListener('set-payment-method', this.onSetPaymentMethod)
-            this.props.checkoutStore.removeEventListener('set-shipping-method', this.onSetShippingMethod)
-            this.props.checkoutStore.removeEventListener('set-notes', this.onSetNotes)  
-            
-            // TODO: This is commented out - I forget why...
-            //this.props.checkoutStore.removeEventListener('set-order', this.onSetOrder)
-            
-            // We call this data because it's not a complete item, just a POJO
-            this.props.cartStore.removeEventListener('item-added', this.onItemAdded)
-            this.props.cartStore.removeEventListener('item-changed', this.onItemChanged)
-            this.props.cartStore.removeEventListener('product-options-changed', this.onProductOptionsChanged)
-            this.props.cartStore.removeEventListener('item-removed', this.onItemRemoved)
-            this.props.cartStore.removeEventListener('cart-reset', this.onCartReset)
-            this.props.cartStore.removeEventListener('cart-cleared', this.onCartCleared)
+            // Wrap removal of event listeners in a try-catch; if there's no listener attached to the store, it will throw an error if you try to remove it
+			// I don't have a better solution right now, as there's also no hasEventListener in node's EventEmitter class
+			try {
+				this.props.settingStore.removeEventListener('store-info-loaded', this.onStoreInfoLoaded)
+				this.props.settingStore.removeEventListener('settings-loaded', this.onSettingsLoaded)
+				
+				this.props.checkoutStore.removeEventListener('block-ui', this.onBlockUI)
+				this.props.checkoutStore.removeEventListener('unblock-ui', this.onUnblockUI)
+				this.props.checkoutStore.removeEventListener('set-customer', this.onSetCustomer)
+				this.props.checkoutStore.removeEventListener('set-order-status', this.onSetOrderStatus)
+				this.props.checkoutStore.removeEventListener('set-payment-method', this.onSetPaymentMethod)
+				this.props.checkoutStore.removeEventListener('set-shipping-method', this.onSetShippingMethod)
+				this.props.checkoutStore.removeEventListener('set-notes', this.onSetNotes)  
+				
+				// TODO: This is commented out - I forget why...
+				//this.props.checkoutStore.removeEventListener('set-order', this.onSetOrder)
+				
+				// We call this data because it's not a complete item, just a POJO
+				this.props.cartStore.removeEventListener('item-added', this.onItemAdded)
+				this.props.cartStore.removeEventListener('item-changed', this.onItemChanged)
+				this.props.cartStore.removeEventListener('product-options-changed', this.onProductOptionsChanged)
+				this.props.cartStore.removeEventListener('item-removed', this.onItemRemoved)
+				this.props.cartStore.removeEventListener('cart-reset', this.onCartReset)
+				this.props.cartStore.removeEventListener('cart-cleared', this.onCartCleared)
+			} catch (err) {
+				// Fail silently
+				console.log('failed to remove listener')
+				console.log(err)
+			}
         }
         
         // TODO: Refactor me
