@@ -51,6 +51,15 @@ export default class Products extends ProductBrowser {
     render() {
         let rowComponent = this.configureRow(this.props.customRowComponent)
         let item = this.props.item || null
+		
+		let hasItems = false
+		let { items } = this.state
+		
+		if (typeof items !== 'undefined' && items !== null && 
+			Object.keys(this.state.items).length > 0) {
+			// No items, don't bother rendering
+			hasItems = true
+		}
         
         return (
             <div className="col-xs-12">
@@ -88,7 +97,7 @@ export default class Products extends ProductBrowser {
                       </div>
                   )}
                   
-                  {Object.keys(this.state.items).length > 0 && item !== null && (
+                  {hasItems && item !== null && (
                   <div className='browser-content row'>
                       <Col xs={12}>
                           <FormGroup>
@@ -146,7 +155,7 @@ export default class Products extends ProductBrowser {
                   </div>
                   )}
                   
-                  {this.props.children && !(Object.keys(this.state.items).length > 0) && (
+                  {this.props.children && !hasItems && (
                   <div className='browser-content row'>
                       <Col sm={6}>
                           {item !== null && (
@@ -207,7 +216,7 @@ export default class Products extends ProductBrowser {
                   </div>
                   )}
                   
-                  {this.props.children && (Object.keys(this.state.items).length > 0) && (
+                  {this.props.children && hasItems && (
                   <div className='browser-content row'>
                       <Col sm={6}>
                           {/*item !== null && (

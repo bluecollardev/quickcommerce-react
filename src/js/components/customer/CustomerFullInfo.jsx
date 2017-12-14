@@ -44,7 +44,7 @@ class CustomerFullInfo extends Component {
         this.onCancel = this.onCancel.bind(this)
         this.onSaveSuccess = this.onSaveSuccess.bind(this)
         this.onError = this.onError.bind(this)
-        this.onChange = this.onChange.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         
         this.state = {
             data: assign({}, props.customerStore.customer)
@@ -52,15 +52,11 @@ class CustomerFullInfo extends Component {
     }
     
     componentWillMount() {
-        this.props.customerStore.addChangeListener(this.onChange)
+        this.props.customerStore.addChangeListener(this.handleChange)
     }
     
     componentWillUnmount() {
-        if (typeof this.onChange === 'function') {
-            this.props.customerStore.removeChangeListener(this.onChange)
-            
-            delete this.onChange
-        }
+        this.props.customerStore.removeChangeListener(this.handleChange)
     }
     
     /*componentWillReceiveProps(newProps) {
@@ -69,11 +65,13 @@ class CustomerFullInfo extends Component {
         })
     }*/
     
-    onChange() {
-        console.log('change triggered')
+    handleChange() {
         this.setState({
             data: assign({}, this.props.customerStore.customer)
-        })
+        }, () => {
+			console.log('customer change triggered')
+			console.log(this.state.data)
+		})
     }
     
     onCreate(e) {

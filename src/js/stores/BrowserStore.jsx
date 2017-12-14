@@ -2,7 +2,7 @@ import axios from 'axios'
 import assign from 'object-assign'
 import { normalize, denormalize, schema } from 'normalizr'
 
-import { EventEmitter } from 'events'
+import BaseStore from './BaseStore.jsx'
 
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
@@ -10,10 +10,10 @@ import StringHelper from '../helpers/String.js'
 
 import BrowserConstants from '../constants/BrowserConstants.jsx'
 
-class BrowserStore extends EventEmitter {
+class BrowserStore extends BaseStore {
     // BrowserStore constructor
     constructor(dispatcher) {
-        super()
+        super(dispatcher)
         
         this.stepForward = false
         this.config = null
@@ -124,30 +124,8 @@ class BrowserStore extends EventEmitter {
                 break
         }
     }
-    
-    has(key) {
-        let exists = false
-        if (this.items.hasOwnProperty(key) && 
-            typeof this.items[key] !== 'undefined') {
-                exists = true
-        }
-            
-        return exists
-    }
 	
-	hasItems() {
-		let config = this.config || null
-		
-		if (config !== null && this.config.hasOwnProperty('key')) {
-			if (typeof this.config[key] === 'string') {
-				return this.has(this.config[key])
-			}
-		}
-		
-		return false
-    }
-    
-    handleAction(payload) {
+	handleAction(payload) {
         try {
             this.setConfig(payload.config)
             if (typeof payload.config.key !== 'string') {
@@ -174,25 +152,48 @@ class BrowserStore extends EventEmitter {
         }
     }
     
-    // Temporary function to refactor
-    setConfig(config) {
-        this.config = config
+    has(key) {
+        let exists = false
+        if (this.items.hasOwnProperty(key) && 
+            typeof this.items[key] !== 'undefined') {
+                exists = true
+        }
+            
+        return exists
     }
-    
-    getConfig() {
-        return this.config
+	
+	hasItems() {
+		let config = this.config || null
+		
+		if (config !== null && this.config.hasOwnProperty('key')) {
+			if (typeof this.config.key === 'string') {
+				return this.has(this.config.key)
+			}
+		} else {
+			return this.has('products')
+		}
+		
+		return false
     }
-    
-    getItems() {
-        return this.items[this.config.key]
+	
+	getItems(resolveCodeTypes) {
+		resolveCodeTypes = resolveCodeTypes || false
+		
+        if (resolveCodeTypes && this.hasItems()) {
+			console.log('resolving code types...')
+			console.log(this.items['products'])
+			return this.items['products'].map(item => {
+				return BrowserStore.resolveCodeTypes(item, BaseStore.CODETYPE_NAME) // Base method
+			})
+		} else if (this.hasItems()) {
+			return this.items['products']
+		}
+		
+		return []
     }
     
 	getItemAtIndex(idx) {
         return this.items[this.config.key][idx]
-    }
-	
-    getItem(id) {
-        return this.items[this.config.key]
     }
     
     getCategories() {
@@ -273,6 +274,15 @@ class BrowserStore extends EventEmitter {
             //let normalizedData = normalize(SampleItems.data, that.config.schema)
             //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
         })
+    }
+	
+	// Temporary function to refactor
+    setConfig(config) {
+        this.config = config
+    }
+    
+    getConfig() {
+        return this.config
     }
 }
 
