@@ -47,14 +47,9 @@ import FilterBar from '../common/FilterBar.jsx'
 
 import HtmlHelper from '../../helpers/HTML.js'
 
-export default class ProductBrowser extends Component {
-    static defaultProps = {
-        onItemClicked: () => {},
-        onAddToCartClicked: () => {},
-        onFilterSelected: () => {},
-        onStepClicked: () => {}
-    }
-    
+import itemFieldNames from '../../forms/ItemFields.jsx'
+
+class ProductBrowser extends Component {
     constructor(props) {
         super(props)
 
@@ -329,6 +324,7 @@ export default class ProductBrowser extends Component {
         }
 
         rowComponent.defaultProps.onItemClicked = fn
+        rowComponent.defaultProps.itemMappings = this.props.itemMappings // Shortcut - quick add to cart
         rowComponent.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
         rowComponent.defaultProps.stepper = this.props.stepper
 
@@ -603,7 +599,20 @@ export default class ProductBrowser extends Component {
 }
 
 ProductBrowser.propTypes = {
+    itemMappings: React.PropTypes.object, // TODO: object.isRequired
+    onAddToCartClicked: React.PropTypes.func,
     onItemClicked: React.PropTypes.func,
     onFilterSelected: React.PropTypes.func,
     onStepClicked: React.PropTypes.func
 }
+
+ProductBrowser.defaultProps = {
+    itemMappings: itemFieldNames, // Defaults from ItemFields
+    onItemClicked: () => {},
+    onAddToCartClicked: () => {},
+    onFilterSelected: () => {},
+    onStepClicked: () => {}
+}
+
+
+export default ProductBrowser

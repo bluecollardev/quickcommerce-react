@@ -21,7 +21,8 @@ export default (ComposedComponent) => {
         starMicronicsStore: deps.starMicronicsStore,
         productStore: deps.productStore,
         settingStore: deps.settingStore,
-        mappings: deps.mappings, // Per component or global scope?
+        mappings: deps.mappings, // Mappings correlate directly to stores
+        // For instance, if the store dep is named 'cartStore', we would expect its mappings to be under the object key 'cartStore'
         translations: deps.translations, // i8ln transations
         roles: deps.roles, // App level roles, general authenticated user (not customer!)
         userRoles: deps.userRoles, // Shortcut or implement via HoC?

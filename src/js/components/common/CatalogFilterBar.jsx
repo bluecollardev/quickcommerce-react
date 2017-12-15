@@ -8,7 +8,7 @@ import { Button, Checkbox, Radio, } from 'react-bootstrap'
 
 import noUiSlider from 'nouislider'
 
-export default class CatalogFilterBar extends Component {
+class CatalogFilterBar extends Component {
     constructor(props) {
         super(props)
         
@@ -65,8 +65,8 @@ export default class CatalogFilterBar extends Component {
     }
     
     onFilterSelected(eventKey) {
-        e.preventDefault()
-        e.stopPropagation()
+        //e.preventDefault()
+        //e.stopPropagation()
         
         if (typeof this.props.onFilterSelected === 'undefined') return false
         
@@ -239,3 +239,25 @@ export default class CatalogFilterBar extends Component {
         )
     }
 }
+
+CatalogFilterBar.propTypes = {
+    tags: React.PropTypes.array, 
+    priceRange: React.PropTypes.object, 
+    types: React.PropTypes.object, 
+    sort: React.PropTypes.object
+}
+
+CatalogFilterBar.defaultProps = {
+    tags: [], 
+    priceRange: {
+        startMin: 0,
+        startMax: 100,
+        min: 0,
+        max: 500,
+        step: 50
+    }, 
+    types: {}, 
+    sort: {}
+}
+
+export default CatalogFilterBar

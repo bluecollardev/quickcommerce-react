@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
+import FormHelper from '../../helpers/Form.js'
+import HtmlHelper from '../../helpers/HTML.js'
+
 const mySource = {
     beginDrag(props) {
         return {
@@ -35,24 +38,31 @@ class CartDragItem extends Component {
     }
     
     render() {
-        // CartDragItem render
-        const { id, isDragging, connectDragSource } = this.props
+        // QuickCommerce Theme CartDragItem.render
+        const { id, item, itemMappings, isDragging, connectDragSource } = this.props
+        
+        let itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+        let model = FormHelper.getMappedValue(itemMappings.MODEL, item)
+        let manufacturer = FormHelper.getMappedValue(itemMappings.MANUFACTURER, item)
+        let brand = FormHelper.getMappedValue(itemMappings.BRAND, item)
+        let name = FormHelper.getMappedValue(itemMappings.NAME, item)
+        let price = FormHelper.getMappedValue(itemMappings.PRICE, item)
+        let description = FormHelper.getMappedValue(itemMappings.DESCRIPTION, item)
+        let image = FormHelper.getMappedValue(itemMappings.IMAGE, item)
+        
         return connectDragSource(
             <div className='card'
                 onClick={this.onClick}>
-                <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
+                <Thumbnail src={QC_IMAGES_URI + image} />
                 <h5 className='item-brand'>
-                    {/* TODO: Use mappings! */}
-                    {this.props.item['manufacturer']['name']}
+                    {brand}
                 </h5>
                 <p className='item-name'>
-                    {this.props.item['name']}
+                    {name}
                 </p>
-                {this.props.item.hasOwnProperty('price') && 
-                this.props.item['price'] !== false && 
-                !isNaN(this.props.item['price']) && (
+                {price && price !== false && !isNaN(price) && (
                 <p className='item-price'>
-                    {'$' + parseFloat(this.props.item['price']).toFixed(2)}
+                    {'$' + parseFloat(price).toFixed(2)}
                 </p>
                 )}
             </div>
