@@ -77,8 +77,6 @@ import Notes from 'quickcommerce-react/components/common/Notes.jsx'
 
 import QcCart from 'quickcommerce-react/modules/Cart.jsx' // Import as alias
 
-import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
-
 import Factory from 'quickcommerce-react/factory/Factory.jsx'
 
 import StringHelper from 'quickcommerce-react/helpers/String.js'

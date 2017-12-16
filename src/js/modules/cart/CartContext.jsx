@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
 
+import FormHelper from '../../helpers/Form.js'
+
 /**
  * This higher-order component wraps an existing component, decorating it with methods needed to interact
  * with the shopping cart.
@@ -155,6 +157,10 @@ export default (ComposedComponent) => {
         }
         
         addToCartClicked(e, item, quantity) {
+			// TODO: Throw error if it doesn't exist?
+			let itemMappings = this.props.mappings.inventoryItem
+			let itemId = null
+			
             // Home component addToCartClicked
             e.preventDefault()
             e.stopPropagation()
@@ -174,8 +180,10 @@ export default (ComposedComponent) => {
             switch (this.props.addToCartMode) {
                 case 'instant':
                     // Temporarily store the selected product's information
+					itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+					
                     if (this.wrappedInstance.hasOwnProperty('stepper')) {
-                        this.wrappedInstance.stepper.addItem(item['product_id'], 1, item)
+                        this.wrappedInstance.stepper.addItem(itemId, 1, item)
                     }
                     
                     this.addToCart(e, item, quantity) // Add the item to the cart
@@ -183,8 +191,10 @@ export default (ComposedComponent) => {
                     break
                 case 'popup':
                     // Temporarily store the selected product's information (yes, that's right, zero quantity)
+					itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+					
                     if (this.wrappedInstance.hasOwnProperty('stepper')) {
-                        this.wrappedInstance.stepper.addItem(item['product_id'], 0, item) // Don't set a quantity just register the item
+                        this.wrappedInstance.stepper.addItem(itemId, 0, item) // Don't set a quantity just register the item
                     }
                     
                     // And open the Keypad / Quantity selection modal

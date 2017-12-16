@@ -226,6 +226,7 @@ class CartStore extends EventEmitter {
     removeItem(index) {
         let id   = this.selection[index].id,
             item = this.selection.splice(index, 1)[0]
+			
         this.reIndex()
         
         this.emit('change')

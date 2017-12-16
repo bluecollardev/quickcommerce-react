@@ -20,8 +20,6 @@ import ProductRow4x from 'quickcommerce-react/components/catalog/ProductRow4x.js
 import Keypad from 'quickcommerce-react/components/common/Keypad.jsx'
 import Notes from 'quickcommerce-react/components/common/Notes.jsx'
 
-import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
-
 import Factory from 'quickcommerce-react/factory/Factory.jsx'
 
 import StringHelper from 'quickcommerce-react/helpers/String.js'

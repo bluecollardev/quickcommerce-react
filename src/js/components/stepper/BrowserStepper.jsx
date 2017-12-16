@@ -40,7 +40,9 @@ class BrowserStepper extends Stepper {
                 throw 'Missing data for item \'' + item.id + '\'.'
             }
             this.selection.push(item)
-            this.items[item.id]._initialQty = item.quantity
+			
+			// TODO: I don't think this actually serves a purpose...
+            this.items[item.id]._initialQty = item.quantity // Maybe on the selection or something...
         })
         this.reIndex()
     }
@@ -92,12 +94,12 @@ class BrowserStepper extends Stepper {
 
         if (data) {
             this.selection.push({
-                id       : item,
-                quantity : Number(quantity),
-                data     : data,
-                options  : [],
-                _index   : this.selection.length,
-                _key     : this.nextKey++
+                id: item,
+                quantity: Number(quantity),
+                data: data,
+                options: [],
+                _index: this.selection.length,
+                _key: this.nextKey++
             })
             
             if (!silent) {
@@ -131,12 +133,12 @@ class BrowserStepper extends Stepper {
 
         if (data) {
             this.selection.push({
-                id       : item,
-                quantity : Number(quantity),
-                data     : data,
-                options  : [],
-                _index   : this.selection.length,
-                _key     : this.nextKey++
+                id: item,
+                quantity: Number(quantity),
+                data: data,
+                options: [],
+                _index: this.selection.length,
+                _key: this.nextKey++
             })
             
             if (!silent) {
@@ -272,9 +274,9 @@ class BrowserStepper extends Stepper {
                                 if (Number(data.option['option_id']) === selectedOptionId) {
                                     // Go ahead and mutate the object, we don't need a new key or index
                                     this.selection[idx].options[idxOpt] = assign({}, this.selection[idx].options[idxOpt], {
-                                        id       : item,
-                                        quantity : Number(quantity),
-                                        data     : data
+                                        id: item,
+                                        quantity: Number(quantity),
+                                        data: data
                                     })
                                     
                                     if (createItem) {
@@ -298,11 +300,11 @@ class BrowserStepper extends Stepper {
                     delete data.product
                     
                     this.selection[idx].options.push({
-                        id       : item,
-                        quantity : Number(quantity),
-                        data     : data,
-                        _index   : this.selection[idx].options.length,
-                        _key     : nextKey
+                        id: item,
+                        quantity: Number(quantity),
+                        data: data,
+                        _index: this.selection[idx].options.length,
+                        _key: nextKey
                     })
                     
                     if (createItem) {

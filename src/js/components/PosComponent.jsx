@@ -59,9 +59,6 @@ window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore
 
 let CartStore = window.CartStore
 
-import ToggleDisplay from 'react-toggle-display'
-import { bubble as MainMenu, fallDown as CustomerMenu } from 'react-burger-menu'
-
 import Factory from '../factory/Factory.jsx'
 
 import StringHelper from '../helpers/String.js'
