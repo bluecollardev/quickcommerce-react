@@ -14,7 +14,7 @@ import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
     authService: deps.authService
 }))
 @observer
-class TopMenu extends Component {
+class FlexIconMenu extends Component {
     constructor(props) {
         super(props)
     }
@@ -30,8 +30,11 @@ class TopMenu extends Component {
     }
     
     render() {
+		let classNames = 'flex-icon-menu column mcb-column one column_divider column-margin-40px'
+		let className = [this.props.className, classNames].join(' ')
+		
         return (
-            <Row className='top-menu flex-icon-menu column mcb-column one column_divider column-margin-40px'>
+            <Row className={className}>
                 {this.props.children}
                 <hr className='no_line'/>
                 <div className='borderLine horzMenu' style={{'transformOrigin': '0% 100% 0px', 'transform': 'matrix(1, 0, 0, 1, 0, 0)'}}></div>
@@ -40,5 +43,5 @@ class TopMenu extends Component {
     }   
 }
 
-export default AuthenticatedComponent(TopMenu)
-export { TopMenu }
+export default AuthenticatedComponent(FlexIconMenu)
+export { FlexIconMenu }
