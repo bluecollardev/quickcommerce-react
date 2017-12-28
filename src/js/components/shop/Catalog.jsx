@@ -257,7 +257,7 @@ export default class Catalog extends Component {
         this.catalogBrowser.actions.loadProducts(item['category_id'])
     }
     // TODO: These handlers exist in several different components... is that what we want?
-    // I don't think so... I should declare my handlers at the top of the app and pass them in as props I think...
+    // Or should I declare my itemClicked handlers at the top of the app and pass them in as props...
     itemClicked(e, item) {
         e.preventDefault()
         e.stopPropagation()

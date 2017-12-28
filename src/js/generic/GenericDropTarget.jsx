@@ -1,4 +1,5 @@
 import React          from 'react'
+import createReactClass from 'create-react-class'
 import classNames     from 'classnames'
 import { DropTarget } from 'react-dnd'
 import { Well }       from 'react-bootstrap'
@@ -23,7 +24,7 @@ function collect(connect, monitor) {
     }
 }
 
-const GenericDropTarget = React.createClass({
+const GenericDropTarget = createReactClass({
     getDefaultProps() {
         return {
             onItemDropped : () => {}

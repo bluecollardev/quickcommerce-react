@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Dispatcher } from 'flux'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
@@ -10,28 +11,6 @@ import { Well } from 'react-bootstrap'
 
 import Griddle from 'griddle-react'
 import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
-
-import Anchor from 'grommet/components/Anchor'
-import Box from 'grommet/components/Box'
-import Card from 'grommet/components/Card'
-import Chart, { Area, Axis, Base, Layers } from 'grommet/components/chart/Chart'
-import Menu from 'grommet/components/Menu'
-import Footer from 'grommet/components/Footer'
-import FormField from 'grommet/components/FormField'
-import NumberInput from 'grommet/components/NumberInput'
-import Select from 'grommet/components/Select'
-import Heading from 'grommet/components/Heading'
-import Hero from 'grommet/components/Hero'
-import Image from 'grommet/components/Image'
-import Label from 'grommet/components/Label'
-import TableHeader from 'grommet/components/TableHeader'
-import TableRow from 'grommet/components/TableRow'
-import Paragraph from 'grommet/components/Paragraph'
-import Quote from 'grommet/components/Quote'
-import Section from 'grommet/components/Section'
-import SocialShare from 'grommet/components/SocialShare'
-import Video from 'grommet/components/Video'
-import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay'
 
 //import StarRating from 'react-star-rating'
 
@@ -379,7 +358,7 @@ class ProductBrowser extends Component {
                                                 direction='row'
                                                 align='center'
                                                 justify='between'>
-                                                <Label size='small'>Retail Price</Label>
+                                                <label>Retail Price</label>
                                                 <Paragraph size='large' margin='none'>
                                                     <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
                                                 </Paragraph>
@@ -389,7 +368,7 @@ class ProductBrowser extends Component {
                                                 align='center'
                                                 justify='between'
                                                 separator='top'>
-                                                <Label size='small'>Rating</Label>
+                                                <label>Rating</label>
                                                 {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
                                             </Box>
                                         </Box>
@@ -399,7 +378,7 @@ class ProductBrowser extends Component {
                                             direction='row'
                                             align='center'
                                             justify='between'>
-                                            <Label size='small'>Status</Label>
+                                            <label>Status</label>
                                             <Paragraph size='large' margin='none'>
                                                 <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
                                             </Paragraph>
@@ -410,7 +389,7 @@ class ProductBrowser extends Component {
                                                 align='center'
                                                 justify='between'
                                                 separator='top'>
-                                                <Label size='small'>Quantity</Label>
+                                                <label>Quantity</label>
                                                 <Paragraph size='large' margin='none'>
                                                     <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
                                                 </Paragraph>
@@ -438,7 +417,7 @@ class ProductBrowser extends Component {
                                                 direction='row'
                                                 align='center'
                                                 justify='between'>
-                                                <Label size='small'>Retail Price</Label>
+                                                <label>Retail Price</label>
                                                 <Paragraph size='large' margin='none'>
                                                     <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
                                                 </Paragraph>
@@ -448,7 +427,7 @@ class ProductBrowser extends Component {
                                                 align='center'
                                                 justify='between'
                                                 separator='top'>
-                                                <Label size='small'>Rating</Label>
+                                                <label>Rating</label>
                                                 {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
                                             </Box>
                                         </Box>
@@ -456,7 +435,7 @@ class ProductBrowser extends Component {
                                             direction='row'
                                             align='center'
                                             justify='between'>
-                                            <Label size='small'>Status</Label>
+                                            <label>Status</label>
                                             <Paragraph size='large' margin='none'>
                                                 <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
                                             </Paragraph>
@@ -467,7 +446,7 @@ class ProductBrowser extends Component {
                                                 align='center'
                                                 justify='between'
                                                 separator='top'>
-                                                <Label size='small'>Quantity</Label>
+                                                <label>Quantity</label>
                                                 <Paragraph size='large' margin='none'>
                                                     <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
                                                 </Paragraph>
@@ -502,7 +481,7 @@ class ProductBrowser extends Component {
                                         align='center'
                                         justify='between'
                                         separator='top'>
-                                        <Label size='small' uppercase>Retail Price</Label>
+                                        <label>Retail Price</label>
                                         <Paragraph size='large' margin='none'>
                                             <strong style={{ fontSize: '1.7rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
                                         </Paragraph>
@@ -512,7 +491,7 @@ class ProductBrowser extends Component {
                                         align='center'
                                         justify='between'
                                         separator='top'>
-                                        <Label size='small' uppercase>Status</Label>
+                                        <label>Status</label>
                                         <Paragraph size='large' margin='none'>
                                             <strong style={{ fontSize: '1.3rem' }}>Some Stock Status</strong>
                                         </Paragraph>
@@ -522,7 +501,7 @@ class ProductBrowser extends Component {
                                         align='center'
                                         justify='between'
                                         separator='top'>
-                                        <Label size='small' uppercase>Qty Available</Label>
+                                        <label>Qty Available</label>
                                         <Paragraph size='large' margin='none'>
                                             <strong style={{ fontSize: '1.3rem' }}>{item.quantity}</strong>
                                         </Paragraph>
@@ -532,7 +511,7 @@ class ProductBrowser extends Component {
                                         align='center'
                                         justify='between'
                                         separator='top'>
-                                        <Label size='small' uppercase>Average Review</Label>
+                                        <label>Average Review</label>
                                         <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
                                     </Box>
                                 </Box>
@@ -599,11 +578,11 @@ class ProductBrowser extends Component {
 }
 
 ProductBrowser.propTypes = {
-    itemMappings: React.PropTypes.object, // TODO: object.isRequired
-    onAddToCartClicked: React.PropTypes.func,
-    onItemClicked: React.PropTypes.func,
-    onFilterSelected: React.PropTypes.func,
-    onStepClicked: React.PropTypes.func
+    itemMappings: PropTypes.object, // TODO: object.isRequired
+    onAddToCartClicked: PropTypes.func,
+    onItemClicked: PropTypes.func,
+    onFilterSelected: PropTypes.func,
+    onStepClicked: PropTypes.func
 }
 
 ProductBrowser.defaultProps = {

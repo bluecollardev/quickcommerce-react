@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
 import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
@@ -151,13 +152,15 @@ class CatalogFilterBar extends Component {
                   <a rel='filters' className='filters-toggle' data-toggle='filters'
                     onClick = {this.onFiltersToggleClicked}
                     ref = {(toggle) => this.criteriaFilterToggle = toggle}>
-                    <i className='material-icons filter_list' />
+                    {/*<i className='material-icons filter_list' />*/}
+                    <i className='fa fa-list' />&nbsp;
                     Filters
                   </a>
                   <a rel='search-box' className='search-btn' data-toggle='filters'
                     onClick = {this.onFiltersToggleClicked}
                     ref = {(toggle) => this.searchFilterToggle = toggle}>
-                    <i className='material-icons search' />
+                    {/*<i className='material-icons search' />*/}
+                    <i className='fa fa-search' />
                   </a>
                 </div>
               </div>{/* .filters-bar */}
@@ -241,10 +244,10 @@ class CatalogFilterBar extends Component {
 }
 
 CatalogFilterBar.propTypes = {
-    tags: React.PropTypes.array, 
-    priceRange: React.PropTypes.object, 
-    types: React.PropTypes.object, 
-    sort: React.PropTypes.object
+    tags: PropTypes.array, 
+    priceRange: PropTypes.object, 
+    types: PropTypes.object, 
+    sort: PropTypes.object
 }
 
 CatalogFilterBar.defaultProps = {

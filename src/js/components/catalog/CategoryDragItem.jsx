@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
@@ -21,7 +22,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CategoryDragItem = React.createClass({
+const CategoryDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},

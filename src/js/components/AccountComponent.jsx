@@ -1,6 +1,7 @@
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer, Provider} from 'mobx-react'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
@@ -284,10 +285,10 @@ class AccountComponent extends Component {
 }
 
 AccountComponent.propTypes = {
-    //onItemClicked: React.PropTypes.func,
-    //onFilterSelected: React.PropTypes.func,
-    //onStepClicked: React.PropTypes.func
-    signInMode: React.PropTypes.string
+    //onItemClicked: PropTypes.func,
+    //onFilterSelected: PropTypes.func,
+    //onStepClicked: PropTypes.func
+    signInMode: PropTypes.string
 }
 
 AccountComponent.defaultProps = {

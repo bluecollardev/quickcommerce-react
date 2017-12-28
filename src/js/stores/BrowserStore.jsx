@@ -126,6 +126,7 @@ class BrowserStore extends BaseStore {
     }
 	
 	handleAction(payload) {
+		// BrowserStore.handleAction
         try {
             this.setConfig(payload.config)
             if (typeof payload.config.key !== 'string') {
@@ -138,7 +139,7 @@ class BrowserStore extends BaseStore {
             if (this.has(payload.config.key) && dataLoaded) {
                 isLoaded = true
             }
-                
+			
             if (!isLoaded) {
                 // Fetch data and trigger the change
                 this.fetchData(payload.config.key, () => this.emitChange())
@@ -179,17 +180,22 @@ class BrowserStore extends BaseStore {
 	getItems(resolveCodeTypes) {
 		resolveCodeTypes = resolveCodeTypes || false
 		
+		let items = []
+		
         if (resolveCodeTypes && this.hasItems()) {
 			console.log('resolving code types...')
 			console.log(this.items['products'])
-			return this.items['products'].map(item => {
-				return BrowserStore.resolveCodeTypes(item, BaseStore.CODETYPE_NAME) // Base method
+			
+			// Map, but don't return - we don't want to mutate data in the store
+			this.items['products'].map((item, idx) => {
+				let clonedItem = assign({}, item) // Clone the item - we don't want to mutate data in the store
+				items[idx] = BrowserStore.resolveCodeTypes(clonedItem, BaseStore.CODETYPE_NAME) // Base method
 			})
 		} else if (this.hasItems()) {
-			return this.items['products']
+			items = this.items['products']
 		}
 		
-		return []
+		return items
     }
     
 	getItemAtIndex(idx) {

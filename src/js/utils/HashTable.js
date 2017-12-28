@@ -119,4 +119,8 @@ export default class HashTable {
     remove(key) {
         return (this.removeItem(key) !== undefined) ? this : false
     }
+	
+	count() {
+		return Object.keys(this.items).length
+	}
 }

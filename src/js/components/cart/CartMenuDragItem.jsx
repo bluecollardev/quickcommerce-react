@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button }  from 'react-bootstrap'
 
@@ -23,7 +24,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CartMenuDragItem = React.createClass({
+const CartMenuDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},

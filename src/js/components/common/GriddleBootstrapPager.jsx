@@ -1,7 +1,9 @@
 import React          from 'react'
+import createReactClass from 'create-react-class'
+
 import { Pagination } from 'react-bootstrap'
 
-const GriddleBootstrapPager = React.createClass({
+const GriddleBootstrapPager = createReactClass({
     getDefaultProps() {
         return {
             currentPage : 0,

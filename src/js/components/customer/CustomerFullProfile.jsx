@@ -363,7 +363,8 @@ class CustomerFullProfile extends Component {
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
-                                Customer Information 
+                                <Button className='repeater-button'><h5><i className='fa fa-minus-circle' /></h5></Button>
+								Customer Information 
                                 {/* TODO: What did we call it in CurrentAddress? */}
                                 {['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
                                 <Button className='repeater-button'><h5><i className='fa fa-pencil' /> Edit</h5></Button>
@@ -605,7 +606,8 @@ class CustomerFullProfile extends Component {
                     <Row>
                         <Col xs={12}>
                             <h4 className='section-heading' style={{textAlign: 'center'}}>
-                                Customer Information 
+                                <Button className='repeater-button'><h5><i className='fa fa-minus-circle' /></h5></Button>
+								Customer Information 
                                 {/* TODO: What did we call it in CurrentAddress? */}
                                 {['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
                                 <Button className='repeater-button' onClick={this.props.onEditClicked}><h5><i className='fa fa-pencil' /> Edit</h5></Button>

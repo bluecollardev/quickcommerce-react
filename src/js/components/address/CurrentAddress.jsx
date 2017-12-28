@@ -357,7 +357,7 @@ class CurrentAddress extends Component {
                     </div>*/}
                     <form>
                         {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
-                        <Col xs={12} className='col-md-flex col-lg-flex'>
+                        <div className='col-md-flex col-lg-flex'>
                             <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
                             
                             {/* First Name / Last Name */}
@@ -377,13 +377,13 @@ class CurrentAddress extends Component {
                             
                             {/* Simple Addresses (Line 1, 2, 3?) */}
                             {this.props.type === 'simple' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 1*</ControlLabel>
                                 <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'simple' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 2</ControlLabel>
                                 <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
                             </FormGroup>
@@ -417,13 +417,13 @@ class CurrentAddress extends Component {
                             
                             {/* Postal Installation Addresses */}
                             {this.props.type === 'pobox' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Box</ControlLabel>
                                 <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'pobox' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-1'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Station</ControlLabel>
                                 <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
                             </FormGroup>
@@ -431,37 +431,37 @@ class CurrentAddress extends Component {
                             
                             {/* Rural Addresses */}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Range Rd.</ControlLabel>
                                 <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Site</ControlLabel>
                                 <FormControl type='text' name={mappings.SITE} {...this.props.fields(mappings.SITE, this.props.getMappedValue(mappings.SITE, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Comp</ControlLabel>
                                 <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Box</ControlLabel>
                                 <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Lot #</ControlLabel>
                                 <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
                             </FormGroup>
                             )}
                             {this.props.type === 'rural' && (
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-4'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
                                 <ControlLabel>Concession #</ControlLabel>
                                 <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
                             </FormGroup>
@@ -480,16 +480,16 @@ class CurrentAddress extends Component {
                                 <DateInput name='to' name={mappings.TO} {...this.props.fields(mappings.TO, this.props.getMappedValue(mappings.TO, data))} />
                             </FormGroup>
                             )}
-                        </Col>
-                        <Col xs={12} className='col-md-flex col-lg-flex flex-md-25'>
+                        </div>
+                        <div className='col-md-flex col-lg-flex flex-md-25'>
                             {/* City (If Applicable) */}
-                            <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25'>
                                 <ControlLabel>City*</ControlLabel>
                                 <FormControl type='text' name={mappings.CITY} {...this.props.fields(mappings.CITY, this.props.getMappedValue(mappings.CITY, data))} />
                             </FormGroup>
                             
                             {/* Common Address Fields */}
-                            <FormGroup className='form-element form-select autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
+                            <FormGroup className='form-element form-select autocomplete-control-group col-xs-12 col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Country*</ControlLabel>
                                 <Autocomplete
                                     name={mappings.COUNTRY}
@@ -541,7 +541,7 @@ class CurrentAddress extends Component {
                                 />
                                 <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
                             </FormGroup>
-                            <FormGroup className='form-element form-select autocomplete-control-group col-sm-12 col-md-6 col-lg-6 flex-md-25'>
+                            <FormGroup className='form-element form-select autocomplete-control-group col-xs-12 col-sm-12 col-md-6 col-lg-6 flex-md-25'>
                                 <ControlLabel>Prov.*</ControlLabel>
                                 <Autocomplete
                                     name={mappings.ZONE}
@@ -589,11 +589,11 @@ class CurrentAddress extends Component {
                                 />
                                 <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
                             </FormGroup>
-                            <FormGroup className='col-sm-9 col-md-9 col-lg-5 flex-md-25'>
+                            <FormGroup className='col-xs-12 col-sm-9 col-md-9 col-lg-5 flex-md-25'>
                                 <ControlLabel>Postal Code*</ControlLabel>
                                 <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
                             </FormGroup>
-                        </Col>
+                        </div>
                         
                         {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
                         <FormGroup>
@@ -752,7 +752,7 @@ class CurrentAddress extends Component {
                                         </FormGroup>
                                         
                                         {/* Common Address Fields */}
-                                        <FormGroup className='autocomplete-control-group'>
+                                        <FormGroup className='autocomplete-control-group col-xs-12'>
                                             <ControlLabel>Country*</ControlLabel>
                                             <Autocomplete
                                                 name={mappings.COUNTRY}
@@ -804,7 +804,7 @@ class CurrentAddress extends Component {
                                             />
                                             <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
                                         </FormGroup>
-                                        <FormGroup className='autocomplete-control-group'>
+                                        <FormGroup className='autocomplete-control-group col-xs-12'>
                                             <ControlLabel>Prov.*</ControlLabel>
                                             <Autocomplete
                                                 name={mappings.ZONE}

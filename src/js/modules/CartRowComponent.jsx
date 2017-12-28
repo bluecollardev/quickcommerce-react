@@ -1,6 +1,7 @@
-import React               from 'react'
+import React from 'react'
+import createReactClass from 'create-react-class'
 
-const CartRowComponent = React.createClass({
+const CartRowComponent = createReactClass({
     handleChange(event) {
         const value = event.target.value
         if (!isNaN(value) && value > 0) {

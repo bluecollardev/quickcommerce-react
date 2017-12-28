@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import classNames from 'classnames'
 
@@ -40,7 +41,7 @@ class CartDropTarget extends Component {
 }
 
 CartDropTarget.propTypes = {
-    onItemDropped: React.PropTypes.func
+    onItemDropped: PropTypes.func
 }
     
 CartDropTarget.defaultProps = {

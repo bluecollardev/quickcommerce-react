@@ -1,4 +1,6 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { DropTarget } from 'react-dnd'
 
@@ -37,18 +39,18 @@ function collect(connect, monitor) {
     }
 }
 
-const Cart = React.createClass({
+const Cart = createReactClass({
     propTypes: {
-        items             : React.PropTypes.object,
-        selection         : React.PropTypes.array,
-        onItemDropped     : React.PropTypes.func,
-        onItemAdded       : React.PropTypes.func,
-        onItemRemoved     : React.PropTypes.func,
-        onItemQtyChanged  : React.PropTypes.func,
-        onChange          : React.PropTypes.func,
-        iterator          : React.PropTypes.func,
-        tableClassName    : React.PropTypes.string,
-        cartEmptyMessage  : React.PropTypes.node
+        items             : PropTypes.object,
+        selection         : PropTypes.array,
+        onItemDropped     : PropTypes.func,
+        onItemAdded       : PropTypes.func,
+        onItemRemoved     : PropTypes.func,
+        onItemQtyChanged  : PropTypes.func,
+        onChange          : PropTypes.func,
+        iterator          : PropTypes.func,
+        tableClassName    : PropTypes.string,
+        cartEmptyMessage  : PropTypes.node
 
     },
     getDefaultProps() {

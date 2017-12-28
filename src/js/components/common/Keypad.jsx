@@ -6,8 +6,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import NumberInput from 'grommet/components/NumberInput'
-
 import FormComponent from '../FormComponent.jsx'
 
 export default FormComponent(class Keypad extends Component {

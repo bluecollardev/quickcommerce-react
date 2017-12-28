@@ -7,10 +7,14 @@ import CustomerStore from './CustomerStore.jsx'
 import SettingStore from './SettingStore.jsx'
 import OrderConstants from '../constants/OrderConstants.jsx'
 
+import HashTable from '../utils/HashTable.js'
+
 // Not a singleton store, this is an abstract class to inherit from
 export class OrderStore extends BaseStore {
     constructor(dispatcher, stores) {
         super(dispatcher, stores)
+		
+		this.variants = new HashTable()
     }
     
     registerToActions(action) {
@@ -19,8 +23,10 @@ export class OrderStore extends BaseStore {
                 this.newOrder(action.customer)
                 break
             case OrderConstants.SET_ORDER:
-                //this.payload = action.order
                 this.setOrder(action.order)
+                break
+			case OrderConstants.SET_ORDER_VARIANT:
+                this.setVariant(action.key, action.variant)
                 break
             case OrderConstants.SET_BUILTIN_CUSTOMER:
                 this.setBuiltInCustomer(action.customer)
@@ -93,9 +99,30 @@ export class OrderStore extends BaseStore {
         this.payload = orderPayload // TODO: Use mappings(?)
         this.emit('set-order')
     }
+	
+	getVariant(key) {
+		if (this.variants.has(key)) {
+			return this.variants.get(key)
+		}
+		
+		return null
+	}
+	
+	getVariantAtIndex(idx) {
+		let keys = this.variants.keys()
+		let variant =  this.variants.get(keys[idx]) || null
+		
+		return variant
+	}
+	
+	setVariant(key, variant) {
+		// OrderStore.setVariant
+        this.variants.set(key, variant)
+        this.emit('set-variant', key, variant)
+    }
     
     clearOrder(onSuccess, onError) {
-        let    that = this
+        let that = this
 
         if (this.payload.hasOwnProperty('order') && this.payload.order !== null) {
             if (this.payload.order.hasOwnProperty('orderId') && !isNaN(this.payload.order.orderId)) {

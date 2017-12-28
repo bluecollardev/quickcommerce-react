@@ -1,17 +1,15 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
 const mySource = {
-
     beginDrag(props) {
         return {
             id : props['product_id']
         }
     },
-
     endDrag(props, monitor, component) {}
-
 }
 
 function collect(connect, monitor) {
@@ -21,7 +19,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CartDragItem = React.createClass({
+const CartDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},

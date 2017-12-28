@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer, Provider} from 'mobx-react'
 
 import { DropTarget } from 'react-dnd'
@@ -164,17 +165,17 @@ class Cart extends Component {
 }
 
 Cart.propTypes = {
-    items             : React.PropTypes.object,
-    selection         : React.PropTypes.array,
-    onItemDropped     : React.PropTypes.func,
-    onItemAdded       : React.PropTypes.func,
-    onItemClicked     : React.PropTypes.func,
-    onItemRemoved     : React.PropTypes.func,
-    onItemQtyChanged  : React.PropTypes.func,
-    onChange          : React.PropTypes.func,
-    iterator          : React.PropTypes.func,
-    tableClassName    : React.PropTypes.string,
-    cartEmptyMessage  : React.PropTypes.node
+    items             : PropTypes.object,
+    selection         : PropTypes.array,
+    onItemDropped     : PropTypes.func,
+    onItemAdded       : PropTypes.func,
+    onItemClicked     : PropTypes.func,
+    onItemRemoved     : PropTypes.func,
+    onItemQtyChanged  : PropTypes.func,
+    onChange          : PropTypes.func,
+    iterator          : PropTypes.func,
+    tableClassName    : PropTypes.string,
+    cartEmptyMessage  : PropTypes.node
 
 }
 
