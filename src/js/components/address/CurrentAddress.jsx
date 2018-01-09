@@ -359,6 +359,23 @@ class CurrentAddress extends Component {
                         {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
                         <div className='col-md-flex col-lg-flex'>
                             <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
+							
+							<FormGroup className='col-sm-3'>
+                                <ControlLabel>Address Type</ControlLabel>
+								<FormControl 
+									componentClass = 'select'
+									onChange = {(e) => {
+										console.log('address type changed')
+										// TODO: Enumerate options
+										this.setState({
+											type: e.target.value
+										})
+									}}>
+									<option key={0} value='simple'>Simple</option>
+									<option key={1} value='civic'>Civic</option>
+									<option key={2} value='rural'>Rural</option>
+								</FormControl>
+							</FormGroup>
                             
                             {/* First Name / Last Name */}
                             {this.props.nameRequired && (
@@ -376,13 +393,13 @@ class CurrentAddress extends Component {
                             )}
                             
                             {/* Simple Addresses (Line 1, 2, 3?) */}
-                            {this.props.type === 'simple' && (
+                            {this.state.type === 'simple' && (
                             <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 1*</ControlLabel>
                                 <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'simple' && (
+                            {this.state.type === 'simple' && (
                             <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
                                 <ControlLabel>Address 2</ControlLabel>
                                 <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
@@ -390,25 +407,25 @@ class CurrentAddress extends Component {
                             )}
                             
                             {/* Civic Addresses */}
-                            {this.props.type === 'civic' && (
+                            {this.state.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Suite</ControlLabel>
                                 <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'civic' && (
+                            {this.state.type === 'civic' && (
                             <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
                                 <ControlLabel>Street Name</ControlLabel>
                                 <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.STREET_NAME, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'civic' && (
+                            {this.state.type === 'civic' && (
                             <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
                                 <ControlLabel>Street Type</ControlLabel>
                                 <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'civic' && (
+                            {this.state.type === 'civic' && (
                             <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
                                 <ControlLabel>Direction</ControlLabel>
                                 <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
@@ -416,13 +433,13 @@ class CurrentAddress extends Component {
                             )}
                             
                             {/* Postal Installation Addresses */}
-                            {this.props.type === 'pobox' && (
+                            {this.state.type === 'pobox' && (
                             <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Box</ControlLabel>
                                 <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'pobox' && (
+                            {this.state.type === 'pobox' && (
                             <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
                                 <ControlLabel>Station</ControlLabel>
                                 <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
@@ -430,38 +447,38 @@ class CurrentAddress extends Component {
                             )}
                             
                             {/* Rural Addresses */}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Range Rd.</ControlLabel>
                                 <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Site</ControlLabel>
                                 <FormControl type='text' name={mappings.SITE} {...this.props.fields(mappings.SITE, this.props.getMappedValue(mappings.SITE, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Comp</ControlLabel>
                                 <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Box</ControlLabel>
                                 <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Lot #</ControlLabel>
                                 <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
                             </FormGroup>
                             )}
-                            {this.props.type === 'rural' && (
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-4'>
+                            {this.state.type === 'rural' && (
+                            <FormGroup className='col-sm-3'>
                                 <ControlLabel>Concession #</ControlLabel>
                                 <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
                             </FormGroup>
@@ -654,13 +671,13 @@ class CurrentAddress extends Component {
                                         )}
                                         
                                         {/* Simple Addresses (Line 1, 2, 3?) */}
-                                        {this.props.type === 'simple' && (
+                                        {this.state.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 1</ControlLabel>
                                             <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'simple' && (
+                                        {this.state.type === 'simple' && (
                                         <FormGroup>
                                             <ControlLabel>Address 2</ControlLabel>
                                             <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
@@ -668,25 +685,25 @@ class CurrentAddress extends Component {
                                         )}
                                         
                                         {/* Civic Addresses */}
-                                        {this.props.type === 'civic' && (
+                                        {this.state.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Suite</ControlLabel>
                                             <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'civic' && (
+                                        {this.state.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Name</ControlLabel>
                                             <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.STREET_NAME, this.props.getMappedValue(mappings.STREET_NAME, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'civic' && (
+                                        {this.state.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Street Type</ControlLabel>
                                             <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'civic' && (
+                                        {this.state.type === 'civic' && (
                                         <FormGroup>
                                             <ControlLabel>Direction</ControlLabel>
                                             <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
@@ -694,13 +711,13 @@ class CurrentAddress extends Component {
                                         )}
                                         
                                         {/* Postal Installation Addresses */}
-                                        {this.props.type === 'pobox' && (
+                                        {this.state.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
                                             <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'pobox' && (
+                                        {this.state.type === 'pobox' && (
                                         <FormGroup>
                                             <ControlLabel>Station</ControlLabel>
                                             <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
@@ -708,37 +725,37 @@ class CurrentAddress extends Component {
                                         )}
                                         
                                         {/* Rural Addresses */}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Range Rd.</ControlLabel>
                                             <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Site</ControlLabel>
                                             <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Comp</ControlLabel>
                                             <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Box</ControlLabel>
                                             <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Lot #</ControlLabel>
                                             <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
                                         </FormGroup>
                                         )}
-                                        {this.props.type === 'rural' && (
+                                        {this.state.type === 'rural' && (
                                         <FormGroup>
                                             <ControlLabel>Concession #</ControlLabel>
                                             <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />

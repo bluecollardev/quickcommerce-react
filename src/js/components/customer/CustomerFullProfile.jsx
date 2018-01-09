@@ -582,9 +582,9 @@ class CustomerFullProfile extends Component {
                     
                     {this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
-                        <FormGroup>
+                        <FormGroup className='flex-button-group'>
                             <Button className='waves-effect waves-light' bsStyle='primary' onClick={this.onCreate}><span><i className='fa fa-check' /> Create Account</span></Button>&nbsp;
-                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>
                         </FormGroup>
                     </div>
                     )}
@@ -822,9 +822,9 @@ class CustomerFullProfile extends Component {
                     
                     {this.props.displayActions && (
                     <div className='customer-profile-block row full-width-inputs align-center'>
-                        <FormGroup>
+                        <FormGroup className='flex-button-group'>
                             <Button className='waves-effect waves-light' bsStyle='primary' onClick={this.onUpdate}><span><i className='fa fa-check' /> Update Account</span></Button>&nbsp;
-                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>&nbsp;
+                            <Button className='waves-effect waves-light' bsStyle='ghost' onClick={this.onCancel}><span><i className='fa fa-ban' /> Cancel</span></Button>
                         </FormGroup>
                     </div>
                     )}

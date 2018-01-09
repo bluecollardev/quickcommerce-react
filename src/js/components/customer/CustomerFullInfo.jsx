@@ -47,27 +47,32 @@ class CustomerFullInfo extends Component {
         this.handleChange = this.handleChange.bind(this)
         
         this.state = {
-            data: assign({}, props.customerStore.customer)
+            data: assign({}, props.data)
         }
     }
     
     componentWillMount() {
-        this.props.customerStore.addChangeListener(this.handleChange)
+		// TODO: Now that I've changed the behavior to read data from props instead of the customerStore, is this necessary?
+        //this.props.customerStore.addChangeListener(this.handleChange)
     }
     
     componentWillUnmount() {
-        this.props.customerStore.removeChangeListener(this.handleChange)
+        // TODO: Now that I've changed the behavior to read data from props instead of the customerStore, is this necessary?
+		//this.props.customerStore.removeChangeListener(this.handleChange)
     }
     
-    /*componentWillReceiveProps(newProps) {
+    componentWillReceiveProps(newProps) {
         this.setState({
-            data: newProps.customerStore.customer
+            //data: newProps.customerStore.customer
+            data: newProps.data
         })
-    }*/
+    }
     
     handleChange() {
         this.setState({
-            data: assign({}, this.props.customerStore.customer)
+            data: assign({}, this.props.data)
+			// TODO: Now that I've changed the behavior to read data from props instead of the customerStore, is this necessary?
+            //data: assign({}, this.props.customerStore.customer)
         }, () => {
 			console.log('customer change triggered')
 			console.log(this.state.data)

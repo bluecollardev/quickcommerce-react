@@ -37,8 +37,8 @@ class BaseStore extends EventEmitter {
     }
 
     // TODO: Standardize events with constants
-	emitChange() {
-        this.emit('CHANGE')
+	emitChange(obj) {
+        this.emit('CHANGE', obj)
     }
 
     addChangeListener(cb) {

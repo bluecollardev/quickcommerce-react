@@ -131,26 +131,26 @@ export default (ComposedComponent) => {
             
             this.getDefaultSettings = this.getDefaultSettings.bind(this)
             
-            props.settingStore.on('store-info-loaded', this.onStoreInfoLoaded.bind(this))
-            props.settingStore.on('settings-loaded', this.onSettingsLoaded.bind(this))
+            props.settingStore.addListener('store-info-loaded', this.onStoreInfoLoaded.bind(this))
+            props.settingStore.addListener('settings-loaded', this.onSettingsLoaded.bind(this))
             
-            props.checkoutStore.on('block-ui', this.onBlockUI.bind(this))
-            props.checkoutStore.on('unblock-ui', this.onUnblockUI.bind(this))
-            props.checkoutStore.on('set-customer', this.onSetCustomer.bind(this))
-            props.checkoutStore.on('set-order-status', this.onSetOrderStatus.bind(this))
-            props.checkoutStore.on('set-payment-method', this.onSetPaymentMethod.bind(this))
-            props.checkoutStore.on('set-shipping-method', this.onSetShippingMethod.bind(this))
-            props.checkoutStore.on('set-notes', this.onSetNotes.bind(this))  
+            props.checkoutStore.addListener('block-ui', this.onBlockUI.bind(this))
+            props.checkoutStore.addListener('unblock-ui', this.onUnblockUI.bind(this))
+            props.checkoutStore.addListener('set-customer', this.onSetCustomer.bind(this))
+            props.checkoutStore.addListener('set-order-status', this.onSetOrderStatus.bind(this))
+            props.checkoutStore.addListener('set-payment-method', this.onSetPaymentMethod.bind(this))
+            props.checkoutStore.addListener('set-shipping-method', this.onSetShippingMethod.bind(this))
+            props.checkoutStore.addListener('set-notes', this.onSetNotes.bind(this))  
             
-            props.checkoutStore.on('set-order', this.onSetOrder.bind(this))
+            props.checkoutStore.addListener('set-order', this.onSetOrder.bind(this))
             
             // We call this data because it's not a complete item, just a POJO
-            props.cartStore.on('item-added', this.onItemAdded.bind(this))
-            props.cartStore.on('item-changed', this.onItemChanged.bind(this))
-            props.cartStore.on('product-options-changed', this.onProductOptionsChanged.bind(this))
-            props.cartStore.on('item-removed', this.onItemRemoved.bind(this))
-            props.cartStore.on('cart-reset', this.onCartReset.bind(this))
-            props.cartStore.on('cart-cleared', this.onCartCleared.bind(this))
+            props.cartStore.addListener('item-added', this.onItemAdded.bind(this))
+            props.cartStore.addListener('item-changed', this.onItemChanged.bind(this))
+            props.cartStore.addListener('product-options-changed', this.onProductOptionsChanged.bind(this))
+            props.cartStore.addListener('item-removed', this.onItemRemoved.bind(this))
+            props.cartStore.addListener('cart-reset', this.onCartReset.bind(this))
+            props.cartStore.addListener('cart-cleared', this.onCartCleared.bind(this))
             
             // Store our stepper instance
             // Stepper maintains its own state and store
@@ -215,27 +215,27 @@ export default (ComposedComponent) => {
             // Wrap removal of event listeners in a try-catch; if there's no listener attached to the store, it will throw an error if you try to remove it
 			// I don't have a better solution right now, as there's also no hasEventListener in node's EventEmitter class
 			try {
-				this.props.settingStore.removeEventListener('store-info-loaded', this.onStoreInfoLoaded)
-				this.props.settingStore.removeEventListener('settings-loaded', this.onSettingsLoaded)
+				this.props.settingStore.removeListener('store-info-loaded', this.onStoreInfoLoaded)
+				this.props.settingStore.removeListener('settings-loaded', this.onSettingsLoaded)
 				
-				this.props.checkoutStore.removeEventListener('block-ui', this.onBlockUI)
-				this.props.checkoutStore.removeEventListener('unblock-ui', this.onUnblockUI)
-				this.props.checkoutStore.removeEventListener('set-customer', this.onSetCustomer)
-				this.props.checkoutStore.removeEventListener('set-order-status', this.onSetOrderStatus)
-				this.props.checkoutStore.removeEventListener('set-payment-method', this.onSetPaymentMethod)
-				this.props.checkoutStore.removeEventListener('set-shipping-method', this.onSetShippingMethod)
-				this.props.checkoutStore.removeEventListener('set-notes', this.onSetNotes)  
+				this.props.checkoutStore.removeListener('block-ui', this.onBlockUI)
+				this.props.checkoutStore.removeListener('unblock-ui', this.onUnblockUI)
+				this.props.checkoutStore.removeListener('set-customer', this.onSetCustomer)
+				this.props.checkoutStore.removeListener('set-order-status', this.onSetOrderStatus)
+				this.props.checkoutStore.removeListener('set-payment-method', this.onSetPaymentMethod)
+				this.props.checkoutStore.removeListener('set-shipping-method', this.onSetShippingMethod)
+				this.props.checkoutStore.removeListener('set-notes', this.onSetNotes)  
 				
 				// TODO: This is commented out - I forget why...
-				//this.props.checkoutStore.removeEventListener('set-order', this.onSetOrder)
+				//this.props.checkoutStore.removeListener('set-order', this.onSetOrder)
 				
 				// We call this data because it's not a complete item, just a POJO
-				this.props.cartStore.removeEventListener('item-added', this.onItemAdded)
-				this.props.cartStore.removeEventListener('item-changed', this.onItemChanged)
-				this.props.cartStore.removeEventListener('product-options-changed', this.onProductOptionsChanged)
-				this.props.cartStore.removeEventListener('item-removed', this.onItemRemoved)
-				this.props.cartStore.removeEventListener('cart-reset', this.onCartReset)
-				this.props.cartStore.removeEventListener('cart-cleared', this.onCartCleared)
+				this.props.cartStore.removeListener('item-added', this.onItemAdded)
+				this.props.cartStore.removeListener('item-changed', this.onItemChanged)
+				this.props.cartStore.removeListener('product-options-changed', this.onProductOptionsChanged)
+				this.props.cartStore.removeListener('item-removed', this.onItemRemoved)
+				this.props.cartStore.removeListener('cart-reset', this.onCartReset)
+				this.props.cartStore.removeListener('cart-cleared', this.onCartCleared)
 			} catch (err) {
 				// Fail silently
 				console.log('failed to remove listener')
@@ -1556,9 +1556,9 @@ export default (ComposedComponent) => {
             let { customerStore, checkoutStore, checkoutService } = this.props
             
             console.log('checkout customer change detected')
-            console.log(props.customerStore.customer)
-            //console.log(props.customerStore.billingAddress)
-            //console.log(props.customerStore.shippingAddress)
+            console.log(customerStore.customer)
+            //console.log(customerStore.billingAddress)
+            //console.log(customerStore.shippingAddress)
             
             if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
                 // Just handle, customer should be set to checkoutStore

@@ -4,17 +4,29 @@ import Isotope from 'isotope-layout'
 
 const GalleryItem = (props) => {
     // TODO: Some kind of adapter...
-    let data = props.data
+    let { data, embeddedThumb } = props
     
     return (
-        <div className="grid-item devices">
-          <a href={QC_IMAGES_URI + data['image']} className="gallery-item">
-            <img src={QC_IMAGES_URI + data['image']} alt="Gallery" />
-            {/* No caption prop available */}
-            {/*<span className="gallery-caption">
-              <p>{data['caption']}</p>
-            </span>*/}
-          </a>
+        <div className='grid-item thumbnail devices'>
+		    {embeddedThumb !== true && (
+		    <a href={QC_IMAGES_URI + data['image']} className='gallery-item'>
+				<img src={QC_IMAGES_URI + data['image']} alt='Gallery' />
+				{/* No caption prop available */}
+				{/*<span className='gallery-caption'>
+				  <p>{data['caption']}</p>
+				</span>*/}
+            </a>
+			)}
+			
+			{embeddedThumb === true && (
+		    <a className='gallery-item'>
+				<img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery' />
+				{/* No caption prop available */}
+				{/*<span className='gallery-caption'>
+				  <p>{data['caption']}</p>
+				</span>*/}
+            </a>
+			)}
         </div>
     )
 }
@@ -95,34 +107,35 @@ export default class ProductGalleryFullwidthWithGap extends Component {
     
     render() {
         let items = this.state.items
-        console.log('gallery items')
-        console.log(items)
         
-        if (items.length > 0) {
+		if (items.length > 0) {
             return (
-                <div className="row">
+                <div>
                     {/* Filters Bar */}
-                    {/*<section className="container-fluid padding-top">
-                      <div className="filters-bar tablet-center space-top-half">
-                        <ul className="nav-filters">
-                          <li className="active"><a href="#" data-filter="*">All</a> <sup>9</sup></li>
-                          <li><a href="#" data-filter=".devices">Devices</a> <sup>2</sup></li>
-                          <li><a href="#" data-filter=".packaging">Packaging</a> <sup>2</sup></li>
-                          <li><a href="#" data-filter=".fashion">Fashion</a> <sup>3</sup></li>
-                          <li><a href="#" data-filter=".paper">Paper &amp; Books</a> <sup>2</sup></li>
+                    {/*<section className='container-fluid padding-top'>
+                      <div className='filters-bar tablet-center space-top-half'>
+                        <ul className='nav-filters'>
+                          <li className='active'><a href='#' data-filter='*'>All</a> <sup>9</sup></li>
+                          <li><a href='#' data-filter='.devices'>Devices</a> <sup>2</sup></li>
+                          <li><a href='#' data-filter='.packaging'>Packaging</a> <sup>2</sup></li>
+                          <li><a href='#' data-filter='.fashion'>Fashion</a> <sup>3</sup></li>
+                          <li><a href='#' data-filter='.paper'>Paper &amp; Books</a> <sup>2</sup></li>
                         </ul>
                       </div>
                     </section>*/}
                     {/* Gallery Grid Full Width With Gap*/}
-                    <section className="padding-top-half padding-bottom-2x">
+					{/*<section className='padding-top-half padding-bottom-2x'>*/}
+                    <section>
                       <div 
                         ref = {(grid) => this.grid = grid}
-                        className="isotope-grid col-3 filter-grid">
-                        <div className="grid-sizer" />
-                        <div className="gutter-sizer" />
-                        {items.map(item => (
+                        className='isotope-grid col-3 filter-grid'>
+                        <div className='grid-sizer' />
+                        <div className='gutter-sizer' />
+                        {items.map((item, idx) => (
                             <GalleryItem 
+								key = {idx}
                                 data = {item} 
+								embeddedThumb = {this.props.embeddedThumbs}
                                 />
                         ))}
                       </div>
@@ -131,26 +144,27 @@ export default class ProductGalleryFullwidthWithGap extends Component {
             )
         } else {
             return (
-                <div className="row">
+                <div>
                     {/* Filters Bar */}
-                    {/*<section className="container-fluid padding-top">
-                      <div className="filters-bar tablet-center space-top-half">
-                        <ul className="nav-filters">
-                          <li className="active"><a href="#" data-filter="*">All</a> <sup>9</sup></li>
-                          <li><a href="#" data-filter=".devices">Devices</a> <sup>2</sup></li>
-                          <li><a href="#" data-filter=".packaging">Packaging</a> <sup>2</sup></li>
-                          <li><a href="#" data-filter=".fashion">Fashion</a> <sup>3</sup></li>
-                          <li><a href="#" data-filter=".paper">Paper &amp; Books</a> <sup>2</sup></li>
+                    {/*<section className='container-fluid padding-top'>
+                      <div className='filters-bar tablet-center space-top-half'>
+                        <ul className='nav-filters'>
+                          <li className='active'><a href='#' data-filter='*'>All</a> <sup>9</sup></li>
+                          <li><a href='#' data-filter='.devices'>Devices</a> <sup>2</sup></li>
+                          <li><a href='#' data-filter='.packaging'>Packaging</a> <sup>2</sup></li>
+                          <li><a href='#' data-filter='.fashion'>Fashion</a> <sup>3</sup></li>
+                          <li><a href='#' data-filter='.paper'>Paper &amp; Books</a> <sup>2</sup></li>
                         </ul>
                       </div>
                     </section>*/}
                     {/* Gallery Grid Full Width With Gap*/}
-                    <section className="padding-top-half padding-bottom-2x">
+					{/*<section className='padding-top-half padding-bottom-2x'>*/}
+                    <section>
                       <div 
                         ref = {(grid) => this.grid = grid}
-                        className="isotope-grid col-3 filter-grid">
-                        <div className="grid-sizer" />
-                        <div className="gutter-sizer" />
+                        className='isotope-grid col-3 filter-grid'>
+                        <div className='grid-sizer' />
+                        <div className='gutter-sizer' />
                       </div>
                     </section>
                 </div>

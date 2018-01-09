@@ -123,10 +123,8 @@ export default class GalleryFullwidthWithGap extends Component {
     
     render() {
         let items = this.state.items
-        console.log('gallery items')
-        console.log(items)
         
-        return (
+		return (
             <div className="row">
                 {/* Filters Bar */}
                 {/*<section className="container-fluid padding-top">

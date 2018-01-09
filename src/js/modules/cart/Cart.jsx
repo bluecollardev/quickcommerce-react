@@ -193,7 +193,7 @@ Cart.defaultProps = {
     rowComponent        : RowComponent,
     tableClassName      : '',
     cartEmptyMessage    : (
-        <span><b>Your shopping cart is empty.</b><br/>Please add some products to continue.</span>
+        <span><b>Your shopping cart is empty.</b><span className=''><br/>Please add some products to continue.</span></span>
     )
 }
 

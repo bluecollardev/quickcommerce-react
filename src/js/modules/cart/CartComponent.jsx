@@ -159,86 +159,82 @@ class CartComponent extends Component {
         const rowComponent = this.props.rowComponent || DragDropCartRow
         
         return (
-            <Grid>
-                <Row className='checkout-parts'>
-                    <Col xs={12}>
-                        <div>
-                            <Cart
-                                ref = {(cart) => this.cart = cart}
-                                tableClassName = 'table cart'
-                                onChange = {this.refresh}
-                                columns = {['price']}
-                                iterator = {this.rowIterator}
-                                containerComponent = {containerComponent}
-                                rowComponent = {rowComponent}
-                                onItemClicked = {this.props.onCartItemClicked}
-                                onItemDropped = {this.itemDropped} />
-                        </div>
-                    </Col>
-                    <Col className='cart-buttons' xs={12}>
-                        {/*this.state.canSubmit && (
-                        <Button
-                          style     = {{
-                              width: '100%',
-                              marginTop: '2rem'
-                          }}
-                          onClick = {this.showChargeModal}
-                          bsStyle = 'success'>
-                            <h4><i className='fa fa-money' /> Charge</h4>
-                        </Button>
-                        )*/}
+			<Row className='checkout-parts'>
+				<Col xs={12}>
+					<Cart
+						ref = {(cart) => this.cart = cart}
+						tableClassName = 'table cart'
+						onChange = {this.refresh}
+						columns = {['price']}
+						iterator = {this.rowIterator}
+						containerComponent = {containerComponent}
+						rowComponent = {rowComponent}
+						onItemClicked = {this.props.onCartItemClicked}
+						onItemDropped = {this.itemDropped} />
+				</Col>
+				<Col className='cart-buttons' xs={12}>
+					{/*this.state.canSubmit && (
+					<Button
+					  style     = {{
+						  width: '100%',
+						  marginTop: '2rem'
+					  }}
+					  onClick = {this.showChargeModal}
+					  bsStyle = 'success'>
+						<h4><i className='fa fa-money' /> Charge</h4>
+					</Button>
+					)*/}
 
-                        {this.state.canSubmit && (
-                        <Button
-                          style = {{
-                              width: '100%',
-                              marginTop: '2rem'
-                          }}
-                          className = 'pull-right'
-                          onClick = {this.reset}
-                          bsStyle= 'danger'>
-                            <h4><i className='fa fa-times' /> Empty</h4>
-                        </Button>
-                        )}
+					{this.state.canSubmit && (
+					<Button
+					  style = {{
+						  width: '100%',
+						  marginTop: '2rem'
+					  }}
+					  className = 'pull-right'
+					  onClick = {this.reset}
+					  bsStyle= 'danger'>
+						<h4><i className='fa fa-times' /> Empty</h4>
+					</Button>
+					)}
 
-                        {this.state.canSubmit && (
-                        <Button
-                          onClick = {this.emptyCart}
-                          style = {{
-                              width: '100%',
-                              marginTop: '2rem'
-                          }}
-                          className = 'hidden-xs hidden-sm hidden-md'
-                          onClick = {this.reload}
-                          bsStyle = 'default'>
-                            <h4><i className='fa fa-refresh' /> Reset</h4>
-                        </Button>
-                        )}                              
-                    </Col>
-                </Row>
-                <Modal
-                  show = {!!this.state.chooseQuantity}
-                  onHide = {() => { /*this.hideQuantity*/ }}>
-                    <Modal.Header>
-                        <Modal.Title>
-                            Enter Item Quantity
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Keypad 
-                            ref = {(keypad) => this.popupKeypad = keypad} 
-                            displayLabel = {false} />
-                        <FormGroup style={{ display: 'block' }}>
-                            <Button block bsStyle='success' onClick={this.quickAddToCart}>
-                                <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
-                            </Button>
-                            <Button block bsStyle='danger' onClick={() => this.setState({ chooseQuantity: false }, () => this.popupKeypad.component.clear())}>
-                                <h4><i className='fa fa-ban' /> Cancel</h4>
-                            </Button>
-                        </FormGroup>
-                    </Modal.Body>
-                </Modal>
-            </Grid>
+					{this.state.canSubmit && (
+					<Button
+					  onClick = {this.emptyCart}
+					  style = {{
+						  width: '100%',
+						  marginTop: '2rem'
+					  }}
+					  className = 'hidden-xs hidden-sm hidden-md'
+					  onClick = {this.reload}
+					  bsStyle = 'default'>
+						<h4><i className='fa fa-refresh' /> Reset</h4>
+					</Button>
+					)}                              
+				</Col>
+				<Modal
+				  show = {!!this.state.chooseQuantity}
+				  onHide = {() => { /*this.hideQuantity*/ }}>
+					<Modal.Header>
+						<Modal.Title>
+							Enter Item Quantity
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Keypad 
+							ref = {(keypad) => this.popupKeypad = keypad} 
+							displayLabel = {false} />
+						<FormGroup style={{ display: 'block' }}>
+							<Button block bsStyle='success' onClick={this.quickAddToCart}>
+								<h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
+							</Button>
+							<Button block bsStyle='danger' onClick={() => this.setState({ chooseQuantity: false }, () => this.popupKeypad.component.clear())}>
+								<h4><i className='fa fa-ban' /> Cancel</h4>
+							</Button>
+						</FormGroup>
+					</Modal.Body>
+				</Modal>
+			</Row>
         )
     }
 }

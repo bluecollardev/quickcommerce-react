@@ -118,7 +118,7 @@ class CustomerSearch extends Component {
         if (typeof this.props.onSelect === 'function') {
             console.log('execute handler')
             let fn = this.props.onSelect
-            fn(e)
+            fn(e, this.state.selectedCustomer)
         }
     }
 

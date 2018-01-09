@@ -40,6 +40,10 @@ export class OrderStore extends BaseStore {
                 this.setExistingCustomer(action.customer)
                 this.emit('set-customer', 'existing')
                 break
+			case OrderConstants.SET_ADDITIONAL_CUSTOMERS:
+                this.setAdditionalCustomers(action.customers, action.key, action.silent)
+                this.emit('set-additional-customers') // TODO: No silent support yet here :(
+                break
             /*case OrderConstants.SET_BILLING_ADDRESS:
                 this.setBillingAddress(action.address)
                 break
@@ -130,22 +134,61 @@ export class OrderStore extends BaseStore {
         }
     }
     
+	/**
+	 * This abstract method may be implemented in classes inheriting from OrderStore.
+	 *
+	 * @param CustomerDto customer A customer DTO object
+	 * @return void
+	 * 
+	 */
     setBuiltInCustomer(customer) {
-        throw new Error('Not implemented') // TODO: Make a real exception class
+        //throw new Error('Not implemented') // TODO: Make a real exception class
     }
 
+	/**
+	 * This abstract method may be implemented in classes inheriting from OrderStore.
+	 *
+	 * @param CustomerDto customer A customer DTO object
+	 */
     setCustomCustomer(customer) {
-        throw new Error('Not implemented') // TODO: Make a real exception class
+        //throw new Error('Not implemented') // TODO: Make a real exception class
     }
 
+	/**
+	 * This abstract method must be implemented in classes inheriting from OrderStore.
+	 * If not defined, a Not Implemented exception will be thrown.
+	 *
+	 * @param CustomerDto customer A customer DTO object
+	 * @return void
+	 * 
+	 */
     setExistingCustomer(customer) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
-
+	
+	/**
+	 * This abstract method may be implemented in classes inheriting from OrderStore.
+	 *
+	 * @param CustomerDto customer A customer DTO object
+	 */
+	setAdditionalCustomers(customers, key) {
+        //throw new Error('Not implemented') // TODO: Make a real exception class
+    }
+	
+	/**
+	 * This abstract method may be implemented in classes inheriting from OrderStore.
+	 *
+	 * @return void
+	 */
     setBillingAddress(address) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
 
+	/**
+	 * This abstract method may be implemented in classes inheriting from OrderStore.
+	 *
+	 * @return void
+	 */
     setShippingAddress(address) {
         throw new Error('Not implemented') // TODO: Make a real exception class
     }
