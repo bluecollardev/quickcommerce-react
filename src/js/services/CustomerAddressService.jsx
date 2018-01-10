@@ -76,7 +76,7 @@ export default class CustomerAddressService extends BaseService {
                 //loader.close()
             }
         }).catch(err =>  {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -110,7 +110,7 @@ export default class CustomerAddressService extends BaseService {
                 // Do something
             }
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -195,7 +195,7 @@ export default class CustomerAddressService extends BaseService {
                 }
             }
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     

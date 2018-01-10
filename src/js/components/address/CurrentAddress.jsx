@@ -360,7 +360,7 @@ class CurrentAddress extends Component {
                         <div className='col-md-flex col-lg-flex'>
                             <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
 							
-							<FormGroup className='col-sm-3'>
+							<FormGroup className='col-sm-3 form-element form-select'>
                                 <ControlLabel>Address Type</ControlLabel>
 								<FormControl 
 									componentClass = 'select'
@@ -420,13 +420,13 @@ class CurrentAddress extends Component {
                             </FormGroup>
                             )}
                             {this.state.type === 'civic' && (
-                            <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
+                            <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
                                 <ControlLabel>Street Type</ControlLabel>
                                 <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
                             </FormGroup>
                             )}
                             {this.state.type === 'civic' && (
-                            <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
+                            <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
                                 <ControlLabel>Direction</ControlLabel>
                                 <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
                             </FormGroup>
@@ -500,7 +500,7 @@ class CurrentAddress extends Component {
                         </div>
                         <div className='col-md-flex col-lg-flex flex-md-25'>
                             {/* City (If Applicable) */}
-                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25'>
+                            <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-4 flex-md-25 form-element form-select'>
                                 <ControlLabel>City*</ControlLabel>
                                 <FormControl type='text' name={mappings.CITY} {...this.props.fields(mappings.CITY, this.props.getMappedValue(mappings.CITY, data))} />
                             </FormGroup>

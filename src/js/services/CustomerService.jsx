@@ -90,7 +90,7 @@ class CustomerService extends BaseService {
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
 	
@@ -139,7 +139,7 @@ class CustomerService extends BaseService {
         }).then(response => {
             this.handleResponse(response, onSuccess, onError)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -172,7 +172,7 @@ class CustomerService extends BaseService {
             }).then(response => {
                 this.handleResponse(response, onSuccess, onError)
             }).catch(err => {
-                this.handleError('', onError, err)
+                this.handleError(err.message, onError, err.stack)
             })
         }
     }
@@ -207,7 +207,7 @@ class CustomerService extends BaseService {
             }).then(response => {
                 this.handleResponse(response, onSuccess, onError)
             }).catch(err => {
-                this.handleError('', onError, err)
+                this.handleError(err.message, onError, err.stack)
             })           
         }
     }
@@ -245,7 +245,7 @@ class CustomerService extends BaseService {
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
         
     }
@@ -282,7 +282,7 @@ class CustomerService extends BaseService {
             //passwordModel.set('password', '')
             //passwordModel.set('confirm', '')
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -320,7 +320,7 @@ class CustomerService extends BaseService {
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -345,12 +345,12 @@ class CustomerService extends BaseService {
                 }).bind(this), // Bind to current context
                 // onError - fail silently
                 (err) => {
-                    this.handleError('', onError, err)
+                    this.handleError(err.message, onError, err.stack)
                 },
                 // Use legacy API compatibility
                 true)
             }).catch(err => {
-                this.handleError('', onError, err)
+                this.handleError(err.message, onError, err.stack)
             })
         //}
         
@@ -430,12 +430,12 @@ class CustomerService extends BaseService {
             }).bind(this), // Bind to current context
             // onError - fail silently
             ((err) => {
-                this.handleError('', onError, err)
+                this.handleError(err.message, onError, err.stack)
             }).bind(this),
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -486,12 +486,12 @@ class CustomerService extends BaseService {
             }).bind(this), // Bind to current context
             // onError - fail silently
             ((err) => {
-                this.handleError('', onError, err)
+                this.handleError(err.message, onError, err.stack)
             }).bind(this),
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
 }

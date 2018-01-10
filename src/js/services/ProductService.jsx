@@ -34,7 +34,7 @@ class ProductService extends BaseService {
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
 	
@@ -60,7 +60,7 @@ class ProductService extends BaseService {
             // Use legacy API compatibility
             true)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
 	}
     
@@ -114,7 +114,7 @@ class ProductService extends BaseService {
         }).then(response => {
             this.handleResponse(response, onSuccess, onError)
         }).catch(err => {
-            this.handleError('', onError, err)
+            this.handleError(err.message, onError, err.stack)
         })
     }
     
@@ -136,7 +136,7 @@ class ProductService extends BaseService {
             }).then(response => {
 				this.handleResponse(response, onSuccess, onError)
 			}).catch(err => {
-				this.handleError('', onError, err)
+				this.handleError(err.message, onError, err.stack)
 			})
         }
     }
@@ -159,7 +159,7 @@ class ProductService extends BaseService {
             }).then(response => {
             this.handleResponse(response, onSuccess, onError)
 			}).catch(err => {
-				this.handleError('', onError, err)
+				this.handleError(err.message, onError, err.stack)
 			})       
         }
     }

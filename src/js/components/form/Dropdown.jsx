@@ -36,13 +36,13 @@ const SelectList = (props) => {
     }
     
     return (
-            <FormControl componentClass='select' {...elementProps}>
-                <option key={0} value=''></option>
-                {items.map((item, idx) =>
-                <option key={idx + 1} value={item.id}>{item.value}</option>
-                )}
-            </FormControl>
-        )    
+		<FormControl componentClass='select' {...elementProps}>
+			<option key={0} value=''></option>
+			{items.map((item, idx) =>
+			<option key={idx + 1} value={item.id}>{item.value}</option>
+			)}
+		</FormControl>
+	)    
 }
 
 const SelectButton = (props) => {

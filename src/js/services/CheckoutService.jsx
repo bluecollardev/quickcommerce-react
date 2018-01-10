@@ -267,7 +267,7 @@ export default class CheckoutService extends BaseService {
                     }
                     //this.createOrder()
                 }).catch(err => {
-                    this.handleError('', onError, err)
+                    this.handleError(err.message, onError, err.stack)
                 })
             })
         })
