@@ -12,20 +12,20 @@ class ProductService extends BaseService {
     /**
      * Retrieves a Product.
      */
-    get(id, onSuccess, onError) {
-        axios({
-            url: QC_RESOURCE_API + 'product/' + id,
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json',
-            async: false
-        }).then(response => {
-            this.handleResponse(response, 
+  get(id, onSuccess, onError) {
+    axios({
+      url: QC_RESOURCE_API + 'product/' + id,
+      type: 'GET',
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false
+    }).then(response => {
+      this.handleResponse(response, 
             // onSuccess
             ((payload) => {
-                if (typeof onSuccess === 'function') {
-                    onSuccess(payload)
-                }
+              if (typeof onSuccess === 'function') {
+                onSuccess(payload)
+              }
             }).bind(this), // Bind to current context
             // onError - fail silently
             (() => {
@@ -33,25 +33,25 @@ class ProductService extends BaseService {
             }).bind(this),
             // Use legacy API compatibility
             true)
-        }).catch(err => {
-            this.handleError(err.message, onError, err.stack)
-        })
-    }
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
 	
-	getCollection(onSuccess, onError) {
-		axios({
-            url: QC_RESOURCE_API + 'product/',
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json',
-            async: false
-        }).then(response => {
-            this.handleResponse(response, 
+  getCollection(onSuccess, onError) {
+    axios({
+      url: QC_RESOURCE_API + 'product/',
+      type: 'GET',
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false
+    }).then(response => {
+      this.handleResponse(response, 
             // onSuccess
             ((payload) => {
-                if (typeof onSuccess === 'function') {
-                    onSuccess(payload)
-                }
+              if (typeof onSuccess === 'function') {
+                onSuccess(payload)
+              }
             }).bind(this), // Bind to current context
             // onError - fail silently
             (() => {
@@ -59,115 +59,115 @@ class ProductService extends BaseService {
             }).bind(this),
             // Use legacy API compatibility
             true)
-        }).catch(err => {
-            this.handleError(err.message, onError, err.stack)
-        })
-	}
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
     
     /**
 	 * Retrieves a Product and saves a local copy in ProductStore.
      */
-    fetch(id, onSuccess, onError) {
-        this.get(id, 
+  fetch(id, onSuccess, onError) {
+    this.get(id, 
 		// onSuccess
 		((payload) => {
-			let data = payload
+  let data = payload
                 
-			this.actions.product.setProduct(data)
+  this.actions.product.setProduct(data)
 			
-			if (typeof onSuccess === 'function') {
-				onSuccess(data)
-			}
-		}).bind(this),
+  if (typeof onSuccess === 'function') {
+    onSuccess(data)
+  }
+}).bind(this),
 		onError)
-    }
+  }
 	
 	/**
 	 * Retrieves Products and saves a local copy in ProductStore.
 	 */
-	fetchCollection(onSuccess, onError) {
-        this.getCollection(((payload) => {
-			let data = payload
+  fetchCollection(onSuccess, onError) {
+    this.getCollection(((payload) => {
+      let data = payload
                 
-			this.actions.product.setProducts(data)
+      this.actions.product.setProducts(data)
 			
-			if (typeof onSuccess === 'function') {
-				onSuccess(data)
-			}
-		}).bind(this), onError)
-    }
+      if (typeof onSuccess === 'function') {
+        onSuccess(data)
+      }
+    }).bind(this), onError)
+  }
     
     /**
      */
-    post(data, onSuccess, onError) {
+  post(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
             detailObj: this.normalizePayload(data, 'underscore', 'camelcase')
         }*/
         
-        axios({
-            url: QC_RESOURCE_API + 'product/' + id,
-            data: data,
-            dataType: 'json',
-            method: 'PATCH',
-            contentType: 'application/json'
-        }).then(response => {
-            this.handleResponse(response, onSuccess, onError)
-        }).catch(err => {
-            this.handleError(err.message, onError, err.stack)
-        })
-    }
+    axios({
+      url: QC_RESOURCE_API + 'product/' + id,
+      data: data,
+      dataType: 'json',
+      method: 'PATCH',
+      contentType: 'application/json'
+    }).then(response => {
+      this.handleResponse(response, onSuccess, onError)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
     
     /**
      */
-    put(data, onSuccess, onError) {
+  put(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
             detailObj: this.normalizePayload(data, 'underscore', 'camelcase')
         }*/
         
-        if (data.id !== null) {
-            axios({
-                url: QC_RESOURCE_API + 'product/' + id,
-                data: data,
-                method: 'PATCH',
-                dataType: 'json',
-                contentType: 'application/json'
-            }).then(response => {
-				this.handleResponse(response, onSuccess, onError)
-			}).catch(err => {
-				this.handleError(err.message, onError, err.stack)
-			})
-        }
+    if (data.id !== null) {
+      axios({
+        url: QC_RESOURCE_API + 'product/' + id,
+        data: data,
+        method: 'PATCH',
+        dataType: 'json',
+        contentType: 'application/json'
+      }).then(response => {
+        this.handleResponse(response, onSuccess, onError)
+      }).catch(err => {
+        this.handleError(err.message, onError, err.stack)
+      })
     }
+  }
     
     /**
      */
-    patch(data, onSuccess, onError) {
+  patch(data, onSuccess, onError) {
         /* Example converting payload to camelcase
         data = {
             detailObj: this.normalizePayload(data, 'underscore', 'camelcase')
         }*/
         
-        if (data.id !== null) {
-            axios({
-                url: QC_RESOURCE_API + 'product/' + id,
-                data: data,
-                method: 'PATCH',
-                dataType: 'json',
-                contentType: 'application/json'
-            }).then(response => {
-            this.handleResponse(response, onSuccess, onError)
-			}).catch(err => {
-				this.handleError(err.message, onError, err.stack)
-			})       
-        }
+    if (data.id !== null) {
+      axios({
+        url: QC_RESOURCE_API + 'product/' + id,
+        data: data,
+        method: 'PATCH',
+        dataType: 'json',
+        contentType: 'application/json'
+      }).then(response => {
+        this.handleResponse(response, onSuccess, onError)
+      }).catch(err => {
+        this.handleError(err.message, onError, err.stack)
+      })       
     }
+  }
     
     /**
      */
-    delete(id, onSuccess, onError) {
-    }
+  delete(id, onSuccess, onError) {
+  }
 }
 
 export default ProductService

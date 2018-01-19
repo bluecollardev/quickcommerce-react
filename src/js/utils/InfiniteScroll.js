@@ -47,10 +47,10 @@ export default {
     scrollState._onResize = _onResize.bind(this, scrollState)
     scrollState._onScroll = _onScroll.bind(this, scrollState)
 
-    window.addEventListener("resize", scrollState._onResize)
+    window.addEventListener('resize', scrollState._onResize)
     // check in case we're already at the bottom and the indicator is visible
     (scrollState.scrollParents || []).forEach((scrollParent) => {
-      scrollParent.addEventListener("scroll", scrollState._onScroll)
+      scrollParent.addEventListener('scroll', scrollState._onScroll)
       if (scrollParent === document || scrollParent === document.body) {
         var rect = indicatorElement.getBoundingClientRect()
         if (rect.top < window.innerHeight) {
@@ -66,9 +66,9 @@ export default {
   stopListeningForScroll (scrollState) {
     (scrollState.scrollParents || []).forEach((scrollParent) => {
       clearTimeout(scrollState.scrollTimer)
-      scrollParent.removeEventListener("scroll",
+      scrollParent.removeEventListener('scroll',
         scrollState._onScroll)
-      window.removeEventListener("resize", scrollState._onResize)
+      window.removeEventListener('resize', scrollState._onResize)
     })
     scrollState.scrollParents = undefined
   }

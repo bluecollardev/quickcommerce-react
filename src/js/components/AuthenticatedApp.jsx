@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import {inject, observer, Provider} from 'mobx-react'
+import React, {Component} from 'react'
+import {inject} from 'mobx-react'
 
 /**
  * An application container that injects a minimum set of services etc into 
@@ -17,115 +17,115 @@ import {inject, observer, Provider} from 'mobx-react'
  * App dependencies passed in via Mobx's Provider HoC are injected into our component as props using a wrapper (Mobx injector HoC).
  */
 @inject(deps => ({
-    actions: deps.actions,
-    authService: deps.authService,
-    settingService: deps.authService,
-    loginStore: deps.loginStore,
-    settingStore: deps.settingStore,
-    mappings: deps.mappings, // Per component or global scope?
-    translations: deps.translations, // i8ln transations
-    roles: deps.roles, // App level roles, general authenticated user (not customer!)
-    userRoles: deps.userRoles, // Shortcut or implement via HoC?
-    user: deps.user, // Shortcut or implement via HoC?
+  actions: deps.actions,
+  authService: deps.authService,
+  settingService: deps.authService,
+  loginStore: deps.loginStore,
+  settingStore: deps.settingStore,
+  mappings: deps.mappings, // Per component or global scope?
+  translations: deps.translations, // i8ln transations
+  roles: deps.roles, // App level roles, general authenticated user (not customer!)
+  userRoles: deps.userRoles, // Shortcut or implement via HoC?
+  user: deps.user, // Shortcut or implement via HoC?
 }))
 class AuthenticatedApp extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.changeListener = this.onChange.bind(this)
+    this.changeListener = this.onChange.bind(this)
         
-        this.state = this.getLoginState()
-    }
+    this.state = this.getLoginState()
+  }
     
-    hasScrollbar() {
-        if (typeof window.innerWidth === 'number') {
-            return window.innerWidth > document.documentElement.clientWidth
-        }
+  hasScrollbar() {
+    if (typeof window.innerWidth === 'number') {
+      return window.innerWidth > document.documentElement.clientWidth
+    }
 
-        let rootElem = document.documentElement || document.body
+    let rootElem = document.documentElement || document.body
         
-        let overflowStyle
-        if (typeof rootElem.currentStyle !== 'undefined') {
-            overflowStyle = rootElem.currentStyle.overflow
-        }
-
-        overflowStyle = overflowStyle || window.getComputedStyle(rootElem, '').overflow
-
-        let overflowYStyle
-        if (typeof rootElem.currentStyle !== 'undefined') {
-            overflowYStyle = rootElem.currentStyle.overflowY
-        }
-
-        overflowYStyle = overflowYStyle || window.getComputedStyle(rootElem, '').overflowY
-
-        let contentOverflows = rootElem.scrollHeight > rootElem.clientHeight
-        let overflowShown    = /^(visible|auto)$/.test(overflowStyle) || /^(visible|auto)$/.test(overflowYStyle)
-        let alwaysShowScroll = overflowStyle === 'scroll' || overflowYStyle === 'scroll'
-
-        return (contentOverflows && overflowShown) || (alwaysShowScroll)
+    let overflowStyle
+    if (typeof rootElem.currentStyle !== 'undefined') {
+      overflowStyle = rootElem.currentStyle.overflow
     }
 
-    componentDidMount() {
-        this.props.settingStore.addChangeListener(this.changeListener)
-        this.props.loginStore.addChangeListener(this.changeListener)
+    overflowStyle = overflowStyle || window.getComputedStyle(rootElem, '').overflow
+
+    let overflowYStyle
+    if (typeof rootElem.currentStyle !== 'undefined') {
+      overflowYStyle = rootElem.currentStyle.overflowY
     }
 
-    componentWillUnmount() {
-        this.props.settingStore.removeChangeListener(this.changeListener)
-        this.props.loginStore.removeChangeListener(this.changeListener)
-    }
+    overflowYStyle = overflowYStyle || window.getComputedStyle(rootElem, '').overflowY
+
+    let contentOverflows = rootElem.scrollHeight > rootElem.clientHeight
+    let overflowShown    = /^(visible|auto)$/.test(overflowStyle) || /^(visible|auto)$/.test(overflowYStyle)
+    let alwaysShowScroll = overflowStyle === 'scroll' || overflowYStyle === 'scroll'
+
+    return (contentOverflows && overflowShown) || (alwaysShowScroll)
+  }
+
+  componentDidMount() {
+    this.props.settingStore.addChangeListener(this.changeListener)
+    this.props.loginStore.addChangeListener(this.changeListener)
+  }
+
+  componentWillUnmount() {
+    this.props.settingStore.removeChangeListener(this.changeListener)
+    this.props.loginStore.removeChangeListener(this.changeListener)
+  }
     
-    onChange() {
+  onChange() {
         // onChange handler for AuthenticatedApp
-        this.setState(this.getLoginState())
-    }
+    this.setState(this.getLoginState())
+  }
     
-    getLoginState() {
-        let loggedIn = false
-        let loginStore = this.props.loginStore || null
+  getLoginState() {
+    let loggedIn = false
+    let loginStore = this.props.loginStore || null
         
-        if (loginStore !== null && loginStore.isLoggedIn()) {
-            loggedIn = loginStore.isLoggedIn()
-        }
-        
-        return {
-            loggedIn: loggedIn
-        }
+    if (loginStore !== null && loginStore.isLoggedIn()) {
+      loggedIn = loginStore.isLoggedIn()
     }
+        
+    return {
+      loggedIn: loggedIn
+    }
+  }
 
-    render() {
+  render() {
         // AuthenticatedApp render
-        return (
-            <div className='app-container'>
-                {/*<nav className='navbar navbar-default'>
+    return (
+      <div className='app-container'>
+        {/*<nav className='navbar navbar-default'>
                     <div className='navbar-header'>
                         <a className='navbar-brand' href='/'>React Flux app with JWT authentication</a>
                     </div>
                     {this.headerItems}
                 </nav>*/}
-                {this.props.children}
-            </div>
-        )
-    }
+        {this.props.children}
+      </div>
+    )
+  }
     
     // Just a shortcut
-    logout(e) {
-        e.preventDefault()
-        this.props.authService.logout()
-    }
+  logout(e) {
+    e.preventDefault()
+    this.props.authService.logout()
+  }
 
     // Not used, just for confirmation when I was building the auth components, I will strip this out later
-    get headerItems() {
-        if (!this.state.loggedIn) {
-            return (
-                <pre>Not Logged</pre>
-            )
-        } else {
-            return (
-                <pre>Logged</pre>
-            )
-        }
+  get headerItems() {
+    if (!this.state.loggedIn) {
+      return (
+        <pre>Not Logged</pre>
+      )
+    } else {
+      return (
+        <pre>Logged</pre>
+      )
     }
+  }
 }
 
 export default AuthenticatedApp

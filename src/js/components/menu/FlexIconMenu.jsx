@@ -10,37 +10,37 @@ import { Button, Checkbox, Radio } from 'react-bootstrap'
 import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 
 @inject(deps => ({
-    actions: deps.actions,
-    authService: deps.authService
+  actions: deps.actions,
+  authService: deps.authService
 }))
 @observer
 class FlexIconMenu extends Component {
-    constructor(props) {
-        super(props)
-    }
+  constructor(props) {
+    super(props)
+  }
     
-    componentDidMount() {
-        if (this.props.loggedIn) {
-        }
+  componentDidMount() {
+    if (this.props.loggedIn) {
     }
+  }
     
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps !== this.props) {
-        }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps !== this.props) {
     }
+  }
     
-    render() {
-		let classNames = 'flex-icon-menu column mcb-column one column_divider column-margin-40px'
-		let className = [this.props.className, classNames].join(' ')
+  render() {
+    let classNames = 'flex-icon-menu column mcb-column one column_divider column-margin-40px'
+    let className = [this.props.className, classNames].join(' ')
 		
-        return (
-            <Row className={className}>
-                {this.props.children}
-				{/*<hr className='no_line'/>*/}
-                <div className='borderLine horzMenu' style={{'transformOrigin': '0% 100% 0px', 'transform': 'matrix(1, 0, 0, 1, 0, 0)'}}></div>
-            </Row>
-        )
-    }   
+    return (
+      <Row className={className}>
+        {this.props.children}
+        {/*<hr className='no_line'/>*/}
+        <div className='borderLine horzMenu' style={{'transformOrigin': '0% 100% 0px', 'transform': 'matrix(1, 0, 0, 1, 0, 0)'}}></div>
+      </Row>
+    )
+  }   
 }
 
 export default AuthenticatedComponent(FlexIconMenu)

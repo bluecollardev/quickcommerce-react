@@ -4,81 +4,101 @@ import Isotope from 'isotope-layout'
 
 const GalleryItem = (props) => {
     // TODO: Some kind of adapter...
-    let { data, embeddedThumb } = props
+  let { data, embeddedThumb } = props
     
-    return (
-        <div className='grid-item thumbnail devices'>
-		    {embeddedThumb !== true && (
-		    <a href={QC_IMAGES_URI + data['image']} className='gallery-item'>
-				<img src={QC_IMAGES_URI + data['image']} alt='Gallery' />
-				{/* No caption prop available */}
-				{/*<span className='gallery-caption'>
+  return (
+    <div className='grid-item thumbnail devices'>
+      {embeddedThumb !== true && (
+      <a href={QC_IMAGES_URI + data['image']} className='gallery-item'>
+        <img src={QC_IMAGES_URI + data['image']} alt='Gallery' />
+        {/* No caption prop available */}
+        {/*<span className='gallery-caption'>
 				  <p>{data['caption']}</p>
 				</span>*/}
-            </a>
+      </a>
 			)}
 			
-			{embeddedThumb === true && (
-		    <a className='gallery-item'>
-				<img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery' />
-				{/* No caption prop available */}
-				{/*<span className='gallery-caption'>
+      {embeddedThumb === true && (
+      <a className='gallery-item'>
+        <img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery' />
+        {/* No caption prop available */}
+        {/*<span className='gallery-caption'>
 				  <p>{data['caption']}</p>
 				</span>*/}
-            </a>
+      </a>
 			)}
-        </div>
-    )
+    </div>
+  )
 }
 
 export default class ProductGalleryFullwidthWithGap extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
         
-        this.updateIsotope = this.updateIsotope.bind(this)
+    this.updateIsotope = this.updateIsotope.bind(this)
         
-        let dataSource = null
-        if (typeof props.dataSource === 'string') {
-            dataSource = JSON.parse(props.dataSource)
-        } else if (typeof props.dataSource === 'object') {
-            dataSource = props.dataSource
-        }
-        
-        let items = []
-        if (dataSource !== null) {
-            items = dataSource
-        }
-        
-        this.state = {
-            user: dataSource.user,
-            items: items,
-            grid: null
-        }
+    let dataSource = null
+    if (typeof props.dataSource === 'string') {
+      dataSource = JSON.parse(props.dataSource)
+    } else if (typeof props.dataSource === 'object') {
+      dataSource = props.dataSource
     }
-    
-    componentDidMount() {
-        const node = ReactDOM.findDOMNode(this.grid)
         
-        if (!this.state.isotope) {
-            const isotope = new Isotope(node, {
-                itemSelector: '.grid-item',
-                transitionDuration: '0.7s',
-                masonry: {
-                    columnWidth: '.grid-sizer',
-                    gutter: '.gutter-sizer'
-                }
-            })
-            
-            this.setState({
-                isotope: isotope
-            }, () => {
-                setTimeout(() => {
-                    this.updateIsotope()
-                }, 333)
-            })
-        } else {
-            this.updateIsotope()
+    let items = []
+    if (dataSource !== null) {
+      items = dataSource
+    }
+        
+    this.state = {
+      user: dataSource.user,
+      items: items,
+      grid: null
+    }
+  }
+	
+  componentWillReceiveProps(props) {
+    let dataSource = null
+    if (typeof props.dataSource === 'string') {
+      dataSource = JSON.parse(props.dataSource)
+    } else if (typeof props.dataSource === 'object') {
+      dataSource = props.dataSource
+    }
+        
+    let items = []
+    if (dataSource !== null) {
+      items = dataSource
+    }
+        
+    this.setState({
+      user: dataSource.user,
+      items: items,
+      grid: null
+    })
+  }
+    
+  componentDidMount() {
+    const node = ReactDOM.findDOMNode(this.grid)
+        
+    if (!this.state.isotope) {
+      const isotope = new Isotope(node, {
+        itemSelector: '.grid-item',
+        transitionDuration: '0.7s',
+        masonry: {
+          columnWidth: '.grid-sizer',
+          gutter: '.gutter-sizer'
         }
+      })
+            
+      this.setState({
+        isotope: isotope
+      }, () => {
+        setTimeout(() => {
+          this.updateIsotope()
+        }, 333)
+      })
+    } else {
+      this.updateIsotope()
+    }
         
         // Filtering
         /*if (('.filter-grid').length > 0) {
@@ -91,28 +111,30 @@ export default class ProductGalleryFullwidthWithGap extends Component {
                 filterGrid.isotope({ filter: filterValue })
             })
         }*/
-    }
+  }
     
     // update isotope layout
-    componentDidUpdate() {
-        this.updateIsotope()
-    }
+  componentDidUpdate() {
+    setTimeout(() => {
+      this.updateIsotope()
+    }, 333)
+  }
     
-    updateIsotope() {
-        if (this.state.isotope) {
-            this.state.isotope.reloadItems()
-            this.state.isotope.layout()
-        }
+  updateIsotope() {
+    if (this.state.isotope) {
+      this.state.isotope.reloadItems()
+      this.state.isotope.layout()
     }
+  }
     
-    render() {
-        let items = this.state.items
+  render() {
+    let items = this.state.items
         
-		if (items.length > 0) {
-            return (
-                <div>
-                    {/* Filters Bar */}
-                    {/*<section className='container-fluid padding-top'>
+    if (items.length > 0) {
+      return (
+        <div>
+          {/* Filters Bar */}
+          {/*<section className='container-fluid padding-top'>
                       <div className='filters-bar tablet-center space-top-half'>
                         <ul className='nav-filters'>
                           <li className='active'><a href='#' data-filter='*'>All</a> <sup>9</sup></li>
@@ -123,30 +145,30 @@ export default class ProductGalleryFullwidthWithGap extends Component {
                         </ul>
                       </div>
                     </section>*/}
-                    {/* Gallery Grid Full Width With Gap*/}
-					{/*<section className='padding-top-half padding-bottom-2x'>*/}
-                    <section>
-                      <div 
-                        ref = {(grid) => this.grid = grid}
-                        className='isotope-grid col-3 filter-grid'>
-                        <div className='grid-sizer' />
-                        <div className='gutter-sizer' />
-                        {items.map((item, idx) => (
-                            <GalleryItem 
-								key = {idx}
-                                data = {item} 
-								embeddedThumb = {this.props.embeddedThumbs}
+          {/* Gallery Grid Full Width With Gap*/}
+          {/*<section className='padding-top-half padding-bottom-2x'>*/}
+          <section>
+            <div 
+              ref={(grid) => this.grid = grid}
+              className='isotope-grid col-3 filter-grid'>
+              <div className='grid-sizer' />
+              <div className='gutter-sizer' />
+              {items.map((item, idx) => (
+                <GalleryItem 
+                  key={idx}
+                  data={item} 
+                  embeddedThumb={this.props.embeddedThumbs}
                                 />
                         ))}
-                      </div>
-                    </section>
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                    {/* Filters Bar */}
-                    {/*<section className='container-fluid padding-top'>
+            </div>
+          </section>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          {/* Filters Bar */}
+          {/*<section className='container-fluid padding-top'>
                       <div className='filters-bar tablet-center space-top-half'>
                         <ul className='nav-filters'>
                           <li className='active'><a href='#' data-filter='*'>All</a> <sup>9</sup></li>
@@ -157,18 +179,18 @@ export default class ProductGalleryFullwidthWithGap extends Component {
                         </ul>
                       </div>
                     </section>*/}
-                    {/* Gallery Grid Full Width With Gap*/}
-					{/*<section className='padding-top-half padding-bottom-2x'>*/}
-                    <section>
-                      <div 
-                        ref = {(grid) => this.grid = grid}
-                        className='isotope-grid col-3 filter-grid'>
-                        <div className='grid-sizer' />
-                        <div className='gutter-sizer' />
-                      </div>
-                    </section>
-                </div>
-            )
-        }
+          {/* Gallery Grid Full Width With Gap*/}
+          {/*<section className='padding-top-half padding-bottom-2x'>*/}
+          <section>
+            <div 
+              ref={(grid) => this.grid = grid}
+              className='isotope-grid col-3 filter-grid'>
+              <div className='grid-sizer' />
+              <div className='gutter-sizer' />
+            </div>
+          </section>
+        </div>
+      )
     }
+  }
 }

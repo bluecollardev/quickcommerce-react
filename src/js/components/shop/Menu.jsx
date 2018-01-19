@@ -26,172 +26,172 @@ import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 import HtmlHelper from '../../helpers/HTML.js'
 
 export default class Menu extends ProductBrowser {
-    render() {
-        let rowComponent = this.configureRow(this.props.customRowComponent)
-        let item = this.props.item || null
+  render() {
+    let rowComponent = this.configureRow(this.props.customRowComponent)
+    let item = this.props.item || null
         
-        return (
-            <div className="col-xs-12 col-sm-10 col-sm-push-1">
-                {this.props.displayCategoryFilter && (
-                <CategoryFilterBar
-                    items = {this.state.categories}
-                    onFilterSelected = {this.props.onFilterSelected}
+    return (
+      <div className="col-xs-12 col-sm-10 col-sm-push-1">
+        {this.props.displayCategoryFilter && (
+        <CategoryFilterBar
+          items={this.state.categories}
+          onFilterSelected={this.props.onFilterSelected}
                 />
                 )}    
                 
-                {/*<ul className="nav-tabs text-center" role="tablist">
+        {/*<ul className="nav-tabs text-center" role="tablist">
                   <li className="active"><a href="#pho" role="tab" data-toggle="tab">Noodle Soups</a></li>
                   <li><a href="#bun" role="tab" data-toggle="tab">Noodle Bowls</a></li>
                   <li><a href="#rice" role="tab" data-toggle="tab">Rice Dishes</a></li>
                   <li><a href="#appetizers" role="tab" data-toggle="tab">Appetizers</a></li>
                 </ul>*/}
 
-                <div className='browser-container'>
-                  <div className='browser-menu-container'>
-                      {/*<BrowserMenu
+        <div className='browser-container'>
+          <div className='browser-menu-container'>
+            {/*<BrowserMenu
                           steps = {this.props.steps}
                           activeStep = {this.props.activeStep}
                           onStepClicked = {this.props.onStepClicked}
                           />*/}
-                      {this.props.displayProductFilter && (
-                      <FilterBar
+            {this.props.displayProductFilter && (
+              <FilterBar
                           />
                       )}
-                  </div>
+          </div>
                   
-                  {this.props.displayTitle && (
-                      <div>
-                          <hr />                
-                          <h4 className='browser-product-title'>{this.props.title}</h4>
-                      </div>
+          {this.props.displayTitle && (
+          <div>
+            <hr />                
+            <h4 className='browser-product-title'>{this.props.title}</h4>
+          </div>
                   )}
                   
-                  {Object.keys(this.state.items).length > 0 && item !== null && (
-                  <div className='browser-content row'>
-                      <Col xs={12}>
-                          <FormGroup>
-                              <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
-                              <Well>
-                                  <Row>
-                                      <Col sm={6}>
-                                          <Box margin={{top: 'none'}}>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'>
-                                                  <label>Retail Price</label>
-                                                  <Paragraph size='large' margin='none'>
-                                                      <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                                  </Paragraph>
-                                              </Box>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'
-                                                  separator='top'>
-                                                  <label>Rating</label>
-                                                  <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
-                                              </Box>
-                                          </Box>
-                                      </Col>
-                                      <Col sm={6}>
-                                          <Box pad={{vertical: 'small'}}
-                                              direction='row'
-                                              align='center'
-                                              justify='between'>
-                                              <label>Status</label>
-                                              <Paragraph size='large' margin='none'>
-                                                  <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
-                                              </Paragraph>
-                                          </Box>
-                                          <Box margin={{top: 'none'}}>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'
-                                                  separator='top'>
-                                                  <label>Quantity</label>
-                                                  <Paragraph size='large' margin='none'>
-                                                      <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                                  </Paragraph>
-                                              </Box>
-                                          </Box>
-                                      </Col>
-                                  </Row>
-                              </Well>
-                          </FormGroup>
-                      </Col>
-                  </div>
+          {Object.keys(this.state.items).length > 0 && item !== null && (
+          <div className='browser-content row'>
+            <Col xs={12}>
+              <FormGroup>
+                <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
+                <Well>
+                  <Row>
+                        <Col sm={6}>
+                          <Box margin={{top: 'none'}}>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'>
+                                  <label>Retail Price</label>
+                                  <Paragraph size='large' margin='none'>
+                                    <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                                  </Paragraph>
+                                </Box>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'
+                                  separator='top'>
+                                  <label>Rating</label>
+                                  <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
+                                </Box>
+                              </Box>
+                        </Col>
+                        <Col sm={6}>
+                          <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'>
+                                <label>Status</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
+                                </Paragraph>
+                              </Box>
+                          <Box margin={{top: 'none'}}>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'
+                                  separator='top'>
+                                  <label>Quantity</label>
+                                  <Paragraph size='large' margin='none'>
+                                    <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                                  </Paragraph>
+                                </Box>
+                              </Box>
+                        </Col>
+                      </Row>
+                </Well>
+              </FormGroup>
+            </Col>
+          </div>
                   )}
                   
-                  {this.props.children && !(Object.keys(this.state.items).length > 0) && (
-                  <div className='browser-content row'>
-                      <Col sm={12}>
-                          {item !== null && (
-                          <FormGroup>
-                              <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
-                              <Well>
-                                  <Row>
-                                      <Col xs={12}>
-                                          <Box margin={{top: 'none'}}>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'>
-                                                  <label>Retail Price</label>
-                                                  <Paragraph size='large' margin='none'>
-                                                      <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                                  </Paragraph>
-                                              </Box>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'
-                                                  separator='top'>
-                                                  <label>Rating</label>
-                                                  <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
-                                              </Box>
-                                          </Box>
-                                          <Box pad={{vertical: 'small'}}
-                                              direction='row'
-                                              align='center'
-                                              justify='between'>
-                                              <label>Status</label>
-                                              <Paragraph size='large' margin='none'>
-                                                  <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
-                                              </Paragraph>
-                                          </Box>
-                                          <Box margin={{top: 'none'}}>
-                                              <Box pad={{vertical: 'small'}}
-                                                  direction='row'
-                                                  align='center'
-                                                  justify='between'
-                                                  separator='top'>
-                                                  <label>Quantity</label>
-                                                  <Paragraph size='large' margin='none'>
-                                                      <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                                  </Paragraph>
-                                              </Box>
-                                          </Box>
-                                      </Col>
-                                  </Row>
-                              </Well>
-                          </FormGroup>
+          {this.props.children && !(Object.keys(this.state.items).length > 0) && (
+          <div className='browser-content row'>
+            <Col sm={12}>
+              {item !== null && (
+              <FormGroup>
+                <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
+                <Well>
+                      <Row>
+                        <Col xs={12}>
+                              <Box margin={{top: 'none'}}>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'>
+                                  <label>Retail Price</label>
+                                  <Paragraph size='large' margin='none'>
+                                    <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                                  </Paragraph>
+                                </Box>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'
+                                  separator='top'>
+                                  <label>Rating</label>
+                                  <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
+                                </Box>
+                              </Box>
+                              <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'>
+                                <label>Status</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
+                                </Paragraph>
+                              </Box>
+                              <Box margin={{top: 'none'}}>
+                                <Box pad={{vertical: 'small'}}
+                                  direction='row'
+                                  align='center'
+                                  justify='between'
+                                  separator='top'>
+                                  <label>Quantity</label>
+                                  <Paragraph size='large' margin='none'>
+                                    <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                                  </Paragraph>
+                                </Box>
+                              </Box>
+                            </Col>
+                      </Row>
+                    </Well>
+              </FormGroup>
                           )}
-                      </Col>
-                      <Col sm={6}>
-                          {this.props.children}
-                      </Col>
-                  </div>
+            </Col>
+            <Col sm={6}>
+              {this.props.children}
+            </Col>
+          </div>
                   )}
                   
-                  {this.props.children && (Object.keys(this.state.items).length > 0) && (
-                  <div className='browser-content row'>
-                      {/*<Col sm={12}>
+          {this.props.children && (Object.keys(this.state.items).length > 0) && (
+          <div className='browser-content row'>
+            {/*<Col sm={12}>
                           {this.props.children}
                       </Col>*/}
-                      <Col sm={12}>
-                          {/*item !== null && (
+            <Col sm={12}>
+              {/*item !== null && (
                           <FormGroup>
                               <ControlLabel>Product Details</ControlLabel>
                               <Well>
@@ -242,64 +242,64 @@ export default class Menu extends ProductBrowser {
                               </Well>
                           </FormGroup>
                           )*/}
-                          <Grid fluid={true}>
-                              <Griddle
-                                  showFilter = {this.props.displayTextFilter}
-                                  columns = {[
-                                      'manufacturer',
-                                      'name',
-                                      'model',
+              <Grid fluid={true}>
+                <Griddle
+                  showFilter={this.props.displayTextFilter}
+                  columns={[
+                        'manufacturer',
+                        'name',
+                        'model',
                                       //'location',
                                       //'date_added',
                                       //'options',
-                                      'price'
-                                  ]}
-                                  useGriddleStyles = {false}
-                                  showPager = {this.props.showPager}
-                                  useCustomPagerComponent = {true}
-                                  customPagerComponent = {BootstrapPager}
-                                  useCustomRowComponent = {true}
-                                  resultsPerPage = {this.props.resultsPerPage}
-                                  customRowComponent = {rowComponent}
-                                  results = {this.state.items}
+                        'price'
+                      ]}
+                  useGriddleStyles={false}
+                  showPager={this.props.showPager}
+                  useCustomPagerComponent={true}
+                  customPagerComponent={BootstrapPager}
+                  useCustomRowComponent={true}
+                  resultsPerPage={this.props.resultsPerPage}
+                  customRowComponent={rowComponent}
+                  results={this.state.items}
                               />
-                          </Grid>
-                      </Col>
-                      <Col xs={12}>
-                        {this.props.children}
-                      </Col>
-                  </div>
+              </Grid>
+            </Col>
+            <Col xs={12}>
+              {this.props.children}
+            </Col>
+          </div>
                   )}
                       
-                  {!this.props.children && (
-                  <div className='browser-content row'>
-                      <Grid fluid={true}>
-                          <Griddle
-                              showFilter = {this.props.displayTextFilter}
-                              columns = {[
-                                  'manufacturer',
-                                  'name',
-                                  'model',
+          {!this.props.children && (
+          <div className='browser-content row'>
+            <Grid fluid={true}>
+              <Griddle
+                showFilter={this.props.displayTextFilter}
+                columns={[
+                  'manufacturer',
+                  'name',
+                  'model',
                                   //'location',
                                   //'date_added',
                                   //'options',
-                                  'price'
-                              ]}
-                              useGriddleStyles = {false}
-                              showPager = {this.props.showPager}
-                              useCustomPagerComponent = {true}
-                              customPagerComponent = {BootstrapPager}
-                              useCustomRowComponent = {true}
-                              resultsPerPage = {this.props.resultsPerPage}
-                              customRowComponent = {rowComponent}
-                              results = {this.state.items}
+                  'price'
+                ]}
+                useGriddleStyles={false}
+                showPager={this.props.showPager}
+                useCustomPagerComponent={true}
+                customPagerComponent={BootstrapPager}
+                useCustomRowComponent={true}
+                resultsPerPage={this.props.resultsPerPage}
+                customRowComponent={rowComponent}
+                results={this.state.items}
                           />
-                      </Grid>
-                  </div>
+            </Grid>
+          </div>
                   )}
-              </div>
+        </div>
                 
-              {/*<div className="tab-content">
+        {/*<div className="tab-content">
               <div role="tabpanel" className="tab-pane transition fade scale in active" id="pho">
                 <div className="row space-top-half">
                 {this.props.items && this.props.items instanceof Array && this.props.items.map((item, idx) => (
@@ -436,7 +436,7 @@ export default class Menu extends ProductBrowser {
                 </div>
               </div>
             </div>*/}
-            </div>
-        )
-    }
+      </div>
+    )
+  }
 }

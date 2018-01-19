@@ -8,11 +8,11 @@ import CustomerProfile from './CustomerProfile.jsx'
 
 // TODO: Split out customers, add logic to another HoC
 export default AuthenticatedComponent(class AuthenticatedCustomerProfile extends Component {
-    render() {
-        return (
-            <CustomerProfile
-                {...this.props}
+  render() {
+    return (
+      <CustomerProfile
+        {...this.props}
                 />
-        )
-    }
+    )
+  }
 })

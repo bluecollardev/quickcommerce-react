@@ -29,102 +29,102 @@ import HtmlHelper from '../../helpers/HTML.js'
 import itemFieldNames from '../../forms/ItemFields.jsx'
 
 class ProductBrowser extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.configureRow = this.configureRow.bind(this)
-        this.getInitialState = this.getInitialState.bind(this)
-        this.loadBrowserData = this.loadBrowserData.bind(this)
+    this.configureRow = this.configureRow.bind(this)
+    this.getInitialState = this.getInitialState.bind(this)
+    this.loadBrowserData = this.loadBrowserData.bind(this)
 		
 		// Initialize or set ProductBrowser dispatcher
-		if (!props.hasOwnProperty('dispatcher')) {
-			this.dispatcher = new Dispatcher()
-		} else {
-			this.dispatcher = props.dispatcher
-		}
+    if (!props.hasOwnProperty('dispatcher')) {
+      this.dispatcher = new Dispatcher()
+    } else {
+      this.dispatcher = props.dispatcher
+    }
 		
 		// Initialize or set ProductBrowser store
-		if (!props.hasOwnProperty('store')) {
-			this.store = new BrowserStore(this.dispatcher)
-		} else {
-			this.store = props.store
-		}
+    if (!props.hasOwnProperty('store')) {
+      this.store = new BrowserStore(this.dispatcher)
+    } else {
+      this.store = props.store
+    }
 		
 		// Initialize or set ProductBrowser actions
-		if (!props.hasOwnProperty('actions')) {
-			this.actions = BrowserActions(this.dispatcher)
-		} else {
-			this.actions = props.actions
-		}
-		
-		this.store.addChangeListener(this.loadBrowserData)
-        
-		this.state = this.getInitialState()
+    if (!props.hasOwnProperty('actions')) {
+      this.actions = BrowserActions(this.dispatcher)
+    } else {
+      this.actions = props.actions
     }
+		
+    this.store.addChangeListener(this.loadBrowserData)
+        
+    this.state = this.getInitialState()
+  }
 	
 	// Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working 
 	// in any manner other than with Quick Commerce endpoints
-	setActions(actions) {
-		this.actions = actions
-	}
+  setActions(actions) {
+    this.actions = actions
+  }
 
     // TODO: Fry anything we don't need in here!
-    getInitialState() {		
-		let state = {
-            categories: [],
-            items: [],
-            options: [],
-            availableTracks: [], // Just so we don't forget VEST
-            availableDates: [], // VEST as well
-            unavailableDates: [], // Bookings,
-            stepForward: false
-        }
-        
-		return state
+  getInitialState() {		
+    let state = {
+      categories: [],
+      items: [],
+      options: [],
+      availableTracks: [], // Just so we don't forget VEST
+      availableDates: [], // VEST as well
+      unavailableDates: [], // Bookings,
+      stepForward: false
     }
+        
+    return state
+  }
 
-    componentDidMount() {
+  componentDidMount() {
         //let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
 		
-		this.loadBrowserData()
-    }
+    this.loadBrowserData()
+  }
     
-    componentDidUpdate() {
-        let cards = document.getElementsByClassName('card')
+  componentDidUpdate() {
+    let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
-    }
+  }
     
-    componentWillUnmount() {
-        if (typeof this.loadBrowserData === 'function') {
-            this.store.removeChangeListener(this.loadBrowserData)
-        }
+  componentWillUnmount() {
+    if (typeof this.loadBrowserData === 'function') {
+      this.store.removeChangeListener(this.loadBrowserData)
     }
+  }
     
 	// ProductBrowser.loadBrowserData
-    loadBrowserData() {
+  loadBrowserData() {
         // Grab our items and update our component state whenever the BrowserStore is updated
-        let items = this.store.getItems()
-        let categories = this.store.getCategories()
-        let options = this.store.getOptions()
+    let items = this.store.getItems()
+    let categories = this.store.getCategories()
+    let options = this.store.getOptions()
 		
 		/*console.log('product browser state change detected')
 		console.log(categories)
 		console.log(items)
 		console.log(options)*/
 
-        this.setState({
-            categories: categories,
-            items: items,
-            options: options
-        })
-    }
+    this.setState({
+      categories: categories,
+      items: items,
+      options: options
+    })
+  }
 
-    reset() {
-        this.props.stepper.start()
-    }
+  reset() {
+    this.props.stepper.start()
+  }
 
-    onCatalogChange() {
+  onCatalogChange() {
         /*var steps = that.steps,
             step = that.step,
             menuItem = that.menu.dataSource.at(step),
@@ -210,264 +210,264 @@ class ProductBrowser extends Component {
                 }
             }
         }*/
-    }
+  }
 
-    applyFilters(filterValue) {
-        var that = this,
-            steps = that.steps,
-            step = that.step // - 1 // For some reason this is in place on the tablet
+  applyFilters(filterValue) {
+    var that = this,
+      steps = that.steps,
+      step = that.step // - 1 // For some reason this is in place on the tablet
             // Might be due to the tablet's ajax call for data... step has changed by the time databinding occurs
             // TODO: Confirm that the way we're doing this is alright
 
         //console.log('applying filters for step ' + step)
         //if (step === -1) return false // For some reason this is in place on the tablet
 
-        if (steps[step].hasOwnProperty('filter')) {
+    if (steps[step].hasOwnProperty('filter')) {
             //console.log('step has filter')
             //console.log(steps[step].filter)
-            var target = steps[step].filter.target,
-                filters = (typeof target.filter() !== 'undefined') ? target.filter().filters : []
-                filter = $.extend(true, steps[step].filter.filter, { value: filterValue })
+      var target = steps[step].filter.target,
+        filters = (typeof target.filter() !== 'undefined') ? target.filter().filters : []
+      filter = $.extend(true, steps[step].filter.filter, { value: filterValue })
 
-            if (filters.length > 0) {
-                var exists = false
+      if (filters.length > 0) {
+        var exists = false
                 // TODO: Make a helper? Yeah...
-                $.each(filters, function (idx, obj) {
+        $.each(filters, function (idx, obj) {
                     // TODO: Add customization -- do we append? Or overwrite
                     // We can do that some other time
                     // TODO: Support multiple filters
-                    if (obj.field === filter.field) {
-                        $.extend(true, filters[idx], filter)
-                        exists = true
-                    }
-                })
+          if (obj.field === filter.field) {
+            $.extend(true, filters[idx], filter)
+            exists = true
+          }
+        })
 
-                if (!exists) {
-                    filters.push(filter)
-                }
-            } else {
-                filters.push(filter)
-            }
-
-            target.filter(filters)
+        if (!exists) {
+          filters.push(filter)
         }
-    }
+      } else {
+        filters.push(filter)
+      }
 
-    applyFilters() {
-        console.log('catalog is databound')
+      target.filter(filters)
+    }
+  }
+
+  applyFilters() {
+    console.log('catalog is databound')
         //console.log(that.catalog)
 
         //console.log('calling applyFilters()')
-        that.applyFilters(id)
-        if (steps.hasOwnProperty(step) && steps[step].hasOwnProperty('filtersApplied')) {
-            console.log('applying filtersApplied callback before moving to the next step...')
-            var fn = steps[step].filtersApplied // This would be the 'after' event handler callback
-            fn({
-                viewModel: viewModel,
-                product: productConfig || null,
-                step: step || false,
-                item: item || null
-            })
-        }
-
-        // Rebind
-        kendo.unbind(that.catalog.element, viewModel)
-        kendo.bind(that.catalog.element, viewModel)
+    that.applyFilters(id)
+    if (steps.hasOwnProperty(step) && steps[step].hasOwnProperty('filtersApplied')) {
+      console.log('applying filtersApplied callback before moving to the next step...')
+      var fn = steps[step].filtersApplied // This would be the 'after' event handler callback
+      fn({
+        viewModel: viewModel,
+        product: productConfig || null,
+        step: step || false,
+        item: item || null
+      })
     }
 
-    configureRow(rowComponent) {
-        let that = this
-        let fn = null
+        // Rebind
+    kendo.unbind(that.catalog.element, viewModel)
+    kendo.bind(that.catalog.element, viewModel)
+  }
+
+  configureRow(rowComponent) {
+    let that = this
+    let fn = null
         
         // Configure product browser row
-        if (this.props.hasOwnProperty('onItemClicked') &&
+    if (this.props.hasOwnProperty('onItemClicked') &&
             typeof this.props.onItemClicked === 'function') {
 
             // Wrap the function in a generic handler so we can pass in custom args
-            let callback = fn = this.props.onItemClicked
-            fn = function() {
+      let callback = fn = this.props.onItemClicked
+      fn = function() {
                 // What's the current step?
-                let step = that.store.getConfig()
+        let step = that.store.getConfig()
 
                 // Make sure there's a next step before calling it into action
                 // Also, subtract a step to account for zero index
-                if (that.props.stepper.currentStep < (that.props.stepper.steps.length - 1)) {
-                    that.props.stepper.next()
-                }
-
-                // Execute our handler
-                callback(...arguments)
-            }
-        } else {
-            fn = this.props.onItemClicked
+        if (that.props.stepper.currentStep < (that.props.stepper.steps.length - 1)) {
+          that.props.stepper.next()
         }
 
-        rowComponent.defaultProps.onItemClicked = fn
-        rowComponent.defaultProps.itemMappings = this.props.itemMappings // Shortcut - quick add to cart
-        rowComponent.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
-        rowComponent.defaultProps.stepper = this.props.stepper
-
-        return rowComponent
+                // Execute our handler
+        callback(...arguments)
+      }
+    } else {
+      fn = this.props.onItemClicked
     }
 
-    render() {
-        // Render ProductBrowser
-        let rowComponent = this.configureRow(this.props.customRowComponent)
-        let item = this.props.item || null
-		
-		console.log('product browser render triggered')
-		console.log(this.state)
+    rowComponent.defaultProps.onItemClicked = fn
+    rowComponent.defaultProps.itemMappings = this.props.itemMappings // Shortcut - quick add to cart
+    rowComponent.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
+    rowComponent.defaultProps.stepper = this.props.stepper
 
-        return (
-            <div className='browser-container'>
-                <div className='browser-menu-container'>
-                    {this.props.displayCategoryFilter && (
-                    <CategoryFilterBar
-                        items = {this.state.categories}
-                        onFilterSelected = {this.props.onFilterSelected}
+    return rowComponent
+  }
+
+  render() {
+        // Render ProductBrowser
+    let rowComponent = this.configureRow(this.props.customRowComponent)
+    let item = this.props.item || null
+		
+    console.log('product browser render triggered')
+    console.log(this.state)
+
+    return (
+      <div className='browser-container'>
+        <div className='browser-menu-container'>
+          {this.props.displayCategoryFilter && (
+            <CategoryFilterBar
+              items={this.state.categories}
+              onFilterSelected={this.props.onFilterSelected}
                         />
                     )}
-                    <BrowserMenu
-                        steps = {this.props.steps}
-                        activeStep = {this.props.activeStep}
-                        onStepClicked = {this.props.onStepClicked}
+          <BrowserMenu
+            steps={this.props.steps}
+            activeStep={this.props.activeStep}
+            onStepClicked={this.props.onStepClicked}
                         />
-                    {this.props.displayProductFilter && (
-                    <FilterBar
+          {this.props.displayProductFilter && (
+            <FilterBar
                         />
                     )}
-                </div>
+        </div>
                 
-                {this.props.displayTitle && (
-                    <div>
-                        <hr />                
-                        <h4 className='browser-product-title'>{this.props.title}</h4>
-                    </div>
+        {this.props.displayTitle && (
+        <div>
+          <hr />                
+          <h4 className='browser-product-title'>{this.props.title}</h4>
+        </div>
                 )}
                 
-                {Object.keys(this.state.items).length > 0 && item !== null && (
-                <div className='browser-content row'>
-                    <Col xs={12}>
-                        <FormGroup>
-                            <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
-                            <Well>
-                                <Row>
-                                    <Col sm={6}>
-                                        <Box margin={{top: 'none'}}>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'>
-                                                <label>Retail Price</label>
-                                                <Paragraph size='large' margin='none'>
-                                                    <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                                </Paragraph>
-                                            </Box>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'
-                                                separator='top'>
-                                                <label>Rating</label>
-                                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
-                                            </Box>
-                                        </Box>
-                                    </Col>
-                                    <Col sm={6}>
-                                        <Box pad={{vertical: 'small'}}
-                                            direction='row'
-                                            align='center'
-                                            justify='between'>
-                                            <label>Status</label>
-                                            <Paragraph size='large' margin='none'>
-                                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
-                                            </Paragraph>
-                                        </Box>
-                                        <Box margin={{top: 'none'}}>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'
-                                                separator='top'>
-                                                <label>Quantity</label>
-                                                <Paragraph size='large' margin='none'>
-                                                    <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                                </Paragraph>
-                                            </Box>
-                                        </Box>
-                                    </Col>
-                                </Row>
-                            </Well>
-                        </FormGroup>
-                    </Col>
-                </div>
+        {Object.keys(this.state.items).length > 0 && item !== null && (
+        <div className='browser-content row'>
+          <Col xs={12}>
+            <FormGroup>
+              <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
+              <Well>
+                <Row>
+                  <Col sm={6}>
+                        <Box margin={{top: 'none'}}>
+                          <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'>
+                                <label>Retail Price</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                                </Paragraph>
+                              </Box>
+                          <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'
+                                separator='top'>
+                                <label>Rating</label>
+                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                              </Box>
+                        </Box>
+                      </Col>
+                  <Col sm={6}>
+                        <Box pad={{vertical: 'small'}}
+                          direction='row'
+                          align='center'
+                          justify='between'>
+                          <label>Status</label>
+                          <Paragraph size='large' margin='none'>
+                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                              </Paragraph>
+                        </Box>
+                        <Box margin={{top: 'none'}}>
+                          <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'
+                                separator='top'>
+                                <label>Quantity</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                                </Paragraph>
+                              </Box>
+                        </Box>
+                      </Col>
+                </Row>
+              </Well>
+            </FormGroup>
+          </Col>
+        </div>
                 )}
                 
-                {this.props.children && !(Object.keys(this.state.items).length > 0) && (
-                <div className='browser-content row'>
-                    <Col sm={6}>
-                        {item !== null && (
-                        <FormGroup>
-                            <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
-                            <Well>
-                                <Row>
-                                    <Col xs={12}>
-                                        <Box margin={{top: 'none'}}>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'>
-                                                <label>Retail Price</label>
-                                                <Paragraph size='large' margin='none'>
-                                                    <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                                </Paragraph>
-                                            </Box>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'
-                                                separator='top'>
-                                                <label>Rating</label>
-                                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
-                                            </Box>
-                                        </Box>
-                                        <Box pad={{vertical: 'small'}}
-                                            direction='row'
-                                            align='center'
-                                            justify='between'>
-                                            <label>Status</label>
-                                            <Paragraph size='large' margin='none'>
-                                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
-                                            </Paragraph>
-                                        </Box>
-                                        <Box margin={{top: 'none'}}>
-                                            <Box pad={{vertical: 'small'}}
-                                                direction='row'
-                                                align='center'
-                                                justify='between'
-                                                separator='top'>
-                                                <label>Quantity</label>
-                                                <Paragraph size='large' margin='none'>
-                                                    <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                                </Paragraph>
-                                            </Box>
-                                        </Box>
-                                    </Col>
-                                </Row>
-                            </Well>
-                        </FormGroup>
+        {this.props.children && !(Object.keys(this.state.items).length > 0) && (
+        <div className='browser-content row'>
+          <Col sm={6}>
+            {item !== null && (
+            <FormGroup>
+              <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
+              <Well>
+                <Row>
+                      <Col xs={12}>
+                        <Box margin={{top: 'none'}}>
+                              <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'>
+                                <label>Retail Price</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                                </Paragraph>
+                              </Box>
+                              <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'
+                                separator='top'>
+                                <label>Rating</label>
+                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                              </Box>
+                            </Box>
+                        <Box pad={{vertical: 'small'}}
+                              direction='row'
+                              align='center'
+                              justify='between'>
+                              <label>Status</label>
+                              <Paragraph size='large' margin='none'>
+                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                              </Paragraph>
+                            </Box>
+                        <Box margin={{top: 'none'}}>
+                              <Box pad={{vertical: 'small'}}
+                                direction='row'
+                                align='center'
+                                justify='between'
+                                separator='top'>
+                                <label>Quantity</label>
+                                <Paragraph size='large' margin='none'>
+                                  <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                                </Paragraph>
+                              </Box>
+                            </Box>
+                      </Col>
+                    </Row>
+              </Well>
+            </FormGroup>
                         )}
-                    </Col>
-                    <Col sm={6}>
-                        {this.props.children}
-                    </Col>
-                </div>
+          </Col>
+          <Col sm={6}>
+            {this.props.children}
+          </Col>
+        </div>
                 )}
                 
-                {this.props.children && (Object.keys(this.state.items).length > 0) && (
-                <div className='browser-content row'>
-                    <Col sm={6}>
-                        {/*item !== null && (
+        {this.props.children && (Object.keys(this.state.items).length > 0) && (
+        <div className='browser-content row'>
+          <Col sm={6}>
+            {/*item !== null && (
                         <FormGroup>
                             <ControlLabel>Product Details</ControlLabel>
                             <Well>
@@ -518,79 +518,79 @@ class ProductBrowser extends Component {
                             </Well>
                         </FormGroup>
                         )*/}
-                        <Grid fluid={true}>
-                            <Griddle
-                                showFilter              = {this.props.displayTextFilter}
-                                columns                 = {[
-                                    'manufacturer',
-                                    'name',
-                                    'model',
+            <Grid fluid={true}>
+              <Griddle
+                showFilter={this.props.displayTextFilter}
+                columns={[
+                  'manufacturer',
+                  'name',
+                  'model',
                                     //'location',
                                     //'date_added',
                                     //'options',
-                                    'price'
-                                ]}
-                                useGriddleStyles        = {false}
-                                useCustomPagerComponent = {true}
-                                customPagerComponent    = {BootstrapPager}
-                                useCustomRowComponent   = {true}
-                                resultsPerPage          = {12}
-                                customRowComponent      = {rowComponent}
-                                results                 = {this.state.items}
+                  'price'
+                ]}
+                useGriddleStyles={false}
+                useCustomPagerComponent={true}
+                customPagerComponent={BootstrapPager}
+                useCustomRowComponent={true}
+                resultsPerPage={12}
+                customRowComponent={rowComponent}
+                results={this.state.items}
                             />
-                        </Grid>
-                    </Col>
-                    <Col sm={6}>
-                        {this.props.children}
-                    </Col>
-                </div>
+            </Grid>
+          </Col>
+          <Col sm={6}>
+            {this.props.children}
+          </Col>
+        </div>
                 )}
                     
-                {!this.props.children && (
-                <div className='browser-content row'>
-                    <Grid fluid={true}>
-                        <Griddle
-                            showFilter              = {this.props.displayTextFilter}
-                            columns                 = {[
-                                'manufacturer',
-                                'name',
-                                'model',
+        {!this.props.children && (
+        <div className='browser-content row'>
+          <Grid fluid={true}>
+            <Griddle
+              showFilter={this.props.displayTextFilter}
+              columns={[
+                'manufacturer',
+                'name',
+                'model',
                                 //'location',
                                 //'date_added',
                                 //'options',
-                                'price'
-                            ]}
-                            useGriddleStyles        = {false}
-                            useCustomPagerComponent = {true}
-                            customPagerComponent    = {BootstrapPager}
-                            useCustomRowComponent   = {true}
-                            resultsPerPage          = {12}
-                            customRowComponent      = {rowComponent}
-                            results                 = {this.state.items}
+                'price'
+              ]}
+              useGriddleStyles={false}
+              useCustomPagerComponent={true}
+              customPagerComponent={BootstrapPager}
+              useCustomRowComponent={true}
+              resultsPerPage={12}
+              customRowComponent={rowComponent}
+              results={this.state.items}
                         />
-                    </Grid>
-                </div>
+          </Grid>
+        </div>
                 )}
-            </div>
-        )
-    }
+      </div>
+    )
+  }
 
 }
 
 ProductBrowser.propTypes = {
-    itemMappings: PropTypes.object, // TODO: object.isRequired
-    onAddToCartClicked: PropTypes.func,
-    onItemClicked: PropTypes.func,
-    onFilterSelected: PropTypes.func,
-    onStepClicked: PropTypes.func
+  itemMappings: PropTypes.object, // TODO: object.isRequired
+  onAddToCartClicked: PropTypes.func,
+  onItemClicked: PropTypes.func,
+  onFilterSelected: PropTypes.func,
+  onStepClicked: PropTypes.func
 }
 
 ProductBrowser.defaultProps = {
-    itemMappings: itemFieldNames, // Defaults from ItemFields
-    onItemClicked: () => {},
-    onAddToCartClicked: () => {},
-    onFilterSelected: () => {},
-    onStepClicked: () => {}
+  itemMappings: itemFieldNames, // Defaults from ItemFields
+  onItemClicked: () => {},
+  onAddToCartClicked: () => {},
+  onFilterSelected: () => {},
+  onStepClicked: () => {}
 }
 
 

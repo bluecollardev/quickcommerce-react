@@ -4,22 +4,22 @@
 import QcSettingAdapter from './QcSettingAdapter.jsx'
 
 function settingFactory(settingStore, adapter) {
-    adapter = adapter || null
+  adapter = adapter || null
     
-    switch (QC_SETTING_ADAPTER) {
-        case 'custom':
-            adapter = adapter
-            break
-        default:
-            adapter = QcSettingAdapter
-            break
-    }
+  switch (QC_SETTING_ADAPTER) {
+  case 'custom':
+    adapter = adapter
+    break
+  default:
+    adapter = QcSettingAdapter
+    break
+  }
     
-    if (adapter !== null) {
-        return new adapter(settingStore)
-    }
+  if (adapter !== null) {
+    return new adapter(settingStore)
+  }
     
-    return adapter
+  return adapter
 }
 
 export default settingFactory

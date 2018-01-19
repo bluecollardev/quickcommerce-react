@@ -6,121 +6,121 @@
  */
 
 export default class HashTable {
-    constructor(obj) {
-        obj = obj || null
+  constructor(obj) {
+    obj = obj || null
         
-        this.length = 0
-        this.items = {}
+    this.length = 0
+    this.items = {}
         
-        let p
+    let p
         
-        if (obj !== null) {
-            for (p in obj) {
-                if (obj.hasOwnProperty(p)) {
-                    this.items[p] = obj[p]
-                    this.length++
-                }
-            }            
+    if (obj !== null) {
+      for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+          this.items[p] = obj[p]
+          this.length++
         }
-        
-        return this
+      }            
     }
-    
-    setItem(key, value) {
-        let previous
         
-        if (this.hasItem(key)) {
-            previous = this.items[key]
-        } else {
-            this.length++
-        }
+    return this
+  }
+    
+  setItem(key, value) {
+    let previous
         
-        this.items[key] = value
-        return previous
+    if (this.hasItem(key)) {
+      previous = this.items[key]
+    } else {
+      this.length++
     }
-    
-    getItem(key) {
-        return this.hasItem(key) ? this.items[key] : undefined
-    }
-    
-    hasItem(key) {
-        return this.items.hasOwnProperty(key)
-    }
-    
-    removeItem(key) {
-        let previous
         
-        if (this.hasItem(key)) {
-            previous = this.items[key]
-            this.length--
-            delete this.items[key]
-            return previous
-        }
-        
-        return undefined
-    }
+    this.items[key] = value
+    return previous
+  }
     
-    keys() {
-        let keys = [], k
+  getItem(key) {
+    return this.hasItem(key) ? this.items[key] : undefined
+  }
+    
+  hasItem(key) {
+    return this.items.hasOwnProperty(key)
+  }
+    
+  removeItem(key) {
+    let previous
+        
+    if (this.hasItem(key)) {
+      previous = this.items[key]
+      this.length--
+      delete this.items[key]
+      return previous
+    }
+        
+    return undefined
+  }
+    
+  keys() {
+    let keys = [], k
             
-        for (k in this.items) {
-            if (this.hasItem(k)) {
-                keys.push(k)
-            }
-        }
-        
-        return keys
+    for (k in this.items) {
+      if (this.hasItem(k)) {
+        keys.push(k)
+      }
     }
+        
+    return keys
+  }
     
-    values() {
-        let values = [], k
+  values() {
+    let values = [], k
             
-        for (k in this.items) {
-            if (this.hasItem(k)) {
-                values.push(this.items[k])
-            }
-        }
+    for (k in this.items) {
+      if (this.hasItem(k)) {
+        values.push(this.items[k])
+      }
+    }
         
-        return values
-    }
+    return values
+  }
     
-    each(fn) {
-        let k
+  each(fn) {
+    let k
         
-        for (k in this.items) {
-            if (this.hasItem(k)) {
-                fn(k, this.items[k])
-            }
-        }
+    for (k in this.items) {
+      if (this.hasItem(k)) {
+        fn(k, this.items[k])
+      }
     }
+  }
     
-    clear() {
-        this.items = {}
-        this.length = 0
-    }
+  clear() {
+    this.items = {}
+    this.length = 0
+  }
     
     // Alias for hasItem
-    has(key) {
-        return this.hasItem(key)
-    }
+  has(key) {
+    return this.hasItem(key)
+  }
     
     // Alias for getItem
-    get(key) {
-        return this.getItem(key)
-    }
+  get(key) {
+    return this.getItem(key)
+  }
     
     // Chainable alias for setItem
-    set(key, value) {
-        this.setItem(key, value)
-        return this
-    }
+  set(key, value) {
+    this.setItem(key, value)
+    return this
+  }
     
     // Chainable alias for removeItem
-    remove(key) {
-        return (this.removeItem(key) !== undefined) ? this : false
-    }
+  remove(key) {
+    return (this.removeItem(key) !== undefined) ? this : false
+  }
 	
-	count() {
-		return Object.keys(this.items).length
-	}
+  count() {
+    return Object.keys(this.items).length
+  }
 }

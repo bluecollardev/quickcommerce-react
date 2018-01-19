@@ -13,24 +13,24 @@ import StepDescriptor from '../../modules/stepper/StepDescriptor.jsx'
  * @param {Stepper} stepper - instance of Stepper, which contains this StepDescriptor
  */
 class BrowserStepDescriptor extends StepDescriptor {
-    static ID_COUNTER = 0
+  static ID_COUNTER = 0
     
-    constructor(step, stepper) {
-        super(step)
+  constructor(step, stepper) {
+    super(step)
         
-        this.id = BrowserStepDescriptor.ID_COUNTER
-        BrowserStepDescriptor.ID_COUNTER++
+    this.id = BrowserStepDescriptor.ID_COUNTER
+    BrowserStepDescriptor.ID_COUNTER++
 
-        this.stepper = stepper
-        this.action = step.action
-        this.config = step.config
-        this.before = step.before // Executes before we grab the store instance
-        this.validate = step.validate // Executes before we fire the action
-        this.after = step.after
-        this.execute = (data, done) => {
-            this.action(this, data, done)
-        }
+    this.stepper = stepper
+    this.action = step.action
+    this.config = step.config
+    this.before = step.before // Executes before we grab the store instance
+    this.validate = step.validate // Executes before we fire the action
+    this.after = step.after
+    this.execute = (data, done) => {
+      this.action(this, data, done)
     }
+  }
 }
 
 export default BrowserStepDescriptor

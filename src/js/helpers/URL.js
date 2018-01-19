@@ -5,45 +5,45 @@ import pathToRegexp from 'path-to-regexp'
 import parse from 'url-parse'
 
 export default class UrlHelper {
-    static getParams = (query) => {
-        let params = {}
-		let param
-		let idx
+  static getParams = (query) => {
+    let params = {}
+    let param
+    let idx
         
-        query = query || window.location.search.substr(1).split('&')
+    query = query || window.location.search.substr(1).split('&')
         
-        if (query === '') {
-            return params
-        }
+    if (query === '') {
+      return params
+    }
         
-        for (idx = 0; idx < query.length; ++idx) {
-            param = query[idx].split('=')
+    for (idx = 0; idx < query.length; ++idx) {
+      param = query[idx].split('=')
             
-            if (param.length !== 2) {
-                continue
-            }
+      if (param.length !== 2) {
+        continue
+      }
             
-            params[param[0]] = decodeURIComponent(param[1].replace(/\+/g, ' '))
-        }
-        
-        return params
+      params[param[0]] = decodeURIComponent(param[1].replace(/\+/g, ' '))
     }
+        
+    return params
+  }
 	
-    static getParam = (param, params) => {
-        params = params || UrlHelper.getParams()
+  static getParam = (param, params) => {
+    params = params || UrlHelper.getParams()
         
-        if (params.hasOwnProperty(param)) {
-            return params[param]
-        }
-        
-        return null
+    if (params.hasOwnProperty(param)) {
+      return params[param]
     }
+        
+    return null
+  }
 	
-    static stripTrailingSlashes = (url, appendTrailing) => {
-        appendTrailing = (appendTrailing === true) ? true : false
-        url = url.replace(/\/+$/, '')
-        return (appendTrailing) ? url + '/' : url
-    }
+  static stripTrailingSlashes = (url, appendTrailing) => {
+    appendTrailing = (appendTrailing === true) ? true : false
+    url = url.replace(/\/+$/, '')
+    return (appendTrailing) ? url + '/' : url
+  }
 	
 	/**
 	 * url-parse instance properties
@@ -62,13 +62,13 @@ export default class UrlHelper {
 	 * href: The full URL.
 	 * origin: The origin of the URL.
 	 */
-	static compile = (path, args) => {
-		let parsed = parse(path)
+  static compile = (path, args) => {
+    let parsed = parse(path)
 		
-		let compileFn = pathToRegexp.compile(parsed.pathname)
-		parsed.set('pathname', compileFn(args))
-		console.log(parsed.toString())
+    let compileFn = pathToRegexp.compile(parsed.pathname)
+    parsed.set('pathname', compileFn(args))
+    console.log(parsed.toString())
 		
-		return parsed.toString()
-	}
+    return parsed.toString()
+  }
 }

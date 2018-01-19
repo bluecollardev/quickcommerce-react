@@ -9,34 +9,34 @@ const key = 'customers'
 
 const result = new schema.Entity('content', {
     //idAttribute: 'customer_id'
-    idAttribute: 'customerId'
+  idAttribute: 'customerId'
 })
 
 const schemaDef = {
-    customers: [result]
+  customers: [result]
 }
 
 export default (dispatcher) => {
-    return {
-        search: (params) => {
-            dispatcher.dispatch({
-                actionType: CustomerSearchConstants.SEARCH_CUSTOMERS,
-                config: assign({}, {
-                    key: key,
-                    src: {
-                        transport: {
-                            read: {
-                                url: CustomerSearchConstants.SEARCH_URI,
-                                method: CustomerSearchConstants.SEARCH_URI_METHOD,
-                                dataType: 'json',
-                                contentType: 'application/json',
-                                data: params
-                            }
-                        }
-                    },
-                    schema: schemaDef
-                })
-            })
-        }
+  return {
+    search: (params) => {
+      dispatcher.dispatch({
+        actionType: CustomerSearchConstants.SEARCH_CUSTOMERS,
+        config: assign({}, {
+          key: key,
+          src: {
+            transport: {
+              read: {
+                url: CustomerSearchConstants.SEARCH_URI,
+                method: CustomerSearchConstants.SEARCH_URI_METHOD,
+                dataType: 'json',
+                contentType: 'application/json',
+                data: params
+              }
+            }
+          },
+          schema: schemaDef
+        })
+      })
     }
+  }
 }

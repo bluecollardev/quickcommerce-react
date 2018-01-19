@@ -4,19 +4,19 @@
  * Basic stack (LIFO) implementation
  */
 export default () => {
-    var stack = Object.create({
-        stack: [],
+  var stack = Object.create({
+    stack: [],
         
-        init: function () {
-            return this
-        },
-        pop: function () {
-            return this.stack.pop()
-        },
-        push: function (item) {
-            this.stack.push(item)
-        }
-    })
+    init: function () {
+      return this
+    },
+    pop: function () {
+      return this.stack.pop()
+    },
+    push: function (item) {
+      this.stack.push(item)
+    }
+  })
     
-    return stack.init()
+  return stack.init()
 }

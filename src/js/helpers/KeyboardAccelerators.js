@@ -103,7 +103,7 @@ export default {
 
       if (keys > 0) {
         if (!_isKeyboardAcceleratorListening) {
-          window.addEventListener("keydown", _onKeyboardAcceleratorKeyPress)
+          window.addEventListener('keydown', _onKeyboardAcceleratorKeyPress)
           _isKeyboardAcceleratorListening = true
         }
         if (!this._isComponentListening(element)) {
@@ -148,7 +148,7 @@ export default {
     }
 
     if (_listeners.length === 0) {
-      window.removeEventListener("keydown", _onKeyboardAcceleratorKeyPress)
+      window.removeEventListener('keydown', _onKeyboardAcceleratorKeyPress)
       _isKeyboardAcceleratorListening = false
     }
   }

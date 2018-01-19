@@ -12,66 +12,66 @@ const INPUT = CSSClassnames.INPUT
 export default class NumberInput extends Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
 
-    this.onAdd = this.onAdd.bind(this);
-    this.onSubtract = this.onSubtract.bind(this);
+    this.onAdd = this.onAdd.bind(this)
+    this.onSubtract = this.onSubtract.bind(this)
   }
 
   fireChange () {
-    let event;
+    let event
     try {
       event = new Event('change', {
         'bubbles': true,
         'cancelable': true
-      });
+      })
     } catch (e) {
       // IE11 workaround.
-      event = document.createEvent('Event');
-      event.initEvent('change', true, true);
+      event = document.createEvent('Event')
+      event.initEvent('change', true, true)
     }
     // We use dispatchEvent to have the browser fill out the event fully.
-    this.inputRef.dispatchEvent(event);
+    this.inputRef.dispatchEvent(event)
     // Manually dispatched events aren't delivered by React, so we notify too.
-    this.props.onChange(event);
+    this.props.onChange(event)
   }
 
   onAdd () {
-    const { max, step } = this.props;
-    const input = this.inputRef;
+    const { max, step } = this.props
+    const input = this.inputRef
     try {
-      input.stepUp();
+      input.stepUp()
     } catch (e) {
       // IE11 workaround. See known issue #5 at
       // http://caniuse.com/#search=number
-      let value = (parseFloat(input.value) || 0) + (step || 1);
+      let value = (parseFloat(input.value) || 0) + (step || 1)
       if (max !== undefined) {
-        value = Math.min(value, max);
+        value = Math.min(value, max)
       }
-      input.value = value;
+      input.value = value
     }
-    this.fireChange();
+    this.fireChange()
   }
 
   onSubtract () {
-    const { min, step } = this.props;
-    const input = this.inputRef;
+    const { min, step } = this.props
+    const input = this.inputRef
     try {
-      input.stepDown();
+      input.stepDown()
     } catch (e) {
       // IE11 workaround. See known issue #5 at
       // http://caniuse.com/#search=number
-      let value = (parseFloat(input.value) || 0) - (step || 1);
+      let value = (parseFloat(input.value) || 0) - (step || 1)
       if (min !== undefined) {
-        value = Math.max(value, min);
+        value = Math.max(value, min)
       }
-      input.value = value;
+      input.value = value
     }
-    this.fireChange();
+    this.fireChange()
   }
 
   render () {
-    const { className, disabled, ...props } = this.props;
+    const { className, disabled, ...props } = this.props
 
     const classes = classnames(
       CLASS_ROOT,
@@ -79,10 +79,10 @@ export default class NumberInput extends Component {
         [`${CLASS_ROOT}--disabled`]: disabled
       },
       className
-    );
+    )
 
-    const onSubtract = (! disabled ? this.onSubtract : undefined);
-    const onAdd = (! disabled ? this.onAdd : undefined);
+    const onSubtract = (! disabled ? this.onSubtract : undefined)
+    const onAdd = (! disabled ? this.onAdd : undefined)
 
     return (
       <span className={classes}>
@@ -97,7 +97,7 @@ export default class NumberInput extends Component {
         <Button icon={<AddIcon />}
           className={`${CLASS_ROOT}__add`} onClick={onAdd} />
       </span>
-    );
+    )
   }
 
 }
@@ -112,4 +112,4 @@ NumberInput.propTypes = {
   onChange: PropTypes.func,
   step: PropTypes.number,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-};
+}

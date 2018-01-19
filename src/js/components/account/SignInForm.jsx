@@ -11,56 +11,56 @@ import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 import FormComponent from '../FormComponent.jsx'
 
 @inject(deps => ({
-    actions: deps.actions,
-    authService: deps.authService
+  actions: deps.actions,
+  authService: deps.authService
 }))
 @observer
 class SignInForm extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
         
-        this.authHandler = this.props.authHandler || props.authService
+    this.authHandler = this.props.authHandler || props.authService
         
-        this.onSubmit = this.onSubmit.bind(this)
-        this.onCreate = this.onCreate.bind(this)
-        this.onSuccess = this.onSuccess.bind(this)
-        this.onError = this.onError.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.onCreate = this.onCreate.bind(this)
+    this.onSuccess = this.onSuccess.bind(this)
+    this.onError = this.onError.bind(this)
         
-        this.toggleRemember = this.toggleRemember.bind(this)
-        this.forgetAccount = this.forgetAccount.bind(this)
-        this.rememberAccount = this.rememberAccount.bind(this)
+    this.toggleRemember = this.toggleRemember.bind(this)
+    this.forgetAccount = this.forgetAccount.bind(this)
+    this.rememberAccount = this.rememberAccount.bind(this)
         
-        this.onLogout = this.onLogout.bind(this)
+    this.onLogout = this.onLogout.bind(this)
         
-        this.renderErrors = this.renderErrors.bind(this)
+    this.renderErrors = this.renderErrors.bind(this)
         
-        this.getDisplayName = this.getDisplayName.bind(this)
-        this.getFullName = this.getFullName.bind(this)
+    this.getDisplayName = this.getDisplayName.bind(this)
+    this.getFullName = this.getFullName.bind(this)
         
-        let account = ''
-        let password = ''
-        let remember = 0
+    let account = ''
+    let password = ''
+    let remember = 0
         
-        if (typeof localStorage.getItem('remember') === 'string' && 
+    if (typeof localStorage.getItem('remember') === 'string' && 
             typeof localStorage.getItem('account') === 'string') {
-            account = localStorage.getItem('account')
-            password = localStorage.getItem('password')
-            remember = Number(localStorage.getItem('remember'))
-        }
-        
-        this.state = {
-            remember: remember,
-            displayName: '',
-            fullName: '',
-            account: account,
-            password: password,
-            errors: {}
-        }
+      account = localStorage.getItem('account')
+      password = localStorage.getItem('password')
+      remember = Number(localStorage.getItem('remember'))
     }
+        
+    this.state = {
+      remember: remember,
+      displayName: '',
+      fullName: '',
+      account: account,
+      password: password,
+      errors: {}
+    }
+  }
     
-    componentDidMount() {
-        if (this.props.loggedIn) {
-            let state = {}
+  componentDidMount() {
+    if (this.props.loggedIn) {
+      let state = {}
             
             /* TODO: Props aren't being passed down correctly as result of using the Mobx injectors which wrap the components */
             /*if (typeof this.props.user !== 'undefined' && 
@@ -72,21 +72,21 @@ class SignInForm extends Component {
             
             // TODO: Temporary hack to get things working again, just use the userStore
             // Absolutely sucks that I have to do this, I'm pretty pissed off
-            if (typeof this.props.loginStore.user !== 'undefined' && 
+      if (typeof this.props.loginStore.user !== 'undefined' && 
                 this.props.loginStore.user !== null) {
-                state = this.props.loginStore.user
-                state.fullName = this.getFullName(this.props.loginStore.user) 
-                state.displayName = this.getDisplayName(this.props.loginStore.user)
-            }
+        state = this.props.loginStore.user
+        state.fullName = this.getFullName(this.props.loginStore.user) 
+        state.displayName = this.getDisplayName(this.props.loginStore.user)
+      }
             
-            this.setState(state)
-        }
+      this.setState(state)
     }
+  }
     
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps !== this.props) {
-            if (this.props.loggedIn) {
-                let state = {}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps !== this.props) {
+      if (this.props.loggedIn) {
+        let state = {}
                 
                 /* TODO: Props aren't being passed down correctly as result of using the Mobx injectors which wrap the components */
                 /*if (typeof this.props.user !== 'undefined' && 
@@ -98,211 +98,211 @@ class SignInForm extends Component {
                 
                 // TODO: Temporary hack to get things working again, just use the userStore
                 // Absolutely sucks that I have to do this, I'm pretty pissed off
-                if (typeof this.props.loginStore.user !== 'undefined' && 
+        if (typeof this.props.loginStore.user !== 'undefined' && 
                     this.props.loginStore.user !== null) {
-                    state = this.props.loginStore.user
-                    state.fullName = this.getFullName(this.props.loginStore.user)
-                    state.displayName = this.getDisplayName(this.props.loginStore.user)
-                }
+          state = this.props.loginStore.user
+          state.fullName = this.getFullName(this.props.loginStore.user)
+          state.displayName = this.getDisplayName(this.props.loginStore.user)
+        }
                 
-                this.setState(state)
-            }
-        }
+        this.setState(state)
+      }
     }
+  }
     
-    getDisplayName(account) {
-        if (typeof account !== 'undefined' && account !== null) {
-            return account['display_name']
-        }
+  getDisplayName(account) {
+    if (typeof account !== 'undefined' && account !== null) {
+      return account['display_name']
+    }
         
-        return ''
-    }
+    return ''
+  }
     
-    getFullName(account) {
-        if (typeof account !== 'undefined' && account !== null) {
-            return [account['firstname'], account['middlename'], account['lastname']].join(' ')
-        }
+  getFullName(account) {
+    if (typeof account !== 'undefined' && account !== null) {
+      return [account['firstname'], account['middlename'], account['lastname']].join(' ')
+    }
         
-        return ''
-    }
+    return ''
+  }
     
-    toggleRemember() {
-        this.setState({
-            remember: !this.state.remember
-        })
-    }
+  toggleRemember() {
+    this.setState({
+      remember: !this.state.remember
+    })
+  }
     
-    rememberAccount(formData) {
-        localStorage.setItem('remember', 1)
-        localStorage.setItem('account', formData['account'])
-        localStorage.setItem('password', formData['password']) // TODO: Use a hash...
-    }
+  rememberAccount(formData) {
+    localStorage.setItem('remember', 1)
+    localStorage.setItem('account', formData['account'])
+    localStorage.setItem('password', formData['password']) // TODO: Use a hash...
+  }
     
-    forgetAccount() {
-        localStorage.removeItem('remember')
-        localStorage.removeItem('account')
-        localStorage.removeItem('password')
-    }
+  forgetAccount() {
+    localStorage.removeItem('remember')
+    localStorage.removeItem('account')
+    localStorage.removeItem('password')
+  }
     
-    onSubmit(e) {
-        e.preventDefault()
-        e.stopPropagation()
+  onSubmit(e) {
+    e.preventDefault()
+    e.stopPropagation()
         
-        this.props.triggerAction((formData) => {
-            console.log('executing onSubmit callback')
-            if (typeof this.props.onSubmit === 'function') {
-                console.log('execute handler')
-                let fn = this.props.onSubmit
+    this.props.triggerAction((formData) => {
+      console.log('executing onSubmit callback')
+      if (typeof this.props.onSubmit === 'function') {
+        console.log('execute handler')
+        let fn = this.props.onSubmit
                 
                 // onSuccess, onError
-                fn(formData, (response) => {
-                    this.onSuccess(response)
+        fn(formData, (response) => {
+          this.onSuccess(response)
                     
-                    if (this.state.remember) {
-                        this.rememberAccount(formData)
-                    } else {
-                        this.forgetAccount()
-                    }
-                }, this.onError)
-            } else {
-                if (this.state.remember) {
-                    this.rememberAccount(formData)
-                } else {
-                    this.forgetAccount()
-                }
-            }
-        })
-    }
-    
-    onCreate(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        if (typeof this.props.onCreate === 'undefined') return false;
-        
-        console.log('executing onCreate callback')
-        if (typeof this.props.onCreate === 'function') {
-            let fn = this.props.onCreate
-            fn(e)
+          if (this.state.remember) {
+            this.rememberAccount(formData)
+          } else {
+            this.forgetAccount()
+          }
+        }, this.onError)
+      } else {
+        if (this.state.remember) {
+          this.rememberAccount(formData)
+        } else {
+          this.forgetAccount()
         }
-    }
+      }
+    })
+  }
     
-    onLogout(e) {
-        e.preventDefault()
-        e.stopPropagation()
+  onCreate(e) {
+    e.preventDefault()
+    e.stopPropagation()
+        
+    if (typeof this.props.onCreate === 'undefined') return false
+        
+    console.log('executing onCreate callback')
+    if (typeof this.props.onCreate === 'function') {
+      let fn = this.props.onCreate
+      fn(e)
+    }
+  }
+    
+  onLogout(e) {
+    e.preventDefault()
+    e.stopPropagation()
         
         // Should I change the name of callback to beforeLogout?
-        console.log('executing onLogout callback')
-        if (typeof this.props.onLogout === 'function') {
-            console.log('execute handler')
-            let fn = this.props.onLogout
-            fn(e)
-        }
+    console.log('executing onLogout callback')
+    if (typeof this.props.onLogout === 'function') {
+      console.log('execute handler')
+      let fn = this.props.onLogout
+      fn(e)
     }
+  }
     
-    onSuccess(response) {
-        console.log('executing onLoginSuccess')
-        if (typeof this.props.onLoginSuccess === 'function') {
-            console.log('execute handler')
-            let fn = this.props.onLoginSuccess
-            fn(response)
-        }
+  onSuccess(response) {
+    console.log('executing onLoginSuccess')
+    if (typeof this.props.onLoginSuccess === 'function') {
+      console.log('execute handler')
+      let fn = this.props.onLoginSuccess
+      fn(response)
     }
+  }
     
-    onError(response) {
-        console.log('executing onError')
-        if (typeof this.props.onError === 'function') {
-            console.log('execute handler')
-            let fn = this.props.onError
-            fn(response)
-        }
+  onError(response) {
+    console.log('executing onError')
+    if (typeof this.props.onError === 'function') {
+      console.log('execute handler')
+      let fn = this.props.onError
+      fn(response)
+    }
         
-        this.setState({
-            errors: response.error
-        })
-    }
+    this.setState({
+      errors: response.error
+    })
+  }
     
-    renderErrors() {
-        let errors = []
-        let count = Object.keys(this.state.errors).length
-        let idx = 1
+  renderErrors() {
+    let errors = []
+    let count = Object.keys(this.state.errors).length
+    let idx = 1
         
-        if (typeof this.state.errors !== 'string' && count > 0) {
-            for (let error in this.state.errors) {
-                errors.push(<strong>{this.state.errors[error]}</strong>)
-                if (idx < count) {
-                    errors.push(<br/>)
-                }
+    if (typeof this.state.errors !== 'string' && count > 0) {
+      for (let error in this.state.errors) {
+        errors.push(<strong>{this.state.errors[error]}</strong>)
+        if (idx < count) {
+          errors.push(<br/>)
+        }
                 
-                idx++
-            }
-        } else if (typeof this.state.errors === 'string') {
-            errors.push(<strong>{this.state.errors}</strong>)
-        }
+        idx++
+      }
+    } else if (typeof this.state.errors === 'string') {
+      errors.push(<strong>{this.state.errors}</strong>)
+    }
         
-        return errors
-    }
+    return errors
+  }
     
-    render() {
-        if (this.props.loggedIn) {
-            return (
-                <div className='account-welcome'>
-                    <h5 style={{textAlign: 'center', whiteSpace: 'nowrap'}}>{/*<i className='fa fa-user'></i>&nbsp;*/}
+  render() {
+    if (this.props.loggedIn) {
+      return (
+        <div className='account-welcome'>
+          <h5 style={{textAlign: 'center', whiteSpace: 'nowrap'}}>{/*<i className='fa fa-user'></i>&nbsp;*/}
                     Welcome back, <span style={{ fontWeight: 'bold' }}>{this.state.fullName}</span>!
-                    </h5>
-                    {this.props.displayActions && (
-                    <a style={{
-                        float: 'right',
-                        marginTop: '1rem',
-                        fontSize: '1.3rem'
-                    }}
-                    onClick={this.onLogout}>Sign Out</a>
+          </h5>
+          {this.props.displayActions && (
+            <a style={{
+              float: 'right',
+              marginTop: '1rem',
+              fontSize: '1.3rem'
+            }}
+              onClick={this.onLogout}>Sign Out</a>
                     )}
-                </div>
-            )
-        } else {
-            return (
-                <div className='signin-form'>
-                    {Object.keys(this.state.errors).length > 0 && (
-                    <Alert bsStyle='danger' style={{
-                        textAlign: 'center',
-                        margin: '0 auto 1rem'
-                    }}>
-                        {this.renderErrors()}
-                    </Alert>
+        </div>
+      )
+    } else {
+      return (
+        <div className='signin-form'>
+          {Object.keys(this.state.errors).length > 0 && (
+            <Alert bsStyle='danger' style={{
+              textAlign: 'center',
+              margin: '0 auto 1rem'
+            }}>
+              {this.renderErrors()}
+            </Alert>
                     )}
-                    <form>
-                        <FormGroup className='display-block'>
-                            <ControlLabel>Username (E-mail Address)</ControlLabel>
-                            <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
-                        </FormGroup>
+          <form>
+            <FormGroup className='display-block'>
+              <ControlLabel>Username (E-mail Address)</ControlLabel>
+              <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
+            </FormGroup>
                         
-                        <FormGroup className='display-block'>
-                            <ControlLabel>Password</ControlLabel>
-                            <FormControl type='password' {...this.props.fields('password', this.state.password)} />
-                        </FormGroup>
+            <FormGroup className='display-block'>
+              <ControlLabel>Password</ControlLabel>
+              <FormControl type='password' {...this.props.fields('password', this.state.password)} />
+            </FormGroup>
                         
-                        <FormGroup className='display-block'>
-                            {this.props.displayActions && (
-                            <Button block onClick={this.onCreate} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
-                                {/*<h4><i className='fa fa-user-plus' /> Create Account</h4>*/}
-                                <span><i className='fa fa-user-plus' /> Create Account</span>
-                            </Button>
+            <FormGroup className='display-block'>
+              {this.props.displayActions && (
+                <Button block onClick={this.onCreate} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
+                  {/*<h4><i className='fa fa-user-plus' /> Create Account</h4>*/}
+                  <span><i className='fa fa-user-plus' /> Create Account</span>
+                </Button>
                             )}
-                            <Button block bsStyle='success' onClick={this.onSubmit} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
-                                {/*<h4><i className='fa fa-sign-in' /> Sign In</h4>*/}
-                                <span><i className='fa fa-sign-in' /> Sign In</span>
-                            </Button>
-                        </FormGroup>
-                        <FormGroup style={{ display: 'flex', alignItems: 'center' }}>
-                            <FormControl onClick={this.toggleRemember} style={{ display: 'inline-block', width: '24px', marginRight: '1rem' }} type='checkbox' checked={this.state.remember} />
-                            <ControlLabel style={{ display: 'inline-block', paddingTop: '0.35rem' }}>Remember Me</ControlLabel>
-                        </FormGroup>
-                    </form>
-                </div>
-            )
-        }
+              <Button block bsStyle='success' onClick={this.onSubmit} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
+                {/*<h4><i className='fa fa-sign-in' /> Sign In</h4>*/}
+                <span><i className='fa fa-sign-in' /> Sign In</span>
+              </Button>
+            </FormGroup>
+            <FormGroup style={{ display: 'flex', alignItems: 'center' }}>
+              <FormControl onClick={this.toggleRemember} style={{ display: 'inline-block', width: '24px', marginRight: '1rem' }} type='checkbox' checked={this.state.remember} />
+              <ControlLabel style={{ display: 'inline-block', paddingTop: '0.35rem' }}>Remember Me</ControlLabel>
+            </FormGroup>
+          </form>
+        </div>
+      )
     }
+  }
 
     /*startLogoutTimer() {
         var that = this,

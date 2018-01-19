@@ -14,10 +14,10 @@ const Demo = () => (
   <ParallaxContainer height={5000} top={0} scrolljack={false} onScroll={x => x}>
     {/***********************************************/}
     <Parallax
-      style={{ top: "75vh" }}
+      style={{ top: '75vh' }}
       keyframes={{
-        "0%": { left: 0, ease: 'Linear.easeNone' },
-        "100%": { left: "100vw", ease: 'Linear.easeNone' }
+        '0%': { left: 0, ease: 'Linear.easeNone' },
+        '100%': { left: '100vw', ease: 'Linear.easeNone' }
       }}
     >
       <div>
@@ -26,10 +26,10 @@ const Demo = () => (
     </Parallax>
     {/***********************************************/}
     <Parallax
-      style={{ top: "75vh" }}
+      style={{ top: '75vh' }}
       keyframes={{
-        "0%": { left: 0, ease: 'Strong' },
-        "100%": { left: "100vw", ease: 'Strong' }
+        '0%': { left: 0, ease: 'Strong' },
+        '100%': { left: '100vw', ease: 'Strong' }
       }}
     >
       <div>
@@ -38,10 +38,10 @@ const Demo = () => (
     </Parallax>
     {/***********************************************/}
     <Parallax
-      style={{ left: "50vw", top: "25vh" }}
+      style={{ left: '50vw', top: '25vh' }}
       keyframes={{
-        "30%": { fontSize: 0 },
-        "40%": { fontSize: 64 }
+        '30%': { fontSize: 0 },
+        '40%': { fontSize: 64 }
       }}
     >
       <div>
@@ -50,11 +50,11 @@ const Demo = () => (
     </Parallax>
     {/***********************************************/}
     <Parallax
-      style={{ left: "50vw", top: "50vh" }}
+      style={{ left: '50vw', top: '50vh' }}
       keyframes={{
-        "30%": { opacity: 0 },
-        "40%": { opacity: 1 },
-        "50%": { opacity: 0 }
+        '30%': { opacity: 0 },
+        '40%': { opacity: 1 },
+        '50%': { opacity: 0 }
       }}
     >
       <div>
@@ -64,11 +64,11 @@ const Demo = () => (
     {/***********************************************/}
     <Parallax
       style={{
-        height: "10vh"
+        height: '10vh'
       }}
       keyframes={{
-        "0%": { top: "50vh" },
-        "100%": { top: "-10vh" }
+        '0%': { top: '50vh' },
+        '100%': { top: '-10vh' }
       }}
     >
       <div>
@@ -78,11 +78,11 @@ const Demo = () => (
     {/***********************************************/}
     <Parallax
       style={{
-        height: "10vh"
+        height: '10vh'
       }}
       keyframes={{
-        "0%": { top: "100vh" },
-        "100%": { top: "-10vh" }
+        '0%': { top: '100vh' },
+        '100%': { top: '-10vh' }
       }}
     >
       <div>

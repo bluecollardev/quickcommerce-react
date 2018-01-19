@@ -3,8 +3,8 @@ export default class Props {
     const has = (p) => props.hasOwnProperty(p)
     const obj = {}
     
-	fields = fields || []
-	fields.forEach((field) => {
+    fields = fields || []
+    fields.forEach((field) => {
       if (has(field))
         obj[field] = props[field]
     })

@@ -18,7 +18,7 @@ function normalizeIndexes (selectedIndexes) {
 function clearClass (options) {
   if (options && options.containerElement) {
     const items = options.containerElement
-      .querySelectorAll("." + options.selectedClass)
+      .querySelectorAll('.' + options.selectedClass)
     for (let i = 0; i < items.length; i++) {
       items[i].classList.remove(options.selectedClass)
     }

@@ -1,27 +1,27 @@
-var webpack = require('webpack');
-var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
-var config = require('./build.config.js');
+var webpack = require('webpack')
+var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin')
+var config = require('./build.config.js')
 
 // Project vars
-var PHONEGAP_DIR = __dirname + '/' + config.phonegapDirectory;
-var PHONEGAP_DEV_PORT = config.phonegapServePort;
+var PHONEGAP_DIR = __dirname + '/' + config.phonegapDirectory
+var PHONEGAP_DEV_PORT = config.phonegapServePort
 
-var APP_DIR = __dirname + '/' + config.sourceDirectory;
-var BUILD_DIR = __dirname + '/' + config.buildDirectory;
-var LIB_DIR = __dirname + '/' + config.libDirectory;
-var THEME_SOURCE_DIR = __dirname + '/' + config.themeSourceDirectory;
-var THEME_BUILD_DIR = __dirname + '/' + config.themeBuildDirectory;
+var APP_DIR = __dirname + '/' + config.sourceDirectory
+var BUILD_DIR = __dirname + '/' + config.buildDirectory
+var LIB_DIR = __dirname + '/' + config.libDirectory
+var THEME_SOURCE_DIR = __dirname + '/' + config.themeSourceDirectory
+var THEME_BUILD_DIR = __dirname + '/' + config.themeBuildDirectory
 
 module.exports = [{
    // For POS
-   entry: {
+    entry: {
        //catalog: APP_DIR + '/js/Catalog.jsx',
        //checkout: APP_DIR + '/js/Checkout.jsx',
        //cms: APP_DIR + '/js/CMS.jsx',
        //cart: APP_DIR + '/js/Cart.jsx',
-       pos: APP_DIR + '/js/Main.jsx'
-   },
-   output: {
+        pos: APP_DIR + '/js/Main.jsx'
+    },
+    output: {
         path: BUILD_DIR + '/js',
         //path: PHONEGAP_DIR + '/www/js',
         filename: '[name]-bundle.js',
@@ -37,8 +37,8 @@ module.exports = [{
                 query: {
                     cacheDirectory: true,
                     presets: [
-                         'react',
-                         'es2015'
+                        'react',
+                        'es2015'
                     ],
                     plugins: [
                         'transform-decorators-legacy',

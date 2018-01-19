@@ -26,54 +26,54 @@ import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 import HtmlHelper from '../../helpers/HTML.js'
 
 export default class Categories extends ProductBrowser {    
-    render() {
+  render() {
         // Render categories
-        let rowComponent = this.configureRow(this.props.customRowComponent)
-        let item = this.props.item || null
+    let rowComponent = this.configureRow(this.props.customRowComponent)
+    let item = this.props.item || null
         
-        console.log('dumping categories')
-        console.log(this.state.categories)
+    console.log('dumping categories')
+    console.log(this.state.categories)
 
-        return (
-            <div className="row padding-top padding-bottom">
-                {this.props.displayCategoryFilter && (
-                <CategoryFilterBar
-                    items = {this.state.categories}
-                    onFilterSelected = {this.props.onFilterSelected}
+    return (
+      <div className="row padding-top padding-bottom">
+        {this.props.displayCategoryFilter && (
+        <CategoryFilterBar
+          items={this.state.categories}
+          onFilterSelected={this.props.onFilterSelected}
                 />
                 )}    
                 
-                {/*<ul className="nav-tabs text-center" role="tablist">
+        {/*<ul className="nav-tabs text-center" role="tablist">
                   <li className="active"><a href="#pho" role="tab" data-toggle="tab">Noodle Soups</a></li>
                   <li><a href="#bun" role="tab" data-toggle="tab">Noodle Bowls</a></li>
                   <li><a href="#rice" role="tab" data-toggle="tab">Rice Dishes</a></li>
                   <li><a href="#appetizers" role="tab" data-toggle="tab">Appetizers</a></li>
                 </ul>*/}
 
-                <div className='browser-container'>
-                  <div className='browser-menu-container'>
-                      {/*<BrowserMenu
+        <div className='browser-container'>
+          <div className='browser-menu-container'>
+            {/*<BrowserMenu
                           steps = {this.props.steps}
                           activeStep = {this.props.activeStep}
                           onStepClicked = {this.props.onStepClicked}
                           />*/}
-                      {this.props.displayProductFilter && (
-                      <FilterBar
+            {this.props.displayProductFilter && (
+              <FilterBar
                           />
                       )}
-                  </div>
+          </div>
                   
-                  {this.props.displayTitle && (
-                      <div>
-                          <hr />                
-                          <h4 className='browser-product-title'>{this.props.title}</h4>
-                      </div>
+          {this.props.displayTitle && (
+          <div>
+            <hr />                
+            <h4 className='browser-product-title'>{this.props.title}</h4>
+          </div>
                   )}
                   
-                  {this.props.children && (Object.keys(this.state.categories).length > 0) && (
-                  <div className='browser-content row'>
-                      <Col sm={6}>
-                          {/*item !== null && (
+          {this.props.children && (Object.keys(this.state.categories).length > 0) && (
+          <div className='browser-content row'>
+            <Col sm={6}>
+              {/*item !== null && (
                           <FormGroup>
                               <ControlLabel>Product Details</ControlLabel>
                               <Well>
@@ -124,63 +124,63 @@ export default class Categories extends ProductBrowser {
                               </Well>
                           </FormGroup>
                           )*/}
-                          <Grid fluid={true}>
-                              <Griddle
-                                  showFilter = {this.props.displayTextFilter}
-                                  columns = {[
-                                      'manufacturer',
-                                      'name',
-                                      'model',
+              <Grid fluid={true}>
+                <Griddle
+                  showFilter={this.props.displayTextFilter}
+                  columns={[
+                        'manufacturer',
+                        'name',
+                        'model',
                                       //'location',
                                       //'date_added',
                                       //'options',
-                                      'price'
-                                  ]}
-                                  useGriddleStyles = {false}
-                                  showPager = {false}
-                                  useCustomPagerComponent = {true}
-                                  customPagerComponent = {BootstrapPager}
-                                  useCustomRowComponent = {true}
-                                  resultsPerPage = {this.props.resultsPerPage}
-                                  customRowComponent = {rowComponent}
-                                  results = {this.state.categories.slice(0, this.props.maxResults)}
+                        'price'
+                      ]}
+                  useGriddleStyles={false}
+                  showPager={false}
+                  useCustomPagerComponent={true}
+                  customPagerComponent={BootstrapPager}
+                  useCustomRowComponent={true}
+                  resultsPerPage={this.props.resultsPerPage}
+                  customRowComponent={rowComponent}
+                  results={this.state.categories.slice(0, this.props.maxResults)}
                               />
-                          </Grid>
-                      </Col>
-                      <Col sm={6}>
-                          {this.props.children}
-                      </Col>
-                  </div>
+              </Grid>
+            </Col>
+            <Col sm={6}>
+              {this.props.children}
+            </Col>
+          </div>
                   )}
                       
-                  {!this.props.children && (
-                  <div className='browser-content row'>
-                      <Grid fluid={true}>
-                          <Griddle
-                              showFilter = {this.props.displayTextFilter}
-                              columns = {[
-                                  'manufacturer',
-                                  'name',
-                                  'model',
+          {!this.props.children && (
+          <div className='browser-content row'>
+            <Grid fluid={true}>
+              <Griddle
+                showFilter={this.props.displayTextFilter}
+                columns={[
+                  'manufacturer',
+                  'name',
+                  'model',
                                   //'location',
                                   //'date_added',
                                   //'options',
-                                  'price'
-                              ]}
-                              useGriddleStyles = {false}
-                              showPager = {false}
-                              useCustomPagerComponent = {true}
-                              customPagerComponent = {BootstrapPager}
-                              useCustomRowComponent = {true}
-                              resultsPerPage = {this.props.resultsPerPage}
-                              customRowComponent = {rowComponent}
-                              results = {this.state.categories.slice(0, this.props.maxResults)}
+                  'price'
+                ]}
+                useGriddleStyles={false}
+                showPager={false}
+                useCustomPagerComponent={true}
+                customPagerComponent={BootstrapPager}
+                useCustomRowComponent={true}
+                resultsPerPage={this.props.resultsPerPage}
+                customRowComponent={rowComponent}
+                results={this.state.categories.slice(0, this.props.maxResults)}
                           />
-                      </Grid>
-                  </div>
+            </Grid>
+          </div>
                   )}
-                </div>
-                {/*<div className="col-sm-3 col-xs-6">
+        </div>
+        {/*<div className="col-sm-3 col-xs-6">
                     <a href="#" className="category-link">
                       <img src={this.props.categories[0].backgroundImage} alt={this.props.categories[0].title} />
                       {this.props.categories[0].title}
@@ -204,7 +204,7 @@ export default class Categories extends ProductBrowser {
                       {this.props.categories[3].title}
                     </a>
                 </div>*/}
-            </div>
-        )
-    }
+      </div>
+    )
+  }
 }

@@ -3,24 +3,24 @@ import { normalize, denormalize, schema } from 'normalizr'
 let data = []
 
 let category = new schema.Entity('data', {}, {
-    idAttribute: 'id'
+  idAttribute: 'id'
 })
 
 export default {
-    key: 'categories',
-    type: 'select',
-    src: {
-        transport: {
-            read: {
-                url: QC_LEGACY_API + 'categories/level/1',
-                method: 'get', //type: 'GET',
-                responseType: 'json' //dataType: 'json',
+  key: 'categories',
+  type: 'select',
+  src: {
+    transport: {
+      read: {
+        url: QC_LEGACY_API + 'categories/level/1',
+        method: 'get', //type: 'GET',
+        responseType: 'json' //dataType: 'json',
                 /*beforeSend: function (request) {
                     page.setHeaders(request);
                     request.setRequestHeader('X-Oc-Merchant-Language', 'en');
                 }*/
-            }
-        },
+      }
+    },
         /*schema: {
             parse: function (response) {
                 var categories = response.data,
@@ -73,75 +73,75 @@ export default {
                 }
             }
         }*/
-    },
-    data: data, // Inject dummy data, just patch it in above if you want...
-    entityName: 'OcCategory',
-    schema: {
-        categories: [category]
-    },
-    selectOnClick: true, // TODO: Fix this later, for now just define for every step
-    filter: {
+  },
+  data: data, // Inject dummy data, just patch it in above if you want...
+  entityName: 'OcCategory',
+  schema: {
+    categories: [category]
+  },
+  selectOnClick: true, // TODO: Fix this later, for now just define for every step
+  filter: {
         //target: browserDataSources.get('browser.product'),
-        filter: { 
+    filter: { 
             //field: 'category',
-            field: 'product_id',
-            operator: function (item, value) {
-                console.log('operator sources')
-                var categories = [], //browserDataSources.get('catalog.category'),
-                    productIds = []
+      field: 'product_id',
+      operator: function (item, value) {
+        console.log('operator sources')
+        var categories = [], //browserDataSources.get('catalog.category'),
+          productIds = []
                     
                 // Value provided will be a category ID
-                $.each(categories.get(parseInt(value)).product, function (idx, product) {
-                    productIds.push(product.product_id)
-                })
+        $.each(categories.get(parseInt(value)).product, function (idx, product) {
+          productIds.push(product.product_id)
+        })
                 
                 /*$.each(item, function (idx, cat) {
                     categories.push(cat.id)
                 })
                 
                 return categories.indexOf(value) > -1*/
-                return productIds.indexOf(item) > -1
+        return productIds.indexOf(item) > -1
                 
                 // This is for REST Admin API
                 //return Object.keys(item).indexOf(value) > -1
-            }
-        }
-    },
-    filtersApplied: function (data) {
-        var productDataSource = browserDataSources.get('browser.product'),
-            products = productDataSource.view()
-            
-        console.log('filters applied')
-        console.log(products)
-        
-        if (products.length === 1) {
-            var productData = products[0],
-                windowLauncher = page.getAttribute(productData, 'Product Config', 'Category Window Launcher')
-                
-            if (windowLauncher !== false) {
-                if (windowLauncher.hasOwnProperty('text') && typeof windowLauncher.text === 'string') {
-                    infoWindow.refresh({
-                        type: 'GET',
-                        url: windowLauncher.text
-                    })
-                    
-                    console.log('set window content')
-                    console.log(infoWindow)
-                    
-                    infoWindow.center().open()
-                    
-                    browser.progressBar.value(0) // Reset progress bar
-                    browser.reset()
-                }
-            }
-        }
-    },
-    after: function (data) {
-        // We use this before callback to set the next steps
-        console.log('executing category step [' + data.step + '] after callback')
-        console.log('category', data.category)
-        console.log('product', data.product)
-        console.log('view-model', data.viewModel)
-        console.log('item', data.item)
+      }
     }
+  },
+  filtersApplied: function (data) {
+    var productDataSource = browserDataSources.get('browser.product'),
+      products = productDataSource.view()
+            
+    console.log('filters applied')
+    console.log(products)
+        
+    if (products.length === 1) {
+      var productData = products[0],
+        windowLauncher = page.getAttribute(productData, 'Product Config', 'Category Window Launcher')
+                
+      if (windowLauncher !== false) {
+        if (windowLauncher.hasOwnProperty('text') && typeof windowLauncher.text === 'string') {
+          infoWindow.refresh({
+            type: 'GET',
+            url: windowLauncher.text
+          })
+                    
+          console.log('set window content')
+          console.log(infoWindow)
+                    
+          infoWindow.center().open()
+                    
+          browser.progressBar.value(0) // Reset progress bar
+          browser.reset()
+        }
+      }
+    }
+  },
+  after: function (data) {
+        // We use this before callback to set the next steps
+    console.log('executing category step [' + data.step + '] after callback')
+    console.log('category', data.category)
+    console.log('product', data.product)
+    console.log('view-model', data.viewModel)
+    console.log('item', data.item)
+  }
 }

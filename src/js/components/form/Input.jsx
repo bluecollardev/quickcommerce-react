@@ -4,30 +4,30 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 
 const DatePicker = (props) => {
     //return <input type='date' />
-    return <FormControl type='date' {...props} />
+  return <FormControl type='date' {...props} />
 }
 
 const TimePicker = (props) => {
     //return <input type='time' />
-    return <FormControl type='time' {...props} />
+  return <FormControl type='time' {...props} />
 }
 
 const DateInput = (props) => {
-    return (
-        <DatePicker {...props} />
-    )
+  return (
+    <DatePicker {...props} />
+  )
 }
 
 const DateTimeInput = (props) => {
-    return (
-        <DatePicker {...props} />
-    )
+  return (
+    <DatePicker {...props} />
+  )
 }
 
 const TimeInput = (props) => {
-    return (
-        <TimePicker {...props} />
-    )
+  return (
+    <TimePicker {...props} />
+  )
 }
 
 const NumericInput = (props) => {
@@ -35,9 +35,9 @@ const NumericInput = (props) => {
         <input type='number' {...props} />
     )*/
     
-    return (
-        <FormControl type='number' {...props} />
-    )
+  return (
+    <FormControl type='number' {...props} />
+  )
 }
 
 const TelephoneInput = (props) => {
@@ -45,9 +45,9 @@ const TelephoneInput = (props) => {
         <input type='tel' {...props} />
     )*/
     
-    return (
-        <FormControl type='tel' {...props} />
-    )
+  return (
+    <FormControl type='tel' {...props} />
+  )
 }
 
 const EmailInput = (props) => {
@@ -55,9 +55,9 @@ const EmailInput = (props) => {
         <input type='email' {...props} />
     )*/
     
-    return (
-        <FormControl type='email' {...props} />
-    )
+  return (
+    <FormControl type='email' {...props} />
+  )
 }
 
 const PostalCodeInput = (props) => {
@@ -65,9 +65,9 @@ const PostalCodeInput = (props) => {
         <input type='text' {...props} />
     )*/
     
-    return (
-        <FormControl type='text' {...props} />
-    )
+  return (
+    <FormControl type='text' {...props} />
+  )
 }
 
 const SinInput = (props) => {
@@ -75,9 +75,9 @@ const SinInput = (props) => {
         <input type='text' {...props} />
     )*/
     
-    return (
-        <FormControl type='number' {...props} />
-    )
+  return (
+    <FormControl type='number' {...props} />
+  )
 }
 
 const SsnInput = (props) => {
@@ -85,9 +85,9 @@ const SsnInput = (props) => {
         <input type='text' {...props} />
     )*/
     
-    return (
-        <FormControl type='number' {...props} />
-    )
+  return (
+    <FormControl type='number' {...props} />
+  )
 }
 
 export { DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }

@@ -8,23 +8,23 @@
  */
  
 function mapValues(obj, fn) {
-    return Object.keys(obj).reduce((result, key) => {
-        result[key] = fn(obj[key], key)
-        return result
-    }, {})
+  return Object.keys(obj).reduce((result, key) => {
+    result[key] = fn(obj[key], key)
+    return result
+  }, {})
 }
 
 function bindActionCreator(actionCreator, dispatcher) {
-    return (...args) => dispatcher.dispatch(actionCreator(...args))
+  return (...args) => dispatcher.dispatch(actionCreator(...args))
 }
 
 export default class FluxHelper {
-    static bindActionCreators = (actionCreators, dispatcher) => {
+  static bindActionCreators = (actionCreators, dispatcher) => {
         // Bind action creators
-        return typeof actionCreators === 'function' ?
+    return typeof actionCreators === 'function' ?
             bindActionCreator(actionCreators, dispatcher) : 
             mapValues(actionCreators, actionCreator => bindActionCreator(actionCreator, dispatcher))
-    }
+  }
     
     /* Just an idea for now...
     static bindServices = (actionCreators, dispatch) => {
