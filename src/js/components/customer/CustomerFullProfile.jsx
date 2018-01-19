@@ -419,12 +419,12 @@ class CustomerFullProfile extends Component {
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
                     <CustomerContact
-                        type='email'
-                        mappings={mappings.contact}
-                        ref={(contact) => {this.contact = contact}}
-                        data={contact}
-                        onCancel={this.onCancel}
-                        onSaveSuccess={this.onSaveSuccess}
+                      type='email'
+                      mappings={mappings.contact}
+                      ref={(contact) => {this.contact = contact}}
+                      data={contact}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'create'
                                         />
                   </div>
@@ -443,11 +443,11 @@ class CustomerFullProfile extends Component {
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
                     <CustomerContact
-                        mappings={mappings.contact}
-                        ref={(contact) => {this.contact = contact}}
-                        data={contact}
-                        onCancel={this.onCancel}
-                        onSaveSuccess={this.onSaveSuccess}
+                      mappings={mappings.contact}
+                      ref={(contact) => {this.contact = contact}}
+                      data={contact}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'create'
                                         />
                   </div>
@@ -478,11 +478,11 @@ class CustomerFullProfile extends Component {
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
                     <CustomerIdentity
-                        mappings={mappings.identity}
-                        ref={(identity) => {this.identity = identity}}
-                        data={identity}
-                        onCancel={this.onCancel}
-                        onSaveSuccess={this.onSaveSuccess}
+                      mappings={mappings.identity}
+                      ref={(identity) => {this.identity = identity}}
+                      data={identity}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'create'
                                         />
                   </div>
@@ -520,13 +520,13 @@ class CustomerFullProfile extends Component {
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
                     <CurrentAddress
-                        mappings={mappings.address}
-                        ref={(address) => {this.billingAddress = address}}
-                        modal={this.props.modal}
-                        data={address}
-                        durationRequired={this.props.durationRequired}
-                        nameRequired={false}
-                        mode='create'
+                      mappings={mappings.address}
+                      ref={(address) => {this.billingAddress = address}}
+                      modal={this.props.modal}
+                      data={address}
+                      durationRequired={this.props.durationRequired}
+                      nameRequired={false}
+                      mode='create'
                                         />
                   </div>
                 </div>
@@ -662,16 +662,16 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                      <CustomerContact
-                          type='email'
-                          mappings={mappings.contact}
-                          ref={(contact) => {this.contact = contact}}
-                          data={contact}
-                          onCancel={this.onCancel}
-                          onSaveSuccess={this.onSaveSuccess}
+                    <CustomerContact
+                      type='email'
+                      mappings={mappings.contact}
+                      ref={(contact) => {this.contact = contact}}
+                      data={contact}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'edit'
                                         />
-                    </div>
+                  </div>
                 </div>
               </Col>
               <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
@@ -686,16 +686,16 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                      <CustomerContact
-                          type='phone'
-                          mappings={mappings.contact}
-                          ref={(contact) => {this.contact = contact}}
-                          data={contact}
-                          onCancel={this.onCancel}
-                          onSaveSuccess={this.onSaveSuccess}
+                    <CustomerContact
+                      type='phone'
+                      mappings={mappings.contact}
+                      ref={(contact) => {this.contact = contact}}
+                      data={contact}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'edit'
                                         />
-                    </div>
+                  </div>
                 </div>
               </Col>
               <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
@@ -722,15 +722,15 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                      <CustomerIdentity
-                          mappings={mappings.identity}
-                          ref={(identity) => {this.identity = identity}}
-                          data={identity}
-                          onCancel={this.onCancel}
-                          onSaveSuccess={this.onSaveSuccess}
+                    <CustomerIdentity
+                      mappings={mappings.identity}
+                      ref={(identity) => {this.identity = identity}}
+                      data={identity}
+                      onCancel={this.onCancel}
+                      onSaveSuccess={this.onSaveSuccess}
                                         //mode = 'edit'
                                         />
-                    </div>
+                  </div>
                 </div>
               </Col>
               <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>
@@ -760,16 +760,16 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                      <CurrentAddress
-                          mappings={mappings.address}
-                          ref={(address) => {this.billingAddress = address}}
-                          modal={this.props.modal}
-                          data={address}
-                          durationRequired={this.props.durationRequired}
-                          nameRequired={false}
-                          mode='edit'
+                    <CurrentAddress
+                      mappings={mappings.address}
+                      ref={(address) => {this.billingAddress = address}}
+                      modal={this.props.modal}
+                      data={address}
+                      durationRequired={this.props.durationRequired}
+                      nameRequired={false}
+                      mode='edit'
                                         />
-                    </div>
+                  </div>
                 </div>
               </Col>
               <Col xs={12}><hr className='col-xs-12' style={{ maxWidth: '97%' }} /></Col>

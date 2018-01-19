@@ -353,49 +353,49 @@ class ProductBrowser extends Component {
               <Well>
                 <Row>
                   <Col sm={6}>
-                        <Box margin={{top: 'none'}}>
-                          <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'>
-                                <label>Retail Price</label>
-                                <Paragraph size='large' margin='none'>
-                                  <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                </Paragraph>
-                              </Box>
-                          <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'
-                                separator='top'>
-                                <label>Rating</label>
-                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
-                              </Box>
-                        </Box>
-                      </Col>
+                    <Box margin={{top: 'none'}}>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'>
+                        <label>Retail Price</label>
+                        <Paragraph size='large' margin='none'>
+                          <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                        </Paragraph>
+                      </Box>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'
+                        separator='top'>
+                        <label>Rating</label>
+                        {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                      </Box>
+                    </Box>
+                  </Col>
                   <Col sm={6}>
-                        <Box pad={{vertical: 'small'}}
-                          direction='row'
-                          align='center'
-                          justify='between'>
-                          <label>Status</label>
-                          <Paragraph size='large' margin='none'>
-                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
-                              </Paragraph>
-                        </Box>
-                        <Box margin={{top: 'none'}}>
-                          <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'
-                                separator='top'>
-                                <label>Quantity</label>
-                                <Paragraph size='large' margin='none'>
-                                  <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                </Paragraph>
-                              </Box>
-                        </Box>
-                      </Col>
+                    <Box pad={{vertical: 'small'}}
+                      direction='row'
+                      align='center'
+                      justify='between'>
+                      <label>Status</label>
+                      <Paragraph size='large' margin='none'>
+                        <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                      </Paragraph>
+                    </Box>
+                    <Box margin={{top: 'none'}}>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'
+                        separator='top'>
+                        <label>Quantity</label>
+                        <Paragraph size='large' margin='none'>
+                          <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                        </Paragraph>
+                      </Box>
+                    </Box>
+                  </Col>
                 </Row>
               </Well>
             </FormGroup>
@@ -411,49 +411,49 @@ class ProductBrowser extends Component {
               <ControlLabel><h4>{this.props.title}</h4></ControlLabel>
               <Well>
                 <Row>
-                      <Col xs={12}>
-                        <Box margin={{top: 'none'}}>
-                              <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'>
-                                <label>Retail Price</label>
-                                <Paragraph size='large' margin='none'>
-                                  <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                                </Paragraph>
-                              </Box>
-                              <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'
-                                separator='top'>
-                                <label>Rating</label>
-                                {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
-                              </Box>
-                            </Box>
-                        <Box pad={{vertical: 'small'}}
-                              direction='row'
-                              align='center'
-                              justify='between'>
-                              <label>Status</label>
-                              <Paragraph size='large' margin='none'>
-                                <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
-                              </Paragraph>
-                            </Box>
-                        <Box margin={{top: 'none'}}>
-                              <Box pad={{vertical: 'small'}}
-                                direction='row'
-                                align='center'
-                                justify='between'
-                                separator='top'>
-                                <label>Quantity</label>
-                                <Paragraph size='large' margin='none'>
-                                  <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
-                                </Paragraph>
-                              </Box>
-                            </Box>
-                      </Col>
-                    </Row>
+                  <Col xs={12}>
+                    <Box margin={{top: 'none'}}>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'>
+                        <label>Retail Price</label>
+                        <Paragraph size='large' margin='none'>
+                          <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
+                        </Paragraph>
+                      </Box>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'
+                        separator='top'>
+                        <label>Rating</label>
+                        {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                      </Box>
+                    </Box>
+                    <Box pad={{vertical: 'small'}}
+                      direction='row'
+                      align='center'
+                      justify='between'>
+                      <label>Status</label>
+                      <Paragraph size='large' margin='none'>
+                        <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                      </Paragraph>
+                    </Box>
+                    <Box margin={{top: 'none'}}>
+                      <Box pad={{vertical: 'small'}}
+                        direction='row'
+                        align='center'
+                        justify='between'
+                        separator='top'>
+                        <label>Quantity</label>
+                        <Paragraph size='large' margin='none'>
+                          <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
+                        </Paragraph>
+                      </Box>
+                    </Box>
+                  </Col>
+                </Row>
               </Well>
             </FormGroup>
                         )}

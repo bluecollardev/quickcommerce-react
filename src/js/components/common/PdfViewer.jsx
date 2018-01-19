@@ -28,14 +28,14 @@ export default class PdfViewer extends Component {
                 <div className='column_attr clearfix align_center'>
                   <h2 className='heading-with-border' 
                     style={{
-                        textAlign: 'center'
-                      }}>PDF Viewer Title</h2>
+                      textAlign: 'center'
+                    }}>PDF Viewer Title</h2>
                   <Button 
                     onClick={() => {
-                        this.setState({
-                            displayPdfViewer: false
-                          })
-                      }}
+                      this.setState({
+                        displayPdfViewer: false
+                      })
+                    }}
                     className='close'
                     dataDismiss='modal'>&times;</Button>
                 </div>
@@ -53,8 +53,8 @@ export default class PdfViewer extends Component {
                     this.pdfDownloadTrigger.click()
 										
                     this.setState({
-                        displayPdfViewer: !this.state.displayPdfViewer
-                      })
+                      displayPdfViewer: !this.state.displayPdfViewer
+                    })
                   }}
                   bsStyle='success'>
 									Download as PDF

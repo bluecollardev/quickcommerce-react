@@ -128,14 +128,14 @@ export default class Categories extends ProductBrowser {
                 <Griddle
                   showFilter={this.props.displayTextFilter}
                   columns={[
-                        'manufacturer',
-                        'name',
-                        'model',
+                    'manufacturer',
+                    'name',
+                    'model',
                                       //'location',
                                       //'date_added',
                                       //'options',
-                        'price'
-                      ]}
+                    'price'
+                  ]}
                   useGriddleStyles={false}
                   showPager={false}
                   useCustomPagerComponent={true}

@@ -235,34 +235,34 @@ class CustomerIdentity extends Component {
                 renderItem={(item, isHighlighted) => {
                   return (
                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                        {item.value}
-                      </div>
+                      {item.value}
+                    </div>
                   )
                 }}
                 shouldItemRender={this.matchItemToZone}
                 renderMenu={(items, value, style) => {
                   return (
                     <div style={{
-                        position: 'relative',
-                        width: '100%'
-                      }}>
-                        <div style={{
-                            position: 'absolute',
-                            zIndex: '9999',
-                            left: '0',
-                            right: '0',
-                            overflow: 'hidden',
-                            zIndex: '100',
-                            borderRadius: '0',
-                            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                            background: 'rgba(255, 255, 255, 0.9)',
-                            padding: '1rem 0',
-                            fontSize: '100%',
-                            overflow: 'auto',
-                            height: '240px',
-                            maxHeight: '240px'
-                          }}>{items}</div>
-                      </div>
+                      position: 'relative',
+                      width: '100%'
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        zIndex: '9999',
+                        left: '0',
+                        right: '0',
+                        overflow: 'hidden',
+                        zIndex: '100',
+                        borderRadius: '0',
+                        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        padding: '1rem 0',
+                        fontSize: '100%',
+                        overflow: 'auto',
+                        height: '240px',
+                        maxHeight: '240px'
+                      }}>{items}</div>
+                    </div>
                   )
                 }}
                 autoHighlight={true}
@@ -275,8 +275,8 @@ class CustomerIdentity extends Component {
                                     
                   this.setState(assign({}, this.state, {
                     data: assign({}, this.state.data, {
-                        [mappings.ZONE]: value
-                      })
+                      [mappings.ZONE]: value
+                    })
                   }))
                 }}
                 onSelect={(value, item) => {
@@ -286,9 +286,9 @@ class CustomerIdentity extends Component {
                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                   this.setState(assign({}, this.state, {
                     data: assign({}, this.state.data, {
-                        [mappings.ZONE_ID]: item.id,
-                        [mappings.ZONE]: item.value 
-                      })
+                      [mappings.ZONE_ID]: item.id,
+                      [mappings.ZONE]: item.value 
+                    })
                   }))
                 }}
                 inputProps={
@@ -309,34 +309,34 @@ class CustomerIdentity extends Component {
                 renderItem={(item, isHighlighted) => {
                   return (
                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                        {item.value}
-                      </div>
+                      {item.value}
+                    </div>
                   )
                 }}
                 shouldItemRender={this.matchItemToCountry}
                 renderMenu={(items, value, style) => {
                   return (
                     <div style={{
-                        position: 'relative',
-                        width: '100%'
-                      }}>
-                        <div style={{
-                            position: 'absolute',
-                            zIndex: '9999',
-                            left: '0',
-                            right: '0',
-                            overflow: 'hidden',
-                            zIndex: '100',
-                            borderRadius: '0',
-                            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                            background: 'rgba(255, 255, 255, 0.9)',
-                            padding: '1rem 0',
-                            fontSize: '100%',
-                            overflow: 'auto',
-                            height: '240px',
-                            maxHeight: '240px'
-                          }}>{items}</div>
-                      </div>
+                      position: 'relative',
+                      width: '100%'
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        zIndex: '9999',
+                        left: '0',
+                        right: '0',
+                        overflow: 'hidden',
+                        zIndex: '100',
+                        borderRadius: '0',
+                        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        padding: '1rem 0',
+                        fontSize: '100%',
+                        overflow: 'auto',
+                        height: '240px',
+                        maxHeight: '240px'
+                      }}>{items}</div>
+                    </div>
                   )
                 }}
                 autoHighlight={true}
@@ -349,8 +349,8 @@ class CustomerIdentity extends Component {
                                     
                   this.setState(assign({}, this.state, {
                     data: assign({}, this.state.data, {
-                        [mappings.COUNTRY]: value
-                      })
+                      [mappings.COUNTRY]: value
+                    })
                   }))
                                     
                                     //this.parseZones(item.id)
@@ -362,9 +362,9 @@ class CustomerIdentity extends Component {
                                     // Not sure if this is necessary anymore, pretty sure it's redundant
                   this.setState(assign({}, this.state, {
                     data: assign({}, this.state.data, {
-                        [mappings.COUNTRY_ID]: item.id,
-                        [mappings.COUNTRY]: item.value
-                      })
+                      [mappings.COUNTRY_ID]: item.id,
+                      [mappings.COUNTRY]: item.value
+                    })
                   }))
                                     
                   this.props.settingStore.parseZones(item.id)

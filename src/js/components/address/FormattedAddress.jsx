@@ -795,47 +795,47 @@ class CurrentAddress extends Component {
                 <Autocomplete
                   name='country'
                   getItemValue={(item) => {
-                        return item.value
-                      }}
+                    return item.value
+                  }}
                   items={this.state.countries}
                   renderItem={(item, isHighlighted) => {
-                        return (
-                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                {item.value}
-                              </div>
-                        )
-                      }}
+                    return (
+                      <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.value}
+                      </div>
+                    )
+                  }}
                   shouldItemRender={this.matchItemToTerm}
                   autoHighlight={true}
                   wrapperStyle={{
-                        display: 'block'
-                      }}
+                    display: 'block'
+                  }}
                   value={data.country}
                   onChange={(event, value) => {
-                        this.props.field('country', value)
+                    this.props.field('country', value)
                                         
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, this.state.data, {
-                                country: value
-                              })
-                        }))
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, this.state.data, {
+                        country: value
+                      })
+                    }))
                                         
                                         //this.parseZones(item.id)
-                      }}
+                  }}
                   onSelect={(value, item) => {
-                        this.props.field('country_id', item.id)
-                        this.props.field('country', value)
+                    this.props.field('country_id', item.id)
+                    this.props.field('country', value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                country_id: item.id,
-                                country: value
-                              })
-                        }))
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        country_id: item.id,
+                        country: value
+                      })
+                    }))
                                         
-                        this.props.settingStore.parseZones(item.id)
-                      }}
+                    this.props.settingStore.parseZones(item.id)
+                  }}
                   inputProps={
                                         assign(this.props.fields('country', data.country), { className: 'form-control'})
                                     }
@@ -847,43 +847,43 @@ class CurrentAddress extends Component {
                 <Autocomplete
                   name='zone'
                   getItemValue={(item) => {
-                        return item.value
-                      }}
+                    return item.value
+                  }}
                   items={this.state.zones}
                   renderItem={(item, isHighlighted) => {
-                        return (
-                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                {item.value}
-                              </div>
-                        )
-                      }}
+                    return (
+                      <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.value}
+                      </div>
+                    )
+                  }}
                   shouldItemRender={this.matchItemToTerm}
                   autoHighlight={true}
                   wrapperStyle={{
-                        display: 'block'
-                      }}
+                    display: 'block'
+                  }}
                   value={data.zone}
                   onChange={(event, value) => {
-                        this.props.fields('zone', value)
+                    this.props.fields('zone', value)
                                         
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, this.data, {
-                                zone: value
-                              })
-                        }))
-                      }}
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, this.data, {
+                        zone: value
+                      })
+                    }))
+                  }}
                   onSelect={(value, item) => {
-                        this.props.field('zone_id', item.id)
-                        this.props.field('zone', value)
+                    this.props.field('zone_id', item.id)
+                    this.props.field('zone', value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                zone_id: item.id,
-                                zone: value 
-                              })
-                        }))
-                      }}
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        zone_id: item.id,
+                        zone: value 
+                      })
+                    }))
+                  }}
                   inputProps={
                                         assign(this.props.fields('zone', data.zone), { className: 'form-control'})
                                     }
@@ -938,246 +938,246 @@ class CurrentAddress extends Component {
                                 </div>*/}
               <form>
                 <div>
-                      <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
+                  <input type='hidden' name='address_id' {...this.props.fields('address_id', data.address_id)} />
                                         
-                      {/* First Name / Last Name */}
-                      {this.props.nameRequired && (
-                      <Row>
-                            <FormGroup className='col-xs-12 col-lg-6'>
-                              <ControlLabel>First Name*</ControlLabel>
-                              <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
-                            </FormGroup>
-                            <FormGroup className='col-xs-12 col-lg-6'>
-                              <ControlLabel>Last Name*</ControlLabel>
-                              <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
-                            </FormGroup>
-                          </Row>
-                                        )}
-                                        
-                      {/* Simple Addresses (Line 1, 2, 3?) */}
-                      {this.props.type === 'simple' && (
-                      <FormGroup>
-                            <ControlLabel>Address 1</ControlLabel>
-                            <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'simple' && (
-                      <FormGroup>
-                            <ControlLabel>Address 2</ControlLabel>
-                            <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
-                          </FormGroup>
+                  {/* First Name / Last Name */}
+                  {this.props.nameRequired && (
+                  <Row>
+                    <FormGroup className='col-xs-12 col-lg-6'>
+                      <ControlLabel>First Name*</ControlLabel>
+                      <FormControl name='firstname' type='text' {...this.props.fields('firstname', data.firstname)} />
+                    </FormGroup>
+                    <FormGroup className='col-xs-12 col-lg-6'>
+                      <ControlLabel>Last Name*</ControlLabel>
+                      <FormControl name='lastname' type='text' {...this.props.fields('lastname', data.lastname)} />
+                    </FormGroup>
+                  </Row>
                                         )}
                                         
-                      {/* Civic Addresses */}
-                      {this.props.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Suite</ControlLabel>
-                            <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
-                          </FormGroup>
+                  {/* Simple Addresses (Line 1, 2, 3?) */}
+                  {this.props.type === 'simple' && (
+                  <FormGroup>
+                    <ControlLabel>Address 1</ControlLabel>
+                    <FormControl type='text' name='address1' {...this.props.fields('address1', data.address1)} />
+                  </FormGroup>
                                         )}
-                      {this.props.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Street Name</ControlLabel>
-                            <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Street Type</ControlLabel>
-                            <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Direction</ControlLabel>
-                            <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
-                          </FormGroup>
+                  {this.props.type === 'simple' && (
+                  <FormGroup>
+                    <ControlLabel>Address 2</ControlLabel>
+                    <FormControl type='text' name='address2' {...this.props.fields('address2', data.address2)} />
+                  </FormGroup>
                                         )}
                                         
-                      {/* Postal Installation Addresses */}
-                      {this.props.type === 'pobox' && (
-                      <FormGroup>
-                            <ControlLabel>Box</ControlLabel>
-                            <FormControl type='text' value={data.box} />
-                          </FormGroup>
+                  {/* Civic Addresses */}
+                  {this.props.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Suite</ControlLabel>
+                    <FormControl type='text' name='suite' {...this.props.fields('suite', data.suite)} />
+                  </FormGroup>
                                         )}
-                      {this.props.type === 'pobox' && (
-                      <FormGroup>
-                            <ControlLabel>Station</ControlLabel>
-                            <FormControl type='text' value={data.stn} />
-                          </FormGroup>
+                  {this.props.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Street Name</ControlLabel>
+                    <FormControl type='text' name='street' {...this.props.fields('street', data.street)} />
+                  </FormGroup>
                                         )}
-                                        
-                      {/* Rural Addresses */}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Range Rd.</ControlLabel>
-                            <FormControl type='text' value={data.box} />
-                          </FormGroup>
+                  {this.props.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Street Type</ControlLabel>
+                    <FormControl type='text' name='street_type' {...this.props.fields('street_type', data.street_type)} />
+                  </FormGroup>
                                         )}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Site</ControlLabel>
-                            <FormControl type='text' value={data.site} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Comp</ControlLabel>
-                            <FormControl type='text' value={data.comp} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Box</ControlLabel>
-                            <FormControl type='text' value={data.box} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Lot #</ControlLabel>
-                            <FormControl type='text' value={data.lot} />
-                          </FormGroup>
-                                        )}
-                      {this.props.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Concession #</ControlLabel>
-                            <FormControl type='text' value={data.concession} />
-                          </FormGroup>
+                  {this.props.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Direction</ControlLabel>
+                    <FormControl type='text' name='dir' {...this.props.fields('dir', data.dir)} />
+                  </FormGroup>
                                         )}
                                         
-                      {/* City (If Applicable) */}
-                      <FormGroup>
-                        <ControlLabel>City</ControlLabel>
-                        <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
-                      </FormGroup>
+                  {/* Postal Installation Addresses */}
+                  {this.props.type === 'pobox' && (
+                  <FormGroup>
+                    <ControlLabel>Box</ControlLabel>
+                    <FormControl type='text' value={data.box} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'pobox' && (
+                  <FormGroup>
+                    <ControlLabel>Station</ControlLabel>
+                    <FormControl type='text' value={data.stn} />
+                  </FormGroup>
+                                        )}
                                         
-                      {/* Common Address Fields */}
-                      <FormGroup className='autocomplete-control-group'>
-                        <ControlLabel>Country*</ControlLabel>
-                        <Autocomplete
-                              name='country'
-                              getItemValue={(item) => {
-                                return item.value
-                              }}
-                              items={this.props.settingStore.getCountries()}
-                              renderItem={(item, isHighlighted) => {
-                                return (
-                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                        {item.value}
-                                      </div>
-                                )
-                              }}
-                              shouldItemRender={this.matchItemToTerm}
-                              autoHighlight={true}
-                              wrapperStyle={{
-                                display: 'block'
-                              }}
-                              value={data.country}
-                              onChange={(event, value) => {
-                                this.props.field('country', value)
+                  {/* Rural Addresses */}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Range Rd.</ControlLabel>
+                    <FormControl type='text' value={data.box} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Site</ControlLabel>
+                    <FormControl type='text' value={data.site} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Comp</ControlLabel>
+                    <FormControl type='text' value={data.comp} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Box</ControlLabel>
+                    <FormControl type='text' value={data.box} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Lot #</ControlLabel>
+                    <FormControl type='text' value={data.lot} />
+                  </FormGroup>
+                                        )}
+                  {this.props.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Concession #</ControlLabel>
+                    <FormControl type='text' value={data.concession} />
+                  </FormGroup>
+                                        )}
+                                        
+                  {/* City (If Applicable) */}
+                  <FormGroup>
+                    <ControlLabel>City</ControlLabel>
+                    <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
+                  </FormGroup>
+                                        
+                  {/* Common Address Fields */}
+                  <FormGroup className='autocomplete-control-group'>
+                    <ControlLabel>Country*</ControlLabel>
+                    <Autocomplete
+                      name='country'
+                      getItemValue={(item) => {
+                        return item.value
+                      }}
+                      items={this.props.settingStore.getCountries()}
+                      renderItem={(item, isHighlighted) => {
+                        return (
+                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {item.value}
+                          </div>
+                        )
+                      }}
+                      shouldItemRender={this.matchItemToTerm}
+                      autoHighlight={true}
+                      wrapperStyle={{
+                        display: 'block'
+                      }}
+                      value={data.country}
+                      onChange={(event, value) => {
+                        this.props.field('country', value)
                                                     
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        country: value
-                                      })
-                                }))
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            country: value
+                          })
+                        }))
                                                     
                                                     //this.parseZones(item.id)
-                              }}
-                              onSelect={(value, item) => {
-                                this.props.field('country_id', item.id)
-                                this.props.field('country', value)
+                      }}
+                      onSelect={(value, item) => {
+                        this.props.field('country_id', item.id)
+                        this.props.field('country', value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        country_id: item.id,
-                                        country: value
-                                      })
-                                }))
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            country_id: item.id,
+                            country: value
+                          })
+                        }))
                                                     
-                                this.props.settingStore.getZones(item.id)
-                              }}
-                              inputProps={
+                        this.props.settingStore.getZones(item.id)
+                      }}
+                      inputProps={
                                                     assign(this.props.fields('country', data.country), { className: 'form-control'})
                                                 }
                                             />
-                        <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
-                      </FormGroup>
-                      <FormGroup className='autocomplete-control-group'>
-                        <ControlLabel>Prov.*</ControlLabel>
-                        <Autocomplete
-                              name='zone'
-                              getItemValue={(item) => {
-                                return item.value
-                              }}
-                              items={this.props.settingStore.getZones(data.country_id)}
-                              renderItem={(item, isHighlighted) => {
-                                return (
-                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                        {item.value}
-                                      </div>
-                                )
-                              }}
-                              shouldItemRender={this.matchItemToTerm}
-                              autoHighlight={true}
-                              wrapperStyle={{
-                                display: 'block'
-                              }}
-                              value={data.zone}
-                              onChange={(event, value) => {
-                                this.props.fields('zone', value)
+                    <input type='hidden' name='country_id' {...this.props.fields('country_id', data.country_id)} />
+                  </FormGroup>
+                  <FormGroup className='autocomplete-control-group'>
+                    <ControlLabel>Prov.*</ControlLabel>
+                    <Autocomplete
+                      name='zone'
+                      getItemValue={(item) => {
+                        return item.value
+                      }}
+                      items={this.props.settingStore.getZones(data.country_id)}
+                      renderItem={(item, isHighlighted) => {
+                        return (
+                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {item.value}
+                          </div>
+                        )
+                      }}
+                      shouldItemRender={this.matchItemToTerm}
+                      autoHighlight={true}
+                      wrapperStyle={{
+                        display: 'block'
+                      }}
+                      value={data.zone}
+                      onChange={(event, value) => {
+                        this.props.fields('zone', value)
                                                     
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        zone: value
-                                      })
-                                }))
-                              }}
-                              onSelect={(value, item) => {
-                                this.props.field('zone_id', item.id)
-                                this.props.field('zone', value)
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            zone: value
+                          })
+                        }))
+                      }}
+                      onSelect={(value, item) => {
+                        this.props.field('zone_id', item.id)
+                        this.props.field('zone', value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        zone_id: item.id,
-                                        zone: value 
-                                      })
-                                }))
-                              }}
-                              inputProps={
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            zone_id: item.id,
+                            zone: value 
+                          })
+                        }))
+                      }}
+                      inputProps={
                                                     assign(this.props.fields('zone', data.zone), { className: 'form-control'})
                                                 }
                                             />
-                        <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
-                      </FormGroup>
-                      <FormGroup>
-                        <ControlLabel>Postal Code*</ControlLabel>
-                        <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
-                      </FormGroup>
+                    <input type='hidden' name='zone_id' {...this.props.fields('zone_id', data.zone_id)} />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Postal Code*</ControlLabel>
+                    <FormControl type='text' name='postcode' {...this.props.fields('postcode', data.postcode)} />
+                  </FormGroup>
                                         
-                      {this.props.displayActions && (
-                      <Row>
-                            {this.props.mode === 'create' && (
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Create Address' : 'OK'}</h4></Button>
-                            </FormGroup>
+                  {this.props.displayActions && (
+                  <Row>
+                    {this.props.mode === 'create' && (
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Create Address' : 'OK'}</h4></Button>
+                    </FormGroup>
                                             )}
                                             
-                            {this.props.mode === 'edit' && (
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Update Address' : 'OK'}</h4></Button>
-                            </FormGroup>
+                    {this.props.mode === 'edit' && (
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Update Address' : 'OK'}</h4></Button>
+                    </FormGroup>
                                             )}
                                             
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-                            </FormGroup>
-                          </Row>
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                    </FormGroup>
+                  </Row>
                                         )}                                    
-                    </div>
+                </div>
               </form>
             </div>
                         )}

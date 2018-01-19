@@ -170,8 +170,8 @@ export default class Toolbar extends Component {
                 <div className="form-footer">
                   <div className="rememberme">
                     <label className="checkbox">
-                        <input type="checkbox" defaultChecked /> Remember me
-                      </label>
+                      <input type="checkbox" defaultChecked /> Remember me
+                    </label>
                   </div>
                   <div className="form-submit">
                     <button type="submit" className="btn btn-primary btn-block waves-effect waves-light">Login</button>
@@ -224,10 +224,10 @@ export default class Toolbar extends Component {
                     <h3 className="item-title"><a href="#/product">{item.name}</a></h3>
                     <h4 className="item-price">$12.90</h4>
                     <div className="count-input">
-                        <a className="incr-btn" data-action="decrease" href="#">–</a>
-                        <input className="quantity" type="text" defaultValue={1} />
-                        <a className="incr-btn" data-action="increase" href="#">+</a>
-                      </div>
+                      <a className="incr-btn" data-action="decrease" href="#">–</a>
+                      <input className="quantity" type="text" defaultValue={1} />
+                      <a className="incr-btn" data-action="increase" href="#">+</a>
+                    </div>
                   </div>
                   <a href="#" className="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
                     <i className="material-icons remove_shopping_cart" />
@@ -278,34 +278,34 @@ export default class Toolbar extends Component {
                 <div className="col-sm-6">
                   <div className="form-element form-select">
                     <select className="form-control" name="co_country">
-                        <option value>Country</option>
-                        <option value="australia">Australia</option>
-                        <option value="gb">Great Britain</option>
-                        <option value="poland">Poland</option>
-                        <option value="switzerland">Switzerland</option>
-                        <option value="usa">USA</option>
-                      </select>
+                      <option value>Country</option>
+                      <option value="australia">Australia</option>
+                      <option value="gb">Great Britain</option>
+                      <option value="poland">Poland</option>
+                      <option value="switzerland">Switzerland</option>
+                      <option value="usa">USA</option>
+                    </select>
                   </div>
                   <div className="form-element form-select">
                     <select className="form-control" name="co_city">
-                        <option value>City</option>
-                        <option value="bern">Bern</option>
-                        <option value="london">London</option>
-                        <option value="ny">New York</option>
-                        <option value="warsaw">Warsaw</option>
-                      </select>
+                      <option value>City</option>
+                      <option value="bern">Bern</option>
+                      <option value="london">London</option>
+                      <option value="ny">New York</option>
+                      <option value="warsaw">Warsaw</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-sm-6">
                   <div className="form-element form-select">
                     <select className="form-control" name="co_state">
-                        <option value>State</option>
-                        <option value={1}>State 1</option>
-                        <option value={2}>State 2</option>
-                        <option value={3}>State 3</option>
-                        <option value={4}>State 4</option>
-                        <option value={5}>State 5</option>
-                      </select>
+                      <option value>State</option>
+                      <option value={1}>State 1</option>
+                      <option value={2}>State 2</option>
+                      <option value={3}>State 3</option>
+                      <option value={4}>State 4</option>
+                      <option value={5}>State 5</option>
+                    </select>
                   </div>
                   <input type="text" className="form-control" name="co_zip" placeholder="ZIP code" required />
                 </div>

@@ -2273,98 +2273,98 @@ export default (ComposedComponent) => {
                 <div>
                   <div>
                     <Alert bsStyle='danger'>
-                        <i className='fa fa-info' /> Please select a payment option below.
-                      </Alert>
+                      <i className='fa fa-info' /> Please select a payment option below.
+                    </Alert>
                   </div>
 
                   <form>
                     <FormGroup>
-                        <i className='fa fa-money' /> <ControlLabel>Choose Payment Type</ControlLabel>
-                        <br />
-                      </FormGroup>
+                      <i className='fa fa-money' /> <ControlLabel>Choose Payment Type</ControlLabel>
+                      <br />
+                    </FormGroup>
                                         
                     <FormGroup>
-                        {this.renderPaymentOptions()}
-                        <input type='hidden' name='hid_cash' />
-                      </FormGroup>
+                      {this.renderPaymentOptions()}
+                      <input type='hidden' name='hid_cash' />
+                    </FormGroup>
 
                     <hr />
                                         
                     {this.state.paymentCode === 'cash' && (
-                        <FormGroup>
-                          {this.renderCashOptions()}
-                          <input type='hidden' name='hid_cash' />
-                        </FormGroup>
+                    <FormGroup>
+                      {this.renderCashOptions()}
+                      <input type='hidden' name='hid_cash' />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'cash' && this.state.customPaymentAmount && (
-                        <FormGroup>
-                          <i className='fa fa-dollar' /> <ControlLabel>Custom Amount</ControlLabel>
-                          <FormControl type='text' name='custom_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-dollar' /> <ControlLabel>Custom Amount</ControlLabel>
+                      <FormControl type='text' name='custom_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'credit' && (
-                        <FormGroup>
-                          <i className='fa fa-credit-card' /> <ControlLabel>Credit Card</ControlLabel>
-                          <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
-                          <input type='hidden' name='hid_card' />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-credit-card' /> <ControlLabel>Credit Card</ControlLabel>
+                      <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
+                      <input type='hidden' name='hid_card' />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'debit' && (
-                        <FormGroup>
-                          <i className='fa fa-credit-card' /> <ControlLabel>Debit Card</ControlLabel>
-                          <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
-                          <input type='hidden' name='hid_debit' />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-credit-card' /> <ControlLabel>Debit Card</ControlLabel>
+                      <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
+                      <input type='hidden' name='hid_debit' />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'cheque' && (
-                        <FormGroup>
-                          <i className='fa fa-money' /> <ControlLabel>Cheque / Money Order</ControlLabel>
-                          <FormControl type='text' name='cheque' placeholder='Reference Number' />
-                          <input type='hidden' name='hid_cheque' />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-money' /> <ControlLabel>Cheque / Money Order</ControlLabel>
+                      <FormControl type='text' name='cheque' placeholder='Reference Number' />
+                      <input type='hidden' name='hid_cheque' />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (
-                        <FormGroup>
-                          <i className='fa fa-dollar' /> <ControlLabel>Amount</ControlLabel>
-                          <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-dollar' /> <ControlLabel>Amount</ControlLabel>
+                      <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
+                    </FormGroup>
                                         )}
                                         
                     {this.state.paymentCode === 'giftcard' && (
-                        <FormGroup>
-                          <i className='fa fa-gift' /> <ControlLabel>Gift Card</ControlLabel>
-                          <FormControl type='text' name='gift' placeholder='Card Number or Swipe' />
-                          <input type='hidden' name='hid_gift' />
-                        </FormGroup>
+                    <FormGroup>
+                      <i className='fa fa-gift' /> <ControlLabel>Gift Card</ControlLabel>
+                      <FormControl type='text' name='gift' placeholder='Card Number or Swipe' />
+                      <input type='hidden' name='hid_gift' />
+                    </FormGroup>
                                         )}
                                         
                     {/* TODO: Check if is a valid method */}
                     {this.state.paymentCode !== null && (
-                        <hr />
+                    <hr />
                                         )}
 
                     <FormGroup>
-                        <Button bsStyle='success' block onClick={this.completeOrder}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
-                      </FormGroup>
+                      <Button bsStyle='success' block onClick={this.completeOrder}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
+                    </FormGroup>
                     <FormGroup>
-                        <Button bsStyle='default' block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-                      </FormGroup>
+                      <Button bsStyle='default' block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                    </FormGroup>
                                         
                   </form>
                                     
                   <div className='receipt'
                     style={{
-                        margin: '0 auto',
-                        maxWidth: '570px',
-                        boxSizing: 'border-box',
-                        padding: '18px',
-                        border: '1px solid black'
-                      }}>
+                      margin: '0 auto',
+                      maxWidth: '570px',
+                      boxSizing: 'border-box',
+                      padding: '18px',
+                      border: '1px solid black'
+                    }}>
                     {this.renderReceipt()}
                   </div>
                                     
@@ -2372,13 +2372,13 @@ export default (ComposedComponent) => {
                                     
                   <FormGroup>
                     <Button bsStyle='warning' block onClick={this.debugReceipt}>
-                        <h4><i className='fa fa-bug' /> Debug Receipt</h4>
-                      </Button>
+                      <h4><i className='fa fa-bug' /> Debug Receipt</h4>
+                    </Button>
                   </FormGroup>
                   <FormGroup>
                     <Button bsStyle='warning' block onClick={this.debugOrder}>
-                        <h4><i className='fa fa-bug' /> Debug Order</h4>
-                      </Button>
+                      <h4><i className='fa fa-bug' /> Debug Order</h4>
+                    </Button>
                   </FormGroup>
                 </div>
               </div>
@@ -2398,42 +2398,42 @@ export default (ComposedComponent) => {
                 <div>
                   <div>
                     <Alert>
-                        <h2 style={{ textAlign: 'center', display: 'block' }}>${this.state.changeAmount} change</h2>
-                        <hr />
-                        <span style={{ textAlign: 'center', display: 'block' }}><b>Out of ${this.state.cashAmount} received</b></span>
-                        {/*<span style={{ textAlign: 'center', display: 'block' }}>How would you like your receipt?</span>*/}
-                      </Alert>
+                      <h2 style={{ textAlign: 'center', display: 'block' }}>${this.state.changeAmount} change</h2>
+                      <hr />
+                      <span style={{ textAlign: 'center', display: 'block' }}><b>Out of ${this.state.cashAmount} received</b></span>
+                      {/*<span style={{ textAlign: 'center', display: 'block' }}>How would you like your receipt?</span>*/}
+                    </Alert>
                   </div>
 
                   <form>
                     <FormGroup>
-                        <Button block bsStyle='default' onClick={this.showReceiptModal}><h4><i className='fa fa-eye' /> View Receipt</h4></Button>
-                      </FormGroup>
+                      <Button block bsStyle='default' onClick={this.showReceiptModal}><h4><i className='fa fa-eye' /> View Receipt</h4></Button>
+                    </FormGroup>
 
                     <FormGroup>
-                        <Button block bsStyle='default' onClick={this.printReceipt}><h4><i className='fa fa-print' /> Print Receipt</h4></Button>
-                      </FormGroup>
+                      <Button block bsStyle='default' onClick={this.printReceipt}><h4><i className='fa fa-print' /> Print Receipt</h4></Button>
+                    </FormGroup>
 
                     <FormGroup>
-                        <Button block bsStyle='default' onClick={this.printOrder}><h4><i className='fa fa-clipboard' /> Re-print Order</h4></Button>
-                      </FormGroup>
+                      <Button block bsStyle='default' onClick={this.printOrder}><h4><i className='fa fa-clipboard' /> Re-print Order</h4></Button>
+                    </FormGroup>
 
                     <FormGroup>
-                        <Button
-                            block
-                            style={{
-                                width: '100%',
-                                marginTop: '2rem'
-                              }}
-                            onClick={this.openDrawer}
-                            bsStyle='default'>
-                            <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
-                          </Button>
-                      </FormGroup>
+                      <Button
+                        block
+                        style={{
+                          width: '100%',
+                          marginTop: '2rem'
+                        }}
+                        onClick={this.openDrawer}
+                        bsStyle='default'>
+                        <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
+                      </Button>
+                    </FormGroup>
 
                     <FormGroup>
-                        <Button block bsStyle='success' onClick={this.onSaleComplete}><h4><i className='fa fa-check' /> Done (New Sale)</h4></Button>
-                      </FormGroup>
+                      <Button block bsStyle='success' onClick={this.onSaleComplete}><h4><i className='fa fa-check' /> Done (New Sale)</h4></Button>
+                    </FormGroup>
 
                     <hr />
 

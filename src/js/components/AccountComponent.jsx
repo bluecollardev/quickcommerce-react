@@ -222,17 +222,17 @@ class AccountComponent extends Component {
                 }}>
                 <div className='column_attr clearfix align_center'>
                   {!this.props.loggedIn && (
-                      <SignInForm 
-                        onLoginSuccess={this.onLoginSuccess}
-                        onCreate={() => {window.location.hash = '/account/register'}}
+                  <SignInForm 
+                    onLoginSuccess={this.onLoginSuccess}
+                    onCreate={() => {window.location.hash = '/account/register'}}
                                         />
                                     )}
                                     
                   {this.props.loggedIn && (
-                      <SignInForm 
-                        user={this.props.customer}
-                        onLoginSuccess={this.onLoginSuccess}
-                        onCreate={() => {window.location.hash = '/account/register'}}
+                  <SignInForm 
+                    user={this.props.customer}
+                    onLoginSuccess={this.onLoginSuccess}
+                    onCreate={() => {window.location.hash = '/account/register'}}
                                         />
                                     )}
                 </div>

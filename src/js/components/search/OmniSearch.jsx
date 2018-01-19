@@ -187,51 +187,51 @@ class OmniSearch extends Component {
                                     
                   return (
                     <TableRow style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                        <TableCell>{item.userId}</TableCell>
-                        <TableCell>{[item.firstName, item.lastName].join(' ')}</TableCell>
-                        <TableCell>{item.email}</TableCell>
-                        <TableCell><Button><i className='fa fa-fw fa-file-text' /></Button>&nbsp;<Button><i className='fa fa-fw fa-eye' /></Button></TableCell>
-                      </TableRow>
+                      <TableCell>{item.userId}</TableCell>
+                      <TableCell>{[item.firstName, item.lastName].join(' ')}</TableCell>
+                      <TableCell>{item.email}</TableCell>
+                      <TableCell><Button><i className='fa fa-fw fa-file-text' /></Button>&nbsp;<Button><i className='fa fa-fw fa-eye' /></Button></TableCell>
+                    </TableRow>
                   )
                 }}
                 renderMenu={(items, value, style) => {
                   return (
                     <div className='search-dropdown-wrapper'>
-                        <div style={{
-                            position: 'absolute',
-                            zIndex: '9999',
-                            left: '0',
-                            right: '0',
-                            overflow: 'hidden',
-                            zIndex: '100',
-                            borderRadius: '0',
-                            boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-                            background: 'rgba(255, 255, 255, 0.9)',
-                            padding: '1rem 0',
-                            fontSize: '100%',
-                            overflow: 'auto',
-                            height: 'auto',
-                            maxHeight: '240px'}}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>ID</TableCell>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Email</TableCell>
-                                        <TableCell>Action</TableCell>
-                                      </TableRow>
-                                  </TableHead>
-                                <TableBody>
-                                    {items}
-                                    <TableRow>
-                                        <TableCell>
-                                            <Button><i className='fa fa-fw fa-user-plus' /> Create New Customer</Button>
-                                          </TableCell>
-                                      </TableRow>
-                                  </TableBody>
-                              </Table>
-                          </div>
+                      <div style={{
+                        position: 'absolute',
+                        zIndex: '9999',
+                        left: '0',
+                        right: '0',
+                        overflow: 'hidden',
+                        zIndex: '100',
+                        borderRadius: '0',
+                        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        padding: '1rem 0',
+                        fontSize: '100%',
+                        overflow: 'auto',
+                        height: 'auto',
+                        maxHeight: '240px'}}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>ID</TableCell>
+                              <TableCell>Name</TableCell>
+                              <TableCell>Email</TableCell>
+                              <TableCell>Action</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {items}
+                            <TableRow>
+                              <TableCell>
+                                <Button><i className='fa fa-fw fa-user-plus' /> Create New Customer</Button>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
                       </div>
+                    </div>
                   )
                 }}
                 shouldItemRender={this.matchItemToTerm}
@@ -246,8 +246,8 @@ class OmniSearch extends Component {
                 onChange={(event, value) => {
                   if (typeof value === 'string' && value.trim().length > 0) {                                        
                     this.props.actions.omniSearch.search({
-                        search: value.trim()
-                      })
+                      search: value.trim()
+                    })
                   }
                                     
                   this.setState({

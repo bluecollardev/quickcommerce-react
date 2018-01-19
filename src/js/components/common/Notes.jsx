@@ -177,20 +177,20 @@ export default FormComponent(class Notes extends Component {
             <div>
               <form>
                 <Row>
-                      <FormGroup className='col-xs-12'>
-                        {/*<ControlLabel>Notes</ControlLabel>*/}
-                        <FormControl inputRef={(notes) => this.notes = notes}
-                              componentClass='textarea' defaultValue={notesString} rows={12} />
-                      </FormGroup>
+                  <FormGroup className='col-xs-12'>
+                    {/*<ControlLabel>Notes</ControlLabel>*/}
+                    <FormControl inputRef={(notes) => this.notes = notes}
+                      componentClass='textarea' defaultValue={notesString} rows={12} />
+                  </FormGroup>
                                     
-                      <FormGroup className='col-xs-12 col-sm-6'>
-                        <Button block bsStyle='success' onClick={this.onSave}><h4><i className='fa fa-check' /> Save</h4></Button>
-                      </FormGroup>
+                  <FormGroup className='col-xs-12 col-sm-6'>
+                    <Button block bsStyle='success' onClick={this.onSave}><h4><i className='fa fa-check' /> Save</h4></Button>
+                  </FormGroup>
                                     
-                      <FormGroup className='col-xs-12 col-sm-6'>
-                        <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-                      </FormGroup>
-                    </Row>
+                  <FormGroup className='col-xs-12 col-sm-6'>
+                    <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                  </FormGroup>
+                </Row>
               </form>
             </div>
                         )}

@@ -67,20 +67,20 @@ export default class Contact extends Component {
                 <form method="post" className="ajax-form">
                   <div className="contact-form container">
                     <div className="row">
-                        <div className="col-sm-6">
-                            <div className="form-element">
-                              <input type="text" className="form-control" name="name" placeholder="Name" />
-                            </div>
-                          </div>
-                        <div className="col-sm-6">
-                            <div className="form-element">
-                              <input type="email" className="form-control" name="email" placeholder="E-mail" />
-                            </div>
-                          </div>
-                      </div>{/* .row */}
-                    <div className="form-element">
-                        <textarea rows={6} className="form-control" name="message" placeholder="Message" defaultValue={''} />
+                      <div className="col-sm-6">
+                        <div className="form-element">
+                          <input type="text" className="form-control" name="name" placeholder="Name" />
+                        </div>
                       </div>
+                      <div className="col-sm-6">
+                        <div className="form-element">
+                          <input type="email" className="form-control" name="email" placeholder="E-mail" />
+                        </div>
+                      </div>
+                    </div>{/* .row */}
+                    <div className="form-element">
+                      <textarea rows={6} className="form-control" name="message" placeholder="Message" defaultValue={''} />
+                    </div>
                     <button type="submit" className="btn btn-primary btn-block waves-effect waves-light space-top-none">Send Message</button>
                   </div>
                   <div className="status-message" />

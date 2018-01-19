@@ -419,541 +419,541 @@ class SettingComponent extends Component {
                 <Row>
                   <Col xs={12} className='customer-profile'>
                     <div className='customer-full-info'>
-                        <form>
-                            <Col xs={12}>
-                                <h4>Store Settings</h4>
-                                <hr />
-                                <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4'>
-                                    <ControlLabel>QuickCommerce Shop URL</ControlLabel>
-                                    <FormControl type='text' name='shop_url' {...this.props.fields('shop_url', data.shop_url)} />
-                                  </FormGroup>
+                      <form>
+                        <Col xs={12}>
+                          <h4>Store Settings</h4>
+                          <hr />
+                          <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4'>
+                            <ControlLabel>QuickCommerce Shop URL</ControlLabel>
+                            <FormControl type='text' name='shop_url' {...this.props.fields('shop_url', data.shop_url)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-12'>
-                                    <ControlLabel>Assign to Store</ControlLabel>
-                                    <Autocomplete
-                                        name='store'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.stores}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToStore}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.store}
-                                        onChange={(event, value) => {
-                                            this.props.fields('store', value)
+                          <FormGroup className='autocomplete-control-group col-sm-12'>
+                            <ControlLabel>Assign to Store</ControlLabel>
+                            <Autocomplete
+                              name='store'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.stores}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToStore}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.store}
+                              onChange={(event, value) => {
+                                this.props.fields('store', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    store: value
-                                                  })
-                                              }))
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    store: value
+                                  })
+                                }))
                                                                 
                                                                 //this.parseZones(item.id)
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('store_id', parseInt(item.id))
-                                            this.props.fields('store', value)
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('store_id', parseInt(item.id))
+                                this.props.fields('store', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    store_id: parseInt(item.id),
-                                                    store: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    store_id: parseInt(item.id),
+                                    store: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('store', data.store), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='store_id' {...this.props.field('store_id', data.store_id)} />
-                                  </FormGroup>
-                                <h4>Layout Settings</h4>
-                                <hr />
-                                <FormGroup className='autocomplete-control-group col-sm-12'>
-                                    <ControlLabel>Default Display Category</ControlLabel>
-                                    <Autocomplete
-                                        name='pinned_category'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.categories}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToStore}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.pinned_category}
-                                        onChange={(event, value) => {
-                                            this.props.fields('pinned_category', value)
+                            <input type='hidden' name='store_id' {...this.props.field('store_id', data.store_id)} />
+                          </FormGroup>
+                          <h4>Layout Settings</h4>
+                          <hr />
+                          <FormGroup className='autocomplete-control-group col-sm-12'>
+                            <ControlLabel>Default Display Category</ControlLabel>
+                            <Autocomplete
+                              name='pinned_category'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.categories}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToStore}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.pinned_category}
+                              onChange={(event, value) => {
+                                this.props.fields('pinned_category', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    pinned_category: value
-                                                  })
-                                              }))
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    pinned_category: value
+                                  })
+                                }))
                                                                 
                                                                 //this.parseZones(item.id)
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('pinned_category_id', parseInt(item.id))
-                                            this.props.fields('pinned_category', value)
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('pinned_category_id', parseInt(item.id))
+                                this.props.fields('pinned_category', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    pinned_category_id: parseInt(item.id),
-                                                    pinned_category: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    pinned_category_id: parseInt(item.id),
+                                    pinned_category: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('pinned_category', data.pinned_category), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='pinned_category_id' {...this.props.field('pinned_category_id', data.pinned_category_id)} />
-                                  </FormGroup>
-                                <h4>Location Settings</h4>
-                                <hr />
-                                {/* Only display if purchaser is a company */}
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Default Country</ControlLabel>
-                                    <Autocomplete
-                                        name='default_country'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.getCountries()}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToCountry}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.default_country}
-                                        onChange={(event, value) => {
-                                            this.props.fields('default_country', value)
+                            <input type='hidden' name='pinned_category_id' {...this.props.field('pinned_category_id', data.pinned_category_id)} />
+                          </FormGroup>
+                          <h4>Location Settings</h4>
+                          <hr />
+                          {/* Only display if purchaser is a company */}
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Default Country</ControlLabel>
+                            <Autocomplete
+                              name='default_country'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.getCountries()}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToCountry}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.default_country}
+                              onChange={(event, value) => {
+                                this.props.fields('default_country', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_country: value
-                                                  })
-                                              }))
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_country: value
+                                  })
+                                }))
                                                                 
                                                                 //this.parseZones(item.id)
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('default_country_id', parseInt(item.id))
-                                            this.props.fields('default_country', item.value)
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('default_country_id', parseInt(item.id))
+                                this.props.fields('default_country', item.value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_country_id: parseInt(item.id),
-                                                    default_country: item.value
-                                                  })
-                                              }))
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_country_id: parseInt(item.id),
+                                    default_country: item.value
+                                  })
+                                }))
                                                                 
-                                            this.props.settingStore.parseZones(item.id)
-                                          }}
-                                        inputProps={
+                                this.props.settingStore.parseZones(item.id)
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('default_country', data.default_country), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='default_country_id' {...this.props.field('default_country_id', data.default_country_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='default_country_id' {...this.props.field('default_country_id', data.default_country_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Default Province</ControlLabel>
-                                    <Autocomplete
-                                        name='default_zone'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.getZones(data.default_country_id)}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToZone}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.default_zone}
-                                        onChange={(event, value) => {
-                                            this.props.fields('default_zone', value)
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Default Province</ControlLabel>
+                            <Autocomplete
+                              name='default_zone'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.getZones(data.default_country_id)}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToZone}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.default_zone}
+                              onChange={(event, value) => {
+                                this.props.fields('default_zone', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    zone: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('default_zone_id', parseInt(item.id))
-                                            this.props.fields('default_zone', item.value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    zone: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('default_zone_id', parseInt(item.id))
+                                this.props.fields('default_zone', item.value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_zone_id: parseInt(item.id),
-                                                    default_zone: item.value 
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_zone_id: parseInt(item.id),
+                                    default_zone: item.value 
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('default_zone', data.default_zone), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='default_zone_id' {...this.props.field('default_zone_id', data.default_zone_id)} />
-                                  </FormGroup>
-                              </Col>
+                            <input type='hidden' name='default_zone_id' {...this.props.field('default_zone_id', data.default_zone_id)} />
+                          </FormGroup>
+                        </Col>
                                                 
-                            <Col xs={12}>
-                                <h4>Order Settings</h4>
-                                <hr />
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Initial Order Status</ControlLabel>
-                                    <Autocomplete
-                                        name='order_status'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.orderStatuses}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToStatus}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.POS_initial_status}
-                                        onChange={(event, value) => {
-                                            this.props.fields('POS_initial_status', value)
+                        <Col xs={12}>
+                          <h4>Order Settings</h4>
+                          <hr />
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Initial Order Status</ControlLabel>
+                            <Autocomplete
+                              name='order_status'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.orderStatuses}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToStatus}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.POS_initial_status}
+                              onChange={(event, value) => {
+                                this.props.fields('POS_initial_status', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    POS_initial_status: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('POS_initial_status_id', item.id)
-                                            this.props.fields('POS_initial_status', item.value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    POS_initial_status: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('POS_initial_status_id', item.id)
+                                this.props.fields('POS_initial_status', item.value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    POS_initial_status_id: parseInt(item.id),
-                                                    POS_initial_status: item.value 
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    POS_initial_status_id: parseInt(item.id),
+                                    POS_initial_status: item.value 
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('POS_initial_status', data.POS_initial_status), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='POS_initial_status_id' {...this.props.field('POS_initial_status_id', data.POS_initial_status_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='POS_initial_status_id' {...this.props.field('POS_initial_status_id', data.POS_initial_status_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Completed Order Status</ControlLabel>
-                                    <Autocomplete
-                                        name='order_status'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.orderStatuses}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToStatus}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.POS_complete_status}
-                                        onChange={(event, value) => {
-                                            this.props.fields('POS_complete_status', value)
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Completed Order Status</ControlLabel>
+                            <Autocomplete
+                              name='order_status'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.orderStatuses}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToStatus}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.POS_complete_status}
+                              onChange={(event, value) => {
+                                this.props.fields('POS_complete_status', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    POS_complete_status: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('POS_complete_status_id', parseInt(item.id))
-                                            this.props.fields('POS_complete_status', item.value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    POS_complete_status: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('POS_complete_status_id', parseInt(item.id))
+                                this.props.fields('POS_complete_status', item.value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    POS_complete_status_id: parseInt(item.id),
-                                                    POS_complete_status: item.value 
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    POS_complete_status_id: parseInt(item.id),
+                                    POS_complete_status: item.value 
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('POS_complete_status', data.POS_complete_status), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='POS_complete_status_id' {...this.props.field('POS_complete_status_id', data.POS_complete_status_id)} />
-                                  </FormGroup>
-                              </Col>
+                            <input type='hidden' name='POS_complete_status_id' {...this.props.field('POS_complete_status_id', data.POS_complete_status_id)} />
+                          </FormGroup>
+                        </Col>
                                                 
-                            <Col xs={12}>
-                                <h4>Customer Settings</h4>
-                                <hr />
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Cash Sales Customer</ControlLabel>
-                                    <Autocomplete
-                                        name='customer'
-                                        getItemValue={(item) => {
-                                            return [item.firstname, item.lastname].join(' ')
-                                          }}
-                                        items={this.state.customers}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {[item.firstname, item.lastname].join(' ')}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToCustomer}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.cash_customer}
-                                        onChange={(event, value) => {
-                                            this.props.fields('cash_customer', value)
+                        <Col xs={12}>
+                          <h4>Customer Settings</h4>
+                          <hr />
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Cash Sales Customer</ControlLabel>
+                            <Autocomplete
+                              name='customer'
+                              getItemValue={(item) => {
+                                return [item.firstname, item.lastname].join(' ')
+                              }}
+                              items={this.state.customers}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {[item.firstname, item.lastname].join(' ')}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToCustomer}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.cash_customer}
+                              onChange={(event, value) => {
+                                this.props.fields('cash_customer', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    cash_customer: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('cash_customer_id', parseInt(item.customer_id))
-                                            this.props.fields('cash_customer', value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    cash_customer: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('cash_customer_id', parseInt(item.customer_id))
+                                this.props.fields('cash_customer', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    cash_customer_id: parseInt(item.id), 
-                                                    cash_customer: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    cash_customer_id: parseInt(item.id), 
+                                    cash_customer: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('cash_customer', data.cash_customer), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='cash_customer_id' {...this.props.field('cash_customer_id', data.cash_customer_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='cash_customer_id' {...this.props.field('cash_customer_id', data.cash_customer_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Cash Sales Group</ControlLabel>
-                                    <Autocomplete
-                                        name='cash_customer_group'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.customerGroups}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToCustomerGroup}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.cash_customer_group}
-                                        onChange={(event, value) => {
-                                            this.props.fields('cash_customer_group', value)
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Cash Sales Group</ControlLabel>
+                            <Autocomplete
+                              name='cash_customer_group'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.customerGroups}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToCustomerGroup}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.cash_customer_group}
+                              onChange={(event, value) => {
+                                this.props.fields('cash_customer_group', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    cash_customer_group: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('cash_customer_group_id', parseInt(item.id))
-                                            this.props.fields('cash_customer_group', value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    cash_customer_group: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('cash_customer_group_id', parseInt(item.id))
+                                this.props.fields('cash_customer_group', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    cash_customer_group_id: parseInt(item.id), 
-                                                    cash_customer_group: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    cash_customer_group_id: parseInt(item.id), 
+                                    cash_customer_group: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('cash_customer_group', data.cash_customer_group), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='cash_customer_group_id' {...this.props.field('cash_customer_group_id', data.cash_customer_group_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='cash_customer_group_id' {...this.props.field('cash_customer_group_id', data.cash_customer_group_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Default Customer</ControlLabel>
-                                    <Autocomplete
-                                        name='customer'
-                                        getItemValue={(item) => {
-                                            return [item.firstname, item.lastname].join(' ')
-                                          }}
-                                        items={this.state.customers}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {[item.firstname, item.lastname].join(' ')}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToCustomer}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.default_customer}
-                                        onChange={(event, value) => {
-                                            this.props.fields('default_customer', value)
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Default Customer</ControlLabel>
+                            <Autocomplete
+                              name='customer'
+                              getItemValue={(item) => {
+                                return [item.firstname, item.lastname].join(' ')
+                              }}
+                              items={this.state.customers}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {[item.firstname, item.lastname].join(' ')}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToCustomer}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.default_customer}
+                              onChange={(event, value) => {
+                                this.props.fields('default_customer', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_customer: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('default_customer_id', parseInt(item.customer_id))
-                                            this.props.fields('default_customer', value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_customer: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('default_customer_id', parseInt(item.customer_id))
+                                this.props.fields('default_customer', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_customer_id: parseInt(item.customer_id), 
-                                                    default_customer: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_customer_id: parseInt(item.customer_id), 
+                                    default_customer: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('default_customer', data.default_customer), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='default_customer_id' {...this.props.field('default_customer_id', data.default_customer_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='default_customer_id' {...this.props.field('default_customer_id', data.default_customer_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group col-sm-6'>
-                                    <ControlLabel>Default Group</ControlLabel>
-                                    <Autocomplete
-                                        name='default_customer_group'
-                                        getItemValue={(item) => {
-                                            return item.value
-                                          }}
-                                        items={this.props.settingStore.customerGroups}
-                                        renderItem={(item, isHighlighted) => {
-                                            return (
-                                                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                    {item.value}
-                                                  </div>
-                                              )
-                                          }}
-                                        shouldItemRender={this.matchItemToCustomerGroup}
-                                        autoHighlight={true}
-                                        wrapperStyle={{
-                                            display: 'block'
-                                          }}
-                                        value={data.default_customer_group}
-                                        onChange={(event, value) => {
-                                            this.props.fields('default_customer_group', value)
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
+                            <ControlLabel>Default Group</ControlLabel>
+                            <Autocomplete
+                              name='default_customer_group'
+                              getItemValue={(item) => {
+                                return item.value
+                              }}
+                              items={this.props.settingStore.customerGroups}
+                              renderItem={(item, isHighlighted) => {
+                                return (
+                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                    {item.value}
+                                  </div>
+                                )
+                              }}
+                              shouldItemRender={this.matchItemToCustomerGroup}
+                              autoHighlight={true}
+                              wrapperStyle={{
+                                display: 'block'
+                              }}
+                              value={data.default_customer_group}
+                              onChange={(event, value) => {
+                                this.props.fields('default_customer_group', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_customer_group: value
-                                                  })
-                                              }))
-                                          }}
-                                        onSelect={(value, item) => {
-                                            this.props.fields('default_customer_group_id', item.id)
-                                            this.props.fields('default_customer_group', value)
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_customer_group: value
+                                  })
+                                }))
+                              }}
+                              onSelect={(value, item) => {
+                                this.props.fields('default_customer_group_id', item.id)
+                                this.props.fields('default_customer_group', value)
                                                                 
-                                            this.setState(assign({}, this.state, {
-                                                data: assign({}, data, {
-                                                    default_customer_group_id: item.id, 
-                                                    default_customer_group: value
-                                                  })
-                                              }))
-                                          }}
-                                        inputProps={
+                                this.setState(assign({}, this.state, {
+                                  data: assign({}, data, {
+                                    default_customer_group_id: item.id, 
+                                    default_customer_group: value
+                                  })
+                                }))
+                              }}
+                              inputProps={
                                                                 assign(this.props.field('default_customer_group', data.default_customer_group), { className: 'form-control'})
                                                             }
                                                         />
-                                    <input type='hidden' name='default_customer_group_id' {...this.props.field('default_customer_group_id', data.default_customer_group_id)} />
-                                  </FormGroup>
+                            <input type='hidden' name='default_customer_group_id' {...this.props.field('default_customer_group_id', data.default_customer_group_id)} />
+                          </FormGroup>
                                                     
-                                <FormGroup className='autocomplete-control-group'>
-                                    <ControlLabel>Default Customer Address</ControlLabel>
-                                    <CurrentAddress
-                                        ref={(address) => {this.address = address}}
+                          <FormGroup className='autocomplete-control-group'>
+                            <ControlLabel>Default Customer Address</ControlLabel>
+                            <CurrentAddress
+                              ref={(address) => {this.address = address}}
                                                             //title = 'Edit Address'
-                                        mode='edit'
-                                        isSubForm={true}
-                                        data={this.getAddress()}
-                                        displaySummary={true}
-                                        displayActions={true}
-                                        modal={true}
-                                        onShowAddress={this.hideSettings}
-                                        onHideAddress={this.showSettings}
-                                        onUpdate={this.onAddressUpdate}
+                              mode='edit'
+                              isSubForm={true}
+                              data={this.getAddress()}
+                              displaySummary={true}
+                              displayActions={true}
+                              modal={true}
+                              onShowAddress={this.hideSettings}
+                              onHideAddress={this.showSettings}
+                              onUpdate={this.onAddressUpdate}
                                                             />
-                                  </FormGroup>
+                          </FormGroup>
                                                     
-                                <FormGroup className='col-xs-12 col-sm-6'>
-                                    <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> Update Settings</h4></Button>
-                                  </FormGroup>
+                          <FormGroup className='col-xs-12 col-sm-6'>
+                            <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> Update Settings</h4></Button>
+                          </FormGroup>
                                                     
-                                <FormGroup className='col-xs-12 col-sm-6'>
-                                    <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-                                  </FormGroup>
-                              </Col>
-                          </form>
-                      </div>
+                          <FormGroup className='col-xs-12 col-sm-6'>
+                            <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                          </FormGroup>
+                        </Col>
+                      </form>
+                    </div>
                   </Col>
                 </Row>
               </div>

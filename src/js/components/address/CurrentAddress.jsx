@@ -365,12 +365,12 @@ class CurrentAddress extends Component {
                 <FormControl 
                   componentClass='select'
                   onChange={(e) => {
-                        console.log('address type changed')
+                    console.log('address type changed')
 										// TODO: Enumerate options
-                        this.setState({
-                          type: e.target.value
-                        })
-                      }}>
+                    this.setState({
+                      type: e.target.value
+                    })
+                  }}>
                   <option key={0} value='simple'>Simple</option>
                   <option key={1} value='civic'>Civic</option>
                   <option key={2} value='rural'>Rural</option>
@@ -511,47 +511,47 @@ class CurrentAddress extends Component {
                 <Autocomplete
                   name={mappings.COUNTRY}
                   getItemValue={(item) => {
-                        return item.value
-                      }}
+                    return item.value
+                  }}
                   items={this.props.settingStore.getCountries()}
                   renderItem={(item, isHighlighted) => {
-                        return (
-                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                {item.value}
-                              </div>
-                        )
-                      }}
+                    return (
+                      <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.value}
+                      </div>
+                    )
+                  }}
                   shouldItemRender={this.matchItemToTerm}
                   autoHighlight={true}
                   wrapperStyle={{
-                        display: 'block'
-                      }}
+                    display: 'block'
+                  }}
                   value={this.props.getMappedValue(mappings.COUNTRY, data)}
                   onChange={(event, value) => {
-                        this.props.field(mappings.COUNTRY, value)
+                    this.props.field(mappings.COUNTRY, value)
                                         
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                country: value
-                              })
-                        }))
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        country: value
+                      })
+                    }))
                                         
                                         //this.parseZones(item.id)
-                      }}
+                  }}
                   onSelect={(value, item) => {
-                        this.props.field(mappings.COUNTRY_ID, item.id)
-                        this.props.field(mappings.COUNTRY, value)
+                    this.props.field(mappings.COUNTRY_ID, item.id)
+                    this.props.field(mappings.COUNTRY, value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                [mappings.COUNTRY_ID]: item.id,
-                                [mappings.COUNTRY]: value
-                              })
-                        }))
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        [mappings.COUNTRY_ID]: item.id,
+                        [mappings.COUNTRY]: value
+                      })
+                    }))
                                         
-                        this.props.settingStore.getZones(item.id)
-                      }}
+                    this.props.settingStore.getZones(item.id)
+                  }}
                   inputProps={
                                         assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
                                     }
@@ -563,43 +563,43 @@ class CurrentAddress extends Component {
                 <Autocomplete
                   name={mappings.ZONE}
                   getItemValue={(item) => {
-                        return item.value
-                      }}
+                    return item.value
+                  }}
                   items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
                   renderItem={(item, isHighlighted) => {
-                        return (
-                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                {item.value}
-                              </div>
-                        )
-                      }}
+                    return (
+                      <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                        {item.value}
+                      </div>
+                    )
+                  }}
                   shouldItemRender={this.matchItemToTerm}
                   autoHighlight={true}
                   wrapperStyle={{
-                        display: 'block'
-                      }}
+                    display: 'block'
+                  }}
                   value={this.props.getMappedValue(mappings.ZONE, data)}
                   onChange={(event, value) => {
-                        this.props.fields(mappings.ZONE, value)
+                    this.props.fields(mappings.ZONE, value)
                                         
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                [mappings.ZONE]: value
-                              })
-                        }))
-                      }}
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        [mappings.ZONE]: value
+                      })
+                    }))
+                  }}
                   onSelect={(value, item) => {
-                        this.props.field(mappings.ZONE_ID, item.id)
-                        this.props.field(mappings.ZONE, value)
+                    this.props.field(mappings.ZONE_ID, item.id)
+                    this.props.field(mappings.ZONE, value)
                                         
                                         // Not sure if this is necessary anymore, pretty sure it's redundant
-                        this.setState(assign({}, this.state, {
-                          data: assign({}, data, {
-                                [mappings.ZONE_ID]: item.id,
-                                [mappings.ZONE]: value 
-                              })
-                        }))
-                      }}
+                    this.setState(assign({}, this.state, {
+                      data: assign({}, data, {
+                        [mappings.ZONE_ID]: item.id,
+                        [mappings.ZONE]: value 
+                      })
+                    }))
+                  }}
                   inputProps={
                                         assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
                                     }
@@ -654,246 +654,246 @@ class CurrentAddress extends Component {
                                 </div>*/}
               <form>
                 <div>
-                      <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
+                  <input type='hidden' name={mappings.ADDRESS_ID} {...this.props.fields(mappings.ADDRESS_ID, this.props.getMappedValue(mappings.ADDRESS_ID, data))} />
                                         
-                      {/* First Name / Last Name */}
-                      {this.props.nameRequired && (
-                      <Row>
-                            <FormGroup className='col-xs-12 col-lg-6'>
-                              <ControlLabel>First Name*</ControlLabel>
-                              <FormControl type='text' name={mappings.FIRST_NAME} {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
-                            </FormGroup>
-                            <FormGroup className='col-xs-12 col-lg-6'>
-                              <ControlLabel>Last Name*</ControlLabel>
-                              <FormControl type='text' name={mappings.LAST_NAME} {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
-                            </FormGroup>
-                          </Row>
-                                        )}
-                                        
-                      {/* Simple Addresses (Line 1, 2, 3?) */}
-                      {this.state.type === 'simple' && (
-                      <FormGroup>
-                            <ControlLabel>Address 1</ControlLabel>
-                            <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'simple' && (
-                      <FormGroup>
-                            <ControlLabel>Address 2</ControlLabel>
-                            <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
-                          </FormGroup>
+                  {/* First Name / Last Name */}
+                  {this.props.nameRequired && (
+                  <Row>
+                    <FormGroup className='col-xs-12 col-lg-6'>
+                      <ControlLabel>First Name*</ControlLabel>
+                      <FormControl type='text' name={mappings.FIRST_NAME} {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data))} />
+                    </FormGroup>
+                    <FormGroup className='col-xs-12 col-lg-6'>
+                      <ControlLabel>Last Name*</ControlLabel>
+                      <FormControl type='text' name={mappings.LAST_NAME} {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data))} />
+                    </FormGroup>
+                  </Row>
                                         )}
                                         
-                      {/* Civic Addresses */}
-                      {this.state.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Suite</ControlLabel>
-                            <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
-                          </FormGroup>
+                  {/* Simple Addresses (Line 1, 2, 3?) */}
+                  {this.state.type === 'simple' && (
+                  <FormGroup>
+                    <ControlLabel>Address 1</ControlLabel>
+                    <FormControl type='text' name={mappings.ADDRESS_1} {...this.props.fields(mappings.ADDRESS_1, this.props.getMappedValue(mappings.ADDRESS_1, data))} />
+                  </FormGroup>
                                         )}
-                      {this.state.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Street Name</ControlLabel>
-                            <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.STREET_NAME, this.props.getMappedValue(mappings.STREET_NAME, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Street Type</ControlLabel>
-                            <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'civic' && (
-                      <FormGroup>
-                            <ControlLabel>Direction</ControlLabel>
-                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
-                          </FormGroup>
+                  {this.state.type === 'simple' && (
+                  <FormGroup>
+                    <ControlLabel>Address 2</ControlLabel>
+                    <FormControl type='text' name={mappings.ADDRESS_2} {...this.props.fields(mappings.ADDRESS_2, this.props.getMappedValue(mappings.ADDRESS_2, data))} />
+                  </FormGroup>
                                         )}
                                         
-                      {/* Postal Installation Addresses */}
-                      {this.state.type === 'pobox' && (
-                      <FormGroup>
-                            <ControlLabel>Box</ControlLabel>
-                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
-                          </FormGroup>
+                  {/* Civic Addresses */}
+                  {this.state.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Suite</ControlLabel>
+                    <FormControl type='text' name={mappings.SUITE} {...this.props.fields(mappings.SUITE, this.props.getMappedValue(mappings.SUITE, data))} />
+                  </FormGroup>
                                         )}
-                      {this.state.type === 'pobox' && (
-                      <FormGroup>
-                            <ControlLabel>Station</ControlLabel>
-                            <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
-                          </FormGroup>
+                  {this.state.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Street Name</ControlLabel>
+                    <FormControl type='text' name={mappings.STREET_NAME} {...this.props.fields(mappings.STREET_NAME, this.props.getMappedValue(mappings.STREET_NAME, data))} />
+                  </FormGroup>
                                         )}
-                                        
-                      {/* Rural Addresses */}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Range Rd.</ControlLabel>
-                            <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
-                          </FormGroup>
+                  {this.state.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Street Type</ControlLabel>
+                    <FormControl type='text' name={mappings.STREET_TYPE} {...this.props.fields(mappings.STREET_TYPE, this.props.getMappedValue(mappings.STREET_TYPE, data))} />
+                  </FormGroup>
                                         )}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Site</ControlLabel>
-                            <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Comp</ControlLabel>
-                            <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Box</ControlLabel>
-                            <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Lot #</ControlLabel>
-                            <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
-                          </FormGroup>
-                                        )}
-                      {this.state.type === 'rural' && (
-                      <FormGroup>
-                            <ControlLabel>Concession #</ControlLabel>
-                            <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
-                          </FormGroup>
+                  {this.state.type === 'civic' && (
+                  <FormGroup>
+                    <ControlLabel>Direction</ControlLabel>
+                    <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
+                  </FormGroup>
                                         )}
                                         
-                      {/* City (If Applicable) */}
-                      <FormGroup>
-                        <ControlLabel>City</ControlLabel>
-                        <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
-                      </FormGroup>
+                  {/* Postal Installation Addresses */}
+                  {this.state.type === 'pobox' && (
+                  <FormGroup>
+                    <ControlLabel>Box</ControlLabel>
+                    <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'pobox' && (
+                  <FormGroup>
+                    <ControlLabel>Station</ControlLabel>
+                    <FormControl type='text' name={mappings.STN} {...this.props.fields(mappings.STN, this.props.getMappedValue(mappings.STN, data))} />
+                  </FormGroup>
+                                        )}
                                         
-                      {/* Common Address Fields */}
-                      <FormGroup className='autocomplete-control-group col-xs-12'>
-                        <ControlLabel>Country*</ControlLabel>
-                        <Autocomplete
-                              name={mappings.COUNTRY}
-                              getItemValue={(item) => {
-                                return item.value
-                              }}
-                              items={this.props.settingStore.getCountries()}
-                              renderItem={(item, isHighlighted) => {
-                                return (
-                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                        {item.value}
-                                      </div>
-                                )
-                              }}
-                              shouldItemRender={this.matchItemToTerm}
-                              autoHighlight={true}
-                              wrapperStyle={{
-                                display: 'block'
-                              }}
-                              value={this.props.getMappedValue(mappings.COUNTRY, data)}
-                              onChange={(event, value) => {
-                                this.props.field(mappings.COUNTRY, value)
+                  {/* Rural Addresses */}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Range Rd.</ControlLabel>
+                    <FormControl type='text' name={mappings.RANGE_ROAD} {...this.props.fields(mappings.RANGE_ROAD, this.props.getMappedValue(mappings.RANGE_ROAD, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Site</ControlLabel>
+                    <FormControl type='text' name={mappings.STREET_DIR} {...this.props.fields(mappings.STREET_DIR, this.props.getMappedValue(mappings.STREET_DIR, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Comp</ControlLabel>
+                    <FormControl type='text' name={mappings.COMP} {...this.props.fields(mappings.COMP, this.props.getMappedValue(mappings.COMP, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Box</ControlLabel>
+                    <FormControl type='text' name={mappings.BOX} {...this.props.fields(mappings.BOX, this.props.getMappedValue(mappings.BOX, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Lot #</ControlLabel>
+                    <FormControl type='text' name={mappings.LOT} {...this.props.fields(mappings.LOT, this.props.getMappedValue(mappings.LOT, data))} />
+                  </FormGroup>
+                                        )}
+                  {this.state.type === 'rural' && (
+                  <FormGroup>
+                    <ControlLabel>Concession #</ControlLabel>
+                    <FormControl type='text' name={mappings.CONCESSION} {...this.props.fields(mappings.CONCESSION, this.props.getMappedValue(mappings.CONCESSION, data))} />
+                  </FormGroup>
+                                        )}
+                                        
+                  {/* City (If Applicable) */}
+                  <FormGroup>
+                    <ControlLabel>City</ControlLabel>
+                    <FormControl type='text' name='city' {...this.props.fields('city', data.city)} />
+                  </FormGroup>
+                                        
+                  {/* Common Address Fields */}
+                  <FormGroup className='autocomplete-control-group col-xs-12'>
+                    <ControlLabel>Country*</ControlLabel>
+                    <Autocomplete
+                      name={mappings.COUNTRY}
+                      getItemValue={(item) => {
+                        return item.value
+                      }}
+                      items={this.props.settingStore.getCountries()}
+                      renderItem={(item, isHighlighted) => {
+                        return (
+                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {item.value}
+                          </div>
+                        )
+                      }}
+                      shouldItemRender={this.matchItemToTerm}
+                      autoHighlight={true}
+                      wrapperStyle={{
+                        display: 'block'
+                      }}
+                      value={this.props.getMappedValue(mappings.COUNTRY, data)}
+                      onChange={(event, value) => {
+                        this.props.field(mappings.COUNTRY, value)
                                                     
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        country: value
-                                      })
-                                }))
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            country: value
+                          })
+                        }))
                                                     
                                                     //this.parseZones(item.id)
-                              }}
-                              onSelect={(value, item) => {
-                                this.props.field(mappings.COUNTRY_ID, item.id)
-                                this.props.field(mappings.COUNTRY, value)
+                      }}
+                      onSelect={(value, item) => {
+                        this.props.field(mappings.COUNTRY_ID, item.id)
+                        this.props.field(mappings.COUNTRY, value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        [mappings.COUNTRY_ID]: item.id,
-                                        [mappings.COUNTRY]: value
-                                      })
-                                }))
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            [mappings.COUNTRY_ID]: item.id,
+                            [mappings.COUNTRY]: value
+                          })
+                        }))
                                                     
-                                this.props.settingStore.getZones(item.id)
-                              }}
-                              inputProps={
+                        this.props.settingStore.getZones(item.id)
+                      }}
+                      inputProps={
                                                     assign(this.props.fields(mappings.COUNTRY, this.props.getMappedValue(mappings.COUNTRY, data)), { className: 'form-control'})
                                                 }
                                             />
-                        <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
-                      </FormGroup>
-                      <FormGroup className='autocomplete-control-group col-xs-12'>
-                        <ControlLabel>Prov.*</ControlLabel>
-                        <Autocomplete
-                              name={mappings.ZONE}
-                              getItemValue={(item) => {
-                                return item.value
-                              }}
-                              items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
-                              renderItem={(item, isHighlighted) => {
-                                return (
-                                  <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                        {item.value}
-                                      </div>
-                                )
-                              }}
-                              shouldItemRender={this.matchItemToTerm}
-                              autoHighlight={true}
-                              wrapperStyle={{
-                                display: 'block'
-                              }}
-                              value={this.props.getMappedValue(mappings.ZONE, data)}
-                              onChange={(event, value) => {
-                                this.props.fields(mappings.ZONE, value)
+                    <input type='hidden' name={mappings.COUNTRY_ID} {...this.props.fields(mappings.COUNTRY_ID, this.props.getMappedValue(mappings.COUNTRY_ID, data))} />
+                  </FormGroup>
+                  <FormGroup className='autocomplete-control-group col-xs-12'>
+                    <ControlLabel>Prov.*</ControlLabel>
+                    <Autocomplete
+                      name={mappings.ZONE}
+                      getItemValue={(item) => {
+                        return item.value
+                      }}
+                      items={this.props.settingStore.getZones(this.props.getMappedValue(mappings.COUNTRY_ID, data))}
+                      renderItem={(item, isHighlighted) => {
+                        return (
+                          <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                            {item.value}
+                          </div>
+                        )
+                      }}
+                      shouldItemRender={this.matchItemToTerm}
+                      autoHighlight={true}
+                      wrapperStyle={{
+                        display: 'block'
+                      }}
+                      value={this.props.getMappedValue(mappings.ZONE, data)}
+                      onChange={(event, value) => {
+                        this.props.fields(mappings.ZONE, value)
                                                     
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        [mappings.ZONE]: value
-                                      })
-                                }))
-                              }}
-                              onSelect={(value, item) => {
-                                this.props.field(mappings.ZONE_ID, item.id)
-                                this.props.field(mappings.ZONE, value)
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            [mappings.ZONE]: value
+                          })
+                        }))
+                      }}
+                      onSelect={(value, item) => {
+                        this.props.field(mappings.ZONE_ID, item.id)
+                        this.props.field(mappings.ZONE, value)
                                                     
                                                     // Not sure if this is necessary anymore, pretty sure it's redundant
-                                this.setState(assign({}, this.state, {
-                                  data: assign({}, data, {
-                                        [mappings.ZONE_ID]: item.id,
-                                        [mappings.ZONE]: value 
-                                      })
-                                }))
-                              }}
-                              inputProps={
+                        this.setState(assign({}, this.state, {
+                          data: assign({}, data, {
+                            [mappings.ZONE_ID]: item.id,
+                            [mappings.ZONE]: value 
+                          })
+                        }))
+                      }}
+                      inputProps={
                                                     assign(this.props.fields(mappings.ZONE, this.props.getMappedValue(mappings.ZONE, data)), { className: 'form-control'})
                                                 }
                                             />
-                        <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
-                      </FormGroup>
-                      <FormGroup>
-                        <ControlLabel>Postal Code*</ControlLabel>
-                        <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
-                      </FormGroup>
+                    <input type='hidden' name={mappings.ZONE_ID} {...this.props.fields(mappings.ZONE_ID, this.props.getMappedValue(mappings.ZONE_ID, data))} />
+                  </FormGroup>
+                  <FormGroup>
+                    <ControlLabel>Postal Code*</ControlLabel>
+                    <FormControl type='text' name={mappings.POSTCODE} {...this.props.fields(mappings.POSTCODE, this.props.getMappedValue(mappings.POSTCODE, data))} />
+                  </FormGroup>
                                         
-                      {this.props.displayActions && (
-                      <Row>
-                            {this.props.mode === 'create' && (
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Create Address' : 'OK'}</h4></Button>
-                            </FormGroup>
+                  {this.props.displayActions && (
+                  <Row>
+                    {this.props.mode === 'create' && (
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block bsStyle='success' onClick={this.onCreate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Create Address' : 'OK'}</h4></Button>
+                    </FormGroup>
                                             )}
                                             
-                            {this.props.mode === 'edit' && (
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Update Address' : 'OK'}</h4></Button>
-                            </FormGroup>
+                    {this.props.mode === 'edit' && (
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check' /> {this.props.isSubForm ? 'Update Address' : 'OK'}</h4></Button>
+                    </FormGroup>
                                             )}
                                             
-                            <FormGroup className='col-xs-12 col-sm-6'>
-                              <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
-                            </FormGroup>
-                          </Row>
+                    <FormGroup className='col-xs-12 col-sm-6'>
+                      <Button block onClick={this.onCancel}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                    </FormGroup>
+                  </Row>
                                         )}                                    
-                    </div>
+                </div>
               </form>
             </div>
                         )}

@@ -2309,21 +2309,21 @@ class PosComponent extends Component {
                 <Col sm={12}>
                   <BlockUi tag='div' blocking={this.state.blockUi}>
                     <ProductBrowser
-                        ref={(browser) => this.categoryBrowser = browser}
-                        activeStep='shop'
-                        title={this.state.title}
-                        displayTitle={false}
-                        displayProductFilter={false}
-                        displayCategoryFilter={false}
-                        displayTextFilter={true}
-                        stepper={this.stepper}
-                        steps={steps}
-                        customRowComponent={CategoryRow}
-                        results={this.state.data.categories}
-                        fluxFactory={fluxFactory}
-                        onItemClicked={this.categoryClicked}
-                        onFilterSelected={this.categoryFilterSelected}
-                        onStepClicked={this.stepClicked}
+                      ref={(browser) => this.categoryBrowser = browser}
+                      activeStep='shop'
+                      title={this.state.title}
+                      displayTitle={false}
+                      displayProductFilter={false}
+                      displayCategoryFilter={false}
+                      displayTextFilter={true}
+                      stepper={this.stepper}
+                      steps={steps}
+                      customRowComponent={CategoryRow}
+                      results={this.state.data.categories}
+                      fluxFactory={fluxFactory}
+                      onItemClicked={this.categoryClicked}
+                      onFilterSelected={this.categoryFilterSelected}
+                      onStepClicked={this.stepClicked}
                                             />
                   </BlockUi>
                 </Col>
@@ -2335,22 +2335,22 @@ class PosComponent extends Component {
                 <Col sm={12}>
                   <BlockUi tag='div' blocking={this.state.blockUi}>
                     <ProductBrowser
-                        ref={(browser) => this.productBrowser = browser}
-                        activeStep='cart'
-                        displayTitle={true}
-                        title={this.state.title}
-                        displayProductFilter={false}
-                        displayCategoryFilter={true}
-                        displayTextFilter={true}
-                        stepper={this.stepper}
-                        steps={steps}
-                        customRowComponent={ProductRow}
-                        results={this.state.data.products}
-                        fluxFactory={fluxFactory}
-                        onItemClicked={this.itemClicked}
-                        onAddToCartClicked={this.addToCartClicked}
-                        onFilterSelected={this.categoryFilterSelected}
-                        onStepClicked={this.stepClicked}
+                      ref={(browser) => this.productBrowser = browser}
+                      activeStep='cart'
+                      displayTitle={true}
+                      title={this.state.title}
+                      displayProductFilter={false}
+                      displayCategoryFilter={true}
+                      displayTextFilter={true}
+                      stepper={this.stepper}
+                      steps={steps}
+                      customRowComponent={ProductRow}
+                      results={this.state.data.products}
+                      fluxFactory={fluxFactory}
+                      onItemClicked={this.itemClicked}
+                      onAddToCartClicked={this.addToCartClicked}
+                      onFilterSelected={this.categoryFilterSelected}
+                      onStepClicked={this.stepClicked}
                                             />
                   </BlockUi>
                 </Col>
@@ -2362,33 +2362,33 @@ class PosComponent extends Component {
                 <Col sm={12}>
                   <BlockUi tag='div' blocking={this.state.blockUi}>
                     <ProductBrowser
-                        ref={(browser) => this.optionBrowser = browser}
-                        activeStep='options'
-                        displayTitle={false}
-                        title={this.state.title}
-                        price={this.state.itemPrice}
-                        item={this.state.item}
-                        displayProductFilter={false}
-                        displayCategoryFilter={false}
-                        displayTextFilter={false}
-                        stepper={this.stepper}
-                        steps={steps}
-                        customRowComponent={ProductOptionRow}
-                        results={this.state.data.options}
-                        fluxFactory={fluxFactory}
-                        onItemClicked={this.optionClicked}
-                        onFilterSelected={this.categoryFilterSelected}
-                        onStepClicked={this.stepClicked}>
-                        <Keypad ref={(keypad) => this.keypad = keypad}/>
-                        <FormGroup
-                            style={{
-                                display: 'block'
-                              }}>
-                            <Button block bsStyle='success' onClick={this.addToCart}>
-                                <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
-                              </Button>
-                          </FormGroup>
-                      </ProductBrowser>
+                      ref={(browser) => this.optionBrowser = browser}
+                      activeStep='options'
+                      displayTitle={false}
+                      title={this.state.title}
+                      price={this.state.itemPrice}
+                      item={this.state.item}
+                      displayProductFilter={false}
+                      displayCategoryFilter={false}
+                      displayTextFilter={false}
+                      stepper={this.stepper}
+                      steps={steps}
+                      customRowComponent={ProductOptionRow}
+                      results={this.state.data.options}
+                      fluxFactory={fluxFactory}
+                      onItemClicked={this.optionClicked}
+                      onFilterSelected={this.categoryFilterSelected}
+                      onStepClicked={this.stepClicked}>
+                      <Keypad ref={(keypad) => this.keypad = keypad}/>
+                      <FormGroup
+                        style={{
+                          display: 'block'
+                        }}>
+                        <Button block bsStyle='success' onClick={this.addToCart}>
+                          <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
+                        </Button>
+                      </FormGroup>
+                    </ProductBrowser>
                   </BlockUi>
                 </Col>
               </Row>
@@ -2399,15 +2399,15 @@ class PosComponent extends Component {
                 <Col sm={12}>
                   <div className='browser-container'>
                     <div className='browser-menu-container'>
-                        <BrowserMenu
-                            activeStep='checkout'
-                            steps={steps}
-                            onStepClicked={this.stepClicked}
+                      <BrowserMenu
+                        activeStep='checkout'
+                        steps={steps}
+                        onStepClicked={this.stepClicked}
                                                 />
-                      </div>
+                    </div>
                     <div className='browser-content'>
-                        <div className='container-fluid'>
-                            {/*<Row>
+                      <div className='container-fluid'>
+                        {/*<Row>
                                                     <Col sm={12}>
                                                         <Header direction='row'
                                                           pad={{horizontal: 'medium'}}>
@@ -2415,8 +2415,8 @@ class PosComponent extends Component {
                                                         </Header>
                                                     </Col>
                                                 </Row>*/}
-                            <Row>
-                                {/*<CustomerProfile
+                        <Row>
+                          {/*<CustomerProfile
                                                         customer = {this.props.checkoutStore.customer}
                                                         billingAddress = {this.props.checkoutStore.billingAddress}
                                                         shippingAddress = {this.props.checkoutStore.shippingAddress}
@@ -2424,9 +2424,9 @@ class PosComponent extends Component {
                                                         displayBillingAddress = {true}
                                                         displayShippingAddress = {true}
                                                         />*/}
-                              </Row>
-                          </div>
+                        </Row>
                       </div>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -2456,7 +2456,7 @@ class PosComponent extends Component {
                 {this.props.loggedIn && (
                 <Row className='account-panel'>
                   <Col xs={12} md={12} lg={6}>
-                        {/* There's an error somewhere, loginStore doesn't update userStore like it used to... 
+                    {/* There's an error somewhere, loginStore doesn't update userStore like it used to... 
                                         Maybe I should consolidate them into a single store or something - saving the same data to 
                                         two stores doesn't really make a lot of sense; it was originally a workaround for something.
                                         <SignInForm
@@ -2464,17 +2464,17 @@ class PosComponent extends Component {
                                             onCreate = {this.showNewCustomerForm}
                                             onLoginSuccess = {this.props.onLoginSuccess}
                                             />*/}
-                        <SignInForm
-                          user={this.props.loginStore.user}
-                          onCreate={this.showNewCustomerForm}
-                          onLoginSuccess={this.props.onLoginSuccess}
+                    <SignInForm
+                      user={this.props.loginStore.user}
+                      onCreate={this.showNewCustomerForm}
+                      onLoginSuccess={this.props.onLoginSuccess}
                                             />
-                      </Col>
+                  </Col>
                   <Col xs={12} md={12} lg={6}>
-                        <TopMenu>
-                          <AccountMenu />
-                        </TopMenu>
-                      </Col>
+                    <TopMenu>
+                      <AccountMenu />
+                    </TopMenu>
+                  </Col>
                 </Row>
                                 )}
                                 
@@ -2496,24 +2496,24 @@ class PosComponent extends Component {
                 {this.state.createAccount && (
                 <div>
                   <CustomerProfile
-                        customer={this.props.customerStore.customer}
-                        billingAddress={this.props.customerStore.billingAddress}
-                        shippingAddress={this.props.customerStore.shippingAddress}
-                        editAccount={false}
-                        createAccount={true}
-                        displayProfile={true}
-                        displayCurrentAddress={true}
-                        displayBillingAddress={true}
-                        displayShippingAddress={false}
-                        onCreateSuccess={(payload) => {
-                          let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
+                    customer={this.props.customerStore.customer}
+                    billingAddress={this.props.customerStore.billingAddress}
+                    shippingAddress={this.props.customerStore.shippingAddress}
+                    editAccount={false}
+                    createAccount={true}
+                    displayProfile={true}
+                    displayCurrentAddress={true}
+                    displayBillingAddress={true}
+                    displayShippingAddress={false}
+                    onCreateSuccess={(payload) => {
+                      let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
                                             
-                          this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
-                          this.props.actions.customer.setBillingAddress({
-                                addresses: data.addresses,
-                                billingAddressId: data.customer['address_id'],
-                                billingAddress: data.addresses[0] // TODO: Get the right address using ID
-                              })
+                      this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
+                      this.props.actions.customer.setBillingAddress({
+                        addresses: data.addresses,
+                        billingAddressId: data.customer['address_id'],
+                        billingAddress: data.addresses[0] // TODO: Get the right address using ID
+                      })
                                             
                                             /*this.props.actions.customer.setShippingAddress({
                                                 addresses: [payload.data],
@@ -2521,58 +2521,58 @@ class PosComponent extends Component {
                                                 shippingAddress: payload.data
                                             })*/
                                             
-                          this.props.checkoutStore.setExistingCustomer({ customer: data.customer })
+                      this.props.checkoutStore.setExistingCustomer({ customer: data.customer })
                                              // TODO: Return customer does not have new address ID assigned, so we're grabbing it from the address
-                          this.props.checkoutStore.setBillingAddress({
-                                addresses: data.addresses,
-                                billingAddressId: data.addresses[0]['address_id'],
-                                billingAddress: data.addresses[0] // TODO: Get the right address using ID
-                              })
+                      this.props.checkoutStore.setBillingAddress({
+                        addresses: data.addresses,
+                        billingAddressId: data.addresses[0]['address_id'],
+                        billingAddress: data.addresses[0] // TODO: Get the right address using ID
+                      })
                                             
-                          this.forceUpdate()
-                          this.hideNewCustomerForm()
-                        }}
-                        onCancel={this.hideNewCustomerForm}
-                        modal={true}>
-                      </CustomerProfile>
+                      this.forceUpdate()
+                      this.hideNewCustomerForm()
+                    }}
+                    onCancel={this.hideNewCustomerForm}
+                    modal={true}>
+                  </CustomerProfile>
                 </div>
                                 )}
 
                 {this.state.editAccount && (
                 <div>
                   <CustomerProfile
-                        customer={this.props.customerStore.customer}
-                        billingAddress={this.props.customerStore.billingAddress}
-                        shippingAddress={this.props.customerStore.shippingAddress}
-                        editAccount={true}
-                        createAccount={false}
-                        displayProfile={true}
-                        displayCurrentAddress={true}
-                        displayBillingAddress={true}
-                        displayShippingAddress={false}
-                        onSaveSuccess={(payload) => {
-                          let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
+                    customer={this.props.customerStore.customer}
+                    billingAddress={this.props.customerStore.billingAddress}
+                    shippingAddress={this.props.customerStore.shippingAddress}
+                    editAccount={true}
+                    createAccount={false}
+                    displayProfile={true}
+                    displayCurrentAddress={true}
+                    displayBillingAddress={true}
+                    displayShippingAddress={false}
+                    onSaveSuccess={(payload) => {
+                      let data = ObjectHelper.recursiveFormatKeys(payload, 'camelcase', 'underscore')
                                             
-                          this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
-                          this.props.actions.customer.setBillingAddress({
-                                addresses: data.addresses,
-                                billingAddressId: data.customer['address_id'],
-                                billingAddress: data.addresses[0] // TODO: Get the right address using ID
-                              })
+                      this.props.actions.customer.setCustomer(data.customer) // TODO: This should trigger an event... right now it doesn't trigger anything
+                      this.props.actions.customer.setBillingAddress({
+                        addresses: data.addresses,
+                        billingAddressId: data.customer['address_id'],
+                        billingAddress: data.addresses[0] // TODO: Get the right address using ID
+                      })
                                             
-                          this.props.checkoutStore.setExistingCustomer({ customer: data.customer })
-                          this.props.checkoutStore.setBillingAddress({
-                                addresses: data.addresses,
-                                billingAddressId: data.customer['address_id'],
-                                billingAddress: data.addresses[0] // TODO: Get the right address using ID
-                              })
+                      this.props.checkoutStore.setExistingCustomer({ customer: data.customer })
+                      this.props.checkoutStore.setBillingAddress({
+                        addresses: data.addresses,
+                        billingAddressId: data.customer['address_id'],
+                        billingAddress: data.addresses[0] // TODO: Get the right address using ID
+                      })
                                             // Force an update
                                             //this.forceUpdate()
-                          this.hideEditCustomerForm()
-                        }}
-                        onCancel={this.hideEditCustomerForm}
-                        modal={true}>
-                      </CustomerProfile>
+                      this.hideEditCustomerForm()
+                    }}
+                    onCancel={this.hideEditCustomerForm}
+                    modal={true}>
+                  </CustomerProfile>
                 </div>
                                 )}
               </Col>
@@ -2632,9 +2632,9 @@ class PosComponent extends Component {
                 {this.state.canSubmit && (
                 <Button
                   style={{
-                        width: '100%',
-                        marginTop: '2rem'
-                      }}
+                    width: '100%',
+                    marginTop: '2rem'
+                  }}
                   onClick={this.showChargeModal}
                   bsStyle='success'>
                   <h4><i className='fa fa-money' /> Charge</h4>
@@ -2644,9 +2644,9 @@ class PosComponent extends Component {
                 {this.state.canSubmit && (
                 <Button
                   style={{
-                        width: '100%',
-                        marginTop: '2rem'
-                      }}
+                    width: '100%',
+                    marginTop: '2rem'
+                  }}
                   className='pull-right'
                   onClick={this.reset}
                   bsStyle='danger'>
@@ -2658,9 +2658,9 @@ class PosComponent extends Component {
                 <Button
                   onClick={this.emptyCart}
                   style={{
-                        width: '100%',
-                        marginTop: '2rem'
-                      }}
+                    width: '100%',
+                    marginTop: '2rem'
+                  }}
                   className='hidden-xs hidden-sm hidden-md'
                   onClick={this.reload}
                   bsStyle='default'>
@@ -2695,27 +2695,27 @@ class PosComponent extends Component {
                 <Row>
                   <Col xs={12} md={6}>
                     <Button
-                        block
-                        style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
-                        onClick={this.openDrawer}
-                        bsStyle='default'>
-                        <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
-                      </Button>
+                      block
+                      style={{
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
+                      onClick={this.openDrawer}
+                      bsStyle='default'>
+                      <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
+                    </Button>
                   </Col>
                   <Col xs={12} md={6}>
                     <Button
-                        block
-                        style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
-                        onClick={this.printReport}
-                        bsStyle='default'>
-                        <h4><i className='fa fa-print' /> End of Day</h4>
-                      </Button>
+                      block
+                      style={{
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
+                      onClick={this.printReport}
+                      bsStyle='default'>
+                      <h4><i className='fa fa-print' /> End of Day</h4>
+                    </Button>
                   </Col>
                 </Row>                                
               </Col>
@@ -2884,15 +2884,15 @@ class PosComponent extends Component {
 
                   <FormGroup>
                     <Button
-                        block
-                        style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
-                        onClick={this.openDrawer}
-                        bsStyle='default'>
-                        <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
-                      </Button>
+                      block
+                      style={{
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
+                      onClick={this.openDrawer}
+                      bsStyle='default'>
+                      <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
+                    </Button>
                   </FormGroup>
 
                   <FormGroup>

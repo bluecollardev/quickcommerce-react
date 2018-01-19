@@ -175,10 +175,10 @@ class CatalogFilterBar extends Component {
                   <h3 className='widget-title'>Sort By</h3>
                   <ul>
                     {Object.keys(sort).map((key, idx) => (
-                        <li key={idx} rel={key} className='active'><a href='#'>
-                            <i className='material-icons' />
-                            {sort[key]}
-                          </a></li>
+                      <li key={idx} rel={key} className='active'><a href='#'>
+                        <i className='material-icons' />
+                        {sort[key]}
+                      </a></li>
                         ))}
                   </ul>
                 </div>{/* .widget.widget-sorting */}
@@ -188,10 +188,10 @@ class CatalogFilterBar extends Component {
                   <h3 className='widget-title'>Types</h3>
                   <ul>
                     {Object.keys(types).map((key, idx) => (
-                        <li key={idx} rel={key}><a href='#'>
-                            <span className='color' style={{backgroundColor: '#93c4ef'}} />
-                            {types[key]}
-                          </a></li>
+                      <li key={idx} rel={key}><a href='#'>
+                        <span className='color' style={{backgroundColor: '#93c4ef'}} />
+                        {types[key]}
+                      </a></li>
 						))}
                   </ul>
                 </div>{/* .widget.widget-color */}
@@ -204,22 +204,22 @@ class CatalogFilterBar extends Component {
                   <form method='post' className='price-range-slider' data-start-min={priceRange.startMin} data-start-max={priceRange.startMax} data-min={priceRange.min} data-max={priceRange.max} data-step={priceRange.step}>
                     <div className='ui-range-slider' />
                     <footer className='ui-range-slider-footer'>
-                        <div className='column'>
-                            <button type='submit' className='btn btn-ghost btn-sm btn-default'>Filter</button>
-                          </div>
-                        <div className='column'>
-                            <div className='ui-range-values'>
-                                <div className='ui-range-value-min'>
+                      <div className='column'>
+                        <button type='submit' className='btn btn-ghost btn-sm btn-default'>Filter</button>
+                      </div>
+                      <div className='column'>
+                        <div className='ui-range-values'>
+                          <div className='ui-range-value-min'>
                                   $<span />
-                                  <input type='hidden' />
-                                </div> -
-                                <div className='ui-range-value-max'>
+                            <input type='hidden' />
+                          </div> -
+                          <div className='ui-range-value-max'>
                                   $<span />
-                                  <input type='hidden' />
-                                </div>
-                              </div>
+                            <input type='hidden' />
                           </div>
-                      </footer>
+                        </div>
+                      </div>
+                    </footer>
                   </form>
                 </div>
               </div>

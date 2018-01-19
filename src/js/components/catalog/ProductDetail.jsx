@@ -135,34 +135,34 @@ export default class ProductDetail extends Component {
                 <div className="col-md-6">
                   <table className="table-no-border">
                     <tbody><tr>
-                        <th>Weight</th>
-                        <td>2.65 kg</td>
+                      <th>Weight</th>
+                      <td>2.65 kg</td>
+                    </tr>
+                      <tr>
+                        <th>Dimensions</th>
+                        <td>120 x 75 x 90 cm</td>
                       </tr>
-                        <tr>
-                            <th>Dimensions</th>
-                            <td>120 x 75 x 90 cm</td>
-                          </tr>
-                        <tr>
-                            <th>Materials</th>
-                            <td>40% wood, 37% cotton, 23% plastic</td>
-                          </tr>
-                      </tbody></table>
+                      <tr>
+                        <th>Materials</th>
+                        <td>40% wood, 37% cotton, 23% plastic</td>
+                      </tr>
+                    </tbody></table>
                 </div>
                 <div className="col-md-6">
                   <table className="table-no-border">
                     <tbody><tr>
-                        <th>Colors</th>
-                        <td>Blue, Creme, Orange, Red</td>
+                      <th>Colors</th>
+                      <td>Blue, Creme, Orange, Red</td>
+                    </tr>
+                      <tr>
+                        <th>Manufacturer</th>
+                        <td>Norway</td>
                       </tr>
-                        <tr>
-                            <th>Manufacturer</th>
-                            <td>Norway</td>
-                          </tr>
-                        <tr>
-                            <th>Other Info</th>
-                            <td>Repellendus ea laudantium pariatur eum.</td>
-                          </tr>
-                      </tbody></table>
+                      <tr>
+                        <th>Other Info</th>
+                        <td>Repellendus ea laudantium pariatur eum.</td>
+                      </tr>
+                    </tbody></table>
                 </div>
               </div>
             </div>
@@ -175,17 +175,17 @@ export default class ProductDetail extends Component {
                 <div className="review-body">
                   <div className="review-meta">
                     <div className="column">
-                        <h4 className="review-title">Very stylish. Great Deal!</h4>
-                      </div>
+                      <h4 className="review-title">Very stylish. Great Deal!</h4>
+                    </div>
                     <div className="column">
-                        <span className="product-rating text-warning">
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                          </span>
-                      </div>
+                      <span className="product-rating text-warning">
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                      </span>
+                    </div>
                   </div>
                   <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae.</p>
                   <cite>Jessie James</cite>
@@ -199,17 +199,17 @@ export default class ProductDetail extends Component {
                 <div className="review-body">
                   <div className="review-meta">
                     <div className="column">
-                        <h4 className="review-title">Nice nordic design, afordable price.</h4>
-                      </div>
+                      <h4 className="review-title">Nice nordic design, afordable price.</h4>
+                    </div>
                     <div className="column">
-                        <span className="product-rating text-warning">
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star_border" />
-                          </span>
-                      </div>
+                      <span className="product-rating text-warning">
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star_border" />
+                      </span>
+                    </div>
                   </div>
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae sequi ipsa fugit officia eos! Sapiente laboriosam molestiae praesentium ducimus culpa. Magnam, odit, optio. Possimus similique eligendi explicabo, dolore, beatae sequi.</p>
                   <cite>Susanna Davis</cite>
@@ -223,17 +223,17 @@ export default class ProductDetail extends Component {
                 <div className="review-body">
                   <div className="review-meta">
                     <div className="column">
-                        <h4 className="review-title">Godd value for your money.</h4>
-                      </div>
+                      <h4 className="review-title">Godd value for your money.</h4>
+                    </div>
                     <div className="column">
-                        <span className="product-rating text-warning">
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star" />
-                            <i className="material-icons star_border" />
-                          </span>
-                      </div>
+                      <span className="product-rating text-warning">
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star" />
+                        <i className="material-icons star_border" />
+                      </span>
+                    </div>
                   </div>
                   <p>Anuo ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae.</p>
                   <cite>Donald Murphy</cite>
@@ -254,12 +254,12 @@ export default class ProductDetail extends Component {
                 <div className="col-sm-4">
                   <div className="form-element form-select">
                     <select className="form-control">
-                        <option>5 stars</option>
-                        <option>4 stars</option>
-                        <option>3 stars</option>
-                        <option>2 stars</option>
-                        <option>1 star</option>
-                      </select>
+                      <option>5 stars</option>
+                      <option>4 stars</option>
+                      <option>3 stars</option>
+                      <option>2 stars</option>
+                      <option>1 star</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-sm-12">
@@ -268,8 +268,8 @@ export default class ProductDetail extends Component {
                   </div>
                   <div className="row">
                     <div className="col-lg-3 col-md-4 col-sm-6 col-lg-offset-9 col-md-offset-8 col-sm-offset-6">
-                        <button type="submit" className="btn btn-block btn-primary waves-effect waves-light space-top-none space-bottom-none">Leave Review</button>
-                      </div>
+                      <button type="submit" className="btn btn-block btn-primary waves-effect waves-light space-top-none space-bottom-none">Leave Review</button>
+                    </div>
                   </div>
                 </div>
               </form>

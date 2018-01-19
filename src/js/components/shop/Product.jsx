@@ -235,30 +235,30 @@ class Product extends Component {
                   </div>
                   <div className='form-element'>
                     <select className='form-control form-control-sm color-select'>
-                        <option value='blue' data-image='preview02'>Blue</option>
-                        <option value='creme' data-image='preview01'>Creme</option>
-                        <option value='red' data-image='preview03'>Red</option>
-                      </select>
+                      <option value='blue' data-image='preview02'>Blue</option>
+                      <option value='creme' data-image='preview01'>Creme</option>
+                      <option value='red' data-image='preview03'>Red</option>
+                    </select>
                   </div>
                   <Button className='add-to-cart' onClick={this.props.onAddToCartClicked}>
                     <em>Add to Order</em>
                     <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
-                        <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
-                      </svg>
+                      <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
+                    </svg>
                   </Button>
                 </div>
                 <div className='product-share'>
                   <span>Share this product: </span>
                   <div className='social-bar'>
                     <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
-                        <i className='socicon-facebook' />
-                      </a>
+                      <i className='socicon-facebook' />
+                    </a>
                     <a href='#' className='sb-twitter' data-toggle='tooltip' data-placement='top' title='Twitter'>
-                        <i className='socicon-twitter' />
-                      </a>
+                      <i className='socicon-twitter' />
+                    </a>
                     <a href='#' className='sb-instagram' data-toggle='tooltip' data-placement='top' title data-original-title='Instagram'>
-                        <i className='socicon-instagram' />
-                      </a>
+                      <i className='socicon-instagram' />
+                    </a>
                   </div>
                 </div>
               </div>

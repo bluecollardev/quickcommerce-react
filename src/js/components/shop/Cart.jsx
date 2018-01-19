@@ -396,10 +396,10 @@ export default class Cart extends Component {
                     <h3 className="item-title"><a href="shop-single.html">Concrete Lamp</a></h3>
                     <h4 className="item-price">$85.90</h4>
                     <div className="count-input">
-                        <a className="incr-btn" data-action="decrease" href="#">–</a>
-                        <input className="quantity" type="text" defaultValue={1} />
-                        <a className="incr-btn" data-action="increase" href="#">+</a>
-                      </div>
+                      <a className="incr-btn" data-action="decrease" href="#">–</a>
+                      <input className="quantity" type="text" defaultValue={1} />
+                      <a className="incr-btn" data-action="increase" href="#">+</a>
+                    </div>
                   </div>
                   <a href="#" className="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
                     <i className="material-icons remove_shopping_cart" />
@@ -414,10 +414,10 @@ export default class Cart extends Component {
                     <h3 className="item-title"><a href="shop-single.html">Resin Storage Box</a></h3>
                     <h4 className="item-price">$38.00</h4>
                     <div className="count-input">
-                        <a className="incr-btn" data-action="decrease" href="#">–</a>
-                        <input className="quantity" type="text" defaultValue={2} />
-                        <a className="incr-btn" data-action="increase" href="#">+</a>
-                      </div>
+                      <a className="incr-btn" data-action="decrease" href="#">–</a>
+                      <input className="quantity" type="text" defaultValue={2} />
+                      <a className="incr-btn" data-action="increase" href="#">+</a>
+                    </div>
                   </div>
                   <a href="#" className="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
                     <i className="material-icons remove_shopping_cart" />
@@ -432,10 +432,10 @@ export default class Cart extends Component {
                     <h3 className="item-title"><a href="shop-single.html">Ceramic Watch</a></h3>
                     <h4 className="item-price">$299.00</h4>
                     <div className="count-input">
-                        <a className="incr-btn" data-action="decrease" href="#">–</a>
-                        <input className="quantity" type="text" defaultValue={1} />
-                        <a className="incr-btn" data-action="increase" href="#">+</a>
-                      </div>
+                      <a className="incr-btn" data-action="decrease" href="#">–</a>
+                      <input className="quantity" type="text" defaultValue={1} />
+                      <a className="incr-btn" data-action="increase" href="#">+</a>
+                    </div>
                   </div>
                   <a href="#" className="item-remove" data-toggle="tooltip" data-placement="top" title="Remove">
                     <i className="material-icons remove_shopping_cart" />
@@ -448,8 +448,8 @@ export default class Cart extends Component {
                 <form method="post" className="row">
                   <div className="col-md-8 col-sm-7">
                     <div className="form-element">
-                        <input type="text" className="form-control" placeholder="Enter coupon" required />
-                      </div>
+                      <input type="text" className="form-control" placeholder="Enter coupon" required />
+                    </div>
                   </div>
                   <div className="col-md-4 col-sm-5">
                     <button type="submit" className="btn btn-default btn-ghost btn-block space-top-none space-bottom">Apply Coupon</button>
@@ -460,14 +460,14 @@ export default class Cart extends Component {
                 <Col xs={12}>
                   <div>
                     <QcCart
-                        ref='cart'
-                        tableClassName='table cart'
-                        onChange={this.refresh}
-                        columns={['price']}
-                        iterator={this.rowIterator}
-                        containerComponent={DragDropContainer}
-                        rowComponent={DragDropCartRow}
-                        onItemDropped={this.itemDropped} />
+                      ref='cart'
+                      tableClassName='table cart'
+                      onChange={this.refresh}
+                      columns={['price']}
+                      iterator={this.rowIterator}
+                      containerComponent={DragDropContainer}
+                      rowComponent={DragDropCartRow}
+                      onItemDropped={this.itemDropped} />
                   </div>
                 </Col>
                 <Col className='cart-buttons' xs={12}>
@@ -511,9 +511,9 @@ export default class Cart extends Component {
                   {this.state.canSubmit && (
                     <Button
                       style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
                       onClick={this.showChargeModal}
                       bsStyle='success'>
                       <h4><i className='fa fa-money' /> Charge</h4>
@@ -523,9 +523,9 @@ export default class Cart extends Component {
                   {this.state.canSubmit && (
                     <Button
                       style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
                       className='pull-right'
                       onClick={this.reset}
                       bsStyle='danger'>
@@ -537,9 +537,9 @@ export default class Cart extends Component {
                     <Button
                       onClick={this.emptyCart}
                       style={{
-                            width: '100%',
-                            marginTop: '2rem'
-                          }}
+                        width: '100%',
+                        marginTop: '2rem'
+                      }}
                       className='hidden-xs hidden-sm hidden-md'
                       onClick={this.reload}
                       bsStyle='default'>

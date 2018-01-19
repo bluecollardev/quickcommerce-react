@@ -38,8 +38,8 @@ export default class About extends Component {
                 <div className='quotation padding-top'>
                   <div className='quotation-author'>
                     <div className='quotation-author-ava'>
-                        <img src='img/team/quote_author.jpg' alt='James Cameron' />
-                      </div>
+                      <img src='img/team/quote_author.jpg' alt='James Cameron' />
+                    </div>
                   </div>
                   <blockquote>
                     <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem.</p>
@@ -57,16 +57,16 @@ export default class About extends Component {
                 <div className='teammate'>
                   <div className='teammate-thumb'>
                     <div className='social-bar text-center space-bottom'>
-                        <a href='#' className='sb-skype' data-toggle='tooltip' data-placement='top' title='Skype'>
-                            <i className='socicon-skype' />
-                          </a>
-                        <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
-                            <i className='socicon-facebook' />
-                          </a>
-                        <a href='#' className='sb-google-plus' data-toggle='tooltip' data-placement='top' title data-original-title='Google+'>
-                            <i className='socicon-googleplus' />
-                          </a>
-                      </div>{/* .social-bar */}
+                      <a href='#' className='sb-skype' data-toggle='tooltip' data-placement='top' title='Skype'>
+                        <i className='socicon-skype' />
+                      </a>
+                      <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
+                        <i className='socicon-facebook' />
+                      </a>
+                      <a href='#' className='sb-google-plus' data-toggle='tooltip' data-placement='top' title data-original-title='Google+'>
+                        <i className='socicon-googleplus' />
+                      </a>
+                    </div>{/* .social-bar */}
                     <img src='img/team/01.jpg' alt='Teammate' />
                   </div>
                   <h4 className='teammate-name'>Joe Parottino</h4>
@@ -78,16 +78,16 @@ export default class About extends Component {
                 <div className='teammate'>
                   <div className='teammate-thumb'>
                     <div className='social-bar text-center space-bottom'>
-                        <a href='#' className='sb-twitter' data-toggle='tooltip' data-placement='top' title='Twitter'>
-                            <i className='socicon-twitter' />
-                          </a>
-                        <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
-                            <i className='socicon-facebook' />
-                          </a>
-                        <a href='#' className='sb-instagram' data-toggle='tooltip' data-placement='top' title data-original-title='Instagram'>
-                            <i className='socicon-instagram' />
-                          </a>
-                      </div>{/* .social-bar */}
+                      <a href='#' className='sb-twitter' data-toggle='tooltip' data-placement='top' title='Twitter'>
+                        <i className='socicon-twitter' />
+                      </a>
+                      <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
+                        <i className='socicon-facebook' />
+                      </a>
+                      <a href='#' className='sb-instagram' data-toggle='tooltip' data-placement='top' title data-original-title='Instagram'>
+                        <i className='socicon-instagram' />
+                      </a>
+                    </div>{/* .social-bar */}
                     <img src='img/team/02.jpg' alt='Teammate' />
                   </div>
                   <h4 className='teammate-name'>Kate</h4>
@@ -99,16 +99,16 @@ export default class About extends Component {
                 <div className='teammate'>
                   <div className='teammate-thumb'>
                     <div className='social-bar text-center space-bottom'>
-                        <a href='#' className='sb-twitter' data-toggle='tooltip' data-placement='top' title='Twitter'>
-                            <i className='socicon-twitter' />
-                          </a>
-                        <a href='#' className='sb-linkedin' data-toggle='tooltip' data-placement='top' title='LinkedIn'>
-                            <i className='socicon-linkedin' />
-                          </a>
-                        <a href='#' className='sb-dribbble' data-toggle='tooltip' data-placement='top' title data-original-title='Dribbble'>
-                            <i className='socicon-dribbble' />
-                          </a>
-                      </div>{/* .social-bar */}
+                      <a href='#' className='sb-twitter' data-toggle='tooltip' data-placement='top' title='Twitter'>
+                        <i className='socicon-twitter' />
+                      </a>
+                      <a href='#' className='sb-linkedin' data-toggle='tooltip' data-placement='top' title='LinkedIn'>
+                        <i className='socicon-linkedin' />
+                      </a>
+                      <a href='#' className='sb-dribbble' data-toggle='tooltip' data-placement='top' title data-original-title='Dribbble'>
+                        <i className='socicon-dribbble' />
+                      </a>
+                    </div>{/* .social-bar */}
                     <img src='img/team/03.jpg' alt='Teammate' />
                   </div>
                   <h4 className='teammate-name'>Taylor White</h4>
@@ -120,16 +120,16 @@ export default class About extends Component {
                 <div className='teammate'>
                   <div className='teammate-thumb'>
                     <div className='social-bar text-center space-bottom'>
-                        <a href='#' className='sb-skype' data-toggle='tooltip' data-placement='top' title='Skype'>
-                            <i className='socicon-skype' />
-                          </a>
-                        <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
-                            <i className='socicon-facebook' />
-                          </a>
-                        <a href='#' className='sb-google-plus' data-toggle='tooltip' data-placement='top' title data-original-title='Google+'>
-                            <i className='socicon-googleplus' />
-                          </a>
-                      </div>{/* .social-bar */}
+                      <a href='#' className='sb-skype' data-toggle='tooltip' data-placement='top' title='Skype'>
+                        <i className='socicon-skype' />
+                      </a>
+                      <a href='#' className='sb-facebook' data-toggle='tooltip' data-placement='top' title='Facebook'>
+                        <i className='socicon-facebook' />
+                      </a>
+                      <a href='#' className='sb-google-plus' data-toggle='tooltip' data-placement='top' title data-original-title='Google+'>
+                        <i className='socicon-googleplus' />
+                      </a>
+                    </div>{/* .social-bar */}
                     <img src='img/team/04.jpg' alt='Teammate' />
                   </div>
                   <h4 className='teammate-name'>Suasanna Davis</h4>

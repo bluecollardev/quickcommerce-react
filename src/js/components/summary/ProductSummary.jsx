@@ -143,8 +143,8 @@ export default class ProductSummary extends Component {
                   <div className="product_section">
                     <span className="section_title">Roaster's Notes</span>
                     <span itemProp="name" className="tags">
-                        <div dangerouslySetInnerHTML={description}></div>
-                      </span>
+                      <div dangerouslySetInnerHTML={description}></div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -153,32 +153,32 @@ export default class ProductSummary extends Component {
                   <div className="product_section">
                     <span className="section_title">Origin / Blend</span>
                     <span itemProp="name" className="tags">
-                        <span>Sau Paulo, Brazil</span>
-                      </span>
+                      <span>Sau Paulo, Brazil</span>
+                    </span>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-4 mid_block" style={{height: 114}}>
                   <div className="product_section">
                     <span className="section_title">Species</span>
                     <span itemProp="name" className="tags">
-                        <span>Blue Mountain</span>
-                      </span>
+                      <span>Blue Mountain</span>
+                    </span>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-3 type bottom_row" style={{height: 114}}>
                   <div className="product_section">
                     <span className="section_title">Elevation</span>
                     <span itemProp="name" className="tags">
-                        <span>1,345ft</span>
-                      </span>
+                      <span>1,345ft</span>
+                    </span>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-4 type bottom_row" style={{height: 114}}>
                   <div className="product_section">
                     <span className="section_title">Variety</span>
                     <span itemProp="name" className="tags">
-                        <span>Ipsum dolor</span>
-                      </span>
+                      <span>Ipsum dolor</span>
+                    </span>
                   </div>
                 </div>
               </div>{/* .row .collapse */}

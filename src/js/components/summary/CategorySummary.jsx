@@ -29,8 +29,8 @@ export default class CategorySummary extends Component {
                   <div className="product_section">
                     <span className="section_title">Description</span>
                     <span itemProp="name" className="tags">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non mi mattis, maximus quam sit amet, posuere sapien. Vivamus aliquet ex sed turpis pellentesque tincidunt.</p>
-                      </span>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non mi mattis, maximus quam sit amet, posuere sapien. Vivamus aliquet ex sed turpis pellentesque tincidunt.</p>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -39,16 +39,16 @@ export default class CategorySummary extends Component {
                   <div className="product_section">
                     <span className="section_title">Location</span>
                     <span itemProp="name" className="tags">
-                        <span>Sau Paulo, Brazil</span>
-                      </span>
+                      <span>Sau Paulo, Brazil</span>
+                    </span>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-7 mid_block" style={{height: 114}}>
                   <div className="product_section">
                     <span className="section_title">Attribute 1</span>
                     <span itemProp="name" className="tags">
-                        <span>Ipsum lorem dolor</span>
-                      </span>
+                      <span>Ipsum lorem dolor</span>
+                    </span>
                   </div>
                 </div>
               </div>{/* .row .collapse */}
@@ -84,8 +84,8 @@ export default class CategorySummary extends Component {
                 <div className="quantity">
                   <span>
                     <div className="quantity">
-                        <input type="number" id="Quantity" name="quantity" defaultValue={1} min={1} className="input-text qty text quantity-selector" />
-                      </div>
+                      <input type="number" id="Quantity" name="quantity" defaultValue={1} min={1} className="input-text qty text quantity-selector" />
+                    </div>
                   </span>
                 </div>
               </div>
