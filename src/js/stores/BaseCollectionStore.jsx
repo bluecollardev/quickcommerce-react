@@ -11,12 +11,12 @@ import HashProxy from '../utils/HashProxy.js'
 import BaseStore from './BaseStore.jsx'
 
 class BaseCollectionStore extends BaseStore {
-    /**
-     *
-     * @constructor
-     * @param dispatcher
-     * @param stores
-     */
+  /**
+   *
+   * @constructor
+   * @param dispatcher
+   * @param stores
+   */
   constructor(dispatcher, stores) {
     super(dispatcher, stores)
         
@@ -24,20 +24,20 @@ class BaseCollectionStore extends BaseStore {
     this.items = {}
   }
 
-    /**
-     *
-     * @param key
-     * @returns {boolean}
-     */
+  /**
+   *
+   * @param key
+   * @returns {boolean}
+   */
   hasItem(key) {
     return this.items.hasOwnProperty(key)
   }
 
-    /**
-     *
-     * @param key
-     * @returns {undefined}
-     */
+  /**
+   *
+   * @param key
+   * @returns {undefined}
+   */
   getItem(key, resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
 
@@ -54,12 +54,12 @@ class BaseCollectionStore extends BaseStore {
     return undefined
   }
 
-    /**
-     *
-     * @param key
-     * @param value
-     * @returns {*}
-     */
+  /**
+   *
+   * @param key
+   * @param value
+   * @returns {*}
+   */
   setItem(key, value) {
     let previous
         
@@ -76,11 +76,11 @@ class BaseCollectionStore extends BaseStore {
     return previous
   }
 
-    /**
-     *
-     * @param key
-     * @returns {*}
-     */
+  /**
+   *
+   * @param key
+   * @returns {*}
+   */
   removeItem(key) {
     let previous
 
@@ -96,19 +96,19 @@ class BaseCollectionStore extends BaseStore {
     return undefined
   }
 
-    /**
-     *
-     * @returns {boolean}
-     */
+  /**
+   *
+   * @returns {boolean}
+   */
   hasItems() {
     return (this.count() > 0)
   }
 
-    /**
-     *
-     * @param resolveCodeTypes
-     * @returns {any[]}
-     */
+  /**
+   *
+   * @param resolveCodeTypes
+   * @returns {any[]}
+   */
   getItems(resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
 
@@ -126,12 +126,12 @@ class BaseCollectionStore extends BaseStore {
     })
   }
 
-    /**
-     *
-     * @param data
-     * @param onSuccess
-     * @param onError
-     */
+  /**
+   *
+   * @param data
+   * @param onSuccess
+   * @param onError
+   */
   setItems(data, onSuccess, onError) {
         // InventoryStore.setItems
     try {
@@ -170,15 +170,15 @@ class BaseCollectionStore extends BaseStore {
     }
   }
 
-    /*has(key) {
-        return this.hasItem(key)
-    }*/
+  /*has(key) {
+      return this.hasItem(key)
+  }*/
 
-    /**
-     * Alias for hasItem.
-     * @param key
-     * @returns {boolean}
-     */
+  /**
+   * Alias for hasItem.
+   * @param key
+   * @returns {boolean}
+   */
   has(key) {
     let exists = false
     if (this.items.hasOwnProperty(key) &&
@@ -189,47 +189,47 @@ class BaseCollectionStore extends BaseStore {
     return exists
   }
 
-    /**
-     * Alias for getItem.
-     * @param key
-     * @returns {*}
-     */
+  /**
+   * Alias for getItem.
+   * @param key
+   * @returns {*}
+   */
   get(key) {
     return this.getItem(key)
   }
 
-    /**
-     * Chainable alias for setItem.
-     * @param key
-     * @param value
-     * @returns {BaseCollectionStore}
-     */
+  /**
+   * Chainable alias for setItem.
+   * @param key
+   * @param value
+   * @returns {BaseCollectionStore}
+   */
   set(key, value) {
     this.setItem(key, value)
     return this
   }
 
-    /**
-     * Chainable alias for removeItem.
-     * @param key
-     * @returns {*}
-     */
+  /**
+   * Chainable alias for removeItem.
+   * @param key
+   * @returns {*}
+   */
   remove(key) {
     return (this.removeItem(key) !== undefined) ? this : false
   }
 
-    /**
-     *
-     */
+  /**
+   *
+   */
   clear() {
     this.items = {}
     this.length = 0
   }
 
-    /**
-     *
-     * @returns {Array}
-     */
+  /**
+   *
+   * @returns {Array}
+   */
   keys() {
     let keys = [], k
 
@@ -242,10 +242,10 @@ class BaseCollectionStore extends BaseStore {
     return keys
   }
 
-    /**
-     *
-     * @returns {Array}
-     */
+  /**
+   *
+   * @returns {Array}
+   */
   values() {
     let values = [], k
 
@@ -258,10 +258,10 @@ class BaseCollectionStore extends BaseStore {
     return values
   }
 
-    /**
-     *
-     * @param fn
-     */
+  /**
+   *
+   * @param fn
+   */
   each(fn) {
     let k
 
@@ -272,10 +272,10 @@ class BaseCollectionStore extends BaseStore {
     }
   }
 
-    /**
-     *
-     * @returns {number}
-     */
+  /**
+   *
+   * @returns {number}
+   */
   count() {
     return Object.keys(this.items).length
   }

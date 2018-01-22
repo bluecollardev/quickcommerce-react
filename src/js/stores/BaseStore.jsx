@@ -9,16 +9,16 @@ import SpringDateHelper from '../helpers/SpringDate.js'
 import HashProxy from '../utils/HashProxy.js'
 
 class BaseStore extends EventEmitter {
-    /**
-     *
-     * @constructor
-     * @param dispatcher
-     * @param stores
-     */
+  /**
+   *
+   * @constructor
+   * @param dispatcher
+   * @param stores
+   */
   constructor(dispatcher, stores) {
     super()
         
-        // HashProxy of flux stores (to waitFor)
+    // HashProxy of flux stores (to waitFor)
     this._stores = stores || new HashProxy()
         
     dispatcher = dispatcher || null
@@ -26,24 +26,22 @@ class BaseStore extends EventEmitter {
       this.dispatcher = dispatcher
     } else {
       this.dispatcher = new Dispatcher()
-            // TODO: Hmmm... maybe I shouldn't just create a random dispatcher...
-            // This is just in here until I decide how to handle the case where it isn't provided
     }
   }
 
-    /**
-     *
-     * @param key
-     * @returns {*}
-     */
+  /**
+   *
+   * @param key
+   * @returns {*}
+   */
   getDependentStore(key) {
     return this._stores[key]
   }
 
-    /**
-     *
-     * @param actionSubscribe
-     */
+  /**
+   *
+   * @param actionSubscribe
+   */
   subscribe(actionSubscribe) {
     if (!(this.dispatcher instanceof Dispatcher)) {
       throw new Error('Failed to provide dispatcher to BaseStore, cannot register actions')
@@ -52,48 +50,47 @@ class BaseStore extends EventEmitter {
     this.dispatchToken = this.dispatcher.register(actionSubscribe())
   }
 
-    /**
-     *
-     * @param obj
-     */
+  /**
+   *
+   * @param obj
+   */
   emitChange(obj) {
-        // TODO: Standardize events with constants
     this.emit('CHANGE', obj)
   }
 
-    /**
-     *
-     * @param cb
-     */
+  /**
+   *
+   * @param cb
+   */
   addChangeListener(cb) {
     this.on('CHANGE', cb)
   }
 
-    /**
-     *
-     * @param cb
-     */
+  /**
+   *
+   * @param cb
+   */
   removeChangeListener(cb) {
     this.removeListener('CHANGE', cb)
   }
 
-    /**
-     *
-     * @param data
-     * @param from
-     * @param to
-     */
+  /**
+   *
+   * @param data
+   * @param from
+   * @param to
+   */
   static normalizePayload = (data, from, to) => {
     return ObjectHelper.recursiveFormatKeys(data, from, to)
   }
 
-    /**
-     *
-     * @param data
-     * @param returnProp
-     * @param ignoreValues
-     * @returns {*}
-     */
+  /**
+   *
+   * @param data
+   * @param returnProp
+   * @param ignoreValues
+   * @returns {*}
+   */
   static resolveCodeTypes = (data, returnProp, ignoreValues) => {
 		// TODO: Need a mechanism to configure how code types are parsed... callback? Override?
     returnProp = (typeof returnProp === 'string' && returnProp.length > 0) ? returnProp : BaseStore.CODETYPE_NAME
@@ -118,12 +115,12 @@ class BaseStore extends EventEmitter {
     return data
   }
 
-    /**
-     *
-     * @param data
-     * @param format
-     * @returns {*}
-     */
+  /**
+   *
+   * @param data
+   * @param format
+   * @returns {*}
+   */
   static resolveDateObjects = (data, format) => {
     for (let prop in data) {
       let value = data[prop]
@@ -145,12 +142,12 @@ class BaseStore extends EventEmitter {
     return data
   }
 
-    /**
-     *
-     * @param data
-     * @param format
-     * @returns {*}
-     */
+  /**
+   *
+   * @param data
+   * @param format
+   * @returns {*}
+   */
   static resolveCurrencyObjects = (data, format) => {
     for (let prop in data) {
       let value = data[prop]
@@ -170,13 +167,13 @@ class BaseStore extends EventEmitter {
     return data
   }
 
-    /**
-     *
-     * @param data
-     * @param returnProp
-     * @param ignoreValues
-     * @returns {*}
-     */
+  /**
+   *
+   * @param data
+   * @param returnProp
+   * @param ignoreValues
+   * @returns {*}
+   */
   static resolveDomainObjects = (data, returnProp, ignoreValues) => {
 		// Resolve code types
     data = BaseStore.resolveCodeTypes(data, returnProp, ignoreValues)
@@ -188,9 +185,9 @@ class BaseStore extends EventEmitter {
     return data
   }
     
-    /**
-     * TODO: I am a utility method move me out of here?
-     */
+  /**
+   * TODO: I am a utility method move me out of here?
+   */
   static isset = (array, value) => {
     return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
   }
