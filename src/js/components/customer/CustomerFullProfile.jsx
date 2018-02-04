@@ -18,8 +18,7 @@ import CustomerContact from './CustomerContact.jsx'
 import CustomerIdentity from './CustomerIdentity.jsx'
 import CustomerIncome from './CustomerIncome.jsx'
 
-import CurrentAddress from '../address/CurrentAddress.jsx'
-import ShippingAddress from '../address/ShippingAddress.jsx'
+import Address from '../address/Address.jsx'
 
 import customerFieldNames from '../../forms/CustomerInfoFields.jsx'
 import addressFieldNames from '../../forms/AddressFields.jsx'
@@ -263,12 +262,12 @@ class CustomerFullProfile extends Component {
     })
   }
     
-    // TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
+  // TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
   onCancel(e) {
     e.preventDefault()
     e.stopPropagation()
         
-    console.log('executing onCancel')
+    console.log('executing CustomerFullProfile onCancel')
     if (typeof this.props.onCancel === 'function') {
       console.log('execute handler')
       let fn = this.props.onCancel
@@ -278,7 +277,7 @@ class CustomerFullProfile extends Component {
     
     // TODO: Move to FormComponent? Or another base class... (hint this is in more than a few places)
   onCreateSuccess(response) {
-    console.log('executing onCreateSuccess')
+    console.log('executing CustomerFullProfile onCreateSuccess')
     if (typeof this.props.onCreateSuccess === 'function') {
       console.log('execute handler')
       let fn = this.props.onCreateSuccess
@@ -299,7 +298,7 @@ class CustomerFullProfile extends Component {
     
     // TODO: Move to FormComponent (hint this is in more than a few places)
   onError(response) {
-    console.log('executing onError')
+    console.log('executing CustomerFullProfile onError')
     if (typeof this.props.onError === 'function') {
       console.log('execute handler')
       let fn = this.props.onError
@@ -365,7 +364,7 @@ class CustomerFullProfile extends Component {
               <h4 className='section-heading' style={{textAlign: 'center'}}>
                 <Button className='repeater-button'><h5><i className='fa fa-minus-circle' /></h5></Button>
 								Customer Information 
-                {/* TODO: What did we call it in CurrentAddress? */}
+                {/* TODO: What did we call it in Address? */}
                 {['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
                 <Button className='repeater-button'><h5><i className='fa fa-pencil' /> Edit</h5></Button>
                                 )}
@@ -519,7 +518,7 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                    <CurrentAddress
+                    <Address
                       mappings={mappings.address}
                       ref={(address) => {this.billingAddress = address}}
                       modal={this.props.modal}
@@ -539,7 +538,7 @@ class CustomerFullProfile extends Component {
           {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
             <div className='customer-profile-block row full-width-inputs'>
               <div className='billing-address'>
-                <CurrentAddress
+                <Address
                   mappings={mappings.address}
                   ref={(address) => {this.billingAddress = address}}
                   title='Current Address'
@@ -566,7 +565,7 @@ class CustomerFullProfile extends Component {
           {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
             <div className='customer-profile-block row full-width-inputs'>
               <div className='shipping-address'>
-                <CurrentAddress
+                <Address
                   mappings={mappings.address}
                   ref={(address) => {this.shippingAddress = address}}
                   title='Shipping Address'
@@ -608,7 +607,7 @@ class CustomerFullProfile extends Component {
               <h4 className='section-heading' style={{textAlign: 'center'}}>
                 <Button className='repeater-button'><h5><i className='fa fa-minus-circle' /></h5></Button>
 								Customer Information 
-                {/* TODO: What did we call it in CurrentAddress? */}
+                {/* TODO: What did we call it in Address? */}
                 {['modal', 'custom'].indexOf(this.props.editMode) > -1 && (
                 <Button className='repeater-button' onClick={this.props.onEditClicked}><h5><i className='fa fa-pencil' /> Edit</h5></Button>
                                 )}
@@ -760,7 +759,7 @@ class CustomerFullProfile extends Component {
               <Col xs={10}>
                 <div className='customer-profile-block row full-width-inputs'>
                   <div className='billing-address'>
-                    <CurrentAddress
+                    <Address
                       mappings={mappings.address}
                       ref={(address) => {this.billingAddress = address}}
                       modal={this.props.modal}
@@ -780,7 +779,7 @@ class CustomerFullProfile extends Component {
           {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
             <div className='customer-profile-block row full-width-inputs'>
               <div className='billing-address'>
-                <CurrentAddress
+                <Address
                   mappings={mappings.address}
                   ref={(address) => {this.billingAddress = address}}
                   title='Billing Address'
@@ -807,7 +806,7 @@ class CustomerFullProfile extends Component {
           {[true, 'single'].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
             <div className='customer-profile-block row full-width-inputs'>
               <div className='shipping-address'>
-                <CurrentAddress
+                <Address
                   mappings={mappings.address}
                   ref={(address) => {this.shippingAddress = address}}
                   title='Shipping Address'

@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events'
-import { Dispatcher } from 'flux'
+import {EventEmitter} from 'events'
+import {Dispatcher} from 'flux'
 
 import ArrayHelper from '../helpers/Array.js'
 import ObjectHelper from '../helpers/Object.js'
@@ -11,33 +11,33 @@ import HashProxy from '../utils/HashProxy.js'
 import BaseStore from './BaseStore.jsx'
 
 class BaseCollectionStore extends BaseStore {
-    /**
-     *
-     * @constructor
-     * @param dispatcher
-     * @param stores
-     */
+  /**
+   *
+   * @constructor
+   * @param dispatcher
+   * @param stores
+   */
   constructor(dispatcher, stores) {
     super(dispatcher, stores)
-        
+
     this.length = 0
     this.items = {}
   }
 
-    /**
-     *
-     * @param key
-     * @returns {boolean}
-     */
+  /**
+   *
+   * @param key
+   * @returns {boolean}
+   */
   hasItem(key) {
     return this.items.hasOwnProperty(key)
   }
 
-    /**
-     *
-     * @param key
-     * @returns {undefined}
-     */
+  /**
+   *
+   * @param key
+   * @returns {undefined}
+   */
   getItem(key, resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
 
@@ -45,7 +45,7 @@ class BaseCollectionStore extends BaseStore {
       let item = this.items[key]
 
       if (resolveCodeTypes) {
-        return BaseCollectionStore.resolveCodeTypes(item, BaseCollectionStore.CODETYPE_NAME) // Base method
+        return BaseCollectionStore.resolveDomainObjects(item, BaseCollectionStore.CODETYPE_NAME) // Base method
       }
 
       return item
@@ -54,33 +54,86 @@ class BaseCollectionStore extends BaseStore {
     return undefined
   }
 
-    /**
-     *
-     * @param key
-     * @param value
-     * @returns {*}
-     */
+  /**
+   * Utility function to encapsulate hasItem and getItem in a single method,
+   * throwing an error if the item doesn't exist or cannot be returned.
+   */
+  retrieveItem(key) {
+    let item = null
+    // Try to get the item first
+    if (this.hasItem(key)) {
+      item = this.getItem(key) || null // getItem returns undefined
+    }
+
+    if (item === null) {
+      // Throw an error?
+    }
+
+    return item
+  }
+
+  getItemProperty(key, prop) {
+    let item = this.retrieveItem(key)
+
+    if (item === null) return undefined
+
+    if (item.hasOwnProperty(prop)) {
+      return item[prop]
+    }
+
+    return undefined
+  }
+
+
+  /**
+   * Allows you to set a custom property on an item in the store.
+   * Use this to set a custom calculated field or any additional data.
+   * Warning: this can overwrite existing store values, so be careful!
+   * TODO: Allow for a function to be passed in.
+   * @param key
+   * @param prop
+   * @param value
+   * @returns void
+   */
+  setItemProperty(key, prop, value) {
+    let item = this.retrieveItem(key)
+
+    if (item === null) return
+    // TODO: Alternatively we could throw an error or log this...
+    // Fail silently for now, it shouldn't pose any issues
+
+    if (item.hasOwnProperty(prop)) {
+      item[prop] = value
+    }
+  }
+
+  /**
+   *
+   * @param key
+   * @param value
+   * @returns {*}
+   */
   setItem(key, value) {
     let previous
-        
+
     if (this.hasItem(key)) {
       previous = this.items[key]
     } else {
       this.length++
     }
-        
+
     this.items[key] = value
-		
+
     this.emitChange()
-		
+
     return previous
   }
 
-    /**
-     *
-     * @param key
-     * @returns {*}
-     */
+  /**
+   *
+   * @param key
+   * @returns {*}
+   */
   removeItem(key) {
     let previous
 
@@ -96,19 +149,19 @@ class BaseCollectionStore extends BaseStore {
     return undefined
   }
 
-    /**
-     *
-     * @returns {boolean}
-     */
+  /**
+   *
+   * @returns {boolean}
+   */
   hasItems() {
     return (this.count() > 0)
   }
 
-    /**
-     *
-     * @param resolveCodeTypes
-     * @returns {any[]}
-     */
+  /**
+   *
+   * @param resolveCodeTypes
+   * @returns {any[]}
+   */
   getItems(resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
 
@@ -117,7 +170,7 @@ class BaseCollectionStore extends BaseStore {
       console.log(this.items)
       return Object.keys(this.items).map(key => {
         let item = this.items[key]
-        return BaseCollectionStore.resolveCodeTypes(item, BaseCollectionStore.CODETYPE_NAME) // Base method
+        return BaseCollectionStore.resolveDomainObjects(item, BaseCollectionStore.CODETYPE_NAME) // Base method
       })
     }
 
@@ -126,14 +179,14 @@ class BaseCollectionStore extends BaseStore {
     })
   }
 
-    /**
-     *
-     * @param data
-     * @param onSuccess
-     * @param onError
-     */
+  /**
+   *
+   * @param data
+   * @param onSuccess
+   * @param onError
+   */
   setItems(data, onSuccess, onError) {
-        // InventoryStore.setItems
+    // InventoryStore.setItems
     try {
       data = data || []
 
@@ -170,66 +223,65 @@ class BaseCollectionStore extends BaseStore {
     }
   }
 
-    /*has(key) {
-        return this.hasItem(key)
-    }*/
+  /*has(key) {
+   return this.hasItem(key)
+   }*/
 
-    /**
-     * Alias for hasItem.
-     * @param key
-     * @returns {boolean}
-     */
+  /**
+   * Alias for hasItem.
+   * @param key
+   * @returns {boolean}
+   */
   has(key) {
     let exists = false
-    if (this.items.hasOwnProperty(key) &&
-            typeof this.items[key] !== 'undefined') {
+    if (this.items.hasOwnProperty(key) && typeof this.items[key] !== 'undefined') {
       exists = true
     }
 
     return exists
   }
 
-    /**
-     * Alias for getItem.
-     * @param key
-     * @returns {*}
-     */
+  /**
+   * Alias for getItem.
+   * @param key
+   * @returns {*}
+   */
   get(key) {
     return this.getItem(key)
   }
 
-    /**
-     * Chainable alias for setItem.
-     * @param key
-     * @param value
-     * @returns {BaseCollectionStore}
-     */
+  /**
+   * Chainable alias for setItem.
+   * @param key
+   * @param value
+   * @returns {BaseCollectionStore}
+   */
   set(key, value) {
     this.setItem(key, value)
     return this
   }
 
-    /**
-     * Chainable alias for removeItem.
-     * @param key
-     * @returns {*}
-     */
+  /**
+   * Chainable alias for removeItem.
+   * @param key
+   * @returns {*}
+   */
   remove(key) {
     return (this.removeItem(key) !== undefined) ? this : false
   }
 
-    /**
-     *
-     */
+  /**
+   *
+   */
   clear() {
     this.items = {}
     this.length = 0
   }
 
-    /**
-     *
-     * @returns {Array}
-     */
+  /**
+   *
+   * @returns {Array}
+   */
   keys() {
     let keys = [], k
 
@@ -242,10 +294,10 @@ class BaseCollectionStore extends BaseStore {
     return keys
   }
 
-    /**
-     *
-     * @returns {Array}
-     */
+  /**
+   *
+   * @returns {Array}
+   */
   values() {
     let values = [], k
 
@@ -258,10 +310,10 @@ class BaseCollectionStore extends BaseStore {
     return values
   }
 
-    /**
-     *
-     * @param fn
-     */
+  /**
+   *
+   * @param fn
+   */
   each(fn) {
     let k
 
@@ -272,10 +324,10 @@ class BaseCollectionStore extends BaseStore {
     }
   }
 
-    /**
-     *
-     * @returns {number}
-     */
+  /**
+   *
+   * @returns {number}
+   */
   count() {
     return Object.keys(this.items).length
   }

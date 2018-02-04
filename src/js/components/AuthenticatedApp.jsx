@@ -76,7 +76,7 @@ class AuthenticatedApp extends Component {
   }
     
   onChange() {
-        // onChange handler for AuthenticatedApp
+        // handleChange handler for AuthenticatedApp
     this.setState(this.getLoginState())
   }
     

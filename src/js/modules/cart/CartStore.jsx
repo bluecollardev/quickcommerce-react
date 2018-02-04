@@ -4,6 +4,7 @@ import { EventEmitter } from 'events'
 import { Dispatcher } from 'flux'
 
 import ArrayHelper from '../../helpers/Array.js'
+import ObjectHelper from '../../helpers/Object.js'
 
 class CartStore extends EventEmitter {
   constructor(dispatcher) {
@@ -14,7 +15,7 @@ class CartStore extends EventEmitter {
       this.dispatcher = dispatcher
     } else {
       this.dispatcher = new Dispatcher()  // TODO: Hmmm... maybe I shouldn't just create a random dispatcher that's attached to the base store
-            // This is just in here until I decide how to handle the case where it isn't provided
+      // This is just in here until I decide how to handle the case where it isn't provided
     }
         
     this.subscribe(() => this.registerToActions.bind(this))
@@ -36,7 +37,7 @@ class CartStore extends EventEmitter {
   init(config) {
     this.items = config.items
     this.selection = []
-        //this.total = total
+    //this.total = total
         
     config.selection.forEach(item => {
       item.quantity = Number(item.quantity)
@@ -101,7 +102,7 @@ class CartStore extends EventEmitter {
   }
     
   getCount() {
-        // TODO: This isn't working right yet
+    // TODO: This isn't working right yet
     let total = 0
         
     if (this.selection instanceof Array && this.selection.length > 0) {
@@ -122,7 +123,7 @@ class CartStore extends EventEmitter {
   }
     
   addItem(key, quantity, item, silent) {
-        // Cart store addItem
+    // Cart store addItem
     silent = silent || false
     let data = null
     let options = []
@@ -138,13 +139,13 @@ class CartStore extends EventEmitter {
     let exists = false
     for (let selectionKey in this.selection) {
       exists = false // Reset the variable just in case
-            // Compare item keys to see if the item already exists in the selection array
+      // Compare item keys to see if the item already exists in the selection array
       if (key === this.selection[selectionKey].id) {
-                // Now make sure the selected options are a match...
-                // If it isn't an exact match, we're going to assume a different 
-                // configuration for the same product, so skip this and create a new item
-                
-                // Consider empty options property to be an empty array
+        // Now make sure the selected options are a match...
+        // If it isn't an exact match, we're going to assume a different
+        // configuration for the same product, so skip this and create a new item
+
+        // Consider empty options property to be an empty array
         options = (item.options instanceof Array) ? item.options : options
                 
         if (ArrayHelper.jsonSameMembers(options, this.selection[selectionKey].options)) {
@@ -234,60 +235,60 @@ class CartStore extends EventEmitter {
   }
     
   addOption(item, quantity, data, product) {
-        // Product option sample
-        /* "options": [
-            { // The product option
-                "name": "Packages per Shipment",
-                "type": "select",
-                "option_value": [
-                    {
-                        "image": "",
-                        "price": false,
-                        "price_formated": false,
-                        "price_prefix": "+",
-                        "product_option_value_id": "527",
-                        "option_value_id": "241",
-                        "name": "1",
-                        "quantity": 0
-                    },
-                ]
-            }
-        ]*/
-        
-        // Selected option value sample
-        /* "option": { // The selected option value
-            "image": "",
-            "price": false,
-            "price_formated": false,
-            "price_prefix": "+",
-            "product_option_value_id": "525",
-            "option_value_id": "238",
-            "name": "250g",
-            "quantity": 0,
-            "option": { // The option itself
-                "name": "Coffee Package Size",
-                "type": "select",
-                "required": "1",
-                "product_option_id": "253",
-                "option_id": "44"
-            }
-        }*/
-        
-        // The selection object itself
-        /* "selection": [
-            {
-                data: {}, // Cart item product data
-                id: "3382",
-                options: [], // I think this is redundant / useless
-                quantity: 2,
-                _index: 0,
-                _key: 0
-            }
-        ]*/
-        
-        // Loop over active items in cart (the current selection)
-        // If the item being added isn't already in the cart, we 
-        // need to add it before processing the option
+    // Product option sample
+    /* "options": [
+        { // The product option
+            "name": "Packages per Shipment",
+            "type": "select",
+            "option_value": [
+                {
+                    "image": "",
+                    "price": false,
+                    "price_formated": false,
+                    "price_prefix": "+",
+                    "product_option_value_id": "527",
+                    "option_value_id": "241",
+                    "name": "1",
+                    "quantity": 0
+                },
+            ]
+        }
+    ]*/
+
+    // Selected option value sample
+    /* "option": { // The selected option value
+        "image": "",
+        "price": false,
+        "price_formated": false,
+        "price_prefix": "+",
+        "product_option_value_id": "525",
+        "option_value_id": "238",
+        "name": "250g",
+        "quantity": 0,
+        "option": { // The option itself
+            "name": "Coffee Package Size",
+            "type": "select",
+            "required": "1",
+            "product_option_id": "253",
+            "option_id": "44"
+        }
+    }*/
+
+    // The selection object itself
+    /* "selection": [
+        {
+            data: {}, // Cart item product data
+            id: "3382",
+            options: [], // I think this is redundant / useless
+            quantity: 2,
+            _index: 0,
+            _key: 0
+        }
+    ]*/
+
+    // Loop over active items in cart (the current selection)
+    // If the item being added isn't already in the cart, we
+    // need to add it before processing the option
     let createItem = true
     for (let idx in this.selection) {
       let selection = this.selection[idx]
@@ -296,13 +297,13 @@ class CartStore extends EventEmitter {
       }
     }
         
-        // Store item data if it doesn't exist
+    // Store item data if it doesn't exist
     if (createItem) {
       this.addItem(data.product['id'], 1, data.product, true) // Silent add, don't trigger events
     }
         
-        // TODO: Update to use .map
-        // Loop over active items in cart (the current selection)
+    // TODO: Update to use .map
+    // Loop over active items in cart (the current selection)
     for (let idx in this.selection) {
       if (!(this.selection[idx].options instanceof Array)) {
         this.selection[idx]['options'] = []
@@ -314,18 +315,18 @@ class CartStore extends EventEmitter {
             
       let selection = this.selection[idx]
             
-            // If the item being added is already in the cart
+      // If the item being added is already in the cart
       if (data.product['id'] === selection.id) {
-                // Update item quantity, if it changed
-                //const oldQty = selection.quantity
-                //this.selection[idx].quantity += Number(quantity)
-                
-                // Add the order product option value to the cart
+        // Update item quantity, if it changed
+        //const oldQty = selection.quantity
+        //this.selection[idx].quantity += Number(quantity)
+
+        // Add the order product option value to the cart
         let selectedOptions = selection.options
         for (let idxOpt in selectedOptions) { 
-                    // If the order product option value being added already exists for the item
+          // If the order product option value being added already exists for the item
           if (item === selectedOptions[idxOpt].id) {
-                        // Update item quantity, if it changed
+            // Update item quantity, if it changed
             const oldQty = selection.quantity
             this.selection[idx].options[idxOpt].quantity += Number(quantity)
                         
@@ -334,18 +335,18 @@ class CartStore extends EventEmitter {
               this.emit('item-added', selection.id, selection.quantity, selection.data)                                   
             } else {
               this.emit('change')
-                            //this.emit('item-changed', data.product)                            
+              //this.emit('item-changed', data.product)
             }
                         
             return
-                    // What we do depends on the type 
+            // What we do depends on the type
           } else {
             switch (data.option['type']) {
             case 'select':                         
-                                // If the order product option value being added is part of the same option [group] as an existing selection
+              // If the order product option value being added is part of the same option [group] as an existing selection
               let selectedOptionId = Number(selectedOptions[idxOpt].data.option['option_id'])
               if (Number(data.option['option_id']) === selectedOptionId) {
-                                    // Go ahead and mutate the object, we don't need a new key or index
+                // Go ahead and mutate the object, we don't need a new key or index
                 this.selection[idx].options[idxOpt] = assign(this.selection[idx].options[idxOpt], {
                   id: item,
                   quantity: Number(quantity),
@@ -391,11 +392,11 @@ class CartStore extends EventEmitter {
       }
     }
         
-        /*if (this.items.hasOwnProperty(item)) {
-            data = this.items[item]
-        } else {
-            this.items[item] = data
-        }*/       
+    /*if (this.items.hasOwnProperty(item)) {
+        data = this.items[item]
+    } else {
+        this.items[item] = data
+    }*/
   }
     
   updateQuantity(index, quantity) {
@@ -453,9 +454,9 @@ class CartStore extends EventEmitter {
     return ObjectHelper.recursiveFormatKeys(data, from, to)
   }
     
-    /**
-     * TODO: I am a utility method move me out of here!
-     */
+  /**
+   * TODO: I am a utility method move me out of here!
+   */
   _isset(array, value) {
     return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
   }

@@ -10,7 +10,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
   nextKey: 0,
 
   init(config) {
-        //this.total        = total
+    //this.total        = total
     this.items        = config.items
     this.selection    = []
     config.selection.forEach(item => {

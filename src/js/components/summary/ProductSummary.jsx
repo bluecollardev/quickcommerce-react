@@ -24,14 +24,21 @@ export default class ProductSummary extends Component {
     this.getDescription = this.getDescription.bind(this)
     this.toggleOptions = this.toggleOptions.bind(this)
     this.updateImageDimensions = this.updateImageDimensions.bind(this)
-        
-		// TODO: Type-check props
+
+    // TODO: Type-check props
     let item = sessionStorage.getItem('selectedProduct')
-		
+
     if (typeof item === 'string' && item !== '') {
+      try {
+        item = JSON.parse(item)
+      } catch (err) {
+        // Do nothing
+        item = {}
+      }
+
       this.state = {
         showOptions: false,
-        item: JSON.parse(item)
+        item: item
       }
     } else {
       console.log('no item to show')
@@ -43,7 +50,7 @@ export default class ProductSummary extends Component {
   }
     
   componentDidMount() {
-        // Equalize images, etc.
+    // Equalize images, etc.
     window.addEventListener('resize', this.updateImageDimensions)
     this.updateImageDimensions()
   }
@@ -51,7 +58,7 @@ export default class ProductSummary extends Component {
   componentDidUpdate() {
     let item = sessionStorage.getItem('selectedProduct')
     if (this.state.item === null) {
-            // If there's a item in session grab it (we probably triggered it from another page)
+      // If there's a item in session grab it (we probably triggered it from another page)
       if (typeof item === 'string' && item !== '') {
         this.setState({
           item: JSON.parse(item)
@@ -61,12 +68,12 @@ export default class ProductSummary extends Component {
   }
     
   componentWillUnmount() {
-        // Equalize images, etc.
+    // Equalize images, etc.
     window.removeEventListener('resize', this.updateImageDimensions)
   }
     
   updateImageDimensions() {
-        // Keep it square
+    // Keep it square
     if (typeof this.featuredImage !== 'undefined' && this.featuredImage !== null) {
       console.log('updating featured image height')
       console.log(this.featuredImage.offsetWidth)
@@ -90,7 +97,7 @@ export default class ProductSummary extends Component {
   }
     
   render() {
-        // Render Product component
+    // Render Product component
     let description = this.getDescription()
     let price = (parseFloat(this.state.item.price)).toFixed(2)
     let options = false
@@ -103,7 +110,7 @@ export default class ProductSummary extends Component {
     let images = []
         
     if (this.state.item) {
-            // TODO: Use mappings!
+      // TODO: Use mappings!
       if (this.state.item.hasOwnProperty('images')) {
         images = this.state.item['images']
       }
@@ -113,7 +120,7 @@ export default class ProductSummary extends Component {
       <div className="summary entry-summary">
         {/* Microdata */}
         {/*<meta itemProp="priceCurrency" content="USD" />
-                <link itemProp="availability" href="http://schema.org/InStock" />*/}
+        <link itemProp="availability" href="http://schema.org/InStock" />*/}
         <div className="product-details">
           <div className="row">
             <div className="product_images col-xs-12 col-sm-4 col-md-4">

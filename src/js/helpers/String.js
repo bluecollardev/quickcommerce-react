@@ -1,14 +1,10 @@
-/**********************************************************
- * Namespace: QC.Helpers.String
- **********************************************************/
-
 export default class StringHelper {
   static decodeHtmlEntities(str) {
     let element = document.createElement('div')
         
     let decode = (str) => {
       if (str && typeof str === 'string') {
-                // Strip script/html tags
+        // Strip script/html tags
         str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '')
         str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '')
         element.innerHTML = str
@@ -22,43 +18,31 @@ export default class StringHelper {
     return decode(str)
   }
     
-    // TODO: Un-jQuery this
-    /*static escapeHtml = (unsafe) => {
-        return $('<div />').text(unsafe).html()
-    }
-    
-    static unescapeHtml = (safe) => {
-        return $('<div />').html(safe).text()
-    }*/
+  // TODO: Un-jQuery this
+  /*static escapeHtml = (unsafe) => {
+      return $('<div />').text(unsafe).html()
+  }
+
+  static unescapeHtml = (safe) => {
+      return $('<div />').html(safe).text()
+  }*/
     
   static capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
-    
-    /**
-     * Method: App.Helpers.String.hyphenize
-     *
-     */
+
   static hyphenize = (str) => {
     return str.replace(/[A-Z]/g, (str) => { 
       return '-' + str.toLowerCase()
     })
   }
-    
-    /**
-     * Method: App.Helpers.String.hyphenize
-     *
-     */
+
   static underscore = (str) => {
     return str.replace(/[A-Z]/g, (str) => { 
       return '_' + str.toLowerCase()
     })
   }
-    
-    /**
-     * Method: App.Helpers.String.hyphenize
-     *
-     */
+
   static camelize = (str) => {
     return str.replace(/[\s\-_]+(\w)/g, (str) => {
       return str.toUpperCase().replace(/[\s\-_]+/, '') 
@@ -70,7 +54,7 @@ export default class StringHelper {
       return match === sub1 ? sub2 : sub1
     })
         
-    return string
+    return str
   }
     
   static escapeRegExp = (str) => {
@@ -90,7 +74,6 @@ export default class StringHelper {
   }
 
   static quoteIfNecessary = (text) => {
-        // quote if there are embedded spaces
     if (text.indexOf(' ') !== -1) {
       text = '\'' + text + '\''
     }
@@ -98,11 +81,19 @@ export default class StringHelper {
   }
 
   static unquoteIfNecessary = (text) =>  {
-        // remove surrounding quotes
     if ((text[0] === '\'' && text[text.length - 1] === '\'') ||
           (text[0] === '"' && text[text.length - 1] === '"')) {
       text = text.slice(1, text.length - 1)
     }
     return text
+  }
+
+  static stringIsInteger(str) {
+    if (typeof value === 'undefined' || value === null) {
+      return false
+    }
+
+    let n = Math.floor(Number(str))
+    return String(n) === str && n >= 0
   }
 }

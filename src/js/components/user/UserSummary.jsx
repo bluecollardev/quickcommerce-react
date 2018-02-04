@@ -6,9 +6,6 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { Button, Checkbox, Radio } from 'react-bootstrap'
 
-import BillingAddress from '../address/BillingAddress.jsx'
-import ShippingAddress from '../address/ShippingAddress.jsx'
-
 export default class UserSummary extends Component {
   constructor(props) {
     super(props)
@@ -30,8 +27,6 @@ export default class UserSummary extends Component {
             </FormGroup>
           </form>
         </div>
-                
-        <BillingAddress />
       </Col>
     )
   }   

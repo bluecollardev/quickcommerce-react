@@ -1,11 +1,10 @@
 import CustomerConstants from '../constants/CustomerConstants.jsx'
 
-import BaseCollectionStore from './BaseCollectionStore.jsx'
-//import jwt_decode from 'jwt-decode'
+import BaseStore from './BaseStore.jsx'
 
-class CustomerStore extends BaseCollectionStore {
-  constructor(dispatcher) {
-    super(dispatcher)
+class CustomerStore extends BaseStore {
+  constructor(dispatcher, stores) {
+    super(dispatcher, stores)
         
     this.subscribe(() => this.registerToActions.bind(this))
   }
@@ -150,7 +149,6 @@ CustomerStore.customer = {
   telephone: '',
   fax: '',
   address_id: null
-    // TODO: Append full model
 }
 CustomerStore.billingAddressString = ''
 CustomerStore.billingAddress = {

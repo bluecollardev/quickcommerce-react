@@ -46,10 +46,10 @@ export default class PdfViewer extends Component {
                 className='pdf-viewer-wrapper'>
                 <iframe allowFullScreen
                   className='pdf-viewer' 
-                  src={QC_APP_URL + 'viewer-js/#../' + QC_FILES_PATH + 'CCF_000159.pdf'} />
+                  src={QC_APP_URL + 'viewer-js/#../' + QC_FILES_PATH + 'EQUIFAX.pdf'} />
                 <Button block
                   onClick={() => {
-										// Trigger invisible link
+                    // Trigger invisible link
                     this.pdfDownloadTrigger.click()
 										
                     this.setState({
@@ -62,7 +62,7 @@ export default class PdfViewer extends Component {
                 {/* Programatically click this link */}
                 <a download
                   ref={(trigger) => this.pdfDownloadTrigger = trigger}
-                  href={QC_FILES_URI + 'CCF_000159.pdf'}
+                  href={QC_FILES_URI + 'EQUIFAX.pdf'}
                   style={{
                     display: 'none'
                   }} />
@@ -79,10 +79,10 @@ export default class PdfViewer extends Component {
           className='pdf-viewer-wrapper'>
           <iframe allowFullScreen
             className='pdf-viewer' 
-            src={QC_APP_URL + 'viewer-js/#../' + QC_FILES_PATH + 'CCF_000159.pdf'} />
+            src={QC_APP_URL + 'viewer-js/#../' + QC_FILES_PATH + 'EQUIFAX.pdf'} />
           <Button block
             onClick={() => {
-							// Trigger invisible link
+              // Trigger invisible link
               this.pdfDownloadTrigger.click()
 							
               this.setState({
@@ -95,7 +95,7 @@ export default class PdfViewer extends Component {
           {/* Programatically click this link */}
           <a download
             ref={(trigger) => this.pdfDownloadTrigger = trigger}
-            href={QC_FILES_URI + 'CCF_000159.pdf'}
+            href={QC_FILES_URI + 'EQUIFAX.pdf'}
             style={{
               display: 'none'
             }} />
