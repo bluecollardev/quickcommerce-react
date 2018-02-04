@@ -223,10 +223,6 @@ class BaseCollectionStore extends BaseStore {
     }
   }
 
-  /*has(key) {
-   return this.hasItem(key)
-   }*/
-
   /**
    * Alias for hasItem.
    * @param key

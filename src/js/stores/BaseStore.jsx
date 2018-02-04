@@ -17,7 +17,6 @@ class BaseStore extends EventEmitter {
    */
   constructor(dispatcher, stores) {
     super()
-
     // HashProxy of flux stores (to waitFor)
     this._stores = stores || new HashProxy()
 
@@ -26,8 +25,6 @@ class BaseStore extends EventEmitter {
       this.dispatcher = dispatcher
     } else {
       this.dispatcher = new Dispatcher()
-      // TODO: Hmmm... maybe I shouldn't just create a random dispatcher...
-      // This is just in here until I decide how to handle the case where it isn't provided
     }
   }
 
@@ -57,7 +54,6 @@ class BaseStore extends EventEmitter {
    * @param obj
    */
   emitChange(obj) {
-    // TODO: Standardize events with constants
     this.emit('CHANGE', obj)
   }
 
