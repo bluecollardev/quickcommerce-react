@@ -68,7 +68,7 @@ const Cart = createReactClass({
       tableClassName      : '',
       cartEmptyMessage    : (
         <span><b>Your shopping cart is empty.</b><br/>Please add some products to continue.</span>
-            )
+      )
     }
   },
   getInitialState() {
@@ -181,7 +181,7 @@ const Cart = createReactClass({
             <p></p>
           </div>
         </div>
-            )
+      )
     }
         
     return connectDropTarget(

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 class CartTable extends Component {
   render() {
@@ -13,9 +13,7 @@ class CartTable extends Component {
                 </th>
               )
             })}
-            <th>
-                            Quantity
-            </th>
+            <th>Quantity</th>
             <th />
           </tr>
         </thead>

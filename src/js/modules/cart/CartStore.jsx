@@ -10,15 +10,15 @@ class CartStore extends EventEmitter {
   constructor(dispatcher) {
     super()
         
-    dispatcher = dispatcher || null
+    /*dispatcher = dispatcher || null
     if (dispatcher instanceof Dispatcher) {
       this.dispatcher = dispatcher
     } else {
       this.dispatcher = new Dispatcher()  // TODO: Hmmm... maybe I shouldn't just create a random dispatcher that's attached to the base store
       // This is just in here until I decide how to handle the case where it isn't provided
-    }
+    }*/
         
-    this.subscribe(() => this.registerToActions.bind(this))
+    this.subscribe(dispatcher, () => this.registerToActions.bind(this))
         
     this.items = {}
     this.selection = []
@@ -26,12 +26,12 @@ class CartStore extends EventEmitter {
     this.dispatchToken = null
   }
     
-  subscribe(actionSubscribe) {
-    if (!(this.dispatcher instanceof Dispatcher)) {
+  subscribe(dispatcher, actionSubscribe) {
+    if (!(dispatcher instanceof Dispatcher)) {
       throw new Error('Failed to provide dispatcher to BaseStore, cannot register actions')
     }
         
-    this.dispatchToken = this.dispatcher.register(actionSubscribe())
+    this.dispatchToken = dispatcher.register(actionSubscribe())
   }
     
   init(config) {
@@ -131,7 +131,7 @@ class CartStore extends EventEmitter {
     if (this.items.hasOwnProperty(key)) {
       data = this.items[key]
     } else {
-      data = (item.hasOwnProperty('data')) ? item.data : null
+      data = item //(item.hasOwnProperty('data')) ? item.data : item
             
       this.items[key] = data
     }

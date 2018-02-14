@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {inject, observer, Provider} from 'mobx-react'
+import {inject, observer} from 'mobx-react'
 
 import { DropTarget } from 'react-dnd'
 import classNames from 'classnames'
@@ -35,50 +35,78 @@ function collect(connect, monitor) {
 }))
 @observer
 class Cart extends Component {
-  constructor(props) {
+  static propTypes = {
+    items: PropTypes.object,
+    selection: PropTypes.array,
+    onItemDropped: PropTypes.func,
+    onItemAdded: PropTypes.func,
+    onItemClicked: PropTypes.func,
+    onItemRemoved: PropTypes.func,
+    onItemQtyChanged: PropTypes.func,
+    onChange: PropTypes.func,
+    iterator: PropTypes.func,
+    tableClassName: PropTypes.string,
+    cartEmptyMessage: PropTypes.node
+
+  }
+
+  static defaultProps = {
+    items: {},
+    selection: [],
+    onItemClicked: () => {},
+    onItemDropped: () => {},
+    onItemAdded: () => {},
+    onItemRemoved: () => {},
+    onItemQtyChanged: () => {},
+    onChange: () => {},
+    iterator: () => { return {} },
+    containerComponent: ContainerComponent,
+    rowComponent: RowComponent,
+    tableClassName: '',
+    cartEmptyMessage: (
+      <span><b>Your shopping cart is empty.</b><span className=''><br/>Please add some products to continue.</span></span>
+    )
+  }
+
+  static contextTypes = {
+    cartContextManager: PropTypes.object,
+    cart: PropTypes.object
+  }
+
+  constructor(props, context) {
     super(props)
-        
-    this.getInitialState = this.getInitialState.bind(this)
+
     this.refresh = this.refresh.bind(this)
     this.onChange = this.onChange.bind(this)
     this.addItem = this.addItem.bind(this)
     this.removeItem = this.removeItem.bind(this)
-        //this.getSelection = this.getSelection.bind(this)
-        //this.isEmpty = this.isEmpty.bind(this)
     this.emptyCart = this.emptyCart.bind(this)
     this.clearCart = this.clearCart.bind(this)
     this.reset = this.reset.bind(this)
-        
-    this.state = this.getInitialState()
-  }
-    
-  getInitialState() {
-    return {
-      selection: this.props.cartStore.getSelection()
+
+    this.state = {
+      selection: []
     }
   }
-    
+
   componentDidMount() {
-    this.props.actions.cart.init(this.props.items, this.props.cartStore.getSelection())
-        
-    this.props.cartStore.on('ready', this.refresh)
-    this.props.cartStore.on('change', this.onChange)
-    this.props.cartStore.on('item-added', this.props.onItemAdded)
-    this.props.cartStore.on('item-removed', this.props.onItemRemoved)
-    this.props.cartStore.on('item-changed', this.props.onItemQtyChanged)
+    // Cart.componentDidMount
+    //this.context.actions.init(this.props.items, this.context.store.getSelection())
+    this.context.cartContextManager.subscribe((contextValue) => {
+      console.log('update cart using context')
+      console.log(contextValue)
+      this.setState({
+        selection: contextValue.store.getSelection()
+      })
+    })
   }
-    
-  componentWillUnmount() {
-    this.props.cartStore.removeListener('ready', this.refresh)
-    this.props.cartStore.removeListener('change', this.onChange)
-    this.props.cartStore.removeListener('item-added', this.props.onItemAdded)
-    this.props.cartStore.removeListener('item-removed', this.props.onItemRemoved)
-    this.props.cartStore.removeListener('item-changed', this.props.onItemQtyChanged)
-  }
-    
+
   refresh() {
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const store = cartContextValue.store
+
     this.setState({
-      selection: this.props.cartStore.getSelection()
+      selection: store.getSelection()
     })
   }
     
@@ -88,31 +116,52 @@ class Cart extends Component {
   }
     
   addItem(key, quantity, item) {
-    this.props.actions.cart.addItem(key, quantity, item)
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.addItem(key, quantity, item)
   }
     
   removeItem(index) {
-    this.props.actions.cart.removeItem(index)
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.removeItem(index)
   }
     
   updateQuantity(index, quantity) {
-    this.props.actions.cart.updateQuantity(index, quantity)
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.updateQuantity(index, quantity)
   }
     
   addOption(key, quantity, item, product) {
-    this.props.actions.cart.addOption(key, quantity, item, product)
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.addOption(key, quantity, item, product)
   }
     
   emptyCart() {
-    this.props.actions.cart.emptyCart()
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.emptyCart()
   }
     
   clearCart() {
-    this.props.actions.cart.clearCart()
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.clearCart()
   }
     
   reset() {
-    this.props.actions.cart.reset()
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+
+    actions.reset()
   }
     
   render() {
@@ -121,9 +170,13 @@ class Cart extends Component {
     const Container = this.props.containerComponent
     const Row = this.props.rowComponent
         
-    let context = this.props.iterator()    
-            
-    if (this.props.cartStore.isEmpty()) {
+    let context = this.props.iterator()
+
+    const cartContextValue = this.context.cartContextManager.getCartContextValue()
+    const actions = cartContextValue.actions
+    const store = cartContextValue.store
+
+    if (store !== null && store.isEmpty()) {
       return connectDropTarget(
         <div className='dnd-target-wrapper'>
           <div>
@@ -137,64 +190,31 @@ class Cart extends Component {
             <p></p>
           </div>
         </div>
-            )
+      )
+    } else {
+      return connectDropTarget(
+        <div className='dnd-target-wrapper'>
+          <Container
+            tableClassName={this.props.tableClassName}
+            columns={this.props.columns}
+            body={this.state.selection.map(item => {
+              let context = this.props.iterator(context, item)
+              return (
+                <Row
+                  key={item._key}
+                  item={item}
+                  columns={this.props.columns}
+                  onItemClicked={this.props.onItemClicked}
+                  removeItem={()  => this.removeItem(item._index)}
+                  setItemQty={qty => this.updateQuantity(item._index, qty)} />
+              )
+            })}
+            context={context}
+          />
+        </div>
+      )
     }
-        
-    return connectDropTarget(
-      <div className='dnd-target-wrapper'>
-        <Container
-          tableClassName={this.props.tableClassName}
-          columns={this.props.columns}
-          body={this.state.selection.map(item => {
-            let context = this.props.iterator(context, item)
-            return (
-              <Row
-                key={item._key}
-                item={item}
-                columns={this.props.columns}
-                onItemClicked={this.props.onItemClicked}
-                removeItem={()  => this.removeItem(item._index)}
-                setItemQty={qty => this.updateQuantity(item._index, qty)} />
-            )
-          })}
-          context={context}
-                />
-      </div>
-        )
   }
-}
-
-Cart.propTypes = {
-  items             : PropTypes.object,
-  selection         : PropTypes.array,
-  onItemDropped     : PropTypes.func,
-  onItemAdded       : PropTypes.func,
-  onItemClicked     : PropTypes.func,
-  onItemRemoved     : PropTypes.func,
-  onItemQtyChanged  : PropTypes.func,
-  onChange          : PropTypes.func,
-  iterator          : PropTypes.func,
-  tableClassName    : PropTypes.string,
-  cartEmptyMessage  : PropTypes.node
-
-}
-
-Cart.defaultProps = {
-  items               : {},
-  selection           : [],
-  onItemClicked       : () => {},
-  onItemDropped       : () => {},
-  onItemAdded         : () => {},
-  onItemRemoved       : () => {},
-  onItemQtyChanged    : () => {},
-  onChange            : () => {},
-  iterator            : () => { return {} },
-  containerComponent  : ContainerComponent,
-  rowComponent        : RowComponent,
-  tableClassName      : '',
-  cartEmptyMessage    : (
-    <span><b>Your shopping cart is empty.</b><span className=''><br/>Please add some products to continue.</span></span>
-    )
 }
 
 export default DropTarget('sprite', cartTarget, collect)(Cart)

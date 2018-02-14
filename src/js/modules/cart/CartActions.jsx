@@ -1,5 +1,4 @@
 //import CartConstants from './CartConstants.jsx'
-
 export default (dispatcher) => {
   return {
     init(items, selection) {

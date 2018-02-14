@@ -1,4 +1,5 @@
 import assign from 'object-assign'
+import PropTypes from 'prop-types'
 
 import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
@@ -46,12 +47,14 @@ import UrlHelper from '../../helpers/URL.js'
 }))
 @observer
 class CartComponent extends Component {
+  static contextTypes = {
+    cartContextManager: PropTypes.object,
+    cart: PropTypes.object
+  }
+
   constructor(props) {
     super(props)
         
-    this.itemClicked = this.itemClicked.bind(this)
-    this.optionClicked = this.optionClicked.bind(this)
-    this.itemDropped = this.itemDropped.bind(this)
     this.renderOptions = this.renderOptions.bind(this)
         
     let actions = this.props.actions
@@ -68,30 +71,6 @@ class CartComponent extends Component {
     
   componentDidMount() {
     let settings = this.props.settingStore.getSettings().posSettings
-  }
-    
-    /**
-     * onItemClicked must be implemented in the extending class.
-     */
-  itemClicked(e, item) {
-        // CartComponent itemClicked
-    e.preventDefault()
-    e.stopPropagation()
-        
-        // If the Quick Add button was clicked
-    if (e.target.type === 'button') {
-      this.addToCartClicked(e, item)
-    }
-        
-    this.props.actions.product.setProduct(item)
-  }
-    
-  itemDropped(item) {
-        //let cart = this.getCart()
-  }
-    
-  optionClicked(item) {
-        //let cart = this.getCart()
   }
     
   rowIterator(context, row) {

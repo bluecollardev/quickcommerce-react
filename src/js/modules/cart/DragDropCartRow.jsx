@@ -65,7 +65,7 @@ class DragDropCartRow extends Component {
     }
         
     price = (price + optionTotal).toFixed(2)
-        
+
     return (
       <tr>
         <td key='name' className='cart-product-col'>
