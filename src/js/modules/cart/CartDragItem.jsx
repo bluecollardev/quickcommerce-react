@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 import PropTypes from 'prop-types'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
 import FormHelper from '../../helpers/Form.js'
-import HtmlHelper from '../../helpers/HTML.js'
+//import HtmlHelper from '../../helpers/HTML.js'
 
 const mySource = {
   beginDrag(props) {
@@ -13,7 +13,6 @@ const mySource = {
     }
   },
   endDrag(props, monitor, component) {}
-
 }
 
 function collect(connect, monitor) {
@@ -24,6 +23,16 @@ function collect(connect, monitor) {
 }
 
 class CartDragItem extends Component {
+  static propTypes = {
+    item: PropTypes.object,
+    onItemClicked: PropTypes.func
+  }
+
+  static defaultProps = {
+    item: {},
+    onItemClicked: () => {}
+  }
+
   constructor(props) {
     super(props)
         
@@ -31,7 +40,7 @@ class CartDragItem extends Component {
   }
     
   onClick(e) {
-        // onClick handler for CartDragItem
+    // onClick handler for CartDragItem
     if (typeof this.props.onItemClicked === 'function') {
       let fn = this.props.onItemClicked
       fn(e, this.props.item)
@@ -39,7 +48,7 @@ class CartDragItem extends Component {
   }
     
   render() {
-        // QuickCommerce Theme CartDragItem.render
+    // QuickCommerce Theme CartDragItem.render
     const { id, item, itemMappings, isDragging, connectDragSource } = this.props
         
     let itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
@@ -62,23 +71,13 @@ class CartDragItem extends Component {
           {name}
         </p>
         {price && price !== false && !isNaN(price) && (
-        <p className='item-price'>
-          {'$' + parseFloat(price).toFixed(2)}
-        </p>
-                )}
+          <p className='item-price'>
+            {'$' + parseFloat(price).toFixed(2)}
+          </p>
+        )}
       </div>
-        )
+    )
   }
-}
-
-CartDragItem.propTypes = {
-  item: PropTypes.object,
-  onItemClicked: PropTypes.func
-}
-    
-CartDragItem.defaultProps = {
-  item: {},
-  onItemClicked: () => {}
 }
 
 export default DragSource('sprite', mySource, collect)(CartDragItem)
