@@ -27,14 +27,14 @@ const CartDragItem = createReactClass({
     }
   },
   onClick(e) {
-        // onClick handler for CartDragItem
+    // onClick handler for CartDragItem
     if (typeof this.props.onItemClicked === 'function') {
       let fn = this.props.onItemClicked
       fn(e, this.props.item)
     }
   },
   render() {
-        // CartDragItem render
+    // CartDragItem render
     const { id, isDragging, connectDragSource } = this.props
     return connectDragSource(
       <div className='card'
@@ -48,14 +48,14 @@ const CartDragItem = createReactClass({
           {this.props.item['name']}
         </p>
         {this.props.item.hasOwnProperty('price') && 
-                this.props.item['price'] !== false && 
-                !isNaN(this.props.item['price']) && (
-                <p className='item-price'>
-                    {'$' + parseFloat(this.props.item['price']).toFixed(2)}
-                </p>
-                )}
+          this.props.item['price'] !== false &&
+          !isNaN(this.props.item['price']) && (
+            <p className='item-price'>
+              {'$' + parseFloat(this.props.item['price']).toFixed(2)}
+            </p>
+          )}
       </div>
-        )
+    )
   }
 })
 

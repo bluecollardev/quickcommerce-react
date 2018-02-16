@@ -43,7 +43,7 @@ export default class Products extends ProductBrowser {
     }
         
     return (
-      <div className="col-xs-12">
+      <div className="product-catalog col-xs-12">
         {this.props.displayCategoryFilter && (
           <CategoryFilterBar
             items={this.state.categories}

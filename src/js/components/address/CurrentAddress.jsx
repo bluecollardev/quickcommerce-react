@@ -551,10 +551,10 @@ class CurrentAddress extends Component {
 
     this.props.field(mappings.ZONE_ID, item.id)
     this.props.field(mappings.ZONE_CODE, item.data.code)
-    console.log('selected territory')
-    console.log(item)
-    console.log(value)
-    console.log('selected territory code: ' + item.data.code)
+    //console.log('selected territory')
+    //console.log(item)
+    //console.log(value)
+    //console.log('selected territory code: ' + item.data.code)
     this.props.field(mappings.ZONE, value)
 
     this.getTerritoryCities(item.data.code)
@@ -587,10 +587,10 @@ class CurrentAddress extends Component {
 
     this.props.field(mappings.COUNTRY_ID, item.id)
     this.props.field(mappings.COUNTRY_CODE, item.data.code)
-    console.log('selected country')
-    console.log(item)
-    console.log(value)
-    console.log('selected country code: ' + item.data.code)
+    //console.log('selected country')
+    //console.log(item)
+    //console.log(value)
+    //console.log('selected country code: ' + item.data.code)
     this.props.field(mappings.COUNTRY, value)
 
     this.getCountryTerritories(item.data.code)
@@ -643,8 +643,8 @@ class CurrentAddress extends Component {
     const { data } = this.state
 
     this.mergeFormData(data)
-    console.log('dumping merged data')
-    console.log(data)
+    //console.log('dumping merged data')
+    //console.log(data)
 
     return (
       <div>

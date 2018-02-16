@@ -64,7 +64,7 @@ class Cart extends Component {
     rowComponent: RowComponent,
     tableClassName: '',
     cartEmptyMessage: (
-      <span><b>Your shopping cart is empty.</b><span className=''><br/>Please add some products to continue.</span></span>
+      <span><b>You haven't made any selections.</b><span className=''><br/>Please add an item to continue.</span></span>
     )
   }
 
@@ -179,15 +179,12 @@ class Cart extends Component {
     if (store !== null && store.isEmpty()) {
       return connectDropTarget(
         <div className='dnd-target-wrapper'>
-          <div>
-            <Well
-              className={classNames({'well-is-over': isOver})}
-              style={{marginBottom: '.5em'}}
-              bsSize='large'>
-              {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
-              <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
-            </Well>
-            <p></p>
+          <div
+            className={classNames({'well-is-over': isOver})}
+            style={{marginBottom: '.5em'}}
+            bsSize='large'>
+            {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
+            <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
           </div>
         </div>
       )

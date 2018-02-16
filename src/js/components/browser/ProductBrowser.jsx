@@ -29,6 +29,22 @@ import HtmlHelper from '../../helpers/HTML.js'
 import itemFieldNames from '../../forms/ItemFields.jsx'
 
 class ProductBrowser extends Component {
+  static propTypes = {
+    itemMappings: PropTypes.object, // TODO: object.isRequired
+    onAddToCartClicked: PropTypes.func,
+    onItemClicked: PropTypes.func,
+    onFilterSelected: PropTypes.func,
+    onStepClicked: PropTypes.func
+  }
+
+  static defaultProps = {
+    itemMappings: itemFieldNames, // Defaults from ItemFields
+    onItemClicked: () => {},
+    onAddToCartClicked: () => {},
+    onFilterSelected: () => {},
+    onStepClicked: () => {}
+  }
+
   constructor(props) {
     super(props)
 
@@ -200,7 +216,7 @@ class ProductBrowser extends Component {
                 <Well>
                   <Row>
                     <Col sm={6}>
-                      <Box margin={{top: 'none'}}>
+                      {/*<Box margin={{top: 'none'}}>
                         <Box pad={{vertical: 'small'}}
                           direction='row'
                           align='center'
@@ -216,18 +232,18 @@ class ProductBrowser extends Component {
                           justify='between'
                           separator='top'>
                           <label>Rating</label>
-                          {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                          <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
                         </Box>
-                      </Box>
+                      </Box>*/}
                     </Col>
                     <Col sm={6}>
-                      <Box pad={{vertical: 'small'}}
+                      {/*<Box pad={{vertical: 'small'}}
                         direction='row'
                         align='center'
                         justify='between'>
                         <label>Status</label>
                         <Paragraph size='large' margin='none'>
-                          <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                          <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
                         </Paragraph>
                       </Box>
                       <Box margin={{top: 'none'}}>
@@ -241,7 +257,7 @@ class ProductBrowser extends Component {
                             <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
                           </Paragraph>
                         </Box>
-                      </Box>
+                      </Box>*/}
                     </Col>
                   </Row>
                 </Well>
@@ -259,7 +275,7 @@ class ProductBrowser extends Component {
                   <Well>
                     <Row>
                       <Col xs={12}>
-                        <Box margin={{top: 'none'}}>
+                        {/*<Box margin={{top: 'none'}}>
                           <Box pad={{vertical: 'small'}}
                             direction='row'
                             align='center'
@@ -275,7 +291,7 @@ class ProductBrowser extends Component {
                             justify='between'
                             separator='top'>
                             <label>Rating</label>
-                            {/*<StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />*/}
+                            <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
                           </Box>
                         </Box>
                         <Box pad={{vertical: 'small'}}
@@ -284,7 +300,7 @@ class ProductBrowser extends Component {
                           justify='between'>
                           <label>Status</label>
                           <Paragraph size='large' margin='none'>
-                            <strong style={{ fontSize: '1rem' }}>{/*item.stock_status*/}</strong>
+                            <strong style={{ fontSize: '1rem' }}>{item.stock_status}</strong>
                           </Paragraph>
                         </Box>
                         <Box margin={{top: 'none'}}>
@@ -298,7 +314,7 @@ class ProductBrowser extends Component {
                               <strong style={{ fontSize: '1rem' }}>{item.quantity}</strong>
                             </Paragraph>
                           </Box>
-                        </Box>
+                        </Box>*/}
                       </Col>
                     </Row>
                   </Well>
@@ -421,22 +437,6 @@ class ProductBrowser extends Component {
       </div>
     )
   }
-}
-
-ProductBrowser.propTypes = {
-  itemMappings: PropTypes.object, // TODO: object.isRequired
-  onAddToCartClicked: PropTypes.func,
-  onItemClicked: PropTypes.func,
-  onFilterSelected: PropTypes.func,
-  onStepClicked: PropTypes.func
-}
-
-ProductBrowser.defaultProps = {
-  itemMappings: itemFieldNames, // Defaults from ItemFields
-  onItemClicked: () => {},
-  onAddToCartClicked: () => {},
-  onFilterSelected: () => {},
-  onStepClicked: () => {}
 }
 
 export default ProductBrowser
