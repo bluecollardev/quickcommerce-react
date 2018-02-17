@@ -471,41 +471,41 @@ class PosComponent extends Component {
             defaultSettings: this.getDefaultSettings()
           }, (payload) => {
             let onSuccess = (payload) => {
-                            // Format the return payload
-                            /* Returned JSON payload
-                            "orderProducts": [
-                                {
-                                    "orderProductId": 4,
-                                    "orderId": 198,
-                                    "productId": 3381,
-                                    "name": "Ceni Subscription",
-                                    "model": "Ceni Subscription",
-                                    "quantity": 1,
-                                    "price": "111.1100",
-                                    "total": "111.1100",
-                                    "tax": "5.5555",
-                                    "reward": 0
-                                }
-                            ],
-                            "orderOptions": [
-                                {
-                                    "orderOptionId": 2,
-                                    "orderId": 198,
-                                    "orderProductId": 4,
-                                    "productOptionId": "249",
-                                    "productOptionValueId": "514",
-                                    "name": "Coffee Package Size",
-                                    "value": "340g",
-                                    "type": "select"
-                                }
-                            ]*/
-                            
-                            /*orderProducts.reduce((list, item, index) => {
-                                
-                            })*/
-                            
-                            // Update our CartStore
-                            //CartStore.updateItem()
+              // Format the return payload
+              /* Returned JSON payload
+              "orderProducts": [
+                  {
+                      "orderProductId": 4,
+                      "orderId": 198,
+                      "productId": 3381,
+                      "name": "Ceni Subscription",
+                      "model": "Ceni Subscription",
+                      "quantity": 1,
+                      "price": "111.1100",
+                      "total": "111.1100",
+                      "tax": "5.5555",
+                      "reward": 0
+                  }
+              ],
+              "orderOptions": [
+                  {
+                      "orderOptionId": 2,
+                      "orderId": 198,
+                      "orderProductId": 4,
+                      "productOptionId": "249",
+                      "productOptionValueId": "514",
+                      "name": "Coffee Package Size",
+                      "value": "340g",
+                      "type": "select"
+                  }
+              ]*/
+
+              /*orderProducts.reduce((list, item, index) => {
+
+              })*/
+
+              // Update our CartStore
+              //CartStore.updateItem()
             }
                         
             props.checkoutStore.setOrder(payload)

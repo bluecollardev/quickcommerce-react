@@ -28,6 +28,7 @@ const CatalogItem = (props) => {
     displayPayment,
     displayDetails,
     displayDisclaimer,
+    displayTools,
     overlayTools,
     onClick,
     onAddToCartClicked,
@@ -48,7 +49,7 @@ const CatalogItem = (props) => {
           className='shop-thumbnail'
           src={data.thumbnail}>
           {props.children}
-          {overlayTools && (
+          {displayTools && overlayTools && (
             <div className='shop-item-tools'>
               <a href='#' className='add-to-wishlist' data-toggle='tooltip' data-placement='top' title='Wishlist'>
                 <i className='material-icons favorite_border' />
@@ -94,7 +95,7 @@ const CatalogItem = (props) => {
                 style={{
                   backgroundColor: 'transparent', color: 'white'
                 }}>
-                <i className='fa fa-plus'
+                <i className='fa fa-pencil'
                   style={{
                     color: 'white'
                   }}
@@ -171,7 +172,7 @@ const CatalogItem = (props) => {
         </div>
       )}
 
-      {!overlayTools && (
+      {displayTools && !overlayTools && (
         <div className='shop-item-tools block'>
           <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
             <i className='fa fa-square-o' />&nbsp;
@@ -182,6 +183,8 @@ const CatalogItem = (props) => {
           </Button>
         </div>
       )}
+
+      {props.children}
     </div>
   )
 }
