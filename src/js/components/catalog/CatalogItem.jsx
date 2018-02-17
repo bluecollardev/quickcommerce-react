@@ -66,9 +66,42 @@ const CatalogItem = (props) => {
 
       {displayTitle && (
         <div className='shop-item-details ribbon-blue'>
-          <h5 className='shop-item-title text-center'>
-            <small>{data.name}</small>
-          </h5>
+          <div className='lender-buttons'>
+            <div className='lender-button-group fixed-width lender-icon'>
+              <Button
+                onClick={onAddToCartClicked}
+                style={{
+                  backgroundColor: 'lightgrey',
+                  backgroundImage: 'url("data:' + 'image/png' + ';base64,' + data['thumbnail'] + '")',
+                  color: 'black'
+                }}
+              />
+            </div>
+            <div className='lender-button-group placeholder'>
+              <Button
+                onClick={onAddToCartClicked}
+                style={{
+                  background: 'transparent', border: 'none'
+                }}>
+                <h5 className='shop-item-title text-center'>
+                  {data.name}
+                </h5>
+              </Button>
+            </div>
+            <div className='lender-button-group fixed-width add-lender'>
+              <Button
+                onClick={onAddToCartClicked}
+                style={{
+                  backgroundColor: 'transparent', color: 'white'
+                }}>
+                <i className='fa fa-plus'
+                  style={{
+                    color: 'white'
+                  }}
+                />
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -100,7 +133,7 @@ const CatalogItem = (props) => {
 
       {displayModel && (
         <div className='shop-item-details'>
-          <h5 className='shop-item-title'><small><em>{data.model}</em></small></h5>
+          <h5 className='shop-item-title'><em>{data.model}</em></h5>
         </div>
       )}
 

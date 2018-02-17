@@ -12,7 +12,7 @@ const CatalogItemListItem = (props) => {
       <small>
         <span className={labelClassName}>{label}</span>
         <br />
-        <span className={textClassName}>{text}</span>
+        <strong><span className={textClassName}>{text}</span></strong>
       </small>
     </li>
   )
