@@ -183,7 +183,7 @@ class CustomerFullInfo extends Component {
                 type='text' 
                 {...this.props.fields(mappings.FIRST_NAME, this.props.getMappedValue(mappings.FIRST_NAME, data), 'isAlpha')}
                 required 
-                                />
+              />
             </FormGroup>
                         
             <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
@@ -198,7 +198,7 @@ class CustomerFullInfo extends Component {
                 type='text' 
                 {...this.props.fields(mappings.LAST_NAME, this.props.getMappedValue(mappings.LAST_NAME, data), 'isAlpha')} 
                 required 
-                                />
+              />
             </FormGroup>
                         
             <FormGroup className='col-sm-3 col-md-1 col-lg-1'>
@@ -211,21 +211,21 @@ class CustomerFullInfo extends Component {
               <ControlLabel>M</ControlLabel>
               <FormControl name={mappings.DOB_MONTH} type='text' {...this.props.fields(mappings.DOB_MONTH, this.props.getMappedValue(mappings.DOB_MONTH, data))} />
             </FormGroup>
-                        )}
+            )}
                         
             {this.props.displayDob && (
             <FormGroup className='col-sm-4 col-md-1 col-lg-1'>
               <ControlLabel>D</ControlLabel>
               <FormControl name={mappings.DOB_DAY} type='text' {...this.props.fields(mappings.DOB_DAY, this.props.getMappedValue(mappings.DOB_DAY, data))} />
             </FormGroup>
-                        )}
+            )}
                         
             {this.props.displayDob && (
             <FormGroup className='col-sm-4 col-md-1 col-lg-1'>
               <ControlLabel>Y</ControlLabel>
               <FormControl name={mappings.DOB_YEAR} type='text' {...this.props.fields(mappings.DOB_YEAR, this.props.getMappedValue(mappings.DOB_YEAR, data))} />
             </FormGroup>
-                        )}
+            )}
           </Col>
                     
           <Col sm={12} md={6} lg={4}>
@@ -234,28 +234,28 @@ class CustomerFullInfo extends Component {
               <ControlLabel>SIN</ControlLabel>
               <FormControl name={mappings.SIN} type='text' {...this.props.fields(mappings.SIN, this.props.getMappedValue(mappings.SIN, data))} />
             </FormGroup>
-                        )}
+            )}
                         
             {this.props.displayGender && (
             <FormGroup className='col-sm-4 col-md-4 col-lg-2'>
               <ControlLabel>Gender</ControlLabel>
               <FormControl name={mappings.GENDER} componentClass='select' {...this.props.fields(mappings.GENDER, this.props.getMappedValue(mappings.GENDER, data))} />
             </FormGroup>
-                        )}
+           )}
                         
             {this.props.displayMarital && (
             <FormGroup className='col-sm-4 col-md-4 col-lg-2'>
               <ControlLabel>Marital</ControlLabel>
               <FormControl name={mappings.MARITAL} componentClass='select' {...this.props.fields(mappings.MARITAL, this.props.getMappedValue(mappings.MARITAL, data))} />
             </FormGroup>
-                        )}
+            )}
                         
             {this.props.displayMarital && (
             <FormGroup className='col-sm-4 col-md-5 col-lg-4'>
               <ControlLabel>Language</ControlLabel>
               <FormControl name={mappings.LANGUAGE} type='text' {...this.props.fields(mappings.LANGUAGE, this.props.getMappedValue(mappings.LANGUAGE, data))} />
             </FormGroup>
-                        )}
+            )}
           </Col>
                     
           <Col sm={12} md={6} lg={4}>
@@ -266,7 +266,7 @@ class CustomerFullInfo extends Component {
                 type='tel' 
                 {...this.props.fields(mappings.TELEPHONE, this.props.getMappedValue(mappings.TELEPHONE, data), 'isNumeric')} 
                 required 
-                                />
+              />
             </FormGroup>
                         
             <FormGroup className='col-sm-12 col-md-4 col-lg-3'>
@@ -275,7 +275,7 @@ class CustomerFullInfo extends Component {
                 name={mappings.MOBILE} 
                 type='tel' 
                 {...this.props.fields(mappings.MOBILE, this.props.getMappedValue(mappings.MOBILE, data), 'isNumeric')} 
-                                />
+              />
             </FormGroup>
                         
             <FormGroup className='col-sm-12 col-md-4 col-lg-3'>
@@ -285,7 +285,7 @@ class CustomerFullInfo extends Component {
                 type='email' 
                 {...this.props.fields(mappings.EMAIL, this.props.getMappedValue(mappings.EMAIL, data), 'isEmail')}
                 required
-                                />
+              />
             </FormGroup>
           </Col>
           {this.props.displayPassword && (
@@ -296,7 +296,7 @@ class CustomerFullInfo extends Component {
                   name={mappings.PASSWORD} 
                   type='password' 
                   {...this.props.fields(mappings.PASSWORD, this.props.getMappedValue(mappings.PASSWORD, data))} 
-                                />
+                />
               </FormGroup>
                         
               <FormGroup className='col-sm-12 col-md-4 col-lg-3'>
@@ -305,26 +305,26 @@ class CustomerFullInfo extends Component {
                   name={mappings.CONFIRM} 
                   type='password' 
                   {...this.props.fields(mappings.CONFIRM, this.props.getMappedValue(mappings.PASSWORD, data), 'equalsField:confirm')} 
-                                />
+                />
               </FormGroup>
                         
               <input type='hidden' name={mappings.AGREE} {...this.props.fields(mappings.AGREE, 1)} />
             </Col>
-                    )}
+          )}
                     
           {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
             <FormGroup>
               <Button bsStyle='success' onClick={this.onCreate}>Create Account</Button>&nbsp;
               <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
             </FormGroup>
-                    )}
+          )}
                     
           {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'edit' && (
             <FormGroup>
               <Button bsStyle='success' onClick={this.onUpdate}>Update Info</Button>&nbsp;
               <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
             </FormGroup>
-                    )}
+          )}
         </form>
       </div>
     )

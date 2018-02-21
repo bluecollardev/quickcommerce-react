@@ -74,7 +74,7 @@ class ProfileMenu extends Component {
                     
           {!this.props.loggedIn && (
             <ListItemText
-              primary={<div><a href='#/account/edit'>James Bond</a></div>}
+              primary={<div><a href='#/account/edit'>John Smith</a></div>}
               secondary={<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
                     )}
         </ListItem>

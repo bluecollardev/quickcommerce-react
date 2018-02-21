@@ -171,7 +171,8 @@ class CustomerContact extends Component {
     let data = this.state.data 
         
     return (
-      <Row>
+	<form>
+      <div className='col-md-flex col-lg-flex'>
         <FormGroup className='col-xs-12 col-sm-4 col-sm-4'>
           <ControlLabel>Type*</ControlLabel>
           <ContactTypeDropdown optionValue items={this.props.settingStore.contactTypes} name={mappings.CONTACT_TYPE} {...this.props.fields(mappings.CONTACT_TYPE, this.props.getMappedValue(mappings.CONTACT_TYPE, data))} />
@@ -182,44 +183,45 @@ class CustomerContact extends Component {
           <ControlLabel>Email*</ControlLabel>
           <EmailInput name={mappings.EMAIL} {...this.props.fields(mappings.EMAIL, this.props.getMappedValue(mappings.EMAIL, data))} />
         </FormGroup>
-                )}
+        )}
                 
         {this.props.type === 'phone' && (
         <FormGroup className='col-xs-12 col-sm-6'>
           <ControlLabel>Telephone*</ControlLabel>
           <TelephoneInput name={mappings.TELEPHONE} {...this.props.fields(mappings.TELEPHONE, this.props.getMappedValue(mappings.TELEPHONE, data))} />
         </FormGroup>
-                )}
+        )}
                 
         {this.props.type === 'mobile' && (
         <FormGroup className='col-xs-12 col-sm-6'>
           <ControlLabel>Mobile</ControlLabel>
           <TelephoneInput name={mappings.MOBILE} {...this.props.fields(mappings.MOBILE, this.props.getMappedValue(mappings.MOBILE, data))} />
         </FormGroup>
-                )}
+        )}
                 
         {(this.props.type === 'phone' || this.props.type === 'mobile') && (
         <FormGroup className='col-xs-12 col-sm-2'>
           <ControlLabel>Ext.</ControlLabel>
           <NumericInput name={mappings.EXT} {...this.props.fields(mappings.EXT, this.props.getMappedValue(mappings.EXT, data))} />
         </FormGroup>
-                )}
+        )}
                     
         {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'create' && (
         <FormGroup>
           <Button bsStyle='success' onClick={this.onCreate}>Create Account</Button>&nbsp;
           <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
         </FormGroup>
-                )}
+        )}
                 
         {this.props.displayActions && this.props.hasOwnProperty('mode') && this.props.mode === 'edit' && (
         <FormGroup>
           <Button bsStyle='success' onClick={this.onUpdate}>Update Info</Button>&nbsp;
           <Button onClick={this.onCancel}>Cancel</Button>&nbsp;
         </FormGroup>
-                )}
-      </Row>
-    )
+        )}
+	  </div>
+	</form>
+	)
   }   
 }
 
