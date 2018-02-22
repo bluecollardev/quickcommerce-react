@@ -30,6 +30,8 @@ const CatalogItem = (props) => {
     displayDisclaimer,
     displayTools,
     overlayTools,
+	isSelected,
+    isRejected,
     onClick,
     onAddToCartClicked,
     onMoreInfoClicked,
@@ -175,8 +177,16 @@ const CatalogItem = (props) => {
       {displayTools && !overlayTools && (
         <div className='shop-item-tools block'>
           <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
-            <i className='fa fa-square-o' />&nbsp;
-            <em>Select Item</em>
+			{isSelected && (
+            <i className='fa fa-check-square-o' />
+            )}
+			
+			{!isSelected && (
+            <i className='fa fa-square-o' />
+            )}
+			
+			&nbsp;
+			<em>Select Item</em>
             <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
               <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
             </svg>
