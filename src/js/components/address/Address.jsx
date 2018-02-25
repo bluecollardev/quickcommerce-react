@@ -91,6 +91,19 @@ class Address extends Component {
     this.setState(state)
   }
 
+  componentWillMount() {
+    let countries = this.props.settingStore.getCountries() || []
+    let zones = this.props.settingStore.zones || []
+
+    if (!Object.keys(countries).length > 0 && !Object.keys(zones).length > 0) {
+      this.props.settingStore.on('settings-loaded', () => {
+        this.setInitialState(this.props)
+      })
+    } else {
+      this.setInitialState(this.props)
+    }
+  }
+  
   componentDidMount() {
     const { geoService } = this.props
 
@@ -121,19 +134,7 @@ class Address extends Component {
       })
     })
   }
-
-  componentWillMount() {
-    let countries = this.props.settingStore.getCountries() || []
-    let zones = this.props.settingStore.zones || []
-
-    if (!Object.keys(countries).length > 0 && !Object.keys(zones).length > 0) {
-      this.props.settingStore.on('settings-loaded', () => {
-        this.setInitialState(this.props)
-      })
-    } else {
-      this.setInitialState(this.props)
-    }
-  }
+  
   componentWillReceiveProps(newProps) {
     let countries = this.props.settingStore.getCountries() || []
     let zones = this.props.settingStore.zones || []

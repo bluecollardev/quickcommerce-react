@@ -46,16 +46,16 @@ const AddressForm = (props) => {
   }
 
   // Common fields
-  let addressId = getMappedValue(mappings.ADDRESS_ID, data)
-  let selectedCountry = getMappedValue(mappings.COUNTRY, data)
-  let selectedCountryId = getMappedValue(mappings.COUNTRY_ID, data)
-  let selectedCountryCode = getMappedValue(mappings.COUNTRY_CODE, data)
-  let selectedZone = getMappedValue(mappings.ZONE, data)
-  let selectedZoneId = getMappedValue(mappings.ZONE_ID, data)
-  let selectedZoneCode = getMappedValue(mappings.ZONE_CODE, data)
-  let selectedCity = getMappedValue(mappings.CITY, data)
-  let selectedCityId = getMappedValue(mappings.CITY_ID, data)
-  let selectedCityCode = getMappedValue(mappings.CITY_CODE, data)
+  let addressId = getMappedValue(mappings.ADDRESS_ID, data) || null
+  let selectedCountry = getMappedValue(mappings.COUNTRY, data) || ''
+  let selectedCountryId = getMappedValue(mappings.COUNTRY_ID, data) || null
+  let selectedCountryCode = getMappedValue(mappings.COUNTRY_CODE, data) || ''
+  let selectedZone = getMappedValue(mappings.ZONE, data) || ''
+  let selectedZoneId = getMappedValue(mappings.ZONE_ID, data) || null
+  let selectedZoneCode = getMappedValue(mappings.ZONE_CODE, data) || ''
+  let selectedCity = getMappedValue(mappings.CITY, data) || ''
+  let selectedCityId = getMappedValue(mappings.CITY_ID, data) || null
+  let selectedCityCode = getMappedValue(mappings.CITY_CODE, data) || ''
 
   // Name fields
   let firstName = getMappedValue(mappings.FIRST_NAME, data)
@@ -401,7 +401,7 @@ class CurrentAddress extends Component {
    * Set an error boundary so a rendering failure in the component doesn't cascade.
    */
   componentDidCatch(error, info) {
-    console.log('CurrentAddress rendering error')
+    console.log('CurrentAddress error')
     console.log(error)
     console.log(info)
   }
@@ -482,8 +482,7 @@ class CurrentAddress extends Component {
     return formatted
   }
     
-    // TODO: Move me to a utils class
-    // Also: Why the hell is sometimes this being fed a string and other times an object?
+  // TODO: Move me to a utils class
   matchItemToTerm(item, value) {
     if (typeof value === 'string') {
       return item.value.toLowerCase().indexOf(value.toLowerCase()) !== -1 //|| zone.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
@@ -603,6 +602,9 @@ class CurrentAddress extends Component {
       })
     }))
 
+	// TODO: I have a feeling this line is no longer necessary
+	// GeoService has made it redundant or obsolete
+	// We don't use it anywhere above...
     this.props.settingStore.getZones(item.id)
   }
 
@@ -638,9 +640,7 @@ class CurrentAddress extends Component {
 
   render() {
     // CurrentAddress.render
-    const { countries, zones, cities, geoZones, type, types } = this.state
-
-    const { data } = this.state
+    const { data, countries, zones, cities, geoZones, type, types } = this.state
 
     this.mergeFormData(data)
     //console.log('dumping merged data')
