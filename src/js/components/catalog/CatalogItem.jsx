@@ -68,7 +68,7 @@ const CatalogItem = (props) => {
       )}
 
       {displayTitle && (
-        <div className='shop-item-details ribbon-blue'>
+        <div className='shop-item-details flush ribbon-blue'>
           <div className='lender-buttons'>
             <div className='lender-button-group fixed-width lender-icon'>
               <Button
@@ -140,12 +140,14 @@ const CatalogItem = (props) => {
         </div>
       )}
 
+      {/*displayAttributes && (*/}
       <CatalogItemList
         listClassName='col-3'>
         {attributes.map((attribute) => (
           <CatalogItemListItem label={attribute.label} text={attribute.value} />
         ))}
       </CatalogItemList>
+	  {/*)*/}
 
       {displayDetails && (
         <p className='shop-item-details'

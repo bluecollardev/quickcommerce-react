@@ -77,7 +77,6 @@ class Cart extends Component {
     super(props)
 
     this.refresh = this.refresh.bind(this)
-    this.onChange = this.onChange.bind(this)
     this.addItem = this.addItem.bind(this)
     this.removeItem = this.removeItem.bind(this)
     this.emptyCart = this.emptyCart.bind(this)
@@ -108,11 +107,6 @@ class Cart extends Component {
     this.setState({
       selection: store.getSelection()
     })
-  }
-    
-  onChange() {
-    this.refresh()
-    this.props.onChange()
   }
     
   addItem(key, quantity, item) {

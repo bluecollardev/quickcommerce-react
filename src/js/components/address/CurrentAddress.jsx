@@ -132,13 +132,13 @@ const AddressForm = (props) => {
         {/* Simple Addresses (Line 1, 2, 3?) */}
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
-            <ControlLabel>Address 1*</ControlLabel>
+            <ControlLabel>Address Line 1*</ControlLabel>
             <FormControl {...readOnlyAttr} type='text' name={mappings.ADDRESS_1} {...props.fields(mappings.ADDRESS_1, line1)} />
           </FormGroup>
         )}
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
-            <ControlLabel>Address 2</ControlLabel>
+            <ControlLabel>Address Line 2</ControlLabel>
             <FormControl {...readOnlyAttr} type='text' name={mappings.ADDRESS_2} {...props.fields(mappings.ADDRESS_2, line2)} />
           </FormGroup>
         )}
