@@ -28,6 +28,9 @@ export class OrderStore extends BaseStore {
     case OrderConstants.SET_ORDER_VARIANT:
       this.setVariant(action.key, action.variant)
       break
+    case OrderConstants.SET_ORDER_VARIANTS:
+      this.setVariants(action.keyProperty, action.variant)
+      break
     case OrderConstants.SET_BUILTIN_CUSTOMER:
       this.setBuiltInCustomer(action.customer)
       this.emit('set-customer', 'builtin')
@@ -44,12 +47,12 @@ export class OrderStore extends BaseStore {
       this.setAdditionalCustomers(action.customers, action.key, action.silent)
       this.emit('set-additional-customers') // TODO: No silent support yet here :(
       break
-            /*case OrderConstants.SET_BILLING_ADDRESS:
-                this.setBillingAddress(action.address)
-                break
-            case OrderConstants.SET_SHIPPING_ADDRESS:
-                this.setShippingAddress(action.address)
-                break*/
+    /*case OrderConstants.SET_BILLING_ADDRESS:
+        this.setBillingAddress(action.address)
+        break
+    case OrderConstants.SET_SHIPPING_ADDRESS:
+        this.setShippingAddress(action.address)
+        break*/
     case OrderConstants.SET_PAYMENT_METHOD:
       this.setPaymentMethod(action.code, action.method)
       break
@@ -78,9 +81,9 @@ export class OrderStore extends BaseStore {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
     
-    /**
-     * Privately invoked.
-     */
+  /**
+   * Privately invoked.
+   */
   doCheckout(orderAction) {
     orderAction = orderAction || null
 
@@ -92,9 +95,9 @@ export class OrderStore extends BaseStore {
     let orderId = this.newOrder(orderAction.customer)
   }
 
-    /**
-     * Privately invoked.
-     */
+  /**
+   * Privately invoked.
+   */
   newOrder(customer) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
@@ -124,7 +127,18 @@ export class OrderStore extends BaseStore {
     this.variants.set(key, variant)
     this.emit('set-variant', key, variant)
   }
-    
+  
+  setVariants(keyProperty, variants) {
+		// OrderStore.setVariant
+    if (variants instanceof Array) {
+      variants.map((variant) => {
+        this.variants.set(variant[keyProperty], variant)
+      })
+      
+      this.emit('set-variants', variants)
+    }
+  }
+  
   clearOrder(onSuccess, onError) {
     let that = this
 
@@ -221,24 +235,24 @@ export class OrderStore extends BaseStore {
     let totals = this.payload.orderTotals
     let data = []
 
-        // If there's no total, output zero
+    // If there's no total, output zero
     if (typeof totals !== 'undefined' && totals !== null) {
             
       if (!(totals instanceof Array || totals.length > 0)) return data //0.00
 
-            // Sort the totals
+      // Sort the totals
       for (let idx = 0; idx < totals.length; idx++) {
                 //data[parseInt(totals[idx].sortOrder)] = totals[idx] // No sort order right now
         data[idx] = totals[idx]
 
-                /* Format:
-                orderTotalId": 49,
-                "orderId": 13,
-                "code": "tax",
-                "title": "VAT",
-                "value": "73.3900",
-                "sortOrder": 5
-                */
+        /* Format:
+        orderTotalId": 49,
+        "orderId": 13,
+        "code": "tax",
+        "title": "VAT",
+        "value": "73.3900",
+        "sortOrder": 5
+        */
       }
 
       data = data.filter(val => val) // Re-index array
@@ -272,12 +286,12 @@ export class OrderStore extends BaseStore {
   }
     
   processSelectionOptions(item, callback) {
-        // Process selected item options
+    // Process selected item options
     if (item.options instanceof Array) {
       let selected = item.options
             
-            // Just a simple loop over selected options 
-            // Don't worry about performance there won't be a million of these
+      // Just a simple loop over selected options 
+      // Don't worry about performance there won't be a million of these
       for (let idx = 0; idx < selected.length; idx++) {
         let fn = callback
         fn.call(this, selected[idx], item._key, parseInt(item.id))
@@ -293,18 +307,18 @@ export class OrderStore extends BaseStore {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
     
-    /**
-     * Builds an array of order options which we will send to the server later.
-     * This method returns an object that we store to this.payload.orderOptions,
-     * which correlates to the server DTO.
-     */
+  /**
+   * Builds an array of order options which we will send to the server later.
+   * This method returns an object that we store to this.payload.orderOptions,
+   * which correlates to the server DTO.
+   */
   getOrderOptions(productId, orderProductId) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
-    /**
-     * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
-     */
+  /**
+   * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
+   */
   getOrderTaxRates() {
         //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
     let data = {}
@@ -327,9 +341,9 @@ export class OrderStore extends BaseStore {
     return data
   }
 
-    /**
-     * Mirrors the getTaxes method in in system\library\cart.
-     */
+  /**
+   * Mirrors the getTaxes method in in system\library\cart.
+   */
   getOrderTaxes() {
     let data = {}
 
@@ -351,9 +365,9 @@ export class OrderStore extends BaseStore {
     return data
   }
 
-    /**
-     * Mirrors the calculateTaxes method in system\library\tax.
-     */
+  /**
+   * Mirrors the calculateTaxes method in system\library\tax.
+   */
   calculateWithTaxes(value, taxClassId, calculate) {
     calculate = calculate || true
     taxClassId = taxClassId || false
@@ -377,9 +391,9 @@ export class OrderStore extends BaseStore {
     }
   }
 
-    /**
-     * Mirrors the getTax method in system\library\tax.
-     */
+  /**
+   * Mirrors the getTax method in system\library\tax.
+   */
   calculateTaxes(value, taxClassId) {
     let amount = 0
     let taxRates = this.getTaxRates(value, taxClassId)
@@ -391,18 +405,19 @@ export class OrderStore extends BaseStore {
     return amount
   }
 
-    /**
-     * Mirrors the getRates method in system\library\tax.
-     * Called by the calculateTaxes (orig. Tax) and getOrderTaxes (orig. (Cart) methods, and is generally only for 'private use'.
-     */
+  /**
+   * Mirrors the getRates method in system\library\tax.
+   * Called by the calculateTaxes (orig. Tax) and getOrderTaxes (orig. (Cart) methods, and is generally only for 'private use'.
+   */
   getTaxRates(value, taxClassId) {
     let rateData = {},
       rates = this.settings.cartConfig.taxRates['1_1_5_store']
-            // TODO: Need to grab store dynamically!!!! 1_1_5 Correlates to languageId = 1, storeId = 1, taxClassId = 5?
+      
+    // TODO: Need to grab store dynamically!!!! 1_1_5 Correlates to languageId = 1, storeId = 1, taxClassId = 5?
 
-        // Pretty sure returned data is already filtered by tax class
-        //if (this._isset(rates, taxClassId)) { // As per our note above, disable this conditional
-            //for (let rate in rates[taxClassId]) {
+    // Pretty sure returned data is already filtered by tax class
+    //if (this._isset(rates, taxClassId)) { // As per our note above, disable this conditional
+    //for (let rate in rates[taxClassId]) {
     let rateCount = rates.length
     let idx = 0
     for (idx; idx < rateCount; idx++) {
@@ -427,7 +442,7 @@ export class OrderStore extends BaseStore {
         'amount'     : amount
       }
     }
-        //}
+    //}
 
     return rateData
   }

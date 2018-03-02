@@ -19,6 +19,8 @@ const CatalogItem = (props) => {
   let {
     className,
     displayLabel,
+    displayIcon,
+    displayActions,
     displayTitle,
     displayThumbnail,
     //displayThumbs,
@@ -70,6 +72,7 @@ const CatalogItem = (props) => {
       {displayTitle && (
         <div className='shop-item-details flush ribbon-blue'>
           <div className='lender-buttons'>
+            {displayIcon && (
             <div className='lender-button-group fixed-width lender-icon'>
               <Button
                 onClick={onAddToCartClicked}
@@ -80,6 +83,7 @@ const CatalogItem = (props) => {
                 }}
               />
             </div>
+            )}
             <div className='lender-button-group placeholder'>
               <Button
                 onClick={onAddToCartClicked}
@@ -91,19 +95,21 @@ const CatalogItem = (props) => {
                 </h5>
               </Button>
             </div>
+            {displayActions && (
             <div className='lender-button-group fixed-width add-lender'>
               <Button
                 onClick={onAddToCartClicked}
                 style={{
                   backgroundColor: 'transparent', color: 'white'
                 }}>
-                <i className='fa fa-pencil'
+                <i className='fa fa-caret-down'
                   style={{
                     color: 'white'
                   }}
                 />
               </Button>
             </div>
+            )}
           </div>
         </div>
       )}

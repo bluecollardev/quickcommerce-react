@@ -18,7 +18,13 @@ const SelectList = (props) => {
       <FormControl componentClass='select' {...elementProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) =>
-          <option key={idx + 1} code={item.code} value={item.value}>{item.value}</option>
+          <option 
+            key={idx + 1} 
+            code={item.code} 
+            value={item.value} 
+            selected={item.selected}>
+            {item.value}
+          </option>
         )}
       </FormControl>
     )    
@@ -29,7 +35,12 @@ const SelectList = (props) => {
       <FormControl componentClass='select' {...elementProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) =>
-          <option key={idx + 1} value={item.code}>{item.value}</option>
+          <option 
+            key={idx + 1} 
+            value={item.code} 
+            selected={item.selected}>
+            {item.value}
+          </option>
         )}
       </FormControl>
     )    
@@ -39,7 +50,12 @@ const SelectList = (props) => {
     <FormControl componentClass='select' {...elementProps}>
       <option key={0} value=''></option>
       {items.map((item, idx) =>
-        <option key={idx + 1} value={item.id}>{item.value}</option>
+        <option 
+          key={idx + 1} 
+          value={item.id} 
+          selected={item.selected}>
+          {item.value}
+        </option>
 	  )}
     </FormControl>
   )    
