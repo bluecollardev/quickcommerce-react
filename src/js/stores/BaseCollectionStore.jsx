@@ -164,7 +164,6 @@ class BaseCollectionStore extends BaseStore {
    */
   getItems(resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
-
     if (resolveCodeTypes) {
       console.log('resolving code types...')
       console.log(this.items)
