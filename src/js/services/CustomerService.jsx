@@ -1,15 +1,46 @@
 import assign from 'object-assign'
-
+import {normalize, denormalize, schema} from 'normalizr'
 import axios from 'axios'
 
-import {BaseService} from './BaseService.jsx'
+//import QcCustomerService from 'quickcommerce-react/services/CustomerService.jsx'
+import {BaseService} from 'quickcommerce-react/services/BaseService.jsx'
 
-import ArrayHelper from '../helpers/Array.js'
-import ObjectHelper from '../helpers/Object.js'
-import StringHelper from '../helpers/String.js'
+//import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
+//import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
+//import StringHelper from 'quickcommerce-react/helpers/String.js'
+import UrlHelper from 'quickcommerce-react/helpers/URL.js'
+import CustomerSearchConstants from '../constants/CustomerSearchConstants'
+
+const key = 'customers'
+
+const result = new schema.Entity('content', {
+  //idAttribute: 'customer_id'
+  idAttribute: 'customerId'
+})
+
+const schemaDef = {
+  customers: [result]
+}
+
+const config = assign({}, {
+  key: key, src: {
+    transport: {
+      read: {
+        url: CustomerSearchConstants.SEARCH_CUSTOMERS_URI,
+        method: CustomerSearchConstants.SEARCH_CUSTOMERS_URI_METHOD,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: {
+          search: ''
+        }
+      }
+    }
+  }, schema: schemaDef
+})
 
 class CustomerService extends BaseService {
-  // TODO: Move to consuming project
+  /**
+   */
   setCustomer(data) {
     // Try using/fetching the customer's default address
     let addressId = null
@@ -34,7 +65,7 @@ class CustomerService extends BaseService {
           // Set the customer
           this.actions.customer.setCustomer(data)
 
-          // Resource API data is wrapped in a data object
+          // Resource API data is wrapped in a data object                
           this.actions.customer.setBillingAddress({
             addresses: [payload.data], billingAddressId: addressId, billingAddress: payload.data
           })
@@ -43,7 +74,7 @@ class CustomerService extends BaseService {
             addresses: [payload.data], shippingAddressId: addressId, shippingAddress: payload.data
           })
         }).catch(err => {
-          // Do nothing, not a deal-breaker if we couldn't grab an address
+          // Do nothing, not a deal-breakeThere r if we couldn't grab an address
           console.log(err)
 
           // TODO: Notify user
@@ -63,8 +94,129 @@ class CustomerService extends BaseService {
   get(id, onSuccess, onError) {
     // Get the account
     axios({
-      //url: QC_LEGACY_API + 'account/',
-      url: QC_API + 'customer/' + id, dataType: 'json', contentType: 'application/json', async: false, method: 'GET'
+      url: UrlHelper.compile(CUSTOMER, {id: id}),
+      type: 'GET',
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false
+    }).then(response => {
+      this.handleResponse(response, // onSuccess
+        ((payload) => {
+          if (typeof onSuccess === 'function') {
+            onSuccess(payload)
+          }
+        }).bind(this), // Bind to current context
+        // onError - fail silently
+        (() => {
+          //this.refetchAccount() 
+        }).bind(this), // Use legacy API compatibility
+        true)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  getSummary(id, onSuccess, onError) {
+    // Get the account
+    axios({
+      url: UrlHelper.compile(CUSTOMER_SUMMARY, {id: id}),
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
+    }).then(response => {
+      this.handleResponse(response, // onSuccess
+        ((payload) => {
+          if (typeof onSuccess === 'function') {
+            onSuccess(payload)
+          }
+        }).bind(this), // Bind to current context
+        // onError - fail silently
+        (() => {
+          //this.refetchAccount()
+        }).bind(this), // Use legacy API compatibility
+        true)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  /**
+   * Retrieves a Product's life history.
+   * This (currently not an) override returns a payload with registration, repair,
+   * estimate and odometer histories, as well as wholesale lot tags (if they exist).
+   */
+  getHistory(id, onSuccess, onError) {
+    // Get the account
+    axios({
+      url: UrlHelper.compile(CUSTOMER_HISTORY, {id: id}),
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
+    }).then(response => {
+      this.handleResponse(response, // onSuccess
+        ((payload) => {
+          if (typeof onSuccess === 'function') {
+            onSuccess(payload)
+          }
+        }).bind(this), // Bind to current context
+        // onError - fail silently
+        (() => {
+          //this.refetchAccount()
+        }).bind(this), // Use legacy API compatibility
+        true)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  getDeals(customerId, onSuccess, onError) {
+    // Get the account
+    axios({
+      url: UrlHelper.compile(CUSTOMER_DEALS, {customerId: customerId}),
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
+    }).then(response => {
+      this.handleResponse(response, // onSuccess
+        ((payload) => {
+          if (typeof onSuccess === 'function') {
+            onSuccess(payload)
+          }
+        }).bind(this), // Bind to current context
+        // onError - fail silently
+        (() => {
+          //this.refetchAccount()
+        }).bind(this), // Use legacy API compatibility
+        true)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  fetchDeals(customerId, onSuccess, onError) {
+    this.getDeals(customerId, // onSuccess
+      ((payload) => {
+        let data = payload
+
+        this.actions.customer.setCustomerDeals(customerId, data)
+
+        if (typeof onSuccess === 'function') {
+          onSuccess(data)
+        }
+      }).bind(this), onError)
+  }
+
+  getPhotos(id, onSuccess, onError) {
+    // Get the account
+    axios({
+      url: UrlHelper.compile(CUSTOMER_PROFILE_IMAGE, {id: id}),
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
@@ -88,14 +240,35 @@ class CustomerService extends BaseService {
   fetch(id, onSuccess, onError) {
     this.get(id, // onSuccess
       ((payload) => {
-        let data = payload['customer']
+        let data = payload
 
-        if (data.hasOwnProperty('user')) {
-          data = assign({}, data, data.user)
-          delete data.user
+        this.actions.customer.setCustomer(id, data)
+
+        if (typeof onSuccess === 'function') {
+          onSuccess(data)
         }
+      }).bind(this), onError)
+  }
 
-        this.actions.customer.setCustomer(data)
+  fetchSummary(id, onSuccess, onError) {
+    this.getSummary(id, // onSuccess
+      ((payload) => {
+        let data = payload
+
+        this.actions.customer.setCustomerSummary(id, data)
+
+        if (typeof onSuccess === 'function') {
+          onSuccess(data)
+        }
+      }).bind(this), onError)
+  }
+
+  fetchHistory(id, onSuccess, onError) {
+    this.getHistory(id, // onSuccess
+      ((payload) => {
+        let data = payload
+
+        this.actions.customer.setCustomerHistory(id, data)
 
         if (typeof onSuccess === 'function') {
           onSuccess(data)
@@ -105,19 +278,23 @@ class CustomerService extends BaseService {
 
   /**
    * Creates a new Customer.
-   * POST is used for searchList service, so we're
-   * using PATCH / PUT for update operations.
    */
   post(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
+    let customerStore = this.stores.customer
+
+    let data = assign({}, customerStore.customer, {})
+
+    // Wrap the object
+    data = {
+      customer: data
     }
 
     axios({
-      url: QC_API + 'customer/-1', data: data, dataType: 'json', method: 'PATCH', contentType: 'application/json'
-      //headers: {
-      //    'X-Oc-Session': this.services.auth.getToken()
-      //} // Legacy API
+      url: UrlHelper.compile(CUSTOMERS),
+      data: data,
+      dataType: 'json',
+      method: 'POST',
+      contentType: 'application/json'
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
@@ -125,28 +302,18 @@ class CustomerService extends BaseService {
     })
   }
 
-  /**
-   * POST is used for searchList service, so we're
-   * using PATCH / PUT for create & update operations
-   */
   put(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-    }
+    let customerStore = this.stores.customer
 
-    let id = this.stores.customer.customer['customer_id'] || null
-    if (typeof id === 'undefined' || isNaN(id)) {
-      throw new Error('Invalid ID: supplied value must be an integer!')
-    }
+    let data = assign({}, customerStore.customer, formData)
 
-    if (id !== null) {
+    if (this.validateId(data.id)) {
       axios({
-        //url: QC_LEGACY_API + 'account',
-        url: QC_API + 'customer/' + id, //data: JSON.stringify(data), // Legacy
-        data: data, dataType: 'json', contentType: 'application/json', method: 'PATCH'
-        //headers: {
-        //    'X-Oc-Session': this.services.auth.getToken()
-        //}
+        url: UrlHelper.compile(CUSTOMER, {id: data.id}),
+        data: data,
+        dataType: 'json',
+        contentType: 'application/json',
+        method: 'PUT'
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
@@ -155,33 +322,18 @@ class CustomerService extends BaseService {
     }
   }
 
-  /**
-   * POST is used for searchList service, so we're
-   * using PATCH / PUT for create & update operations
-   */
   patch(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-    }
+    let customerStore = this.stores.customer
 
-    let id = this.stores.customer.customer['customer_id'] || null
-    if (typeof id === 'undefined' || isNaN(id)) {
-      throw new Error('Invalid ID: supplied value must be an integer!')
-    }
+    let data = assign({}, customerStore.customer, formData)
 
-    if (id !== null) {
+    if (this.validateId(data.id)) {
       axios({
-        // Don't need to support legacy for this method anymore
-        //url: QC_LEGACY_API + 'account',
-        //data: JSON.stringify(data), // Legacy
-        url: QC_API + 'customer/' + customerId,
+        url: UrlHelper.compile(CUSTOMER, {id: data.id}),
         data: data,
         dataType: 'json',
         contentType: 'application/json',
         method: 'PATCH'
-        //headers: {
-        //   'X-Oc-Session': this.services.auth.getToken()
-        //}
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
@@ -193,204 +345,162 @@ class CustomerService extends BaseService {
   delete(id, onSuccess, onError) {
   }
 
-  /**
-   * For use with Legacy API. Replaced with post()
-   */
-  register(data, onSuccess, onError) {
-    // Register user
+  addOtherIncome(customerId, data, onSuccess, onError) {
+    let customerStore = this.stores.customer
+
+    data = assign({}, customerStore.customer, {})
+
+    data = {
+      customer: data
+    }
+
     axios({
-      //url: QC_LEGACY_API + 'register',
-      url: QC_LEGACY_API + 'register',
-      data: JSON.stringify(data),
-      method: 'POST',
+      url: UrlHelper.compile(CUSTOMER_OTHER_INCOME, {customerId: customerId}),
+      data: data,
       dataType: 'json',
-      contentType: 'application/json',
-      async: false // No async login
+      method: 'POST',
+      contentType: 'application/json'
     }).then(response => {
-      this.handleResponse(response, // onSuccess
-        ((payload) => {
-          this.fetchAccount()
-
-          if (typeof onSuccess === 'function') {
-            onSuccess(payload)
-          }
-        }).bind(this), // Bind to current context
-        // onError - fail silently
-        ((err) => {
-          //this.fetchAccount()
-        }).bind(this), // Use legacy API compatibility
-        true)
+      this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
       this.handleError(err.message, onError, err.stack)
     })
-
   }
 
-  /**
-   * For use with Legacy API.
-   */
-  updatePassword() {
-    let data, response, url
+  updateOtherIncome() {
+  }
 
-    // TODO: Validate or throw error
-    /*if (passwordModel.get('password') !== passwordModel.get('confirm')) {
-     //loader.setMessage('Sorry! The password did not match the confirmation').open()
+  deleteOtherIncome() {
+  }
 
-     passwordModel.set('password', '')
-     passwordModel.set('confirm', '')
+  addAsset(customerId, data, onSuccess, onError) {
+    let customerStore = this.stores.customer
 
-     setTimeout(function () {
-     //loader.close()
-     }, 3000)
+    data = assign({}, customerStore.customer, {})
 
-     return false
-     }*/
+    data = {
+      customer: data
+    }
 
-    // Update user
     axios({
-      url: QC_LEGACY_API + 'account/password',
-      //data: JSON.stringify({ password: passwordModel.get('password'),
-      // confirm: passwordModel.get('confirm') }),
-      type: 'PUT', dataType: 'json', contentType: 'application/json', async: true // No async login
+      url: UrlHelper.compile(CUSTOMER_ASSETS, {customerId: customerId}),
+      data: data,
+      dataType: 'json',
+      method: 'POST',
+      contentType: 'application/json'
     }).then(response => {
-      //passwordModel.set('password', '')
-      //passwordModel.set('confirm', '')
+      this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
       this.handleError(err.message, onError, err.stack)
     })
   }
 
-  /**
-   * For use with Legacy API.
-   */
-  setAddresses() {
-    this.fetchBillingAddress()
-    this.fetchShippingAddress()
+  updateAsset() {
+  }
+
+  deleteAsset() {
+  }
+
+  addLiability(customerId, data, onSuccess, onError) {
+    let customerStore = this.stores.customer
+
+    data = assign({}, customerStore.customer, {})
+
+    data = {
+      customer: data
+    }
+
+    axios({
+      url: UrlHelper.compile(CUSTOMER_LIABILITIES, {customerId: customerId}),
+      data: data,
+      dataType: 'json',
+      method: 'POST',
+      contentType: 'application/json'
+    }).then(response => {
+      this.handleResponse(response, onSuccess, onError)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  updateLiability() {
+  }
+
+  deleteLiability() {
+  }
+
+  addEmploymentRecord(customerId, data, onSuccess, onError) {
+    let customerStore = this.stores.customer
+
+    data = assign({}, customerStore.customer, {})
+
+    data = {
+      customer: data
+    }
+
+    axios({
+      url: UrlHelper.compile(CUSTOMER_EMPLOYMENT_HISTORY, {customerId: customerId}),
+      data: data,
+      dataType: 'json',
+      method: 'POST',
+      contentType: 'application/json'
+    }).then(response => {
+      this.handleResponse(response, onSuccess, onError)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  updateEmploymentRecord() {
+  }
+
+  deleteEmploymentRecord() {
+  }
+
+  addResidentialRecord(customerId, data, onSuccess, onError) {
+    let customerStore = this.stores.customer
+
+    data = assign({}, customerStore.customer, {})
+
+    data = {
+      customer: data
+    }
+
+    axios({
+      url: UrlHelper.compile(CUSTOMER_RESIDENCE_HISTORY, {customerId: customerId}),
+      data: data,
+      dataType: 'json',
+      method: 'POST',
+      contentType: 'application/json'
+    }).then(response => {
+      this.handleResponse(response, onSuccess, onError)
+    }).catch(err => {
+      this.handleError(err.message, onError, err.stack)
+    })
+  }
+
+  updateResidentialRecord() {
+  }
+
+  deleteResidentialRecord() {
   }
 
   /**
-   * For use with Legacy API.
    */
-  getAccount(onSuccess, onError) {
+  getCollection(onSuccess, onError) {
     // Get the account
     axios({
-      url: QC_LEGACY_API + 'account', //url: QC_API + 'customer',
-      type: 'GET', dataType: 'json', contentType: 'application/json', async: false
+      url: UrlHelper.compile(CUSTOMERS), dataType: 'json', contentType: 'application/json', async: false, method: 'GET'
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
-          console.log('set customer data - ' + new Date())
-          this.setCustomer(payload)
-        }).bind(this), // Bind to current context
-        // onError - fail silently
-        () => {
-
-        }, // Use legacy API compatibility
-        true)
-    }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
-    })
-  }
-
-  /**
-   * For use with Legacy API. In here just for backward compatibility. Move to UserService.
-   */
-  fetchAccount(onSuccess, onError) {
-    let that = this
-    //userToken = that.checkToken(),
-    //isLogged = (userToken !== false) ? true : false
-
-    //if (!isLogged) {
-    // Log in the user
-    axios({
-      url: QC_LEGACY_API + 'account/', method: 'GET'
-    }).then(response => {
-      this.handleResponse(response, // onSuccess
-        ((payload) => {
-          this.setCustomer(payload)
-        }).bind(this), // Bind to current context
-        // onError - fail silently
-        (err) => {
-          this.handleError(err.message, onError, err.stack)
-        }, // Use legacy API compatibility
-        true)
-    }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
-    })
-    //}
-
-    //return isLogged
-  }
-
-  /**
-   * For use with Legacy API. In here just for backward compatibility. Move to UserService.
-   */
-  refetchAccount(response) {
-    // TODO: Fix checkuser route/action in OpenCart API -- this is pretty stupid
-    // Having to base my action on text returned is weak
-    if (response.data.error === 'User already is logged') {
-      console.log('User logged in... fetch account')
-      //that.doLogout()
-      //that.doLogin()
-
-      //if (this.state.logged && this.state.displayName === '') {
-      // We're logged in but account hasn't been set, so fetch user data from the server
-      this.fetchAccount()
-      //}
-    } else {
-      //loader.setMessage(response.responseJSON.error.warning).open()
-      setTimeout(function() {
-        //loader.close()
-      }, 3000)
-    }
-  }
-
-  /**
-   * For use with Legacy API.
-   */
-  fetchBillingAddress(onSuccess) {
-    axios({
-      url: QC_LEGACY_API + 'paymentaddress', type: 'GET' //async: false,
-      //dataType: 'json',
-      //data: JSON.stringify({
-      //    address_id: 1,
-      //    payment_address: 'existing'
-      //})
-    }).then(response => {
-      this.handleResponse(response, // onSuccess
-        ((payload) => {
-          payload = payload || {}
-          // Get address from returned array of addresses by ID
-          let addressId = (payload.hasOwnProperty('address_id')) ? payload.address_id : false
-          let addresses = (payload.hasOwnProperty('addresses') && payload.addresses instanceof Array) ? payload.addresses : []
-
-          if (addressId !== false && addresses.length > 0) {
-            // Get the address
-            let idx = 0
-            let address = null
-            for (idx = 0; idx < addresses.length; idx++) {
-              address = addresses[idx]
-              // Ensure proper type conversion (ids are returned as strings) and compare
-              if (parseInt(address['address_id']) === parseInt(addressId)) {
-                break
-              }
-            }
-
-            if (address !== null) {
-              // We have the address, set it to state
-              this.actions.customer.setBillingAddress({
-                addresses: payload.addresses, billingAddressId: addressId, billingAddress: address
-              })
-            }
-          }
-
           if (typeof onSuccess === 'function') {
             onSuccess(payload)
           }
         }).bind(this), // Bind to current context
         // onError - fail silently
-        ((err) => {
-          this.handleError(err.message, onError, err.stack)
+        (() => {
+          //this.refetchAccount()
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
@@ -399,55 +509,79 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * For use with Legacy API.
+   * Retrieves Customers and saves a local copy in CustomerStore.
    */
-  fetchShippingAddress(onSuccess) {
-    axios({
-      url: QC_LEGACY_API + 'shippingaddress', type: 'GET'
-      //data: JSON.stringify({
-      //    address_id: 1,
-      //    payment_address: 'existing'
-      //})
-    }).then(response => {
-      this.handleResponse(response, // onSuccess
-        ((payload) => {
-          // Get address from returned array of addresses by ID
-          let addressId = (payload.hasOwnProperty('address_id')) ? payload.address_id : false
-          let addresses = (payload.hasOwnProperty('addresses') && payload.addresses instanceof Array) ? payload.addresses : []
+  fetchCollection(onSuccess, onError) {
+    this.getCollection(((payload) => {
+      this.actions.customer.setCustomers(payload)
 
-          if (addressId !== false && addresses.length > 0) {
-            // Get the address
-            let idx = 0
-            let address = null
-            for (idx = 0; idx < addresses.length; idx++) {
-              address = addresses[idx]
-              // Ensure proper type conversion (ids are returned as strings) and compare
-              if (parseInt(address['address_id']) === parseInt(addressId)) {
-                break
-              }
-            }
-
-            if (address !== null) {
-              // We have the address, set it to state
-              this.actions.customer.setShippingAddress({
-                addresses: payload.addresses, shippingAddressId: addressId, shippingAddress: address
-              })
-            }
-          }
-
-          if (typeof onSuccess === 'function') {
-            onSuccess(payload)
-          }
-        }).bind(this), // Bind to current context
-        // onError - fail silently
-        ((err) => {
-          this.handleError(err.message, onError, err.stack)
-        }).bind(this), // Use legacy API compatibility
-        true)
-    }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
-    })
+      if (typeof onSuccess === 'function') {
+        onSuccess(payload)
+      }
+    }).bind(this), onError)
   }
+
+  /**
+   * Searches for Customers and saves a local copy of the results in CustomerStore.
+   */
+  searchCollection(onSuccess, onError) {
+    this.search(((payload) => {
+      this.actions.customer.setCustomers(payload)
+
+      if (typeof onSuccess === 'function') {
+        onSuccess(payload)
+      }
+    }).bind(this), onError)
+  }
+
+  search(onSuccess, onError) {
+    axios(config.src.transport.read)
+      .then(response => {
+        let payload = response.data
+        let normalizedData = normalize(payload.content, config.schema)
+
+        let results = []
+
+        // Normalize our data and store the items
+        if (typeof key === 'string' && key !== '') {
+          results[key] = Object.keys(normalizedData.result).map(key => {
+            let item = normalizedData.result[key]
+
+            // TODO: Maybe there's a better way to clean/decode item names
+            // Clean/decode name
+            let elem = document.createElement('textarea')
+            elem.innerHTML = item.name
+            item.name = elem.value
+
+            return item
+          })
+        } else {
+          // Set to root
+          results = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
+        }
+
+        // CustomerService.actions.setCustomers
+        this.actions.customer.setCustomers({
+          // TODO: Transform the data correctly, just getting things displaying again for now
+          content: results.customers // TODO: Page-size, filters, etc
+        })
+
+        if (typeof onSuccess === 'function') {
+          onSuccess()
+        }
+      }).catch(err => {
+        if (typeof onError === 'function') {
+          onError(err)
+        }
+        // Only if sample data is loaded...
+        //let normalizedData = normalize(SampleItems.data, that.config.schema)
+        //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
+      })
+  }
+
 }
 
+CustomerService.primaryKey = 'customerId'
+
 export default CustomerService
+export {CustomerService}
