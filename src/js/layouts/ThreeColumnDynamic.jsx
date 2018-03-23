@@ -27,6 +27,11 @@ const ThreeColumnDynamicLayout = (props) => {
     rightColClass = 'col-xs-12 col-md-3'
     centerColClass = 'col-xs-12 col-md-9'
   }
+  else if (!displayLeftCol && !displayRightCol) {
+    leftColClass = ''
+    rightColClass = ''
+    centerColClass = 'col-xs-12'
+  }
 
   return (
     <div className='summary entry-summary vehicle-summary'>
