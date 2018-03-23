@@ -7,50 +7,52 @@ import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { SplitButton, ButtonGroup, Button, Checkbox, Radio, } from 'react-bootstrap'
 
 const ThreeColumnDynamicLayout = (props) => {
+  let displayLeftCol = props.displayLeftCol
+  let displayRightCol = props.displayRightCol
+
+  let leftColClass = 'col-xs-12 col-md-3'
+  let rightColClass = 'col-xs-12 col-md-3'
+  let centerColClass = 'col-xs-12 col-md-6'
+
+  if (displayLeftCol && displayRightCol) {
+    // Do nothing
+  }
+  else if (displayLeftCol && !displayRightCol) {
+    leftColClass = 'col-xs-12 col-md-3'
+    rightColClass = ''
+    centerColClass = 'col-xs-12 col-md-9'
+  }
+  else if (!displayLeftCol && displayRightCol) {
+    leftColClass = ''
+    rightColClass = 'col-xs-12 col-md-3'
+    centerColClass = 'col-xs-12 col-md-9'
+  }
+
   return (
     <div className='summary entry-summary vehicle-summary'>
       <div className='product-details'>
         <div className='row'>
-          {/*<div className='col-xs-12 vehicle-summary-title'>
-         <div className='shop-item-details ribbon-blue'>
-         <h5 className='shop-item-title'>
-         <small>
-         <span className='float-left'>{inventoryNum}</span>
-         <span className='float-right'>{year} {title} {style}</span>
-         </small>
-         </h5>
-         </div>
-         </div>*/}
-
-          <div className='col-xs-12 col-md-3 space-top-half'>
-            <div className='row top_row'>
-
-            </div>
-          </div>
-
-          {/*props.displayLocation && [
-           <div className='col-sm-12 col-md-6 top_row'>
-           {props.children}
-           </div>,
-           <div className='col-sm-12 col-md-3 top_row'>
-           <div className='row'>
-           <div className='col-xs-12 vehicle-summary-map'>
-           <iframe src='https://maps.google.com/maps?q=carco&t=&z=13&ie=UTF8&iwloc=&output=embed' width='100%' height={260} frameBorder={0} style={{border: 0}} />
-           </div>
-           </div>
-           </div>
-           ]*/}
-
-          {props.children && [
-            <div className='col-sm-12 col-md-6 top_row'>
-              {props.children}
-            </div>,
-            <div className='col-sm-12 col-md-3 top_row'>
+          {displayLeftCol && (
+            <div className={leftColClass}>
               <div className='row'>
-
+                {props.leftCol}
               </div>
             </div>
+          )}
+
+          {props.children && [
+            <div className={centerColClass}>
+              {props.children}
+            </div>
           ]}
+
+          {displayRightCol && (
+            <div className={rightColClass}>
+              <div className='row'>
+                {props.rightCol}
+              </div>
+            </div>
+          )}
         </div>
 
         <Modal>
