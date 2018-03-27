@@ -9,7 +9,7 @@ export default class DateHelper {
     static createDateFromString = (string, format) => moment(string, format).toDate()
 
     static formatDateString = (string, format) => {
-        debugger;
+        ;
         let m = moment(string, format)
         return m._d.toISOString()
     }
@@ -21,7 +21,7 @@ export default class DateHelper {
         }
 
         let date = new Date(string), dateObj = {}, momentDate
-        debugger
+
 
         momentDate = moment(string, 'YYYY-MM-DD')
         dateObj.value = momentDate._i
@@ -31,10 +31,10 @@ export default class DateHelper {
         dateObj.hour = date.getUTCHours()
         dateObj.minute = date.getUTCMinutes()
         dateObj.second = date.getUTCSeconds()
-        debugger
+
         dateObj.zone = moment.tz.guess()
 
-        debugger;
+        ;
         return dateObj;
     }
 }

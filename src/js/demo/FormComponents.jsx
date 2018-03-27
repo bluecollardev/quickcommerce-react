@@ -106,7 +106,7 @@ import SettingActions from '../actions/SettingActions.jsx'
 
 SettingStore.on('settings-loaded', () => {
   try {
-        // Just a comment to reference in debugger
+        // Just a comment to reference in
     if ('undefined' !== typeof document) {
       ReactDOM.render(
         <MuiThemeProvider theme={theme}>
