@@ -6,6 +6,8 @@ import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import { SplitButton, ButtonGroup, Button, Checkbox, Radio, } from 'react-bootstrap'
 
+import Slot, { slot, findNamedSlotNode } from 'quickcommerce-react/modules/slots/Slots.jsx'
+
 const ThreeColumnDynamicLayout = (props) => {
   let displayLeftCol = props.displayLeftCol
   let displayRightCol = props.displayRightCol
@@ -47,26 +49,27 @@ const ThreeColumnDynamicLayout = (props) => {
 
   return (
     <div className='summary entry-summary vehicle-summary'>
+
       <div className='product-details'>
         <div className='row'>
           {displayLeftCol && (
             <div className={leftColClass}>
               <div className='row'>
-                {props.leftCol}
+                <Slot name='leftColumn' as='leftColumn' content={props.children} />
               </div>
             </div>
           )}
 
           {props.children && [
             <div className={centerColClass}>
-              {props.children}
+              <Slot className='main' role='main' content={props.children} />
             </div>
           ]}
 
           {displayRightCol && (
             <div className={rightColClass}>
               <div className='row'>
-                {props.rightCol}
+                <Slot name='rightColumn' as='rightColumn' content={props.children} />
               </div>
             </div>
           )}

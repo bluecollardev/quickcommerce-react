@@ -82,4 +82,11 @@ export default class ObjectHelper {
       return clone
     })
   }
+
+  static prefixKeys (obj, prefix, dest = {}) {
+    return Object.keys(obj).reduce((o, key) => {
+      o[`${prefix}${key}`] = obj[key]
+      return o
+    }, dest || {})
+  }
 }
