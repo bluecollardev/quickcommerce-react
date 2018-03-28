@@ -10,22 +10,34 @@ const ThreeColumnDynamicLayout = (props) => {
   let displayLeftCol = props.displayLeftCol
   let displayRightCol = props.displayRightCol
 
-  let leftColClass = 'col-xs-12 col-md-3'
-  let rightColClass = 'col-xs-12 col-md-3'
-  let centerColClass = 'col-xs-12 col-md-6'
+  let leftColWidth = 3
+  let rightColWidth = 3
+  let centerColWidth = 6
+
+  if (props.columnConfiguration instanceof Array &&
+    props.columnConfiguration.length == 3) {
+    // eg. [4,5,3]
+    leftColWidth = props.columnConfiguration[0]
+    rightColWidth = props.columnConfiguration[2]
+    centerColWidth = props.columnConfiguration[1]
+  }
+
+  let leftColClass = 'col-xs-12 col-md-' + leftColWidth
+  let rightColClass = 'col-xs-12 col-md-' + rightColWidth
+  let centerColClass = 'col-xs-12 col-md-' + centerColWidth
 
   if (displayLeftCol && displayRightCol) {
     // Do nothing
   }
   else if (displayLeftCol && !displayRightCol) {
-    leftColClass = 'col-xs-12 col-md-3'
+    leftColClass = 'col-xs-12 col-md-' + leftColWidth
     rightColClass = ''
-    centerColClass = 'col-xs-12 col-md-9'
+    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + rightColWidth)
   }
   else if (!displayLeftCol && displayRightCol) {
     leftColClass = ''
-    rightColClass = 'col-xs-12 col-md-3'
-    centerColClass = 'col-xs-12 col-md-9'
+    rightColClass = 'col-xs-12 col-md-' + leftColWidth
+    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + rightColWidth)
   }
   else if (!displayLeftCol && !displayRightCol) {
     leftColClass = ''
