@@ -56,7 +56,7 @@ class CartStore extends EventEmitter {
         
     this.reIndex()
   }
-    
+
   registerToActions(action) {
     switch (action.actionType) {
     case 'cart-initialize':

@@ -46,7 +46,7 @@ import UrlHelper from '../../helpers/URL.js'
   user: deps.user // Shortcut or implement via HoC?
 }))
 @observer
-class CartComponent extends Component {
+class   CartComponent extends Component {
   static contextTypes = {
     cartContextManager: PropTypes.object,
     cart: PropTypes.object

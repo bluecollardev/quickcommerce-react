@@ -87,9 +87,9 @@ export class OrderStore extends BaseStore {
   doCheckout(orderAction) {
     orderAction = orderAction || null
 
-        // Only accept 'insert' action to create a new order
+    // Only accept 'insert' action to create a new order
     if (orderAction.action !== 'insert') {
-            // Do something
+      // Do something
     }
         
     let orderId = this.newOrder(orderAction.customer)
@@ -106,7 +106,16 @@ export class OrderStore extends BaseStore {
     this.payload = orderPayload // TODO: Use mappings(?)
     this.emit('set-order')
   }
-	
+
+  /**
+   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
+   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
+   * arbitrary data associated with the order.
+   *
+   * This method returns a single variant's data object from store given its key.
+   * @param key
+   * @returns {*}
+   */
   getVariant(key) {
     if (this.variants.has(key)) {
       return this.variants.get(key)
@@ -114,22 +123,48 @@ export class OrderStore extends BaseStore {
 		
     return null
   }
-	
+
+  /**
+   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
+   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
+   * arbitrary data associated with the order.
+   *
+   * This method returns a single variant's data object from store given its index.
+   * Warning, for this to work, the keys need to be sorted, which we aren't currently doing.
+   * This method is currently being used as a temporary development hack for an application
+   * that uses this library. Just a heads up!
+   * @param key
+   * @returns {*}
+   */
   getVariantAtIndex(idx) {
     let keys = this.variants.keys()
     let variant =  this.variants.get(keys[idx]) || null
 		
     return variant
   }
-	
+
+  /**
+   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
+   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
+   * arbitrary data associated with the order.
+   *
+   * @param key The unique key used to identify the particular configuration. Can be a string or an integer value.
+   * @param variant
+   */
   setVariant(key, variant) {
-		// OrderStore.setVariant
+    // OrderStore.setVariant
     this.variants.set(key, variant)
     this.emit('set-variant', key, variant)
   }
-  
+
+  /**
+   * See above. Iterates over an array of input data and maps it by
+   * key to the variants in store, setting any keys that don't already exist.
+   * @param keyProperty
+   * @param variants
+   */
   setVariants(keyProperty, variants) {
-		// OrderStore.setVariant
+    // OrderStore.setVariant
     if (variants instanceof Array) {
       variants.map((variant) => {
         this.variants.set(variant[keyProperty], variant)
@@ -147,8 +182,8 @@ export class OrderStore extends BaseStore {
       }
     }
   }
-    
-	/**
+
+  /**
 	 * This abstract method may be implemented in classes inheriting from OrderStore.
 	 *
 	 * @param CustomerDto customer A customer DTO object
@@ -156,19 +191,19 @@ export class OrderStore extends BaseStore {
 	 * 
 	 */
   setBuiltInCustomer(customer) {
-        //throw new Error('Not implemented') // TODO: Make a real exception class
+    //throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
-	/**
+  /**
 	 * This abstract method may be implemented in classes inheriting from OrderStore.
 	 *
 	 * @param CustomerDto customer A customer DTO object
 	 */
   setCustomCustomer(customer) {
-        //throw new Error('Not implemented') // TODO: Make a real exception class
+    //throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
-	/**
+  /**
 	 * This abstract method must be implemented in classes inheriting from OrderStore.
 	 * If not defined, a Not Implemented exception will be thrown.
 	 *
@@ -180,16 +215,16 @@ export class OrderStore extends BaseStore {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 	
-	/**
+  /**
 	 * This abstract method may be implemented in classes inheriting from OrderStore.
 	 *
 	 * @param CustomerDto customer A customer DTO object
 	 */
   setAdditionalCustomers(customers, key) {
-        //throw new Error('Not implemented') // TODO: Make a real exception class
+    //throw new Error('Not implemented') // TODO: Make a real exception class
   }
 	
-	/**
+  /**
 	 * This abstract method may be implemented in classes inheriting from OrderStore.
 	 *
 	 * @return void
@@ -198,7 +233,7 @@ export class OrderStore extends BaseStore {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
-	/**
+  /**
 	 * This abstract method may be implemented in classes inheriting from OrderStore.
 	 *
 	 * @return void
@@ -242,7 +277,7 @@ export class OrderStore extends BaseStore {
 
       // Sort the totals
       for (let idx = 0; idx < totals.length; idx++) {
-                //data[parseInt(totals[idx].sortOrder)] = totals[idx] // No sort order right now
+        //data[parseInt(totals[idx].sortOrder)] = totals[idx] // No sort order right now
         data[idx] = totals[idx]
 
         /* Format:
@@ -320,7 +355,7 @@ export class OrderStore extends BaseStore {
    * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
    */
   getOrderTaxRates() {
-        //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
+    //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
     let data = {}
 
     for (let idx = 0; idx < this.getDependentStore('cart').selection.length; idx++) {
@@ -328,7 +363,7 @@ export class OrderStore extends BaseStore {
 
       let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
-            // Have we previously set this rate?
+      // Have we previously set this rate?
       for (let rate in taxRates) { // TODO: Throw exception if not exists!
         if (typeof data[rate] === 'undefined' || data[rate] === null || !this._isset(taxRates[rate], 'rate_id')) {
           data[rate] = (parseFloat(taxRates[rate]['amount']) * item.quantity)
@@ -352,7 +387,7 @@ export class OrderStore extends BaseStore {
 
       let taxRates = this.getTaxRates(parseFloat(item.data['price']))
 
-            // Have we previously set this rate?
+      // Have we previously set this rate?
       for (let rate in taxRates) { // TODO: Throw exception if not exists!
         if (typeof data[rate] === 'undefined' || data[rate] === null || !this._isset(data[rate], 'rate_id')) {
           data[rate] = (parseFloat(taxRates[rate]['amount']) * item.quantity)
@@ -371,7 +406,7 @@ export class OrderStore extends BaseStore {
   calculateWithTaxes(value, taxClassId, calculate) {
     calculate = calculate || true
     taxClassId = taxClassId || false
-        // TODO: Check for boolean?
+    // TODO: Check for boolean?
 
     if (taxClassId && calculate) {
       let amount = 0

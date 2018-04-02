@@ -42,29 +42,29 @@ import CURRENCY from './Currency.jsx'
 import CASH_IN_DRAWER from './CashInDrawer.jsx'
 
 export default (ComposedComponent) => {
-    @inject(deps => ({
-      steps: deps.steps,
-      actions: deps.actions,
-      authService: deps.authService,
-      customerService: deps.customerService,
-      checkoutService: deps.checkoutService,
-      settingService: deps.authService,
-      loginStore: deps.loginStore,
-      userStore: deps.userStore,
-      customerStore: deps.customerStore,
-      catalogStore: deps.catalogStore,
-      cartStore: deps.cartStore,
-      checkoutStore: deps.checkoutStore,
-      starMicronicsStore: deps.starMicronicsStore,
-      productStore: deps.productStore,
-      settingStore: deps.settingStore,
-      mappings: deps.mappings, // Per component or global scope?
-      translations: deps.translations, // i8ln transations
-      roles: deps.roles, // App level roles, general authenticated user (not customer!)
-      userRoles: deps.userRoles, // Shortcut or implement via HoC?
-      user: deps.user // Shortcut or implement via HoC?
-    }))
-    @observer
+  @inject(deps => ({
+    steps: deps.steps,
+    actions: deps.actions,
+    authService: deps.authService,
+    customerService: deps.customerService,
+    checkoutService: deps.checkoutService,
+    settingService: deps.authService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore,
+    catalogStore: deps.catalogStore,
+    cartStore: deps.cartStore,
+    checkoutStore: deps.checkoutStore,
+    starMicronicsStore: deps.starMicronicsStore,
+    productStore: deps.productStore,
+    settingStore: deps.settingStore,
+    mappings: deps.mappings, // Per component or global scope?
+    translations: deps.translations, // i8ln transations
+    roles: deps.roles, // App level roles, general authenticated user (not customer!)
+    userRoles: deps.userRoles, // Shortcut or implement via HoC?
+    user: deps.user // Shortcut or implement via HoC?
+  }))
+  @observer
   class PosContext extends Component {
     constructor(props) {
       super(props)
@@ -1726,28 +1726,155 @@ export default (ComposedComponent) => {
         
         // TODO: This was commented out - I forget why...
     onSetOrder() {
-            /*let { customerStore, checkoutStore, checkoutService } = this.props
-            
-            console.log('checkout change detected')
-            console.log(customerStore.customer)
-            console.log(customerStore.billingAddress)
-            console.log(customerStore.shippingAddress)
-            
-            if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
-                // Just handle, customer should be set to checkoutStore
-                checkoutStore.setExistingCustomer(customerStore.customer)
-                
-                if (checkoutStore.orderIsSet()) {
-                    checkoutService.updateOrder(checkoutStore.payload.order.orderId, assign({}, checkoutStore.payload.order, {
-                        action: 'update',
-                        defaultSettings: this.getDefaultSettings()
-                    }), (payload) => {
-                        checkoutStore.setOrder(payload)
-                        //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
-                    })
-                }
-            }*/
+      /*let { customerStore, checkoutStore, checkoutService } = this.props
+
+      console.log('checkout change detected')
+      console.log(customerStore.customer)
+      console.log(customerStore.billingAddress)
+      console.log(customerStore.shippingAddress)
+
+      if (typeof customerStore.customer !== 'undefined' && customerStore.customer !== null) {
+          // Just handle, customer should be set to checkoutStore
+          checkoutStore.setExistingCustomer(customerStore.customer)
+
+          if (checkoutStore.orderIsSet()) {
+              checkoutService.updateOrder(checkoutStore.payload.order.orderId, assign({}, checkoutStore.payload.order, {
+                  action: 'update',
+                  defaultSettings: this.getDefaultSettings()
+              }), (payload) => {
+                  checkoutStore.setOrder(payload)
+                  //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+              })
+          }
+      }*/
     }
+
+
+    // Cleaner implementation - I stripped this out of some temp code as is was no longer necessary
+    /*onItemChanged(item, quantity, oldQuantity) {
+      let {customerStore, dealStore, dealService} = this.props
+
+      console.log('item quantity changed')
+      console.log(item)
+      console.log('qty: ' + quantity)
+      console.log('old qty: ' + oldQuantity)
+
+      // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
+      if (dealStore.orderIsSet()) {
+        let orderProductId = 0
+        for (let idx = 0; idx < dealStore.payload.orderProducts.length; idx++) {
+          // TODO: Use mappings!
+          if (parseInt(dealStore.payload.orderProducts[idx].productId) === parseInt(item.data['product_id'])) {
+            orderProductId = dealStore.payload.orderProducts[idx].orderProductId
+          }
+        }
+
+        // TODO: Use mappings!
+        let orderProduct = assign({}, item, {
+          product_id: parseInt(item['product_id']), quantity: quantity
+        })
+
+        let optionTotal = dealStore.calculateOptionTotal(parseInt(item.data['product_id']), item)
+        let orderProductPrice = parseFloat(item.data['price']) + optionTotal
+        let orderTaxRates = dealStore.getOrderTaxRates()
+
+        let lineTotal = orderProductPrice * quantity
+        let lineTotalWithTax = dealStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
+        let lineTax = dealStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
+
+        orderProduct = assign(orderProduct, item.data, {
+          total: lineTotal, tax: lineTax
+        })
+
+        dealService.updateOrder(dealStore.payload.order.orderId, {
+          action: 'modifyQuantity', orderProduct: orderProduct, orderProductId: orderProductId, //orderOptions:
+                                                                                                // orderOptions,
+          quantityBefore: oldQuantity, quantityAfter: quantity, orderTaxRates: orderTaxRates
+        }, (payload) => {
+          dealStore.setOrder(payload)
+          //dealService.fetchOrder(dealStore.payload.order.orderId)
+        })
+      }
+    }
+
+    onProductOptionsChanged(item, quantity, product) {
+      let {customerStore, dealStore, dealService} = this.props
+
+      console.log('product options changed')
+      console.log(item)
+      console.log('qty: ' + quantity)
+
+      if (dealStore.orderIsSet()) {
+        let lineTotal = item['price'] * quantity
+        let lineTotalWithTax = dealStore.calculateWithTaxes(lineTotal, item['tax_class_id'])
+        let lineTax = dealStore.calculateTaxes(lineTotal, item['tax_class_id'])
+
+        let orderProductId = 0
+        // Grab associated orderProduct
+        let orderProduct = dealStore.payload.orderProducts.filter(orderProduct => {
+          // TODO: Use mappings
+          return orderProduct.productId === parseInt(product['product_id'])
+        })
+
+        if (orderProduct instanceof Array && orderProduct.length === 1) {
+          orderProductId = orderProduct[0].orderProductId
+        }
+
+        let orderProduct = assign({}, item, {
+          product_id: parseInt(item['id']), quantity: quantity, // TODO: Inject quantity
+          total: lineTotal, tax: lineTax
+        })
+
+        // TODO: Promises would probably work better here
+        let orderTaxRates = dealStore.getOrderTaxRates()
+        // TODO: Use mappings!
+        let orderOptions = dealStore.getOrderOptions(parseInt(product['product_id']), orderProductId)
+
+        dealService.updateOrder(dealStore.payload.order.orderId, {
+          action: 'update', //orderProduct: orderProduct,
+          orderProductId: orderProductId, orderOptions: orderOptions, //quantityBefore: oldQuantity,
+          //quantityAfter: quantity,
+          orderTaxRates: orderTaxRates, defaultSettings: this.getDefaultSettings()
+        }, (payload) => {
+          dealStore.setOrder(payload)
+          //dealService.fetchOrder(dealStore.payload.order.orderId)
+        })
+      }
+    }
+
+    onItemRemoved(item) {
+      let {customerStore, dealStore, dealService} = this.props
+
+      console.log('item removed')
+      console.log(item)
+
+      if (dealStore.orderIsSet()) {
+        let orderProductId = 0
+        for (let idx = 0; idx < dealStore.payload.orderProducts.length; idx++) {
+          if (parseInt(dealStore.payload.orderProducts[idx].productId) === parseInt(item['id'])) {
+            orderProductId = dealStore.payload.orderProducts[idx].orderProductId
+          }
+        }
+
+        let data = assign({}, item, {
+          product_id: parseInt(item['id']), quantity: 0
+        })
+
+        let orderTaxRates = dealStore.getOrderTaxRates()
+        //let orderOptions = dealStore.getOrderOptions()
+
+        dealService.updateOrder(dealStore.payload.order.orderId, {
+          action: 'modifyQuantity',
+          orderProduct: data,
+          orderProductId: orderProductId,
+          quantityAfter: 0,
+          orderTaxRates: orderTaxRates //orderOptions: orderOptions
+        }, (payload) => {
+          dealStore.setOrder(payload)
+          //dealService.fetchOrder(dealStore.payload.order.orderId)
+        })
+      }
+    }*/
         
     onItemAdded(itemId, quantity, item) {
       let { customerStore, checkoutStore, checkoutService } = this.props
@@ -1797,7 +1924,7 @@ export default (ComposedComponent) => {
         let lineTotalWithTax = checkoutStore.calculateWithTaxes(lineTotal, item.data['tax_class_id'])
         let lineTax = checkoutStore.calculateTaxes(lineTotal, item.data['tax_class_id'])
 
-                // We're mutating the supplied data object by design
+        // We're mutating the supplied data object by design
         orderProduct = assign(orderProduct, {
           price: orderProductPrice,
           total: lineTotal,
@@ -1808,56 +1935,64 @@ export default (ComposedComponent) => {
           action: 'insert',
           orderProduct: orderProduct,
           orderProductId: 0,
-          orderOptions: orderOptions, // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
+          orderOptions: orderOptions,
+          // TODO: If we fix the UI glitch (when tapping first option, item is created) we need to re-enable this
           productId: parseInt(itemId),
           orderTaxRates: orderTaxRates,
           defaultSettings: this.getDefaultSettings()
         }, (payload) => {
           let onSuccess = (payload) => {
-                        // Format the return payload
-                        /* Returned JSON payload
-                        "orderProducts": [
-                            {
-                                "orderProductId": 4,
-                                "orderId": 198,
-                                "productId": 3381,
-                                "name": "Ceni Subscription",
-                                "model": "Ceni Subscription",
-                                "quantity": 1,
-                                "price": "111.1100",
-                                "total": "111.1100",
-                                "tax": "5.5555",
-                                "reward": 0
-                            }
-                        ],
-                        "orderOptions": [
-                            {
-                                "orderOptionId": 2,
-                                "orderId": 198,
-                                "orderProductId": 4,
-                                "productOptionId": "249",
-                                "productOptionValueId": "514",
-                                "name": "Coffee Package Size",
-                                "value": "340g",
-                                "type": "select"
-                            }
-                        ]*/
-                        
-                        /*orderProducts.reduce((list, item, index) => {
-                            
-                        })*/
-                        
-                        // Update our this.cartStore
-                        //this.cartStore.updateItem()
+            // Format the return payload
+            /* Returned JSON payload
+            "orderProducts": [
+              {
+                "orderProductId": 4,
+                "orderId": 198,
+                "productId": 3381,
+                "name": "Ceni Subscription",
+                "model": "Ceni Subscription",
+                "quantity": 1,
+                "price": "111.1100",
+                "total": "111.1100",
+                "tax": "5.5555",
+                "reward": 0
+              }
+            ],
+            "orderOptions": [
+              {
+                "orderOptionId": 2,
+                "orderId": 198,
+                "orderProductId": 4,
+                "productOptionId": "249",
+                "productOptionValueId": "514",
+                "name": "Coffee Package Size",
+                "value": "340g",
+                "type": "select"
+              }
+            ]*/
+
+            /*orderProducts.reduce((list, item, index) => {
+
+            })*/
+
+            // Update our this.cartStore
+            //this.cartStore.updateItem()
           }
                     
           checkoutStore.setOrder(payload)
-                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId, onSuccess)
+          //checkoutService.fetchOrder(checkoutStore.payload.order.orderId, onSuccess)
         })
       } else {
-                // Create a new order
+        // Create a new order
       }
     }
+
+    /**
+     * A cleaner onItemChanged
+     * @param item
+     * @param quantity
+     * @param oldQuantity
+     */
         
     onItemChanged(item, quantity, oldQuantity) {
       let { customerStore, checkoutStore, checkoutService } = this.props
@@ -1867,35 +2002,35 @@ export default (ComposedComponent) => {
       console.log('qty: ' + quantity)
       console.log('old qty: ' + oldQuantity)
             
-            // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
+      // TODO: Move this whole chunk of logic to the CartAction, or a Cart ActionCreator
       if (checkoutStore.orderIsSet()) {
         let orderProductId = 0
         for (let idx = 0; idx < checkoutStore.payload.orderProducts.length; idx++) {
-                    // TODO: Use mappings!
+          // TODO: Use mappings!
           if (parseInt(checkoutStore.payload.orderProducts[idx].productId) === parseInt(item.data['product_id'])) {
             orderProductId = checkoutStore.payload.orderProducts[idx].orderProductId
           }
         }
                 
-                // TODO: Use mappings!
+        // TODO: Use mappings!
         let orderProduct = assign({}, item.data, {
           product_id: parseInt(item.data['product_id']),
           quantity: quantity
         })
                 
         let optionTotal = 0.00 
-                // Get the prices off of the selected options and add them to the product price
-                // TODO: Use mappings!
+        // Get the prices off of the selected options and add them to the product price
+        // TODO: Use mappings!
         let orderOptions = checkoutStore.getOrderOptions(parseInt(item.data['product_id'])) || null
                 
         if (typeof orderOptions !== 'undefined' && orderOptions !== null) {
-                    // Not sure if I want to finalize this as an array or an object so I'm accounting for either
+          // Not sure if I want to finalize this as an array or an object so I'm accounting for either
           if (Object.keys(orderOptions).length > 0) {
-                        //for (let idx = 0; idx < orderOptions.length; idx++) {
+            //for (let idx = 0; idx < orderOptions.length; idx++) {
             for (let key in Object.keys(orderOptions)) {
               let orderOption = orderOptions[key]
                             
-                            // Get the product option value using the selected option's productOptionValueId
+              // Get the product option value using the selected option's productOptionValueId
               let productOptionId = Number(orderOption.productOptionId)
               let productOptionValueId = Number(orderOption.productOptionValueId)
                             
@@ -1903,9 +2038,7 @@ export default (ComposedComponent) => {
               let selectedOptions = productOptions.filter(option => { return Number(option['product_option_id']) === productOptionId })
                             
               if (selectedOptions instanceof Array && selectedOptions.length > 0) {
-                let selectedOption = selectedOptions[0]
-                                
-                                // TODO: Make this method static
+                let selectedOption = sele// TODO: Make this method static
                 let optionPrice = this.cartStore.getOptionPrice(item.data, selectedOption, productOptionValueId)
                 optionTotal += (!isNaN(optionPrice)) ? Number(optionPrice) : 0
               }
@@ -1924,8 +2057,7 @@ export default (ComposedComponent) => {
           tax: lineTax
         })
 
-        let orderTaxRates = checkoutStore.getOrderTaxRates()
-                //let orderOptions = checkoutStore.getOrderOptions()
+        let orderTaxRates = checkoutStore.getOrderTaxRates()//let orderOptions = checkoutStore.getOrderOptions()
 
         checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
           action: 'modifyQuantity',
@@ -1955,9 +2087,9 @@ export default (ComposedComponent) => {
         let lineTax = checkoutStore.calculateTaxes(lineTotal, item['tax_class_id'])
                 
         let orderProductId = 0
-                // Grab associated orderProduct
+        // Grab associated orderProduct
         let orderProduct = checkoutStore.payload.orderProducts.filter(orderProduct => {
-                    // TODO: Use mappings
+          // TODO: Use mappings
           return orderProduct.productId === parseInt(product['product_id'])
         })
                 
@@ -1965,30 +2097,30 @@ export default (ComposedComponent) => {
           orderProductId = orderProduct[0].orderProductId
         }
 
-                /*let orderProduct = assign({}, item, {
-                    product_id: parseInt(item['id']),
-                    quantity: quantity, // TODO: Inject quantity
-                    total: lineTotal,
-                    tax: lineTax
-                })*/
-                
-                // TODO: Promises would probably work better here
+        /*let orderProduct = assign({}, item, {
+            product_id: parseInt(item['id']),
+            quantity: quantity, // TODO: Inject quantity
+            total: lineTotal,
+            tax: lineTax
+        })*/
+
+        // TODO: Promises would probably work better here
         let orderTaxRates = checkoutStore.getOrderTaxRates()
-                // TODO: Use mappings!
+        // TODO: Use mappings!
         let orderOptions = checkoutStore.getOrderOptions(parseInt(product['product_id']), orderProductId)
 
         checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
           action: 'update',
-                    //orderProduct: orderProduct,
+          //orderProduct: orderProduct,
           orderProductId: orderProductId,
           orderOptions: orderOptions,
-                    //quantityBefore: oldQuantity,
-                    //quantityAfter: quantity,
+          //quantityBefore: oldQuantity,
+          //quantityAfter: quantity,
           orderTaxRates: orderTaxRates,
           defaultSettings: this.getDefaultSettings()
         }, (payload) => {
           checkoutStore.setOrder(payload)
-                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+          //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
         })
       }
     }
@@ -2013,7 +2145,7 @@ export default (ComposedComponent) => {
         })
 
         let orderTaxRates = checkoutStore.getOrderTaxRates()
-                //let orderOptions = checkoutStore.getOrderOptions()
+        //let orderOptions = checkoutStore.getOrderOptions()
 
         checkoutService.updateOrder(checkoutStore.payload.order.orderId, {
           action: 'modifyQuantity',
@@ -2021,10 +2153,10 @@ export default (ComposedComponent) => {
           orderProductId: orderProductId,
           quantityAfter: 0,
           orderTaxRates: orderTaxRates,
-                    //orderOptions: orderOptions
+          //orderOptions: orderOptions
         }, (payload) => {
           checkoutStore.setOrder(payload)
-                    //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
+          //checkoutService.fetchOrder(checkoutStore.payload.order.orderId)
         })
       }
     }
@@ -2045,57 +2177,57 @@ export default (ComposedComponent) => {
     }
         
     onComplete() {
-            /*var doCheckout = true,
-                product = null,
-                date = null
+      /*var doCheckout = true,
+          product = null,
+          date = null
 
-            // TODO: Cart only if product is not free display
-            var productConfig = BrowserStore.product,
-                productOptions = productConfig.option,
-                cartProduct = {
-                    product_id: productConfig.product_id
-                }
+      // TODO: Cart only if product is not free display
+      var productConfig = BrowserStore.product,
+          productOptions = productConfig.option,
+          cartProduct = {
+              product_id: productConfig.product_id
+          }
 
-            if (typeof productOptions !== 'undefined') {
-                cartProduct.option = {}
-                productOptions.forEach(function (value, key) {
-                    console.log(key)
-                    console.log(value)
-                    if (value instanceof Date) {
-                        // I hate JavaScript dates - really could use moment.js here...
-                        cartProduct.option[key.replace('product_option_', '')] = date = [value.getFullYear(), parseInt(value.getMonth() + 1), value.getDate()].join('-')
-                    } else {
-                        // TODO: Support multiple checkbox/select options
-                        cartProduct.option[key.replace('product_option_', '')] = [value]
-                    }
-                })
-            }*/
+      if (typeof productOptions !== 'undefined') {
+          cartProduct.option = {}
+          productOptions.forEach(function (value, key) {
+              console.log(key)
+              console.log(value)
+              if (value instanceof Date) {
+                  // I hate JavaScript dates - really could use moment.js here...
+                  cartProduct.option[key.replace('product_option_', '')] = date = [value.getFullYear(), parseInt(value.getMonth() + 1), value.getDate()].join('-')
+              } else {
+                  // TODO: Support multiple checkbox/select options
+                  cartProduct.option[key.replace('product_option_', '')] = [value]
+              }
+          })
+      }*/
 
-            /*product = productDataSource.get(productConfig.get('product_id'))
-            if (typeof product !== 'undefined') {
-                // VESTHOOK
-                if (page.hasOwnProperty('productRequiresCheckout')) {
-                    // Make sure the method exists first
-                    doCheckout = page.productRequiresCheckout(product)
-                }
-            } else {
-                // TODO: Throw an error or something?
-            }
+      /*product = productDataSource.get(productConfig.get('product_id'))
+      if (typeof product !== 'undefined') {
+          // VESTHOOK
+          if (page.hasOwnProperty('productRequiresCheckout')) {
+              // Make sure the method exists first
+              doCheckout = page.productRequiresCheckout(product)
+          }
+      } else {
+          // TODO: Throw an error or something?
+      }
 
-            // TODO: Alter this in some way so it's reusable...
-            if (!doCheckout) {
-                doFreeDownload()
-            }
+      // TODO: Alter this in some way so it's reusable...
+      if (!doCheckout) {
+          doFreeDownload()
+      }
 
-            // TODO: WARNING: QUICK KIOSK FIX for PROOF OF CONCEPT ONLY
-            // We need the ability to bypass checkout for testing
-            doCheckout = false
-            page.displayDownload()
-            // END
+      // TODO: WARNING: QUICK KIOSK FIX for PROOF OF CONCEPT ONLY
+      // We need the ability to bypass checkout for testing
+      doCheckout = false
+      page.displayDownload()
+      // END
 
-            if (doCheckout) {
-                doCheckout()
-            }*/
+      if (doCheckout) {
+          doCheckout()
+      }*/
     }
         
     onSaleComplete() {
@@ -2120,10 +2252,10 @@ export default (ComposedComponent) => {
           let data = {}
           let isEnded = false
 
-                    // Execute the step handler
+          // Execute the step handler
           this.stepper.load(stepDescriptor, data, isEnded)
 
-                    // Update our component state
+          // Update our component state
           this.setStep(stepId)
         }
       }
@@ -2134,34 +2266,34 @@ export default (ComposedComponent) => {
       console.log(this.props.customerStore.shippingAddress)
             
       if (typeof this.props.customerStore.customer !== 'undefined' && this.props.customerStore.customer !== null) {
-                // Just handle, customer should be set to this.props.checkoutStore
+        // Just handle, customer should be set to this.props.checkoutStore
         this.props.checkoutStore.setExistingCustomer(customerStore.customer)
                 
-                // Payloard order exists
+        // Payload order exists
         if (this.props.checkoutStore.payload.hasOwnProperty('order') && this.props.checkoutStore.payload.order !== null) {
-                    // Do we update?
+          // Do we update?
           if (this.props.checkoutStore.payload.order.hasOwnProperty('orderId') && 
-                        !isNaN(this.props.checkoutStore.payload.order.orderId) &&
-                        this.props.checkoutStore.payload.order.orderId > 0) {
-                        // No orderId detected in the payload order, let's try create instead
+            !isNaN(this.props.checkoutStore.payload.order.orderId) &&
+            this.props.checkoutStore.payload.order.orderId > 0) {
+            // No orderId detected in the payload order, let's try create instead
           } else {
-                        // TODO: Fix me! I'm hardcoded
+            // TODO: Fix me! I'm hardcoded
             this.props.checkoutService.createOrder(assign({}, this.props.checkoutStore.payload.order, {
               action: 'insert',
               defaultSettings: this.getDefaultSettings()
             }), (payload) => {
               this.props.checkoutStore.setOrder(payload)
-                            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+              //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
             })
           }
-                // Payload order doesn't exist, we're gonna have to create it
+          // Payload order doesn't exist, we're gonna have to create it
         } else {
           this.props.checkoutService.createOrder(assign({}, {
             action: 'insert',
             defaultSettings: this.getDefaultSettings()
           }), (payload) => {
             this.props.checkoutStore.setOrder(payload)
-                        //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
+            //this.props.checkoutService.fetchOrder(this.props.checkoutStore.payload.order.orderId)
           })
         }
       }
@@ -2169,25 +2301,25 @@ export default (ComposedComponent) => {
         
     render() {
       let props = Object.assign({}, this.props, {
-                //getSelection: this.getSelection,
-                //hasItems: this.hasItems,
+        //getSelection: this.getSelection,
+        //hasItems: this.hasItems,
         setStep: this.setStep,
         configureSteps: this.componentConfigureSteps,
-                //addToCart: this.addToCart,
-                //quickAddToCart: this.quickAddToCart,
+        //addToCart: this.addToCart,
+        //quickAddToCart: this.quickAddToCart,
         onComplete: this.onComplete,
         updateNotes: this.updateNotes,
         updatePaymentMethod: this.updatePaymentMethod,
         updateShippingMethod: this.updateShippingMethod,
         continueShopping: this.continueShopping,
-                //refresh: this.refresh,
+        //refresh: this.refresh,
         showNewCustomerForm: this.showNewCustomerForm,
         hideNewCustomerForm: this.hideNewCustomerForm,
         showEditCustomerForm: this.showEditCustomerForm,
         hideEditCustomerForm: this.hideEditCustomerForm,
         changeCustomer: this.changeCustomer,
-                //showLoginForm: this.showLoginForm,
-                //hideLoginForm: this.hideLoginForm,
+        //showLoginForm: this.showLoginForm,
+        //hideLoginForm: this.hideLoginForm,
         showOrder: this.showOrder,
         hideModal: this.hideModal,
         showScanModal: this.showScanModal,
@@ -2206,17 +2338,17 @@ export default (ComposedComponent) => {
         showCompleteModal: this.showCompleteModal,
         hideCompleteModal: this.hideCompleteModal,
         onSaleComplete: this.onSaleComplete,
-                //reset: this.reset,
+        //reset: this.reset,
         categoryClicked: this.categoryClicked,
         itemClicked: this.itemClicked,
-                //addToCartClicked: this.addToCartClicked,
+        //addToCartClicked: this.addToCartClicked,
         optionClicked: this.optionClicked,
         itemDropped: this.itemDropped,
         stepClicked: this.stepClicked,
         selectPaymentMethod: this.selectPaymentMethod,
         toggleCustomPaymentAmount: this.toggleCustomPaymentAmount,
         getChangeAmounts: this.getChangeAmounts,
-                //getTotal: this.getTotal,
+        //getTotal: this.getTotal,
         categoryFilterSelected: this.categoryFilterSelected,
         openDrawer: this.openDrawer,
         calculateChange: this.calculateChange,
@@ -2234,12 +2366,12 @@ export default (ComposedComponent) => {
       let steps = this.stepper.getSteps() // Stepper extends store, we're good
 
       let options = false
-            // TODO: This is wrong, should be checking ID or something
+      // TODO: This is wrong, should be checking ID or something
       if (this.state.hasOwnProperty('product') && this.state.product !== null && this.state.product.hasOwnProperty('price')) {
         let price = (parseFloat(this.state.product.price)).toFixed(2)
         if (typeof this.state.product.options !== 'undefined' && 
-                this.state.product.options instanceof Array && 
-                this.state.product.options.length > 0) {
+          this.state.product.options instanceof Array &&
+          this.state.product.options.length > 0) {
           options = this.state.product.options
         }
       }
@@ -2295,14 +2427,14 @@ export default (ComposedComponent) => {
                       {this.renderCashOptions()}
                       <input type='hidden' name='hid_cash' />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'cash' && this.state.customPaymentAmount && (
                     <FormGroup>
                       <i className='fa fa-dollar' /> <ControlLabel>Custom Amount</ControlLabel>
                       <FormControl type='text' name='custom_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'credit' && (
                     <FormGroup>
@@ -2310,7 +2442,7 @@ export default (ComposedComponent) => {
                       <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
                       <input type='hidden' name='hid_card' />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'debit' && (
                     <FormGroup>
@@ -2318,7 +2450,7 @@ export default (ComposedComponent) => {
                       <FormControl type='text' name='card' placeholder='1234 5678 9012 3456' />
                       <input type='hidden' name='hid_debit' />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'cheque' && (
                     <FormGroup>
@@ -2326,14 +2458,14 @@ export default (ComposedComponent) => {
                       <FormControl type='text' name='cheque' placeholder='Reference Number' />
                       <input type='hidden' name='hid_cheque' />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (
                     <FormGroup>
                       <i className='fa fa-dollar' /> <ControlLabel>Amount</ControlLabel>
                       <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount} />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {this.state.paymentCode === 'giftcard' && (
                     <FormGroup>
@@ -2341,12 +2473,12 @@ export default (ComposedComponent) => {
                       <FormControl type='text' name='gift' placeholder='Card Number or Swipe' />
                       <input type='hidden' name='hid_gift' />
                     </FormGroup>
-                                        )}
+                    )}
                                         
                     {/* TODO: Check if is a valid method */}
                     {this.state.paymentCode !== null && (
                     <hr />
-                                        )}
+                    )}
 
                     <FormGroup>
                       <Button bsStyle='success' block onClick={this.completeOrder}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
@@ -2390,7 +2522,7 @@ export default (ComposedComponent) => {
             onHide={this.hideCompleteModal}>
             <Modal.Header>
               <Modal.Title>
-                                Transaction Complete!
+                Transaction Complete!
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -2438,39 +2570,39 @@ export default (ComposedComponent) => {
                     <hr />
 
                     {/*
-                                        <h4>Other Options</h4>
+                    <h4>Other Options</h4>
 
-                                        <hr />
+                    <hr />
 
-                                        <FormGroup>
-                                            <i className='fa fa-envelope-o' /> <ControlLabel>E-mail Receipt</ControlLabel>
-                                            <FormControl type='text' name='email' placeholder='youraddress@domain.com' />
-                                            <input type='hidden' name='send_email' />
-                                        </FormGroup>
+                    <FormGroup>
+                        <i className='fa fa-envelope-o' /> <ControlLabel>E-mail Receipt</ControlLabel>
+                        <FormControl type='text' name='email' placeholder='youraddress@domain.com' />
+                        <input type='hidden' name='send_email' />
+                    </FormGroup>
 
-                                        <FormGroup>
-                                            <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-envelope-o' /> Send E-mail</h4></Button>
-                                        </FormGroup>
+                    <FormGroup>
+                        <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-envelope-o' /> Send E-mail</h4></Button>
+                    </FormGroup>
 
-                                        <hr />
+                    <hr />
 
-                                        <FormGroup>
-                                            <i className='fa fa-comment' /> <ControlLabel>Text Receipt</ControlLabel>
-                                            <FormControl type='text' name='text' placeholder='(123) 456 7890' />
-                                            <input type='hidden' name='send_text' />
-                                        </FormGroup>œ
+                    <FormGroup>
+                        <i className='fa fa-comment' /> <ControlLabel>Text Receipt</ControlLabel>
+                        <FormControl type='text' name='text' placeholder='(123) 456 7890' />
+                        <input type='hidden' name='send_text' />
+                    </FormGroup>œ
 
-                                        <FormGroup>
-                                            <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-comment-o' /> Send Text</h4></Button>
-                                        </FormGroup>
+                    <FormGroup>
+                        <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-comment-o' /> Send Text</h4></Button>
+                    </FormGroup>
 
-                                        <hr />
+                    <hr />
 
-                                        <FormGroup>
-                                            <i className='fa fa-ban' /> <ControlLabel>No Receipt</ControlLabel>
-                                            <input type='hidden' name='send_nothing' />
-                                        </FormGroup>
-                                        */}
+                    <FormGroup>
+                        <i className='fa fa-ban' /> <ControlLabel>No Receipt</ControlLabel>
+                        <input type='hidden' name='send_nothing' />
+                    </FormGroup>
+                    */}
                   </form>
                 </div>
               </div>
@@ -2482,24 +2614,24 @@ export default (ComposedComponent) => {
             onHide={this.hideReceiptModal}>
             <Modal.Header>
               <Modal.Title>
-                                ACE Coffee Roasters
+                ACE Coffee Roasters
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {this.state.hasOwnProperty('prevCheckout') &&
-                            this.state.prevCheckout.hasOwnProperty('order') &&
-                            typeof this.state.prevCheckout.order !== 'undefined' && (
-                            <div className='receipt'
-                              style={{
-                                margin: '0 auto',
-                                maxWidth: '300px',
-                                boxSizing: 'border-box',
-                                padding: '18px',
-                                border: '1px solid black'
-                              }}>
-                                {this.renderCachedReceipt()}
-                            </div>
-                            )}
+              this.state.prevCheckout.hasOwnProperty('order') &&
+              typeof this.state.prevCheckout.order !== 'undefined' && (
+              <div className='receipt'
+                style={{
+                  margin: '0 auto',
+                  maxWidth: '300px',
+                  boxSizing: 'border-box',
+                  padding: '18px',
+                  border: '1px solid black'
+                }}>
+                  {this.renderCachedReceipt()}
+              </div>
+              )}
             </Modal.Body>
           </Modal>
                     
@@ -2508,18 +2640,18 @@ export default (ComposedComponent) => {
             onHide={this.hideCodeModal}>
             <Modal.Header>
               <Modal.Title>
-                                Enter code
+                Enter code
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {this.state.code && (
                 <div>
                   <Alert bsStyle='warning'>
-                                        Please enter the item code. <i className='fa fa-smile-o' />
+                    Please enter the item code. <i className='fa fa-smile-o' />
                   </Alert>
                   <Button block onClick={this.hideCodeModal}>Ok</Button>
                 </div>
-                            )}
+              )}
             </Modal.Body>
           </Modal>
           <Modal
@@ -2527,47 +2659,47 @@ export default (ComposedComponent) => {
             onHide={this.hideScanModal}>
             <Modal.Header>
               <Modal.Title>
-                                Scan item
+                Scan item
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               {this.state.scan && (
                 <div>
                   <Alert bsStyle='warning'>
-                                        Please scan your item. <i className='fa fa-barcode' />
+                    Please scan your item. <i className='fa fa-barcode' />
                   </Alert>
                   <Button block onClick={this.hideScanModal}>Ok</Button>
                 </div>
-                            )}
+              )}
             </Modal.Body>
           </Modal>
 
           {/*<Modal
-                      show   = {!!this.state.chooseQuantity}
-                      onHide = {this.hideQuantity}>
-                        <Modal.Header>
-                            <Modal.Title>
-                                Enter Item Quantity
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Keypad 
-                                ref = {(keypad) => this.popupKeypad = keypad} 
-                                displayLabel = {false} />
-                            <FormGroup style={{ display: 'block' }}>
-                                <Button block bsStyle='success' onClick={this.quickAddToCart}>
-                                    <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
-                                </Button>
-                                <Button block bsStyle='danger' onClick={() => this.setState({ chooseQuantity: false }, () => this.popupKeypad.component.clear())}>
-                                    <h4><i className='fa fa-ban' /> Cancel</h4>
-                                </Button>
-                            </FormGroup>
-                        </Modal.Body>
-                    </Modal>*/}
+            show   = {!!this.state.chooseQuantity}
+            onHide = {this.hideQuantity}>
+              <Modal.Header>
+                  <Modal.Title>
+                      Enter Item Quantity
+                  </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                  <Keypad
+                      ref = {(keypad) => this.popupKeypad = keypad}
+                      displayLabel = {false} />
+                  <FormGroup style={{ display: 'block' }}>
+                      <Button block bsStyle='success' onClick={this.quickAddToCart}>
+                          <h4><i className='fa fa-shopping-cart' /> Add to Order</h4>
+                      </Button>
+                      <Button block bsStyle='danger' onClick={() => this.setState({ chooseQuantity: false }, () => this.popupKeypad.component.clear())}>
+                          <h4><i className='fa fa-ban' /> Cancel</h4>
+                      </Button>
+                  </FormGroup>
+              </Modal.Body>
+          </Modal>*/}
         </ComposedComponent>
       )
     }
-    }
+  }
     
   return PosContext
 }
