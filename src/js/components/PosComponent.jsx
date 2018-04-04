@@ -2324,7 +2324,7 @@ class PosComponent extends Component {
                       onItemClicked={this.categoryClicked}
                       onFilterSelected={this.categoryFilterSelected}
                       onStepClicked={this.stepClicked}
-                                            />
+                    />
                   </BlockUi>
                 </Col>
               </Row>
@@ -2457,18 +2457,18 @@ class PosComponent extends Component {
                 <Row className='account-panel'>
                   <Col xs={12} md={12} lg={6}>
                     {/* There's an error somewhere, loginStore doesn't update userStore like it used to... 
-                                        Maybe I should consolidate them into a single store or something - saving the same data to 
-                                        two stores doesn't really make a lot of sense; it was originally a workaround for something.
-                                        <SignInForm
-                                            user = {this.props.userStore.user}
-                                            onCreate = {this.showNewCustomerForm}
-                                            onLoginSuccess = {this.props.onLoginSuccess}
-                                            />*/}
+                    Maybe I should consolidate them into a single store or something - saving the same data to
+                    two stores doesn't really make a lot of sense; it was originally a workaround for something.
+                    <SignInForm
+                      user = {this.props.userStore.user}
+                      onCreate = {this.showNewCustomerForm}
+                      onLoginSuccess = {this.props.onLoginSuccess}
+                      />*/}
                     <SignInForm
                       user={this.props.loginStore.user}
                       onCreate={this.showNewCustomerForm}
                       onLoginSuccess={this.props.onLoginSuccess}
-                                            />
+                    />
                   </Col>
                   <Col xs={12} md={12} lg={6}>
                     <TopMenu>
@@ -2476,11 +2476,11 @@ class PosComponent extends Component {
                     </TopMenu>
                   </Col>
                 </Row>
-                                )}
+                )}
                                 
                 {this.props.loggedIn && (
                 <hr style={{flex: '0'}} />
-                                )}
+                )}
                                 
                 <div>
                   <CustomerPicker
@@ -2488,7 +2488,7 @@ class PosComponent extends Component {
                     onCreate={this.showNewCustomerForm}
                     onEdit={this.showEditCustomerForm}
                     onSubmit={this.changeCustomer}
-                                        />
+                  />
                 </div>
                                 
                 {/* User, not customer account forms */}
@@ -2515,11 +2515,11 @@ class PosComponent extends Component {
                         billingAddress: data.addresses[0] // TODO: Get the right address using ID
                       })
                                             
-                                            /*this.props.actions.customer.setShippingAddress({
-                                                addresses: [payload.data],
-                                                shippingAddressId: addressId,
-                                                shippingAddress: payload.data
-                                            })*/
+                      /*this.props.actions.customer.setShippingAddress({
+                          addresses: [payload.data],
+                          shippingAddressId: addressId,
+                          shippingAddress: payload.data
+                      })*/
                                             
                       this.props.checkoutStore.setExistingCustomer({ customer: data.customer })
                                              // TODO: Return customer does not have new address ID assigned, so we're grabbing it from the address
@@ -2536,7 +2536,7 @@ class PosComponent extends Component {
                     modal={true}>
                   </CustomerProfile>
                 </div>
-                                )}
+                )}
 
                 {this.state.editAccount && (
                 <div>
@@ -2566,15 +2566,15 @@ class PosComponent extends Component {
                         billingAddressId: data.customer['address_id'],
                         billingAddress: data.addresses[0] // TODO: Get the right address using ID
                       })
-                                            // Force an update
-                                            //this.forceUpdate()
+                      // Force an update
+                      //this.forceUpdate()
                       this.hideEditCustomerForm()
                     }}
                     onCancel={this.hideEditCustomerForm}
                     modal={true}>
                   </CustomerProfile>
                 </div>
-                                )}
+                )}
               </Col>
             </Row>
             <Row className='checkout-parts'>

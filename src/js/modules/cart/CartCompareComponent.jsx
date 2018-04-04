@@ -30,7 +30,7 @@ import JSONHelper from '../../helpers/JSON.js'
 import UrlHelper from '../../helpers/URL.js'
 
 /**
- * TODO: This is really AbstractCartComponent
+ * TODO: This is really AbstractCartCompareComponent
  */
 @inject(deps => ({
   actions: deps.actions,
@@ -46,7 +46,7 @@ import UrlHelper from '../../helpers/URL.js'
   user: deps.user // Shortcut or implement via HoC?
 }))
 @observer
-class CartComponent extends Component {
+class CartCompareComponent extends Component {
   static contextTypes = {
     cartContextManager: PropTypes.object,
     cart: PropTypes.object
@@ -225,4 +225,4 @@ class CartComponent extends Component {
   }
 }
 
-export { CartComponent }
+export { CartCompareComponent }
