@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import moment from 'moment/moment'
 import momentTimezone from 'moment-timezone'
 
@@ -60,5 +61,20 @@ export default class DateHelper {
     dateObj.zone = moment.tz.guess()
 
     return dateObj
+  }
+
+  /**
+   * adjust month by -1 since month is zero based index
+   * ie March is 2 but we store 3 in the database
+   */
+  static adjustMonthforDisplay = (string, format)=> {
+    if (!String) {
+      return null
+    }
+    let momentDate = moment(string, format)
+    momentDate.subtract(1, 'months')
+
+    return momentDate._d.toDateString()
+
   }
 }
