@@ -49,7 +49,7 @@ export default class DateHelper {
     }
     string = date.toLocaleString()
 
-    momentDate = moment(string, '"YYYY-MM-DD HH:mm Z"')
+    momentDate = moment(string, 'L')
     dateObj.value = momentDate._i
     dateObj.year = momentDate._a[0]
     dateObj.month = momentDate._a[1]+1//date starts from zero
