@@ -77,4 +77,13 @@ export default class DateHelper {
     return momentDate._d.toDateString()
 
   }
+
+  static createDateFromDateDTO = (dateDTO)=>{
+    debugger
+    let dateString = dateDTO.value, timestamp, arr
+    arr = dateString.split('[')
+
+    timestamp = Date.parse(arr[0])
+    return new Date(timestamp)
+  }
 }
