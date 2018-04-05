@@ -20,17 +20,17 @@ class CustomerListStore extends BaseCollectionStore {
     if (data !== null && data.hasOwnProperty('address_id')) {
       formatted = [
         [data.firstname, data.lastname].join(' '),
-        [data.company].filter(function(value, idx) {
+        [data.company].filter((value) => {
           return filterValue(value)
         }).join(''),
-        [data.address1, data.address2].filter(function(value, idx) {
+        [data.address1, data.address2].filter(function(value) {
           return filterValue(value)
         }).join('\n'),
         [data.city, data.zone].join(', '),
         [data.country, data.postcode].join(' ')
       ]
 
-      formatted = formatted.filter(function (value, idx) {
+      formatted = formatted.filter((value) => {
         return filterValue(value)
       })
 
@@ -53,6 +53,7 @@ CustomerListStore.customer = {
   fax: '',
   address_id: null
 }
+
 CustomerListStore.billingAddressString = ''
 CustomerListStore.billingAddress = {
   firstname: '',
@@ -68,6 +69,7 @@ CustomerListStore.billingAddress = {
   zone_id: null,
   postcode: ''
 }
+
 CustomerListStore.shippingAddressString = ''
 CustomerListStore.shippingAddress = {
   firstname: '',
@@ -84,5 +86,4 @@ CustomerListStore.shippingAddress = {
   postcode: ''
 }
 
-export default new CustomerListStore()
 export { CustomerListStore }

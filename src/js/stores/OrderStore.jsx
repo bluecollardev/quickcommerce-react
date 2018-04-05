@@ -1,10 +1,6 @@
 import assign from 'object-assign'
 
-import { normalize, denormalize, schema } from 'normalizr'
-
 import BaseStore from './BaseStore.jsx'
-import CustomerStore from './CustomerStore.jsx'
-import SettingStore from './SettingStore.jsx'
 import OrderConstants from '../constants/OrderConstants.jsx'
 
 import HashTable from '../utils/HashTable.js'
@@ -16,7 +12,7 @@ export class OrderStore extends BaseStore {
 		
     this.variants = new HashTable()
   }
-    
+
   registerToActions(action) {
     switch (action.actionType) {
     case OrderConstants.NEW_ORDER:
@@ -47,12 +43,12 @@ export class OrderStore extends BaseStore {
       this.setAdditionalCustomers(action.customers, action.key, action.silent)
       this.emit('set-additional-customers') // TODO: No silent support yet here :(
       break
-    /*case OrderConstants.SET_BILLING_ADDRESS:
-        this.setBillingAddress(action.address)
-        break
+    case OrderConstants.SET_BILLING_ADDRESS:
+      //this.setBillingAddress(action.address)
+      break
     case OrderConstants.SET_SHIPPING_ADDRESS:
-        this.setShippingAddress(action.address)
-        break*/
+      //this.setShippingAddress(action.address)
+      break
     case OrderConstants.SET_PAYMENT_METHOD:
       this.setPaymentMethod(action.code, action.method)
       break
@@ -92,7 +88,8 @@ export class OrderStore extends BaseStore {
       // Do something
     }
         
-    let orderId = this.newOrder(orderAction.customer)
+    //let orderId = this.newOrder(orderAction.customer)
+    this.newOrder(orderAction.customer)
   }
 
   /**
@@ -377,7 +374,7 @@ export class OrderStore extends BaseStore {
   }
 
   /**
-   * Mirrors the getTaxes method in in system\library\cart.
+   * Mirrors the getTaxes method in in quickcommerce-php/system/library/cart.
    */
   getOrderTaxes() {
     let data = {}
@@ -401,7 +398,7 @@ export class OrderStore extends BaseStore {
   }
 
   /**
-   * Mirrors the calculateTaxes method in system\library\tax.
+   * Mirrors the calculateTaxes method in quickcommerce-php/system/library/tax.
    */
   calculateWithTaxes(value, taxClassId, calculate) {
     calculate = calculate || true
@@ -414,9 +411,9 @@ export class OrderStore extends BaseStore {
 
       for (let rate in taxRates) {
         if (calculate !== 'P' && calculate !== 'F') {
-          amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
+          amount += taxRates[rate]['amount'] // Why are these the same? See system/library/tax...
         } else if (taxRates[rate]['type'] === calculate) {
-          amount += taxRates[rate]['amount'] // Why are these the same? See system\library\tax
+          amount += taxRates[rate]['amount'] // Why are these the same? See system/library/tax...
         }
       }
 
@@ -427,7 +424,7 @@ export class OrderStore extends BaseStore {
   }
 
   /**
-   * Mirrors the getTax method in system\library\tax.
+   * Mirrors the getTax method in quickcommerce-php/system/library/tax.
    */
   calculateTaxes(value, taxClassId) {
     let amount = 0
@@ -442,7 +439,8 @@ export class OrderStore extends BaseStore {
 
   /**
    * Mirrors the getRates method in system\library\tax.
-   * Called by the calculateTaxes (orig. Tax) and getOrderTaxes (orig. (Cart) methods, and is generally only for 'private use'.
+   * Called by the calculateTaxes (orig. Tax) and getOrderTaxes
+   * (orig. (Cart) methods, and is generally only for 'private use'.
    */
   getTaxRates(value, taxClassId) {
     let rateData = {},
