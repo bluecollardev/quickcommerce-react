@@ -80,6 +80,10 @@ export default class DateHelper {
 
   static createDateFromDateDTO = (dateDTO)=>{
     debugger
+    //if the dto is already a date return the date
+    if(dateDTO instanceof Date && !isNaN(dateDTO.valueOf())){
+      return dateDTO
+    }
     let dateString = dateDTO.value, timestamp, arr
     arr = dateString.split('[')
 
