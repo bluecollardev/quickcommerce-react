@@ -83,6 +83,9 @@ export default class DateHelper {
     if(dateDTO instanceof Date && !isNaN(dateDTO.valueOf())){
       return dateDTO
     }
+    if(!dateDTO.value){
+      return null
+    }
     let dateString = dateDTO.value, timestamp, arr
     arr = dateString.split('[')
 
