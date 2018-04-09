@@ -83,7 +83,7 @@ export default class DateHelper {
     if(dateDTO instanceof Date && !isNaN(dateDTO.valueOf())){
       return dateDTO
     }
-    if(!dateDTO.value){
+    if(!dateDTO || !dateDTO.value){
       return null
     }
     let dateString = dateDTO.value, timestamp, arr
