@@ -37,7 +37,7 @@ const GenericDropTarget = createReactClass({
         <Well 
           className={classNames('text-center', {'well-is-over': isOver})}
           style={{marginBottom: '.5em'}}
-          bsSize='large'>
+          bssize='large'>
           <h1><i className='fa fa-bullseye fa-2x' /></h1>
         </Well>
         <p>

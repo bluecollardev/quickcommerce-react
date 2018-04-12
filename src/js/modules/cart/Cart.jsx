@@ -173,7 +173,7 @@ class Cart extends Component {
           <div
             className={'padding-top ' + classNames({'well-is-over': isOver})}
             style={{marginBottom: '.5em'}}
-            bsSize='large'>
+            bssize='large'>
             {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
             <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
           </div>

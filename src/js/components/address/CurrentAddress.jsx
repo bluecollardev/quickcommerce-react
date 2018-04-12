@@ -643,8 +643,6 @@ class CurrentAddress extends Component {
     const { data, countries, zones, cities, geoZones, type, types } = this.state
 
     this.mergeFormData(data)
-    //console.log('dumping merged data')
-    //console.log(data)
 
     return (
       <div>
@@ -752,14 +750,14 @@ CurrentAddress.propTypes = {
   nameRequired: PropTypes.bool,
   displayAddress: PropTypes.bool,
   displaySummary: PropTypes.bool,
-  type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'),
-  types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'),
-  data: PropTypes.object.isRequired,
+  //type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
+  //types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
+  data: PropTypes.object,
   addressString: PropTypes.string,
   address: PropTypes.object,
-  countries: PropTypes.array.isRequired,
-  zones: PropTypes.array.isRequired,
-  geoZones: PropTypes.array.isRequired
+  countries: PropTypes.array,
+  zones: PropTypes.array,
+  geoZones: PropTypes.array
 }
 
 CurrentAddress.defaultProps = {
@@ -769,8 +767,8 @@ CurrentAddress.defaultProps = {
   nameRequired: true, // Stupid OpenCart
   displayAddress: false,
   displaySummary: false,
-  type: 'simple', // [simple|civic|rural|pobox]
-  types: ['simple', 'civic', 'rural', 'pobox'],
+  type: 'simple', // [simple|civic|rural|pobox] // TODO: Wrong syntax!
+  types: ['simple', 'civic', 'rural', 'pobox'], // TODO: Wrong syntax!
   //title: 'Current Address',
   data: {
     id: null,

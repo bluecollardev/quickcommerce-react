@@ -1721,12 +1721,12 @@ class PosComponent extends Component {
   renderPaymentOptions() {
     return (
       <div className='cash-options payment-options'>
-        <Button bsStyle='default' data-type='cash' onClick={this.selectPaymentMethod.bind(this, 'cash')}>Cash</Button>&nbsp;
-        <Button bsStyle='default' data-type='visa' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Visa</Button>&nbsp;
-        <Button bsStyle='default' data-type='mastercard' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Mastercard</Button>&nbsp;
-        <Button bsStyle='default' data-type={'debit'} onClick={this.selectPaymentMethod.bind(this, 'debit')}>Debit</Button>&nbsp;
-        <Button bsStyle='default' data-type={'cheque'} onClick={this.selectPaymentMethod.bind(this, 'cheque')}>Cheque</Button>&nbsp;
-        <Button bsStyle='default' data-type={'giftcard'} onClick={this.selectPaymentMethod.bind(this, 'giftcard')}>Gift Card</Button>
+        <Buttonbssize data-type='cash' onClick={this.selectPaymentMethod.bind(this, 'cash')}>Cash</Button>&nbsp;
+        <Buttonbssize data-type='visa' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Visa</Button>&nbsp;
+        <Buttonbssize data-type='mastercard' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Mastercard</Button>&nbsp;
+        <Buttonbssize data-type={'debit'} onClick={this.selectPaymentMethod.bind(this, 'debit')}>Debit</Button>&nbsp;
+        <Buttonbssize data-type={'cheque'} onClick={this.selectPaymentMethod.bind(this, 'cheque')}>Cheque</Button>&nbsp;
+        <Buttonbssize data-type={'giftcard'} onClick={this.selectPaymentMethod.bind(this, 'giftcard')}>Gift Card</Button>
       </div>
     )
   }
@@ -1747,7 +1747,7 @@ class PosComponent extends Component {
         <Button bsStyle='success' data-amount={options[1]} onClick={this.selectChangePreset}>${options[1].toFixed(2)}</Button>&nbsp;
         <Button bsStyle='success' data-amount={options[2]} onClick={this.selectChangePreset}>${options[2].toFixed(2)}</Button>&nbsp;
         <Button bsStyle='success' data-amount={options[3]} onClick={this.selectChangePreset}>${options[3].toFixed(2)}</Button>&nbsp;
-        {/*<Button bsStyle='default' data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
+        {/*<Buttonbssize data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
         <Button bsStyle='disabled' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
       </div>
     )
@@ -2663,7 +2663,7 @@ class PosComponent extends Component {
                   }}
                   className='hidden-xs hidden-sm hidden-md'
                   onClick={this.reload}
-                  bsStyle='default'>
+                 bssize>
                   <h4><i className='fa fa-refresh' /> Reset</h4>
                 </Button>
                                 )}
@@ -2701,7 +2701,7 @@ class PosComponent extends Component {
                         marginTop: '2rem'
                       }}
                       onClick={this.openDrawer}
-                      bsStyle='default'>
+                     bssize>
                       <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
                     </Button>
                   </Col>
@@ -2713,7 +2713,7 @@ class PosComponent extends Component {
                         marginTop: '2rem'
                       }}
                       onClick={this.printReport}
-                      bsStyle='default'>
+                     bssize>
                       <h4><i className='fa fa-print' /> End of Day</h4>
                     </Button>
                   </Col>
@@ -2816,7 +2816,7 @@ class PosComponent extends Component {
                     <Button bsStyle='success' block onClick={this.completeOrder}><h4><i className='fa fa-money' /> Process Payment</h4></Button>
                   </FormGroup>
                   <FormGroup>
-                    <Button bsStyle='default' block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
+                    <Buttonbssize block onClick={this.hideChargeModal}><h4><i className='fa fa-ban' /> Cancel</h4></Button>
                   </FormGroup>
                                     
                 </form>
@@ -2871,15 +2871,15 @@ class PosComponent extends Component {
 
                 <form>
                   <FormGroup>
-                    <Button block bsStyle='default' onClick={this.showReceiptModal}><h4><i className='fa fa-eye' /> View Receipt</h4></Button>
+                    <Button blockbssize onClick={this.showReceiptModal}><h4><i className='fa fa-eye' /> View Receipt</h4></Button>
                   </FormGroup>
 
                   <FormGroup>
-                    <Button block bsStyle='default' onClick={this.printReceipt}><h4><i className='fa fa-print' /> Print Receipt</h4></Button>
+                    <Button blockbssize onClick={this.printReceipt}><h4><i className='fa fa-print' /> Print Receipt</h4></Button>
                   </FormGroup>
 
                   <FormGroup>
-                    <Button block bsStyle='default' onClick={this.printOrder}><h4><i className='fa fa-clipboard' /> Re-print Order</h4></Button>
+                    <Button blockbssize onClick={this.printOrder}><h4><i className='fa fa-clipboard' /> Re-print Order</h4></Button>
                   </FormGroup>
 
                   <FormGroup>
@@ -2890,7 +2890,7 @@ class PosComponent extends Component {
                         marginTop: '2rem'
                       }}
                       onClick={this.openDrawer}
-                      bsStyle='default'>
+                     bssize>
                       <h4><i className='fa fa-external-link-square' /> Open Drawer</h4>
                     </Button>
                   </FormGroup>
@@ -2913,7 +2913,7 @@ class PosComponent extends Component {
                                     </FormGroup>
 
                                     <FormGroup>
-                                        <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-envelope-o' /> Send E-mail</h4></Button>
+                                        <Button blockbssize onClick={this.hideCompleteModal}><h4><i className='fa fa-envelope-o' /> Send E-mail</h4></Button>
                                     </FormGroup>
 
                                     <hr />
@@ -2925,7 +2925,7 @@ class PosComponent extends Component {
                                     </FormGroup>œ
 
                                     <FormGroup>
-                                        <Button block bsStyle='default' onClick={this.hideCompleteModal}><h4><i className='fa fa-comment-o' /> Send Text</h4></Button>
+                                        <Button blockbssize onClick={this.hideCompleteModal}><h4><i className='fa fa-comment-o' /> Send Text</h4></Button>
                                     </FormGroup>
 
                                     <hr />

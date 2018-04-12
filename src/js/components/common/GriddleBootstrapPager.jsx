@@ -28,7 +28,7 @@ const GriddleBootstrapPager = createReactClass({
         
     return (
       <Pagination
-        bsSize='small'
+        bssize='small'
         items={maxPage}
         prev={true}
         next={true}

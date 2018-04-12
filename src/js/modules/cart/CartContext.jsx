@@ -150,8 +150,8 @@ export default (ComposedComponent) => {
       console.log(this.cartContextManager)
       console.log('cartContextValue')
       console.log(this.cartContextManager.getCartContextValue())
-      console.log('CartContext subscribers')
-      console.log(this.cartContextManager.getSubscribers())
+      //console.log('CartContext subscribers')
+      //console.log(this.cartContextManager.getSubscribers())
       return {
         cartContextManager: this.cartContextManager,
         cart: this.cartContextManager.getCartContextValue()

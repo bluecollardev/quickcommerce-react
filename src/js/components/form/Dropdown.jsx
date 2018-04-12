@@ -17,7 +17,7 @@ const SelectList = (props) => {
     return (
       <FormControl componentClass='select' {...elementProps}>
         <option key={0} value=''></option>
-        {items.map((item, idx) =>
+        {items.map((item, idx) => (
           <option 
             key={idx + 1} 
             code={item.code} 
@@ -25,7 +25,7 @@ const SelectList = (props) => {
             selected={item.selected}>
             {item.value}
           </option>
-        )}
+        ))}
       </FormControl>
     )    
   }
@@ -34,14 +34,14 @@ const SelectList = (props) => {
     return (
       <FormControl componentClass='select' {...elementProps}>
         <option key={0} value=''></option>
-        {items.map((item, idx) =>
+        {items.map((item, idx) => (
           <option 
             key={idx + 1} 
             value={item.code} 
             selected={item.selected}>
             {item.value}
           </option>
-        )}
+        ))}
       </FormControl>
     )    
   }
@@ -49,24 +49,28 @@ const SelectList = (props) => {
   return (
     <FormControl componentClass='select' {...elementProps}>
       <option key={0} value=''></option>
-      {items.map((item, idx) =>
+      {items.map((item, idx) => (
         <option 
           key={idx + 1} 
           value={item.id} 
           selected={item.selected}>
           {item.value}
         </option>
-	  )}
+      ))}
     </FormControl>
   )    
 }
 
 const SelectButton = (props) => {
   let items = props.items || []
+  // Helen Keller won't be using this software, because she obviously shouldn't be driving or even thinking about vehicles but since
+  // React/Bootstrap is stupidly opinionated about assistive technologies like screen readers we have to hack in an ID to prevent warnings
+  let itemId = 'splitbutton-' + Math.random() * 10
+
   if (props.mode === 'split') {
     return (
-      <SplitButton title='Split Button' {...props}>
-        {items.map(item =>
+      <SplitButton id={itemId} title='Split Button' {...props}>
+        {items.map((item, idx) =>
           <MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>
         )}
       </SplitButton>
@@ -74,8 +78,8 @@ const SelectButton = (props) => {
   } else {
     return (
       <DropdownButton title='Normal Button' {...props}>
-        {items.map(item =>
-          <MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>
+        {items.map((item, idx) =>
+          <MenuItem id={itemId + '_' + idx} key={idx} eventKey={item.id}>{item.value}</MenuItem>
         )}
       </DropdownButton>
     )
@@ -84,8 +88,8 @@ const SelectButton = (props) => {
 
 // Dropdown lists
 const ContactTypeDropdown = (props) => {
-	console.log('dumping ContactTypeDropdown props')
-	console.log(props)
+  console.log('dumping ContactTypeDropdown props')
+  console.log(props)
   return (
     <SelectList {...props} />
   )
@@ -112,18 +116,18 @@ const SalutationDropdown = (props) => {
 const SuffixDropdown = (props) => {
   let newProps = assign({}, props, {
     items: [
-	{ id: 1, code: 'JR', value: 'Jr.' },
-	{ id: 2, code: 'SR', value: 'Sr.' },
-	{ id: 3, code: '1', value: 'I' },
-	{ id: 4, code: '2', value: 'II' },
-	{ id: 5, code: '3', value: 'III' },
-	{ id: 6, code: '4', value: 'IV' },
-	{ id: 7, code: '5', value: 'V' },
-	{ id: 8, code: '6', value: 'VI' },
-	{ id: 9, code: '7', value: 'VII' },
-	{ id: 10, code: '8', value: 'VIII' },
-	{ id: 11, code: '9', value: 'IX' },
-	{ id: 12, code: '10', value: 'X' }
+      { id: 1, code: 'JR', value: 'Jr.' },
+      { id: 2, code: 'SR', value: 'Sr.' },
+      { id: 3, code: '1', value: 'I' },
+      { id: 4, code: '2', value: 'II' },
+      { id: 5, code: '3', value: 'III' },
+      { id: 6, code: '4', value: 'IV' },
+      { id: 7, code: '5', value: 'V' },
+      { id: 8, code: '6', value: 'VI' },
+      { id: 9, code: '7', value: 'VII' },
+      { id: 10, code: '8', value: 'VIII' },
+      { id: 11, code: '9', value: 'IX' },
+      { id: 12, code: '10', value: 'X' }
     ]
   })
     
@@ -141,11 +145,11 @@ const GenderDropdown = (props) => {
 const MaritalDropdown = (props) => {
   let newProps = assign({}, props, {
     items: [
-	{ id: 1, code: 'SINGLE', value: 'Single' },
-	{ id: 2, code: 'MARRIED', value: 'Married' },
-	{ id: 3, code: 'COMMONLAW', value: 'Common Law' },
-	{ id: 4, code: 'SEPARATED', value: 'Separated' },
-	{ id: 5, code: 'DIVORCED', value: 'Divorced' }
+      { id: 1, code: 'SINGLE', value: 'Single' },
+      { id: 2, code: 'MARRIED', value: 'Married' },
+      { id: 3, code: 'COMMONLAW', value: 'Common Law' },
+      { id: 4, code: 'SEPARATED', value: 'Separated' },
+      { id: 5, code: 'DIVORCED', value: 'Divorced' }
     ]
   })
     
@@ -301,15 +305,15 @@ const StreetDirButton = (props) => {
 }
 
 export { 
-    SelectList, SelectButton, 
-    ContactTypeDropdown, IdTypeDropdown, CustomerRelationDropdown,
-    SalutationDropdown, SuffixDropdown, GenderDropdown, MaritalDropdown,
-    ResidenceTypeDropdown, EmploymentTypeDropdown, EmploymentStatusDropdown, IncomeTypeDropdown,
-    FrequencyDropdown, AssetTypeDropdown, LiabilityTypeDropdown,
-    StreetTypeDropdown, StreetDirDropdown,
-    ContactTypeButton, IdTypeButton, CustomerRelationButton,
-    SalutationButton, SuffixButton, GenderButton, MaritalButton,
-    ResidenceTypeButton, EmploymentTypeButton, IncomeTypeButton,
-    FrequencyButton, AssetTypeButton, LiabilityTypeButton,
-    StreetTypeButton, StreetDirButton
+  SelectList, SelectButton, 
+  ContactTypeDropdown, IdTypeDropdown, CustomerRelationDropdown,
+  SalutationDropdown, SuffixDropdown, GenderDropdown, MaritalDropdown,
+  ResidenceTypeDropdown, EmploymentTypeDropdown, EmploymentStatusDropdown, IncomeTypeDropdown,
+  FrequencyDropdown, AssetTypeDropdown, LiabilityTypeDropdown,
+  StreetTypeDropdown, StreetDirDropdown,
+  ContactTypeButton, IdTypeButton, CustomerRelationButton,
+  SalutationButton, SuffixButton, GenderButton, MaritalButton,
+  ResidenceTypeButton, EmploymentTypeButton, IncomeTypeButton,
+  FrequencyButton, AssetTypeButton, LiabilityTypeButton,
+  StreetTypeButton, StreetDirButton
 } 

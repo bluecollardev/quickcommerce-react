@@ -542,7 +542,7 @@ export default class Cart extends Component {
                       }}
                       className='hidden-xs hidden-sm hidden-md'
                       onClick={this.reload}
-                      bsStyle='default'>
+                     bssize>
                       <h4><i className='fa fa-refresh' /> Reset</h4>
                     </Button>
                                 )}

@@ -55,21 +55,21 @@ const ThreeColumnDynamicLayout = (props) => {
           {displayLeftCol && (
             <div className={leftColClass}>
               <div className='row'>
-                <Slot name='leftColumn' as='leftColumn' content={props.children} />
+                <Slot name='leftColumn' content={props.children} />
               </div>
             </div>
           )}
 
-          {props.children && [
+          {props.children && (
             <div className={centerColClass}>
               <Slot className='main' role='main' content={props.children} />
             </div>
-          ]}
+          )}
 
           {displayRightCol && (
             <div className={rightColClass}>
               <div className='row'>
-                <Slot name='rightColumn' as='rightColumn' content={props.children} />
+                <Slot name='rightColumn' content={props.children} />
               </div>
             </div>
           )}

@@ -45,7 +45,7 @@ export default class UrlHelper {
     return (appendTrailing) ? url + '/' : url
   }
 	
-	/**
+  /**
 	 * url-parse instance properties
 	 *
 	 * protocol: The protocol scheme of the URL (e.g. http:).
@@ -67,7 +67,7 @@ export default class UrlHelper {
 		
     let compileFn = pathToRegexp.compile(parsed.pathname)
     parsed.set('pathname', compileFn(args))
-    console.log(parsed.toString())
+    //console.log(parsed.toString())
 		
     return parsed.toString()
   }

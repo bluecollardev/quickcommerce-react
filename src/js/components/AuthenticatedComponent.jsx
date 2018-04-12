@@ -3,6 +3,7 @@ import assign from 'object-assign'
 import React, { Component } from 'react'
 import {inject, observer, Provider} from 'mobx-react'
 
+// TODO: Double check that this still works after commenting out events
 export default (ComposedComponent) => {
     @inject(deps => ({
       actions: deps.actions,
@@ -16,7 +17,7 @@ export default (ComposedComponent) => {
   class AuthenticatedComponent extends Component {
     static willTransitionTo(transition) {
       if (!this.props.loginStore.isLoggedIn()) {
-                //transition.redirect('/login', {}, {'nextPath' : transition.path})
+        //transition.redirect('/login', {}, {'nextPath' : transition.path})
       }
     }
 
@@ -47,22 +48,22 @@ export default (ComposedComponent) => {
         
     onChange() {
       this.setState(
-                assign({},
-                    this.getLoginState(),
-                    this.getUserState())
-            )
+        assign({},
+          this.getLoginState(),
+          this.getUserState())
+      )
     }
 
-    componentDidMount() {
+    componentWillMount() {
       this.changeListener = this.onChange.bind(this)
-      this.props.loginStore.addChangeListener(this.changeListener)
-      this.props.userStore.addChangeListener(this.changeListener)
+      //this.props.loginStore.addChangeListener(this.changeListener)
+      //this.props.userStore.addChangeListener(this.changeListener)
     }
         
     componentWillUnmount() {
       if (typeof this.changeListener === 'function') {
-        this.props.loginStore.removeChangeListener(this.changeListener)
-        this.props.userStore.removeChangeListener(this.changeListener)
+        //this.props.loginStore.removeChangeListener(this.changeListener)
+        //this.props.userStore.removeChangeListener(this.changeListener)
                 
         delete this.changeListener
       }

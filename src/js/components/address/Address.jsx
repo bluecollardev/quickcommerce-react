@@ -108,8 +108,8 @@ class Address extends Component {
     const { geoService } = this.props
 
     geoService.getCities((data) => {
-      console.log('cities')
-      console.log(data)
+      //console.log('cities')
+      //console.log(data)
 
       this.setState({
         cities: data
@@ -117,8 +117,8 @@ class Address extends Component {
     })
 
     geoService.getZones((data) => {
-      console.log('zones')
-      console.log(data)
+      //console.log('zones')
+      //console.log(data)
 
       this.setState({
         zones: data
@@ -126,8 +126,8 @@ class Address extends Component {
     })
 
     geoService.getCountries((data) => {
-      console.log('countries')
-      console.log(data)
+      //console.log('countries')
+      //console.log(data)
 
       this.setState({
         countries: data
@@ -254,8 +254,8 @@ class Address extends Component {
     const { geoService } = this.props
 
     geoService.getCountryZones(countryCode, (data) => {
-      console.log('zones')
-      console.log(data)
+      //console.log('zones')
+      //console.log(data)
 
       this.setState({
         zones: data
@@ -271,8 +271,8 @@ class Address extends Component {
     const { geoService } = this.props
 
     geoService.getCountryCities(countryCode, (data) => {
-      console.log('cities')
-      console.log(data)
+      //console.log('cities')
+      //console.log(data)
 
       this.setState({
         cities: data
@@ -288,8 +288,8 @@ class Address extends Component {
     const { geoService } = this.props
 
     geoService.getZoneCities(territoryCode, (data) => {
-      console.log('cities')
-      console.log(data)
+      //console.log('cities')
+      //console.log(data)
 
       this.setState({
         cities: data

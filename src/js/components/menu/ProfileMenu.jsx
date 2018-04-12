@@ -56,27 +56,30 @@ class ProfileMenu extends Component {
             <Avatar>
               <AccountCircleIcon />
             </Avatar>
-                    )}
+          )}
                     
           {!this.props.loggedIn && (
             <Avatar src='https://i.pinimg.com/736x/61/6e/c3/616ec3042d9fd9525f118c222c783802---actors-james-bond-actors.jpg' />
-                    )}
+          )}
                     
           {!!this.props.loggedIn && (
             <ListItemText
-              secondary={<div><a href='#/account/login' onClick={this.showSignInForm}>Sign In</a></div>} />
-                    )}
+              secondary={<span><a href='#/account/login' onClick={this.showSignInForm}>Sign In</a></span>}
+            />
+          )}
                     
           {!!this.props.loggedIn && (
             <ListItemText
-              secondary={<div><a href='#/account/register' onClick={this.showRegistrationForm}>New Account</a></div>} />
-                    )}
+              secondary={<span><a href='#/account/register' onClick={this.showRegistrationForm}>New Account</a></span>}
+            />
+          )}
                     
           {!this.props.loggedIn && (
             <ListItemText
-              primary={<div><a href='#/account/edit'>John Smith</a></div>}
-              secondary={<div><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></div>} />
-                    )}
+              primary={<span><a href='#/account/edit'>John Smith</a></span>}
+              secondary={<span><a href='#/account/logout' onClick={this.doLogout}>Sign Out</a></span>}
+            />
+          )}
         </ListItem>
       </div>
     )

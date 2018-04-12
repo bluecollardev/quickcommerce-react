@@ -32,7 +32,7 @@ const CatalogItem = (props) => {
     displayDisclaimer,
     displayTools,
     overlayTools,
-	isSelected,
+    isSelected,
     isRejected,
     onClick,
     onAddToCartClicked,
@@ -73,16 +73,16 @@ const CatalogItem = (props) => {
         <div className='shop-item-details flush ribbon-blue'>
           <div className='lender-buttons'>
             {displayIcon && (
-            <div className='lender-button-group fixed-width lender-icon'>
-              <Button
-                onClick={onAddToCartClicked}
-                style={{
-                  backgroundColor: 'lightgrey',
-                  backgroundImage: 'url("data:' + 'image/png' + ';base64,' + data['thumbnail'] + '")',
-                  color: 'black'
-                }}
-              />
-            </div>
+              <div className='lender-button-group fixed-width lender-icon'>
+                <Button
+                  onClick={onAddToCartClicked}
+                  style={{
+                    backgroundColor: 'lightgrey',
+                    backgroundImage: 'url("data:' + 'image/png' + ';base64,' + data['thumbnail'] + '")',
+                    color: 'black'
+                  }}
+                />
+              </div>
             )}
             <div className='lender-button-group placeholder'>
               <Button
@@ -96,19 +96,19 @@ const CatalogItem = (props) => {
               </Button>
             </div>
             {displayActions && (
-            <div className='lender-button-group fixed-width add-lender'>
-              <Button
-                onClick={onAddToCartClicked}
-                style={{
-                  backgroundColor: 'transparent', color: 'white'
-                }}>
-                <i className='fa fa-caret-down'
+              <div className='lender-button-group fixed-width add-lender'>
+                <Button
+                  onClick={onAddToCartClicked}
                   style={{
-                    color: 'white'
-                  }}
-                />
-              </Button>
-            </div>
+                    backgroundColor: 'transparent', color: 'white'
+                  }}>
+                  <i className='fa fa-caret-down'
+                    style={{
+                      color: 'white'
+                    }}
+                  />
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -149,11 +149,11 @@ const CatalogItem = (props) => {
       {/*displayAttributes && (*/}
       <CatalogItemList
         listClassName='col-3'>
-        {attributes.map((attribute) => (
-          <CatalogItemListItem label={attribute.label} text={attribute.value} />
+        {attributes.map((attribute, idx) => (
+          <CatalogItemListItem key={idx} label={attribute.label} text={attribute.value} />
         ))}
       </CatalogItemList>
-	  {/*)*/}
+      {/*)*/}
 
       {displayDetails && (
         <p className='shop-item-details'
@@ -168,7 +168,7 @@ const CatalogItem = (props) => {
             onClick={onMoreInfoClicked}
           />
           <Alert
-            bsStyle='default'
+           bssize
             style={{
               width: '100%',
               textAlign: 'center',
@@ -185,16 +185,15 @@ const CatalogItem = (props) => {
       {displayTools && !overlayTools && (
         <div className='shop-item-tools block'>
           <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
-			{isSelected && (
-            <i className='fa fa-check-square-o' />
+            {isSelected && (
+              <i className='fa fa-check-square-o' />
             )}
 			
-			{!isSelected && (
-            <i className='fa fa-square-o' />
+            {!isSelected && (
+              <i className='fa fa-square-o' />
             )}
-			
-			&nbsp;
-			<em>Select Item</em>
+            &nbsp;
+            <em>Select Item</em>
             <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
               <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
             </svg>

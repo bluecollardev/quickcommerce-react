@@ -71,13 +71,13 @@ class DragDropCartRow extends Component {
         <td key='name' className='cart-product-col'>
           <div className='cart-product-delete item-remove'>
             <Button 
-              bsSize='small'
+              bssize='small'
               bsStyle='danger'
               onClick={this.props.removeItem}>
               <i className="material-icons remove_shopping_cart" />
             </Button>
             {/*<Button 
-                              bsSize   = 'small'
+                              bssize   = 'small'
                               bsStyle  = 'danger'
                               onClick  = {this.props.removeItem}>
                                 <i className='fa fa-remove' />
