@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import Isotope from 'isotope-layout'
-import VehicleHelper from '../../../../../../src/app/js/helpers/Vehicle'
+
+import VehicleHelper from '../../../../../../src/app/js/helpers/Vehicle.js'
+import ImageHelper from '../../helpers/Image.js'
 
 const GalleryItem = (props) => {
   // TODO: Some kind of adapter...
@@ -51,7 +53,6 @@ export default class ProductGalleryFullwidthWithGap extends Component {
     }
 
     this.state = {
-      user: dataSource.user,
       items: items,
       grid: null
     }
@@ -71,7 +72,6 @@ export default class ProductGalleryFullwidthWithGap extends Component {
     }
 
     this.setState({
-      user: dataSource.user,
       items: items,
       grid: null
     })
@@ -136,7 +136,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {
@@ -157,7 +157,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {
@@ -178,7 +178,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {
@@ -199,7 +199,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {
@@ -220,7 +220,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {
@@ -241,7 +241,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         description: 'Default image',
         height: 240,
         id: null,
-        image: VehicleHelper.primaryImageOrPlaceholderFromObject(null, null, true),
+        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
         mileage: false,
         mimeType: 'image/png',
         perspective: {

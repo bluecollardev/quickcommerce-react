@@ -21,7 +21,7 @@ class CatalogFilterBar extends Component {
   }
     
   componentDidMount() {
-     //document.addEventListener('click', this.onBlur)
+    //document.addEventListener('click', this.onBlur)
         
     let rangeSlider  = document.querySelector('.ui-range-slider')
         
@@ -91,14 +91,14 @@ class CatalogFilterBar extends Component {
       for (let idx = 0; idx < this.props.items.length; idx++) {
         item = this.props.items[idx]
                 
-		// Render CatalogFilterBar items
-		// TODO: Replace with a string helper method... clean/decode name
+        // Render CatalogFilterBar items
+        // TODO: Replace with a string helper method... clean/decode name
         elem = document.createElement('textarea')
         elem.innerHTML = item.name
         name = elem.value
         // TODO: className="active" default tab
         items.push(<NavItem key={idx} eventKey={item.category_id} title={name} onSelect={this.onFilterSelected}>{name} <sup>135</sup></NavItem>)
-		//items.push(<li key={idx} eventKey={item.category_id}><a onClick={() => this.onFilterSelected()}>{name}</a></li>)
+        //items.push(<li key={idx} eventKey={item.category_id}><a onClick={() => this.onFilterSelected()}>{name}</a></li>)
       }
     }
         
@@ -179,7 +179,7 @@ class CatalogFilterBar extends Component {
                         <i className='material-icons' />
                         {sort[key]}
                       </a></li>
-                        ))}
+                    ))}
                   </ul>
                 </div>{/* .widget.widget-sorting */}
               </div>
@@ -192,7 +192,7 @@ class CatalogFilterBar extends Component {
                         <span className='color' style={{backgroundColor: '#93c4ef'}} />
                         {types[key]}
                       </a></li>
-						))}
+                    ))}
                   </ul>
                 </div>{/* .widget.widget-color */}
               </div>
@@ -229,7 +229,7 @@ class CatalogFilterBar extends Component {
                   <h3 className='widget-title'>Popular Tags</h3>
                   {tags.map((value, idx) => (
                     <a key={idx} rel={value} href='#'>{value}</a>
-						))}
+                  ))}
                 </div>
               </div>
             </div>
