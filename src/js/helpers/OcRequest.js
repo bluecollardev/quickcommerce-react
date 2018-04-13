@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const OcRequestHelper = {
   setHeaders(request, area, sessId, storeId) {
     var    that = this,
@@ -10,7 +11,7 @@ const OcRequestHelper = {
       headers.push(['X-Oc-Session', sessId])
     }
         
-        //headers.push(['X-Oc-Merchant-Language', 'en'])
+    //headers.push(['X-Oc-Merchant-Language', 'en'])
     switch (area) {
     case 'catalog':
       headers.push(['X-Oc-Merchant-Id', 'demo'])
@@ -21,7 +22,7 @@ const OcRequestHelper = {
       break
     }
         
-        //App.Helpers.XhrRequest.setHeaders(request, headers, null, that)
+    //App.helpers.XhrRequest.setHeaders(request, headers, null, that)
         
     return request
         

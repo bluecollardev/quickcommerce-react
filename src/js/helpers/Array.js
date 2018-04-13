@@ -1,10 +1,11 @@
+/* eslint-disable linebreak-style */
 /**********************************************************
  * Namespace: QC.Helpers.Array
  **********************************************************/
 
 export default class ArrayHelper {
   /**
-   * Method: App.Helpers.Array.recursiveMap
+   * Method: App.helpers.Array.recursiveMap
    *
    */
   static recursiveMap = (fn, list) => {
@@ -17,7 +18,7 @@ export default class ArrayHelper {
   }
     
   /**
-   * Method: App.Helpers.Array.recursiveReduce
+   * Method: App.helpers.Array.recursiveReduce
    *
    */
   static recursiveReduce = (fn, value, list) => {
@@ -30,7 +31,7 @@ export default class ArrayHelper {
   }
     
   /**
-   * Method: App.Helpers.Array.recursiveReduce
+   * Method: App.helpers.Array.recursiveReduce
    *
    */
   static recursiveFilter = (predicate,list) => {
@@ -38,7 +39,7 @@ export default class ArrayHelper {
   }
 
   /**
-   * Method: App.Helpers.Array.intersect
+   * Method: App.helpers.Array.intersect
    *
    */
   static intersect = (a, b) => {
@@ -60,7 +61,7 @@ export default class ArrayHelper {
   }
     
   /**
-   * Method: App.Helpers.Array.intersectDestructive
+   * Method: App.helpers.Array.intersectDestructive
    *
    */
   static intersectDestructive = (a, b) => {

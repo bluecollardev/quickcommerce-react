@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 import momentTimezone from 'moment-timezone'
 
 /**********************************************************
- * Namespace: QC.Helpers.Date
+ * Namespace: QC.helpers.Date
  **********************************************************/
 export default class DateHelper {
 

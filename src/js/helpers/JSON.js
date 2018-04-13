@@ -1,9 +1,10 @@
+/* eslint-disable linebreak-style */
 /**********************************************************
  * Namespace: QC.Helpers.JSON
  **********************************************************/
 const JSONHelper = {
-    /**
-     * Method: App.Helpers.JSON.find
+  /**
+     * Method: App.helpers.JSON.find
      *
      * Searches for and returns a given node in a JSON dataset
      *
@@ -15,8 +16,8 @@ const JSONHelper = {
   find: function (expr, data) {
     return jsonPath(data, expr, {resultType: 'VALUE'})
   },
-    /**
-     * Method: App.Helpers.JSON.findNode
+  /**
+     * Method: App.helpers.JSON.findNode
      *
      * Returns a given node in a JSON dataset
      *
@@ -28,13 +29,13 @@ const JSONHelper = {
   findNode: function (node, data) {
     let expr
         
-        // Build expression from node
+    // Build expression from node
     expr = '$..*[?(@.name==\'TypeOfLoss\')]' // TODO: Implement!
         
     return JSONHelper.find(expr, data)
   },
-    /**
-     * Method: App.Helpers.JSON.pathTo
+  /**
+     * Method: App.helpers.JSON.pathTo
      *
      * Returns the path to a given node in a JSON dataset
      *
@@ -46,8 +47,8 @@ const JSONHelper = {
   pathTo: function (expr, data) {
     return jsonPath(data, expr, {resultType: 'PATH'})
   },
-    /**
-     * Method: App.Helpers.JSON.pathToNode
+  /**
+     * Method: App.helpers.JSON.pathToNode
      *
      * Searches for and returns the path to a node belonging to a JSON dataset
      *
@@ -59,7 +60,7 @@ const JSONHelper = {
   pathToNode: function (node, data) {
     let expr
         
-        // Build expression from node
+    // Build expression from node
     expr = '$..*[?(@.name==\'TypeOfLoss\')]' // TODO: Implement!
         
     return JSONHelper.pathTo(expr, data)

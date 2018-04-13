@@ -1,12 +1,12 @@
 /* eslint-disable linebreak-style */
 /**********************************************************
- * Namespace: QC.Helpers.Object
+ * Namespace: QC.helpers.Object
  **********************************************************/
 import StringHelper from './String.js'
 
 export default class ObjectHelper {
   /**
-   * Method: App.Helpers.Object.isEmpty
+   * Method: App.helpers.Object.isEmpty
    */
   static isEmpty = (obj) => {
     obj = obj || null
