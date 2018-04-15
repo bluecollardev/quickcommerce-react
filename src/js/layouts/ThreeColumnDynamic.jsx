@@ -34,12 +34,12 @@ const ThreeColumnDynamicLayout = (props) => {
   else if (displayLeftCol && !displayRightCol) {
     leftColClass = 'col-xs-12 col-md-' + leftColWidth
     rightColClass = ''
-    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + rightColWidth)
+    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
   }
   else if (!displayLeftCol && displayRightCol) {
     leftColClass = ''
     rightColClass = 'col-xs-12 col-md-' + leftColWidth
-    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + rightColWidth)
+    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
   }
   else if (!displayLeftCol && !displayRightCol) {
     leftColClass = ''
