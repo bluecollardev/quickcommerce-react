@@ -36,8 +36,6 @@ class FlexIconMenu extends Component {
     return (
       <Row className={className}>
         {this.props.children}
-        {/*<hr className='no_line'/>*/}
-        <div className='borderLine horzMenu' style={{'transformOrigin': '0% 100% 0px', 'transform': 'matrix(1, 0, 0, 1, 0, 0)'}}></div>
       </Row>
     )
   }   
