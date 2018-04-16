@@ -168,7 +168,7 @@ const CatalogItem = (props) => {
             onClick={onMoreInfoClicked}
           />
           <Alert
-           bssize
+            bssize
             style={{
               width: '100%',
               textAlign: 'center',
