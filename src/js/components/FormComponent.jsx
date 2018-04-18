@@ -100,6 +100,7 @@ export default (ComposedComponent) => {
       this.findInput = this.findInput.bind(this)
       this.getField = this.getField.bind(this)
       this.setField = this.setField.bind(this)
+      this.resetForm = this.resetForm.bind(this)
       this.getForm = this.getForm.bind(this)
       this.triggerAction = this.triggerAction.bind(this)
       this.validate = this.validate.bind(this)
@@ -213,14 +214,26 @@ export default (ComposedComponent) => {
         onChange: this.state.fields[fieldName].onChange
       }
     }
-        
+
+    /**
+     *
+     * @param fieldName
+     * @returns {Element | any}
+     */
     findInput(fieldName) {
       const node = ReactDOM.findDOMNode(this) // Get wrapped component instanceof
       const input = node.querySelector('[name="' + fieldName + '"]')
             
       return input
     }
-        
+
+    /**
+     *
+     * @param fieldName
+     * @param value
+     * @param validations
+     * @returns {{name: *, value: *}}
+     */
     setField(fieldName, value, validations) {
       value = (typeof value !== 'undefined') ? value : '' // TODO: Should I really default to an empty string?
       let field = this.state.fields[fieldName] || null
@@ -272,6 +285,18 @@ export default (ComposedComponent) => {
         value: this.state.fields[fieldName].value
       }
     }
+
+    /**
+     * TODO: We need to be able to reset the form using a configuration object or something (defaults)...
+     * Clears the form. This method is passed to the wrapped component instance via props.
+     */
+    resetForm() {
+      for (let name in this.state.fields) {
+        this.state.fields[name].value = null
+      }
+
+      this.forceUpdate() // TODO: Temporary hack to re-render
+    }
         
     getForm() {
       // Normalize fields
@@ -286,18 +311,30 @@ export default (ComposedComponent) => {
       return formData
     }
 
-
-        
+    /**
+     *
+     * @param callback
+     * @returns {*}
+     */
     triggerAction(callback) {
       return callback(this.getForm())
     }
         
-    // Convenience method
+    /**
+     * Convenience method.
+     * @param path
+     * @param data
+     * @returns {*}
+     */
     static getMappedValue(path, data) {
       return FormHelper.getMappedValue(path, data)
     }
-        
-    // Convenience method
+
+    /**
+     * Convenience method.
+     * @param path
+     * @param data
+     */
     static getObjectPath(path, data) {
       return FormHelper.getObjectPath(path, data)
     }
@@ -328,9 +365,16 @@ export default (ComposedComponent) => {
         isValid: allIsValid
       })
     }
-        
-    // The validate method grabs what it needs from the component,
-    // validates the component and then validates the form
+
+    /**
+     * The validate method grabs what it needs from the component,
+     * validates the component and then validates the form.
+     * @param fieldName
+     * @param value
+     * @param onSuccess
+     * @param onError
+     * @returns {boolean}
+     */
     validate(fieldName, value, onSuccess, onError) {
       // If no validations property, do not validate
       if (!this.state.fields) {
@@ -376,7 +420,11 @@ export default (ComposedComponent) => {
             
       return isValid
     }
-        
+
+    /**
+     *
+     * @param errors
+     */
     setErrorsOnFields(errors) {
       // We go through the errors
       Object.keys(errors).forEach((fieldName, index) => {
@@ -431,6 +479,7 @@ export default (ComposedComponent) => {
           {...props}
           ref={(component) => this.component = component}
           getForm={this.getForm}
+          resetForm={this.resetForm}
           triggerAction={this.triggerAction}
           renderErrors={this.renderErrors}
           validate={this.validate}
