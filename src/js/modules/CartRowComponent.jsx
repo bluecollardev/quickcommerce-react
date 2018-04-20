@@ -1,5 +1,5 @@
-import React from 'react'
 import createReactClass from 'create-react-class'
+import React from 'react'
 
 const CartRowComponent = createReactClass({
   handleChange(event) {
@@ -20,15 +20,19 @@ const CartRowComponent = createReactClass({
         })}
         <td>
           <input
-            style={{textAlign: 'right', width: '100px'}}
+            style={{
+              textAlign: 'right',
+              width: '100px'
+            }}
             type='number'
             value={this.props.item.quantity}
-            onChange={this.handleChange} />
+            onChange={this.handleChange}
+          />
         </td>
         <td>
-          <button 
+          <button
             onClick={this.props.removeItem}>
-                        Remove
+            Remove
           </button>
         </td>
       </tr>

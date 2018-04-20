@@ -4,8 +4,8 @@
 
 const SCROLL_STEPS = 25
 
-function easeInOutQuad (t) {
-  return (t < .5 ?  2 * t * t : -1 + (4 - 2 * t) * t)
+function easeInOutQuad(t) {
+  return (t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t)
 }
 
 export default {
@@ -15,7 +15,7 @@ export default {
   // delta: amount to scroll
   // doneHandler: optional function called when the scroll is done
 
-  scrollBy (component, property, delta, doneHandler) {
+  scrollBy(component, property, delta, doneHandler) {
     clearInterval(this._scrollToTimer)
     const start = component[property]
     const end = start + delta
@@ -25,11 +25,9 @@ export default {
       let next
       const easing = easeInOutQuad(step / SCROLL_STEPS)
       if (end > start) {
-        next = Math.min(end, Math.max(current,
-          Math.round(start + ((end - start) * easing))))
+        next = Math.min(end, Math.max(current, Math.round(start + ((end - start) * easing))))
       } else {
-        next = Math.max(end, Math.min(current,
-          Math.round(start - ((start - end) * easing))))
+        next = Math.max(end, Math.min(current, Math.round(start - ((start - end) * easing))))
       }
       component[property] = next
       step += 1

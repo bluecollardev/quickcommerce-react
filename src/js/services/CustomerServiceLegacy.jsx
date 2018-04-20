@@ -1,12 +1,7 @@
+import axios from 'axios'
 import assign from 'object-assign'
 
-import axios from 'axios'
-
-import {BaseService} from './BaseService.jsx'
-
-import ArrayHelper from '../helpers/Array.js'
-import ObjectHelper from '../helpers/Object.js'
-import StringHelper from '../helpers/String.js'
+import { BaseService } from './BaseService.jsx'
 
 class CustomerService extends BaseService {
   // TODO: Move to consuming project
@@ -25,7 +20,8 @@ class CustomerService extends BaseService {
     if (!isNaN(addressId)) {
       // Fetch...
       axios({
-        url: QC_RESOURCE_API + 'address/' + addressId, method: 'GET', //dataType: 'json',
+        url: QC_RESOURCE_API + 'address/' + addressId,
+        method: 'GET', //dataType: 'json',
         contentType: 'application/json'
       })
         .then(response => {
@@ -36,14 +32,18 @@ class CustomerService extends BaseService {
 
           // Resource API data is wrapped in a data object
           this.actions.customer.setBillingAddress({
-            addresses: [payload.data], billingAddressId: addressId, billingAddress: payload.data
+            addresses: [payload.data],
+            billingAddressId: addressId,
+            billingAddress: payload.data
           })
 
           this.actions.customer.setShippingAddress({
-            addresses: [payload.data], shippingAddressId: addressId, shippingAddress: payload.data
+            addresses: [payload.data],
+            shippingAddressId: addressId,
+            shippingAddress: payload.data
           })
         }).catch(err => {
-          // Do nothing, not a deal-breaker if we couldn't grab an address
+        // Do nothing, not a deal-breaker if we couldn't grab an address
           console.log(err)
 
           // TODO: Notify user
@@ -64,7 +64,11 @@ class CustomerService extends BaseService {
     // Get the account
     axios({
       //url: QC_LEGACY_API + 'account/',
-      url: QC_API + 'customer/' + id, dataType: 'json', contentType: 'application/json', async: false, method: 'GET'
+      url: QC_API + 'customer/' + id,
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
@@ -109,12 +113,14 @@ class CustomerService extends BaseService {
    * using PATCH / PUT for update operations.
    */
   post(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-    }
+    let data = {customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')}
 
     axios({
-      url: QC_API + 'customer/-1', data: data, dataType: 'json', method: 'PATCH', contentType: 'application/json'
+      url: QC_API + 'customer/-1',
+      data: data,
+      dataType: 'json',
+      method: 'PATCH',
+      contentType: 'application/json'
       //headers: {
       //    'X-Oc-Session': this.services.auth.getToken()
       //} // Legacy API
@@ -130,9 +136,7 @@ class CustomerService extends BaseService {
    * using PATCH / PUT for create & update operations
    */
   put(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-    }
+    let data = {customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')}
 
     let id = this.stores.customer.customer['customer_id'] || null
     if (typeof id === 'undefined' || isNaN(id)) {
@@ -143,7 +147,10 @@ class CustomerService extends BaseService {
       axios({
         //url: QC_LEGACY_API + 'account',
         url: QC_API + 'customer/' + id, //data: JSON.stringify(data), // Legacy
-        data: data, dataType: 'json', contentType: 'application/json', method: 'PATCH'
+        data: data,
+        dataType: 'json',
+        contentType: 'application/json',
+        method: 'PATCH'
         //headers: {
         //    'X-Oc-Session': this.services.auth.getToken()
         //}
@@ -160,9 +167,7 @@ class CustomerService extends BaseService {
    * using PATCH / PUT for create & update operations
    */
   patch(formData, onSuccess, onError) {
-    let data = {
-      customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')
-    }
+    let data = {customerDetails: this.normalizePayload(formData, 'underscore', 'camelcase')}
 
     let id = this.stores.customer.customer['customer_id'] || null
     if (typeof id === 'undefined' || isNaN(id)) {
@@ -248,10 +253,12 @@ class CustomerService extends BaseService {
 
     // Update user
     axios({
-      url: QC_LEGACY_API + 'account/password',
-      //data: JSON.stringify({ password: passwordModel.get('password'),
+      url: QC_LEGACY_API + 'account/password', //data: JSON.stringify({ password: passwordModel.get('password'),
       // confirm: passwordModel.get('confirm') }),
-      type: 'PUT', dataType: 'json', contentType: 'application/json', async: true // No async login
+      type: 'PUT',
+      dataType: 'json',
+      contentType: 'application/json',
+      async: true // No async login
     }).then(response => {
       //passwordModel.set('password', '')
       //passwordModel.set('confirm', '')
@@ -275,7 +282,10 @@ class CustomerService extends BaseService {
     // Get the account
     axios({
       url: QC_LEGACY_API + 'account', //url: QC_API + 'customer',
-      type: 'GET', dataType: 'json', contentType: 'application/json', async: false
+      type: 'GET',
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
@@ -303,7 +313,8 @@ class CustomerService extends BaseService {
     //if (!isLogged) {
     // Log in the user
     axios({
-      url: QC_LEGACY_API + 'account/', method: 'GET'
+      url: QC_LEGACY_API + 'account/',
+      method: 'GET'
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
@@ -339,7 +350,7 @@ class CustomerService extends BaseService {
       //}
     } else {
       //loader.setMessage(response.responseJSON.error.warning).open()
-      setTimeout(function() {
+      setTimeout(function () {
         //loader.close()
       }, 3000)
     }
@@ -350,7 +361,8 @@ class CustomerService extends BaseService {
    */
   fetchBillingAddress(onSuccess) {
     axios({
-      url: QC_LEGACY_API + 'paymentaddress', type: 'GET' //async: false,
+      url: QC_LEGACY_API + 'paymentaddress',
+      type: 'GET' //async: false,
       //dataType: 'json',
       //data: JSON.stringify({
       //    address_id: 1,
@@ -379,7 +391,9 @@ class CustomerService extends BaseService {
             if (address !== null) {
               // We have the address, set it to state
               this.actions.customer.setBillingAddress({
-                addresses: payload.addresses, billingAddressId: addressId, billingAddress: address
+                addresses: payload.addresses,
+                billingAddressId: addressId,
+                billingAddress: address
               })
             }
           }
@@ -403,7 +417,8 @@ class CustomerService extends BaseService {
    */
   fetchShippingAddress(onSuccess) {
     axios({
-      url: QC_LEGACY_API + 'shippingaddress', type: 'GET'
+      url: QC_LEGACY_API + 'shippingaddress',
+      type: 'GET'
       //data: JSON.stringify({
       //    address_id: 1,
       //    payment_address: 'existing'
@@ -430,7 +445,9 @@ class CustomerService extends BaseService {
             if (address !== null) {
               // We have the address, set it to state
               this.actions.customer.setShippingAddress({
-                addresses: payload.addresses, shippingAddressId: addressId, shippingAddress: address
+                addresses: payload.addresses,
+                shippingAddressId: addressId,
+                shippingAddress: address
               })
             }
           }

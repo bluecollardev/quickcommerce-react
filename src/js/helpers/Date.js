@@ -1,6 +1,5 @@
 /* eslint-disable linebreak-style */
 import moment from 'moment/moment'
-import momentTimezone from 'moment-timezone'
 
 /**********************************************************
  * Namespace: QC.helpers.Date
@@ -10,7 +9,7 @@ export default class DateHelper {
   static createDateFromString = (string, format) => moment(string, format).toDate()
 
   static formatDateString = (string, format) => {
-        
+
     let m = moment(string, format)
     return m._d.toISOString()
   }
@@ -20,7 +19,7 @@ export default class DateHelper {
    * @returns {ZoneDateDTO}
    */
   static createDateObjFromString = (string) => {
-      
+
     if (!string) {
       return null
     }
@@ -29,7 +28,7 @@ export default class DateHelper {
     momentDate = moment(string, 'YYYY-MM-DD')
     dateObj.value = momentDate._i
     dateObj.year = momentDate._a[0]
-    dateObj.month = momentDate._a[1]+1//date starts from zero
+    dateObj.month = momentDate._a[1] + 1//date starts from zero
     dateObj.day = momentDate._a[2]
     dateObj.hour = momentDate._a[3]
     dateObj.minute = momentDate._a[4]
@@ -53,7 +52,7 @@ export default class DateHelper {
     momentDate = moment(string, 'L')
     dateObj.value = momentDate._i
     dateObj.year = momentDate._a[0]
-    dateObj.month = momentDate._a[1]+1//date starts from zero
+    dateObj.month = momentDate._a[1] + 1//date starts from zero
     dateObj.day = momentDate._a[2]
     dateObj.hour = momentDate._a[3]
     dateObj.minute = momentDate._a[4]
@@ -67,7 +66,7 @@ export default class DateHelper {
    * adjust month by -1 since month is zero based index
    * ie March is 2 but we store 3 in the database
    */
-  static adjustMonthforDisplay = (string, format)=> {
+  static adjustMonthforDisplay = (string, format) => {
     if (!String) {
       return null
     }
@@ -78,12 +77,12 @@ export default class DateHelper {
 
   }
 
-  static createDateFromDateDTO = (dateDTO)=>{
+  static createDateFromDateDTO = (dateDTO) => {
     //if the dto is already a date return the date
-    if(dateDTO instanceof Date && !isNaN(dateDTO.valueOf())){
+    if (dateDTO instanceof Date && !isNaN(dateDTO.valueOf())) {
       return dateDTO
     }
-    if(!dateDTO || !dateDTO.value){
+    if (!dateDTO || !dateDTO.value) {
       return null
     }
     let dateString = dateDTO.value, timestamp, arr

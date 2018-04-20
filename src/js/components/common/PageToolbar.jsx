@@ -1,23 +1,19 @@
-import assign from 'object-assign'
+import FlexIconMenu from '../menu/FlexIconMenu.jsx'
 
 import React, { Component } from 'react'
+//import { Thumbnail } from 'react-bootstrap'
+//import { Modal, Accordion, Panel } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 //import {inject, observer, Provider} from 'mobx-react'
 
 //import Avatar from 'material-ui/Avatar'
 //import Chip from 'material-ui/Chip'
 //import IconButton from 'material-ui/IconButton'
 //import Button from 'material-ui/Button'
-
-import { Grid, Col, Row } from 'react-bootstrap'
-//import { Thumbnail } from 'react-bootstrap'
-//import { Modal, Accordion, Panel } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
 //import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
 //import { Alert, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
 //import { Button, Checkbox, Radio } from 'react-bootstrap'
 //import { Jumbotron, Well } from 'react-bootstrap'
-
-import FlexIconMenu from 'quickcommerce-react/components/menu/FlexIconMenu.jsx'
 
 //import DealLenderButtons from '../deal/DealLenderButtons.jsx'
 

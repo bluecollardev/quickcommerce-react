@@ -21,8 +21,7 @@ export function getCurrentLocale() {
     let cookieLanguages = Cookies.get('languages')
     let locale = cookieLanguages ? JSON.parse(cookieLanguages)[0] : undefined
     if (!locale) {
-      locale = window.navigator.languages ? window.navigator.languages[0] :
-        (window.navigator.language || window.navigator.userLanguage)
+      locale = window.navigator.languages ? window.navigator.languages[0] : (window.navigator.language || window.navigator.userLanguage)
     }
 
     return normalizeLocale(locale)
@@ -39,7 +38,13 @@ export function getLocaleData(appMessages = {}, locale = getCurrentLocale()) {
     grommetMessages = {}
   }
 
-  let messages = { ...grommetMessages, ...appMessages }
+  let messages = {
+    ...grommetMessages,
+    ...appMessages 
+  }
 
-  return {locale, messages}
+  return {
+    locale,
+    messages
+  }
 }

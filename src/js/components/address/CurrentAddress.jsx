@@ -1,42 +1,24 @@
+import { inject, observer } from 'mobx-react'
 import assign from 'object-assign'
+import PropTypes from 'prop-types'
+
+import FormHelper from '../../helpers/Form.js'
 
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
-import {inject, observer, Provider} from 'mobx-react'
-
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import { Button, Checkbox, Radio } from 'react-bootstrap'
 import Autocomplete from 'react-autocomplete'
 
-import FormHelper from 'quickcommerce-react/helpers/Form.js'
+import { Button, ControlLabel, FormControl, FormGroup, Modal } from 'react-bootstrap'
+
+import fieldNames from '../../forms/AddressFields.jsx'
 
 import { DateInput } from '../form/Input.jsx'
 
 import FormComponent from '../FormComponent.jsx'
 
-import fieldNames from '../../forms/AddressFields.jsx'
-
 const AddressForm = (props) => {
   const mappings = props.mappings || fieldNames
 
-  const {
-    mode,
-    type,
-    types,
-    nameRequired,
-    durationRequired,
-    displayActions,
-    data,
-    countries,
-    zones,
-    cities,
-    geoZones,
-    getMappedValue
-  } = props
+  const {mode, type, types, nameRequired, durationRequired, displayActions, data, countries, zones, cities, geoZones, getMappedValue} = props
 
   let readOnlyAttr = ''
   switch (mode) {
@@ -99,18 +81,10 @@ const AddressForm = (props) => {
             {...readOnlyAttr}
             componentClass='select'
             onChange={props.onAddressTypeSelected}>
-            {types.indexOf('simple') > -1 && (
-            <option key={0} value='simple'>Simple</option>
-            )}
-            {types.indexOf('civic') > -1 && (
-            <option key={1} value='civic'>Civic</option>
-            )}
-            {types.indexOf('rural') > -1 && (
-            <option key={2} value='rural'>Rural</option>
-            )}
-            {types.indexOf('pobox') > -1 && (
-              <option key={3} value='pobox'>Postal Box</option>
-            )}
+            {types.indexOf('simple') > -1 && (<option key={0} value='simple'>Simple</option>)}
+            {types.indexOf('civic') > -1 && (<option key={1} value='civic'>Civic</option>)}
+            {types.indexOf('rural') > -1 && (<option key={2} value='rural'>Rural</option>)}
+            {types.indexOf('pobox') > -1 && (<option key={3} value='pobox'>Postal Box</option>)}
           </FormControl>
         </FormGroup>
 
@@ -257,15 +231,14 @@ const AddressForm = (props) => {
             }}
             shouldItemRender={props.matchItemToTerm}
             autoHighlight={true}
-            wrapperStyle={{
-              display: 'block'
-            }}
+            wrapperStyle={{display: 'block'}}
             value={selectedCity}
             onChange={props.onCityValueChanged}
             onSelect={props.onCityItemSelected}
-            inputProps={
-              assign(props.fields(mappings.CITY, selectedCity), { className: 'form-control', ...readOnlyAttr })
-            }
+            inputProps={assign(props.fields(mappings.CITY, selectedCity), {
+              className: 'form-control',
+              ...readOnlyAttr 
+            })}
           />
           <input type='hidden' name={mappings.CITY_ID} {...props.fields(mappings.CITY_ID, selectedCityId, data)} />
           <input type='hidden' name={mappings.CITY_CODE} {...props.fields(mappings.CITY_CODE, selectedCityCode, data)} />
@@ -288,15 +261,14 @@ const AddressForm = (props) => {
             }}
             shouldItemRender={props.matchItemToTerm}
             autoHighlight={true}
-            wrapperStyle={{
-              display: 'block'
-            }}
+            wrapperStyle={{display: 'block'}}
             value={selectedZone}
             onChange={props.onTerritoryValueChanged}
             onSelect={props.onTerritoryItemSelected}
-            inputProps={
-              assign(props.fields(mappings.ZONE, selectedZone), { className: 'form-control', ...readOnlyAttr })
-            }
+            inputProps={assign(props.fields(mappings.ZONE, selectedZone), {
+              className: 'form-control',
+              ...readOnlyAttr 
+            })}
           />
           <input type='hidden' name={mappings.ZONE_ID} {...props.fields(mappings.ZONE_ID, selectedZoneId)} />
           <input type='hidden' name={mappings.ZONE_CODE} {...props.fields(mappings.ZONE_CODE, selectedZoneCode)} />
@@ -319,15 +291,14 @@ const AddressForm = (props) => {
             }}
             shouldItemRender={props.matchItemToTerm}
             autoHighlight={true}
-            wrapperStyle={{
-              display: 'block'
-            }}
+            wrapperStyle={{display: 'block'}}
             value={selectedCountry}
             onChange={props.onCountryValueChanged}
             onSelect={props.onCountryItemSelected}
-            inputProps={
-              assign(props.fields(mappings.COUNTRY, selectedCountry), { className: 'form-control', ...readOnlyAttr })
-            }
+            inputProps={assign(props.fields(mappings.COUNTRY, selectedCountry), {
+              className: 'form-control',
+              ...readOnlyAttr 
+            })}
           />
           <input type='hidden' name={mappings.COUNTRY_ID} {...props.fields(mappings.COUNTRY_ID, selectedCountryId, data)} />
           <input type='hidden' name={mappings.COUNTRY_CODE} {...props.fields(mappings.COUNTRY_CODE, selectedCountryCode, data)} />
@@ -356,18 +327,16 @@ const AddressForm = (props) => {
   )
 }
 
-
 @inject(deps => ({
   actions: deps.actions,
   customerService: deps.customerService, // Not used, just in case!
   customerAddressService: deps.customerAddressService,
   settingStore: deps.settingStore
-}))
-@observer
+  })) @observer
 class CurrentAddress extends Component {
   constructor(props) {
     super(props)
-        
+
     // Turned getAddressString into a static method
     //this.getAddressString = this.getAddressString.bind(this)
     this.showAddressModal = this.showAddressModal.bind(this)
@@ -391,6 +360,49 @@ class CurrentAddress extends Component {
     //this.matchItemToTerm = this.matchItemToTerm.bind(this)
 
     this.state = assign({}, props)
+  }
+
+  static getAddressString(data) {
+    data = data || null
+    let formatted = ''
+
+    let filterValue = function (value) {
+      return (typeof value === 'string' && value !== null && value !== '') ? true : false
+    }
+
+    if (data !== null && data.hasOwnProperty('address_id')) {
+      formatted = [
+        [
+          data.firstname,
+          data.lastname
+        ].join(' '),
+        [data.company].filter(function (value, idx) {
+          return filterValue(value)
+        }).join(''),
+        [
+          data.address1,
+          data.address2
+        ].filter(function (value, idx) {
+          return filterValue(value)
+        }).join('\n'),
+        [
+          data.city,
+          data.zone
+        ].join(', '),
+        [
+          data.country,
+          data.postcode
+        ].join(' ')
+      ]
+
+      formatted = formatted.filter(function (value, idx) {
+        return filterValue(value)
+      })
+
+      formatted = formatted.join('\n')
+    }
+
+    return formatted
   }
 
   componentWillReceiveProps(newProps) {
@@ -431,7 +443,7 @@ class CurrentAddress extends Component {
     } else {
       this.toggleAddress()
     }
-        
+
     if (typeof this.props.onShowAddress === 'function') {
       let fn = this.props.onShowAddress
       fn() // TODO: No args - maybe we can do the arguments thing later?
@@ -444,44 +456,13 @@ class CurrentAddress extends Component {
     } else {
       this.toggleAddress()
     }
-        
+
     if (typeof this.props.onHideAddress === 'function') {
       let fn = this.props.onHideAddress
       fn() // TODO: No args - maybe we can do the arguments thing later?
     }
   }
 
-  static getAddressString(data) {
-    data = data || null
-    let formatted = ''
-
-    let filterValue = function (value) {
-      return (typeof value === 'string' && value !== null && value !== '') ? true : false
-    }
-
-    if (data !== null && data.hasOwnProperty('address_id')) {
-      formatted = [
-        [data.firstname, data.lastname].join(' '),
-        [data.company].filter(function(value, idx) {
-          return filterValue(value)
-        }).join(''),
-        [data.address1, data.address2].filter(function(value, idx) {
-          return filterValue(value)
-        }).join('\n'),
-        [data.city, data.zone].join(', '),
-        [data.country, data.postcode].join(' ')
-      ]
-
-      formatted = formatted.filter(function (value, idx) {
-        return filterValue(value)
-      })
-
-      formatted = formatted.join('\n')
-    }
-
-    return formatted
-  }
-    
   // TODO: Move me to a utils class
   matchItemToTerm(item, value) {
     if (typeof value === 'string') {
@@ -492,9 +473,7 @@ class CurrentAddress extends Component {
   onAddressTypeSelected(e) {
     console.log('address type changed')
     // TODO: Enumerate options
-    this.setState({
-      type: e.target.value
-    })
+    this.setState({type: e.target.value})
   }
 
   onCityValueChanged(event, value) {
@@ -503,11 +482,7 @@ class CurrentAddress extends Component {
 
     this.props.field(mappings.CITY, value)
 
-    this.setState(assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.CITY]: value
-      })
-    }))
+    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.CITY]: value})}))
   }
 
   onCityItemSelected(value, item) {
@@ -537,11 +512,7 @@ class CurrentAddress extends Component {
 
     this.props.field(mappings.ZONE, value)
 
-    this.setState(assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.ZONE]: value
-      })
-    }))
+    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.ZONE]: value})}))
   }
 
   onTerritoryItemSelected(value, item) {
@@ -573,11 +544,7 @@ class CurrentAddress extends Component {
 
     this.props.field(mappings.COUNTRY, value)
 
-    this.setState(assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.COUNTRY]: value
-      })
-    }))
+    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.COUNTRY]: value})}))
   }
 
   onCountryItemSelected(value, item) {
@@ -602,9 +569,9 @@ class CurrentAddress extends Component {
       })
     }))
 
-	// TODO: I have a feeling this line is no longer necessary
-	// GeoService has made it redundant or obsolete
-	// We don't use it anywhere above...
+    // TODO: I have a feeling this line is no longer necessary
+    // GeoService has made it redundant or obsolete
+    // We don't use it anywhere above...
     this.props.settingStore.getZones(item.id)
   }
 
@@ -615,7 +582,7 @@ class CurrentAddress extends Component {
   }
 
   getCountryCities(countryCode) {
-    if (typeof this.props.getCountryCities === 'function'){
+    if (typeof this.props.getCountryCities === 'function') {
       this.props.getCountryCities(countryCode)
     }
   }
@@ -646,14 +613,12 @@ class CurrentAddress extends Component {
 
     return (
       <div>
-        {this.props.title && (
-          <h4>{this.props.title}</h4>
-        )}
+        {this.props.title && (<h4>{this.props.title}</h4>)}
 
         {this.props.displaySummary && this.props.modal && (
           <form>
             <FormGroup>
-              <FormControl readOnly componentClass='textarea' value={this.state.addressString} rows={7} onClick={this.showAddressModal} />
+              <FormControl readOnly componentClass='textarea' value={this.state.addressString} rows={7} onClick={this.showAddressModal}/>
             </FormGroup>
           </form>
         )}
@@ -661,7 +626,7 @@ class CurrentAddress extends Component {
         {this.props.displaySummary && !this.props.modal && (
           <form>
             <FormGroup>
-              <FormControl componentClass='textarea' value={this.state.addressString} rows={7} onClick={this.toggleAddress} />
+              <FormControl componentClass='textarea' value={this.state.addressString} rows={7} onClick={this.toggleAddress}/>
             </FormGroup>
           </form>
         )}
@@ -749,8 +714,7 @@ CurrentAddress.propTypes = {
   isSubForm: PropTypes.bool,
   nameRequired: PropTypes.bool,
   displayAddress: PropTypes.bool,
-  displaySummary: PropTypes.bool,
-  //type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
+  displaySummary: PropTypes.bool, //type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
   //types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
   data: PropTypes.object,
   addressString: PropTypes.string,
@@ -768,7 +732,12 @@ CurrentAddress.defaultProps = {
   displayAddress: false,
   displaySummary: false,
   type: 'simple', // [simple|civic|rural|pobox] // TODO: Wrong syntax!
-  types: ['simple', 'civic', 'rural', 'pobox'], // TODO: Wrong syntax!
+  types: [
+    'simple',
+    'civic',
+    'rural',
+    'pobox'
+  ], // TODO: Wrong syntax!
   //title: 'Current Address',
   data: {
     id: null,
@@ -793,10 +762,30 @@ CurrentAddress.defaultProps = {
   },
   addressString: '',
   address: null,
-  geoZones: [{id: null, value: ''}],
-  countries: [{id: null, value: ''}],
-  zones: [{id: null, value: ''}],
-  cities: [{id: null, value: ''}]
+  geoZones: [
+    {
+      id: null,
+      value: ''
+    }
+  ],
+  countries: [
+    {
+      id: null,
+      value: ''
+    }
+  ],
+  zones: [
+    {
+      id: null,
+      value: ''
+    }
+  ],
+  cities: [
+    {
+      id: null,
+      value: ''
+    }
+  ]
 }
 
 export default FormComponent(CurrentAddress)

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CatalogItemList = (props) => {
-  let {className, listClassName} = props
+  let { className, listClassName } = props
   listClassName = listClassName || ''
   className = className || 'shop-item-details'
   return (

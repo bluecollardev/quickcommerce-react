@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
+import { Col, Input } from 'react-bootstrap'
 
 import CategoryDragItem from '../catalog/CategoryDragItem.jsx'
-import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
 
 export default class CategoryRow2x extends Component {
   static defaultProps = {
-    data : {}, 
+    data: {},
     onItemClicked: () => {}
   }
-    
+
   constructor(props) {
     super(props)
   }
-    
+
   render() {
     return (
       <Col xs={6} sm={6}>
-        <CategoryDragItem 
+        <CategoryDragItem
           displayLabel={true}
           displayThumbnail={true}
           id={this.props.data.id}
           item={this.props.data}
-          onItemClicked={this.props.onItemClicked} />
+          onItemClicked={this.props.onItemClicked}
+        />
       </Col>
     )
   }

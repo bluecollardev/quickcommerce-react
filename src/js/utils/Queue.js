@@ -6,7 +6,7 @@
 export default () => {
   let queue = Object.create({
     stack: [],
-        
+
     init: function () {
       return this
     },
@@ -17,6 +17,6 @@ export default () => {
       this.stack.unshift(item)
     }
   })
-    
+
   return queue.init()
 }

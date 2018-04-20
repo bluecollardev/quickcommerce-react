@@ -1,52 +1,27 @@
+import HtmlHelper from '../../helpers/HTML.js'
 import React from 'react'
-
 //import { Grid, Col, Row } from 'react-bootstrap'
-import { Thumbnail } from 'react-bootstrap'
 //import { Modal, Accordion, Panel } from 'react-bootstrap'
-//import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
+//import { Tabs, Tab, TabContent, TabContainer } from 'react-bootstrap'
 //import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { Alert, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap'
-import { Button, Checkbox, Radio } from 'react-bootstrap'
-//import { Jumbotron, Well } from 'react-bootstrap'
-
-import HtmlHelper from 'quickcommerce-react/helpers/HTML.js'
+import { Alert, Button, Thumbnail } from 'react-bootstrap'
 
 import CatalogItemDetailLine from '../catalog/CatalogItemDetailLine.jsx'
 import CatalogItemList from '../catalog/CatalogItemList.jsx'
 import CatalogItemListItem from '../catalog/CatalogItemListItem.jsx'
+//import { Jumbotron, Well } from 'react-bootstrap'
 
 const CatalogItem = (props) => {
   let {
-    className,
-    displayLabel,
-    displayIcon,
-    displayActions,
-    displayTitle,
-    displayThumbnail,
-    //displayThumbs,
-    displayModel,
-    displayMsrp,
-    displayPrice,
-    displayPayment,
-    displayDetails,
-    displayDisclaimer,
-    displayTools,
-    overlayTools,
-    isSelected,
-    isRejected,
-    onClick,
-    onAddToCartClicked,
-    onMoreInfoClicked,
-    data
+    className, displayLabel, displayIcon, displayActions, displayTitle, displayThumbnail, //displayThumbs,
+    displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools, overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data
   } = props
 
   let attributes = data['attributes'] || []
 
   return (
     <div className={className} onClick={onClick}>
-      {displayLabel && (
-        <span className='shop-label'>{data.label}</span>
-      )}
+      {displayLabel && (<span className='shop-label'>{data.label}</span>)}
 
       {displayThumbnail && (
         <Thumbnail
@@ -56,12 +31,14 @@ const CatalogItem = (props) => {
           {displayTools && overlayTools && (
             <div className='shop-item-tools'>
               <a href='#' className='add-to-wishlist' data-toggle='tooltip' data-placement='top' title='Wishlist'>
-                <i className='material-icons favorite_border' />
+                <i className='material-icons favorite_border'/>
               </a>
               <Button className='add-to-cart ghost' onClick={onAddToCartClicked}>
                 <em>Order Now</em>
                 <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
-                  <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
+                  <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10}
+                    d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11'
+                  />
                 </svg>
               </Button>
             </div>
@@ -88,7 +65,8 @@ const CatalogItem = (props) => {
               <Button
                 onClick={onAddToCartClicked}
                 style={{
-                  background: 'transparent', border: 'none'
+                  background: 'transparent',
+                  border: 'none'
                 }}>
                 <h5 className='shop-item-title text-center'>
                   {data.name}
@@ -100,12 +78,11 @@ const CatalogItem = (props) => {
                 <Button
                   onClick={onAddToCartClicked}
                   style={{
-                    backgroundColor: 'transparent', color: 'white'
+                    backgroundColor: 'transparent',
+                    color: 'white'
                   }}>
                   <i className='fa fa-caret-down'
-                    style={{
-                      color: 'white'
-                    }}
+                    style={{color: 'white'}}
                   />
                 </Button>
               </div>
@@ -149,16 +126,13 @@ const CatalogItem = (props) => {
       {/*displayAttributes && (*/}
       <CatalogItemList
         listClassName='col-3'>
-        {attributes.map((attribute, idx) => (
-          <CatalogItemListItem key={idx} label={attribute.label} text={attribute.value} />
-        ))}
+        {attributes.map((attribute, idx) => (<CatalogItemListItem key={idx} label={attribute.label} text={attribute.value}/>))}
       </CatalogItemList>
       {/*)*/}
 
       {displayDetails && (
         <p className='shop-item-details'
-          dangerouslySetInnerHTML={{
-            __html: HtmlHelper.decodeHtmlEntities(data.description)}}
+          dangerouslySetInnerHTML={{__html: HtmlHelper.decodeHtmlEntities(data.description)}}
         />
       )}
 
@@ -176,7 +150,7 @@ const CatalogItem = (props) => {
             }}>
             <small className='disclaimer'>
               *Average payment amounts based on an average credit score of 605.
-              &nbsp;<a>Learn more</a>.
+              <a>Learn more</a>.
             </small>
           </Alert>
         </div>
@@ -185,17 +159,15 @@ const CatalogItem = (props) => {
       {displayTools && !overlayTools && (
         <div className='shop-item-tools block'>
           <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
-            {isSelected && (
-              <i className='fa fa-check-square-o' />
-            )}
-			
-            {!isSelected && (
-              <i className='fa fa-square-o' />
-            )}
+            {isSelected && (<i className='fa fa-check-square-o'/>)}
+
+            {!isSelected && (<i className='fa fa-square-o'/>)}
             &nbsp;
             <em>Select Item</em>
             <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
-              <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10} d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11' />
+              <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10}
+                d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11'
+              />
             </svg>
           </Button>
         </div>

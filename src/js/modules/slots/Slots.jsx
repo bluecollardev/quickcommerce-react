@@ -1,10 +1,10 @@
-import React, { Component, Children } from 'react'
 import PropTypes from 'prop-types'
+import React, { Children, Component } from 'react'
 
 import ObjectHelper from '../../helpers/Object.js'
 import PropsHelper from '../../helpers/Props.js'
 
-function slot (name, children) {
+function slot(name, children) {
   const slotNode = findNamedSlotNode(name, children)
 
   if (slotNode) {
@@ -14,7 +14,7 @@ function slot (name, children) {
   }
 }
 
-function findNamedSlotNode (name, children) {
+function findNamedSlotNode(name, children) {
   const node = Children.toArray(children).filter(child => {
     const node = child
     return node.props && node.props.slot === name
@@ -47,7 +47,7 @@ class Slot extends Component {
     as: 'div'
   }
 
-  render () {
+  render() {
     if (this.isDefaultSlot()) {
       return this.renderDefaultSlot()
     } else {
@@ -55,12 +55,12 @@ class Slot extends Component {
     }
   }
 
-  isDefaultSlot () {
+  isDefaultSlot() {
     const { name = '' } = this.props
     return !name
   }
 
-  renderDefaultSlot () {
+  renderDefaultSlot() {
     const { role, id, dataset = {}, children, as: slot = 'div' } = this.props
     let attrs = ObjectHelper.prefixKeys(dataset, 'data-')
     let slotNode = this.findDefaultSlotNode()
@@ -71,7 +71,12 @@ class Slot extends Component {
     attrs.className = this.getSlotClassName()
 
     if (slotNode) {
-      const opts = { ignore: [ 'slot', 'children' ] }
+      const opts = {
+        ignore: [
+          'slot',
+          'children'
+        ]
+      }
       attrs = PropsHelper.mergeProps(attrs, slotNode.props, opts)
       content = slotNode.props.children
     } else {
@@ -81,23 +86,14 @@ class Slot extends Component {
     content = Children.count(content) === 0 ? children : content
 
     if (Children.count(content) > 0) {
-      return (
-        React.createElement(slot, attrs, content)
-      )
+      return (React.createElement(slot, attrs, content))
     } else {
       return null
     }
   }
 
-  renderNamedSlot () {
-    const {
-      role,
-      name,
-      id,
-      dataset = {},
-      children,
-      as: slot = 'div'
-    } = this.props
+  renderNamedSlot() {
+    const {role, name, id, dataset = {}, children, as: slot = 'div'} = this.props
     let attrs = ObjectHelper.prefixKeys(dataset, 'data-')
     let slotNode = this.findNamedSlotNode(name)
     let content = []
@@ -107,7 +103,12 @@ class Slot extends Component {
     attrs.className = this.getSlotClassName()
 
     if (slotNode) {
-      const opts = { ignore: [ 'slot', 'children' ] }
+      const opts = {
+        ignore: [
+          'slot',
+          'children'
+        ]
+      }
       attrs = PropsHelper.mergeProps(attrs, slotNode.props, opts)
       content = slotNode.props.children
     }
@@ -115,23 +116,24 @@ class Slot extends Component {
     content = Children.count(content) === 0 ? children : content
 
     if (Children.count(content) > 0) {
-      return (
-        React.createElement(slot, attrs, content)
-      )
+      return (React.createElement(slot, attrs, content))
     } else {
       return null
     }
   }
 
-  getSlotClassName () {
+  getSlotClassName() {
     const { name = '', className = '' } = this.props
-    return [ `slot-${name || 'default'}`, className ]
+    return [
+      `slot-${name || 'default'}`,
+      className
+    ]
       .filter(Boolean)
-      .reduce((a, b) => a.indexOf(b) < 0 ? a.concat(b) : a,[])
+      .reduce((a, b) => a.indexOf(b) < 0 ? a.concat(b) : a, [])
       .join(' ')
   }
 
-  findNamedSlotNode (name) {
+  findNamedSlotNode(name) {
     const { content } = this.props
     const node = Children.toArray(content).filter(child => {
       const node = child
@@ -141,7 +143,7 @@ class Slot extends Component {
     return node
   }
 
-  findDefaultSlotNode () {
+  findDefaultSlotNode() {
     const { content } = this.props
     const node = Children.toArray(content).filter(node => {
       const props = node.props || {}
@@ -151,7 +153,7 @@ class Slot extends Component {
     return node
   }
 
-  findUnslottedNodes () {
+  findUnslottedNodes() {
     const { content } = this.props
     return Children.toArray(content).filter(node => {
       return !node.props || !('slot' in node.props)

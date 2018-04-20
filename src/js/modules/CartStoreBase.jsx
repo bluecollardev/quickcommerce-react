@@ -1,18 +1,17 @@
+import EventEmitter from 'events'
 import assign from 'object-assign'
 
-import EventEmitter from 'events'
-
 const CartStore = assign({}, EventEmitter.prototype, {
-  items        : {},
-  selection    : [],
-  nextKey      : 0,
+  items: {},
+  selection: [],
+  nextKey: 0,
 
   init(config) {
-    this.items        = config.items
-    this.selection    = []
+    this.items = config.items
+    this.selection = []
     config.selection.forEach(item => {
       item.quantity = Number(item.quantity)
-      item._key     = this.nextKey++
+      item._key = this.nextKey++
       if (item.data) {
         this.items[item.id] = item.data
       } else {
@@ -63,11 +62,11 @@ const CartStore = assign({}, EventEmitter.prototype, {
     }
     if (data) {
       this.selection.push({
-        id       : item,
-        quantity : Number(quantity),
-        data     : data,
-        _index   : this.selection.length,
-        _key     : this.nextKey++
+        id: item,
+        quantity: Number(quantity),
+        data: data,
+        _index: this.selection.length,
+        _key: this.nextKey++
       })
       this.emit('change')
       this.emit('item-added', data)
@@ -75,8 +74,7 @@ const CartStore = assign({}, EventEmitter.prototype, {
   },
 
   removeItem(index) {
-    let id   = this.selection[index].id,
-      item = this.selection.splice(index, 1)[0]
+    let id = this.selection[index].id, item = this.selection.splice(index, 1)[0]
     this.reIndex()
     this.emit('change')
     this.emit('item-removed', this.items[id])

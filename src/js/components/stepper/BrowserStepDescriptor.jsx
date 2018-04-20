@@ -1,5 +1,3 @@
-import assign from 'object-assign'
-
 import StepDescriptor from '../../modules/stepper/StepDescriptor.jsx'
 
 /**
@@ -9,15 +7,15 @@ import StepDescriptor from '../../modules/stepper/StepDescriptor.jsx'
  */
 
 /**
- * @param {Object} {step.config, step.action} 
+ * @param {Object} {step.config, step.action}
  * @param {Stepper} stepper - instance of Stepper, which contains this StepDescriptor
  */
 class BrowserStepDescriptor extends StepDescriptor {
   static ID_COUNTER = 0
-    
+
   constructor(step, stepper) {
     super(step)
-        
+
     this.id = BrowserStepDescriptor.ID_COUNTER
     BrowserStepDescriptor.ID_COUNTER++
 

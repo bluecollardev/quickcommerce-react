@@ -7,7 +7,7 @@
 
 const SMALL_WIDTH_EM = 44.9375 // align with _settings.responsive.scss
 
-export function smallSize () {
+export function smallSize() {
   var fontSize = '16px'
   // unit tests don't have getComputedStyle
   if (window.getComputedStyle) {
@@ -26,7 +26,7 @@ export default {
   // inside componentWillUnmount()
   //   this._responsive.stop()
 
-  start (func) {
+  start(func) {
     var responsive = {
       func: func,
       timer: undefined,
@@ -41,20 +41,20 @@ export default {
     return responsive
   },
 
-  _stop (responsive) {
+  _stop(responsive) {
     clearTimeout(responsive.timer)
     window.removeEventListener('resize', responsive.onResize)
   },
 
-  _onResize (responsive) {
+  _onResize(responsive) {
     // Don't debounce so we align more closely with how the stylesheets are
     // processed.
     responsive.layout()
   },
 
-  _check (responsive) {
+  _check(responsive) {
     if (window.innerWidth <= responsive.smallSize) {
-      if (! responsive.small) {
+      if (!responsive.small) {
         responsive.small = true
         responsive.func(true)
       }

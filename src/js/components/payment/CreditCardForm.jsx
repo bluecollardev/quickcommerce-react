@@ -1,13 +1,9 @@
-import React, { Component } from 'react'
 import Payment from 'payment'
+import React, { Component } from 'react'
+
+import { Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap'
 
 import Cards from './CreditCards.jsx'
-
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import { Button, Checkbox, Radio } from 'react-bootstrap'
 
 export default class CreditCardForm extends Component {
   constructor(props) {
@@ -17,9 +13,9 @@ export default class CreditCardForm extends Component {
       name: '',
       exp: '',
       cvc: '',
-      focused: '',
+      focused: ''
     }
-        
+
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleInputFocus = this.handleInputFocus.bind(this)
     this.handleCallback = this.handleCallback.bind(this)
@@ -34,28 +30,18 @@ export default class CreditCardForm extends Component {
   handleInputFocus(e) {
     const target = e.target
 
-    this.setState({
-      focused: target.name,
-    })
+    this.setState({focused: target.name})
   }
 
   handleInputChange(e) {
     const target = e.target
 
     if (target.name === 'number') {
-      this.setState({
-        [target.name]: target.value.replace(/ /g, ''),
-      })
-    }
-    else if (target.name === 'expiry') {
-      this.setState({
-        [target.name]: target.value.replace(/ |\//g, ''),
-      })
-    }
-    else {
-      this.setState({
-        [target.name]: target.value,
-      })
+      this.setState({[target.name]: target.value.replace(/ /g, '')})
+    } else if (target.name === 'expiry') {
+      this.setState({[target.name]: target.value.replace(/ |\//g, '')})
+    } else {
+      this.setState({[target.name]: target.value})
     }
   }
 
@@ -69,7 +55,7 @@ export default class CreditCardForm extends Component {
       <Col sm={12}>
         <Row className='rccs__demo'>
           <div className='credit-card-info'>
-            <Col sm={12} md={6} 
+            <Col sm={12} md={6}
               className='rccs__demo__content customer-info full-width-inputs'>
               <form>
                 <FormGroup className='col-sm-6'>
@@ -78,7 +64,8 @@ export default class CreditCardForm extends Component {
                     name='number'
                     placeholder='E.g.: 49..., 51..., 36..., 37...'
                     onKeyUp={this.handleInputChange}
-                    onFocus={this.handleInputFocus} />
+                    onFocus={this.handleInputFocus}
+                  />
                 </FormGroup>
                 <FormGroup className='col-sm-6'>
                   <ControlLabel>Cardholder Name</ControlLabel>
@@ -86,7 +73,8 @@ export default class CreditCardForm extends Component {
                     name='name'
                     placeholder='Name'
                     onKeyUp={this.handleInputChange}
-                    onFocus={this.handleInputFocus} />
+                    onFocus={this.handleInputFocus}
+                  />
                 </FormGroup>
                 <FormGroup className='col-sm-5'>
                   <ControlLabel>Valid Through</ControlLabel>
@@ -94,7 +82,8 @@ export default class CreditCardForm extends Component {
                     name='expiry'
                     placeholder='05/17'
                     onKeyUp={this.handleInputChange}
-                    onFocus={this.handleInputFocus} />
+                    onFocus={this.handleInputFocus}
+                  />
                 </FormGroup>
                 <FormGroup className='col-sm-4'>
                   <ControlLabel>CVC / CVV</ControlLabel>
@@ -102,11 +91,12 @@ export default class CreditCardForm extends Component {
                     name='cvc'
                     placeholder='E.g.: 021, 416'
                     onKeyUp={this.handleInputChange}
-                    onFocus={this.handleInputFocus} />
+                    onFocus={this.handleInputFocus}
+                  />
                 </FormGroup>
               </form>
             </Col>
-            <Col sm={12} md={6} 
+            <Col sm={12} md={6}
               className='rccs__demo__content customer-info'>
               <div style={{
                 maxWidth: '75%',
@@ -120,8 +110,8 @@ export default class CreditCardForm extends Component {
                   expiry={expiry}
                   cvc={cvc}
                   focused={focused}
-                  callback={this.handleCallback} 
-                                />
+                  callback={this.handleCallback}
+                />
               </div>
             </Col>
           </div>

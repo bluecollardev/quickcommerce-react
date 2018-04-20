@@ -1,10 +1,10 @@
 // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
 
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import CSSClassnames from '../../utils/CSSClassnames'
-import Button from './Button'
+//import Button from './Button' // TODO: This was a grommet button...
 
 const CLASS_ROOT = CSSClassnames.NUMBER_INPUT
 const INPUT = CSSClassnames.INPUT
@@ -18,7 +18,7 @@ export default class NumberInput extends Component {
     this.onSubtract = this.onSubtract.bind(this)
   }
 
-  fireChange () {
+  fireChange() {
     let event
     try {
       event = new Event('change', {
@@ -36,7 +36,7 @@ export default class NumberInput extends Component {
     this.props.onChange(event)
   }
 
-  onAdd () {
+  onAdd() {
     const { max, step } = this.props
     const input = this.inputRef
     try {
@@ -53,7 +53,7 @@ export default class NumberInput extends Component {
     this.fireChange()
   }
 
-  onSubtract () {
+  onSubtract() {
     const { min, step } = this.props
     const input = this.inputRef
     try {
@@ -70,34 +70,33 @@ export default class NumberInput extends Component {
     this.fireChange()
   }
 
-  render () {
+  render() {
     const { className, disabled, ...props } = this.props
 
-    const classes = classnames(
-      CLASS_ROOT,
-      {
-        [`${CLASS_ROOT}--disabled`]: disabled
-      },
-      className
-    )
+    const classes = classnames(CLASS_ROOT, {[`${CLASS_ROOT}--disabled`]: disabled}, className)
 
-    const onSubtract = (! disabled ? this.onSubtract : undefined)
-    const onAdd = (! disabled ? this.onAdd : undefined)
+    const onSubtract = (!disabled ? this.onSubtract : undefined)
+    const onAdd = (!disabled ? this.onAdd : undefined)
 
-    return (
+    return null
+
+    /*return (
       <span className={classes}>
         <input ref={ref => this.inputRef = ref} {...props}
           className={`${INPUT} ${CLASS_ROOT}__input`}
           type="number" tabIndex="0"
-          disabled={disabled} />
+          disabled={disabled}
+        />
 
-        <Button icon={<SubtractIcon />}
-          className={`${CLASS_ROOT}__subtract`} onClick={onSubtract} />
+        <Button icon={<SubtractIcon/>}
+          className={`${CLASS_ROOT}__subtract`} onClick={onSubtract}
+        />
 
-        <Button icon={<AddIcon />}
-          className={`${CLASS_ROOT}__add`} onClick={onAdd} />
+        <Button icon={<AddIcon/>}
+          className={`${CLASS_ROOT}__add`} onClick={onAdd}
+        />
       </span>
-    )
+    )*/
   }
 
 }
@@ -111,5 +110,8 @@ NumberInput.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   step: PropTypes.number,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string
+  ])
 }

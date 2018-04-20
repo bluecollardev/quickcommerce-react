@@ -3,9 +3,7 @@ import UserConstants from '../constants/UserConstants.jsx'
 export default (dispatcher) => {
   return {
     clearUser: () => {
-      dispatcher.dispatch({
-        actionType: UserConstants.CLEAR_USER
-      })
+      dispatcher.dispatch({actionType: UserConstants.CLEAR_USER})
     },
     setUser: (data) => {
       dispatcher.dispatch({

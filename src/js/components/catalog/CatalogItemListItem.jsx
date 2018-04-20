@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CatalogItemListItem = (props) => {
-  let {label, text, className, labelClassName, textClassName} = props
+  let { label, text, className, labelClassName, textClassName } = props
 
   className = className || 'shop-item-list-item'
   labelClassName = labelClassName || 'list-item-label'
@@ -11,7 +11,7 @@ const CatalogItemListItem = (props) => {
     <li className={className}>
       <small>
         <span className={labelClassName}>{label}</span>
-        <br />
+        <br/>
         <strong><span className={textClassName}>{text}</span></strong>
       </small>
     </li>

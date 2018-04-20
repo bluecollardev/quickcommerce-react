@@ -4,7 +4,7 @@ export const headers = {
 }
 
 // converts object to parameter array, handles arrays
-export function buildParams (object) {
+export function buildParams(object) {
   let params = []
   if (object) {
     for (const property in object) {
@@ -26,13 +26,13 @@ export function buildParams (object) {
 }
 
 // joins params array and adds '?' prefix if needed
-export function buildQuery (object) {
+export function buildQuery(object) {
   const params = (Array.isArray(object) ? object : buildParams(object))
   return (params.length > 0 ? `?${params.join('&')}` : '')
 }
 
 // reject promise of response isn't ok
-export function processStatus (response) {
+export function processStatus(response) {
   if (response.ok) {
     return Promise.resolve(response)
   } else {
@@ -50,54 +50,54 @@ let _timeout = 10000 // 10s
 
 export default {
 
-  setTimeout (timeout) {
+  setTimeout(timeout) {
     _timeout = timeout
   },
 
-  setHeaders (headers) {
+  setHeaders(headers) {
     _headers = headers
   },
 
-  setHeader (name, value) {
+  setHeader(name, value) {
     _headers[name] = value
   },
 
-  head (uri, params) {
+  head(uri, params) {
     var op = request.head(uri).query(buildParams(params).join('&'))
     op.timeout(_timeout)
     op.set(_headers)
     return op
   },
 
-  get (uri, params) {
+  get(uri, params) {
     var op = request.get(uri).query(buildParams(params).join('&'))
     op.timeout(_timeout)
     op.set(_headers)
     return op
   },
 
-  patch (uri, data) {
+  patch(uri, data) {
     var op = request.patch(uri).send(data)
     op.timeout(_timeout)
     op.set(_headers)
     return op
   },
 
-  post (uri, data) {
+  post(uri, data) {
     var op = request.post(uri).send(data)
     op.timeout(_timeout)
     op.set(_headers)
     return op
   },
 
-  put (uri, data) {
+  put(uri, data) {
     var op = request.put(uri).send(data)
     op.timeout(_timeout)
     op.set(_headers)
     return op
   },
 
-  del (uri) {
+  del(uri) {
     var op = request.del(uri)
     op.timeout(_timeout)
     op.set(_headers)

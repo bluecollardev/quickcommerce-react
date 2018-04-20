@@ -3,9 +3,7 @@ import SettingConstants from '../constants/SettingConstants.jsx'
 export default (dispatcher) => {
   return {
     fetchSettings: () => {
-      dispatcher.dispatch({
-        actionType: SettingConstants.FETCH_SETTINGS
-      })
+      dispatcher.dispatch({actionType: SettingConstants.FETCH_SETTINGS})
     },
     setSettings: (settings) => {
       dispatcher.dispatch({
@@ -20,9 +18,7 @@ export default (dispatcher) => {
       })
     },
     fetchStores: (id) => {
-      dispatcher.dispatch({
-        actionType: SettingConstants.FETCH_STORES
-      })
+      dispatcher.dispatch({actionType: SettingConstants.FETCH_STORES})
     },
     fetchStore: (id) => {
       dispatcher.dispatch({

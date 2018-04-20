@@ -1,3 +1,1 @@
-export default {
-  LOAD_CUSTOMERS: 'LOAD_CUSTOMERS'
-}
+export default {LOAD_CUSTOMERS: 'LOAD_CUSTOMERS'}

@@ -3,14 +3,14 @@
  **********************************************************/
 export default (handler) => {
   let fileSystem
-    
+
   fileSystem = Object.create({
     fileSystem: null,
     handler: null,
     init: function (handler) {
       this.handler = handler
       console.log(handler)
-            
+
       return this
     },
     readFile: function (fileName, dirName, callback, options) {
@@ -30,10 +30,10 @@ export default (handler) => {
       if (this.fileSystem === null) {
         this.fileSystem = this.handler.getFS()
       }
-            
+
       return this.fileSystem
     }
   })
-    
+
   return fileSystem.init(handler)
 }

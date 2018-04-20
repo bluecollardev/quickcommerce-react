@@ -1,14 +1,12 @@
-import assign from 'object-assign'
-import {normalize, denormalize, schema} from 'normalizr'
 import axios from 'axios'
-
-//import QcCustomerService from 'quickcommerce-react/services/CustomerService.jsx'
-import {BaseService} from 'quickcommerce-react/services/BaseService.jsx'
-
-//import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
-//import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
-//import StringHelper from 'quickcommerce-react/helpers/String.js'
-import UrlHelper from 'quickcommerce-react/helpers/URL.js'
+import { normalize, schema } from 'normalizr'
+import assign from 'object-assign'
+//import ArrayHelper from '../helpers/Array.js'
+//import ObjectHelper from '../helpers/Object.js'
+//import StringHelper from '../helpers/String.js'
+import UrlHelper from '../helpers/URL.js'
+//import QcCustomerService from './CustomerService.jsx'
+import { BaseService } from './BaseService.jsx'
 import CustomerSearchConstants from '../constants/CustomerSearchConstants'
 
 const key = 'customers'
@@ -18,24 +16,22 @@ const result = new schema.Entity('content', {
   idAttribute: 'customerId'
 })
 
-const schemaDef = {
-  customers: [result]
-}
+const schemaDef = {customers: [result]}
 
 const config = assign({}, {
-  key: key, src: {
+  key: key,
+  src: {
     transport: {
       read: {
         url: CustomerSearchConstants.SEARCH_CUSTOMERS_URI,
         method: CustomerSearchConstants.SEARCH_CUSTOMERS_URI_METHOD,
         dataType: 'json',
         contentType: 'application/json',
-        data: {
-          search: ''
-        }
+        data: {search: ''}
       }
     }
-  }, schema: schemaDef
+  },
+  schema: schemaDef
 })
 
 class CustomerService extends BaseService {
@@ -56,7 +52,8 @@ class CustomerService extends BaseService {
     if (!isNaN(addressId)) {
       // Fetch...
       axios({
-        url: QC_RESOURCE_API + 'address/' + addressId, method: 'GET', //dataType: 'json',
+        url: QC_RESOURCE_API + 'address/' + addressId,
+        method: 'GET', //dataType: 'json',
         contentType: 'application/json'
       })
         .then(response => {
@@ -67,14 +64,18 @@ class CustomerService extends BaseService {
 
           // Resource API data is wrapped in a data object                
           this.actions.customer.setBillingAddress({
-            addresses: [payload.data], billingAddressId: addressId, billingAddress: payload.data
+            addresses: [payload.data],
+            billingAddressId: addressId,
+            billingAddress: payload.data
           })
 
           this.actions.customer.setShippingAddress({
-            addresses: [payload.data], shippingAddressId: addressId, shippingAddress: payload.data
+            addresses: [payload.data],
+            shippingAddressId: addressId,
+            shippingAddress: payload.data
           })
         }).catch(err => {
-          // Do nothing, not a deal-breakeThere r if we couldn't grab an address
+        // Do nothing, not a deal-breakeThere r if we couldn't grab an address
           console.log(err)
 
           // TODO: Notify user
@@ -94,7 +95,7 @@ class CustomerService extends BaseService {
   get(id, onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMER, {id: id}),
+      url: UrlHelper.compile(CUSTOMER, { id: id }),
       type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
@@ -119,7 +120,7 @@ class CustomerService extends BaseService {
   getSummary(id, onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMER_SUMMARY, {id: id}),
+      url: UrlHelper.compile(CUSTOMER_SUMMARY, { id: id }),
       dataType: 'json',
       contentType: 'application/json',
       async: false,
@@ -149,7 +150,7 @@ class CustomerService extends BaseService {
   getHistory(id, onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMER_HISTORY, {id: id}),
+      url: UrlHelper.compile(CUSTOMER_HISTORY, { id: id }),
       dataType: 'json',
       contentType: 'application/json',
       async: false,
@@ -174,7 +175,7 @@ class CustomerService extends BaseService {
   getDeals(customerId, onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMER_DEALS, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_DEALS, { customerId: customerId }),
       dataType: 'json',
       contentType: 'application/json',
       async: false,
@@ -212,7 +213,7 @@ class CustomerService extends BaseService {
   getPhotos(id, onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMER_PROFILE_IMAGE, {id: id}),
+      url: UrlHelper.compile(CUSTOMER_PROFILE_IMAGE, { id: id }),
       dataType: 'json',
       contentType: 'application/json',
       async: false,
@@ -285,9 +286,7 @@ class CustomerService extends BaseService {
     let data = assign({}, customerStore.customer, {})
 
     // Wrap the object
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
       url: UrlHelper.compile(CUSTOMERS),
@@ -309,7 +308,7 @@ class CustomerService extends BaseService {
 
     if (this.validateId(data.id)) {
       axios({
-        url: UrlHelper.compile(CUSTOMER, {id: data.id}),
+        url: UrlHelper.compile(CUSTOMER, { id: data.id }),
         data: data,
         dataType: 'json',
         contentType: 'application/json',
@@ -329,7 +328,7 @@ class CustomerService extends BaseService {
 
     if (this.validateId(data.id)) {
       axios({
-        url: UrlHelper.compile(CUSTOMER, {id: data.id}),
+        url: UrlHelper.compile(CUSTOMER, { id: data.id }),
         data: data,
         dataType: 'json',
         contentType: 'application/json',
@@ -350,12 +349,10 @@ class CustomerService extends BaseService {
 
     data = assign({}, customerStore.customer, {})
 
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
-      url: UrlHelper.compile(CUSTOMER_OTHER_INCOME, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_OTHER_INCOME, { customerId: customerId }),
       data: data,
       dataType: 'json',
       method: 'POST',
@@ -378,12 +375,10 @@ class CustomerService extends BaseService {
 
     data = assign({}, customerStore.customer, {})
 
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
-      url: UrlHelper.compile(CUSTOMER_ASSETS, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_ASSETS, { customerId: customerId }),
       data: data,
       dataType: 'json',
       method: 'POST',
@@ -406,12 +401,10 @@ class CustomerService extends BaseService {
 
     data = assign({}, customerStore.customer, {})
 
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
-      url: UrlHelper.compile(CUSTOMER_LIABILITIES, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_LIABILITIES, { customerId: customerId }),
       data: data,
       dataType: 'json',
       method: 'POST',
@@ -434,12 +427,10 @@ class CustomerService extends BaseService {
 
     data = assign({}, customerStore.customer, {})
 
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
-      url: UrlHelper.compile(CUSTOMER_EMPLOYMENT_HISTORY, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_EMPLOYMENT_HISTORY, { customerId: customerId }),
       data: data,
       dataType: 'json',
       method: 'POST',
@@ -462,12 +453,10 @@ class CustomerService extends BaseService {
 
     data = assign({}, customerStore.customer, {})
 
-    data = {
-      customer: data
-    }
+    data = {customer: data}
 
     axios({
-      url: UrlHelper.compile(CUSTOMER_RESIDENCE_HISTORY, {customerId: customerId}),
+      url: UrlHelper.compile(CUSTOMER_RESIDENCE_HISTORY, { customerId: customerId }),
       data: data,
       dataType: 'json',
       method: 'POST',
@@ -490,7 +479,11 @@ class CustomerService extends BaseService {
   getCollection(onSuccess, onError) {
     // Get the account
     axios({
-      url: UrlHelper.compile(CUSTOMERS), dataType: 'json', contentType: 'application/json', async: false, method: 'GET'
+      url: UrlHelper.compile(CUSTOMERS),
+      dataType: 'json',
+      contentType: 'application/json',
+      async: false,
+      method: 'GET'
     }).then(response => {
       this.handleResponse(response, // onSuccess
         ((payload) => {
@@ -573,9 +566,9 @@ class CustomerService extends BaseService {
         if (typeof onError === 'function') {
           onError(err)
         }
-        // Only if sample data is loaded...
-        //let normalizedData = normalize(SampleItems.data, that.config.schema)
-        //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
+      // Only if sample data is loaded...
+      //let normalizedData = normalize(SampleItems.data, that.config.schema)
+      //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
       })
   }
 
@@ -584,4 +577,4 @@ class CustomerService extends BaseService {
 CustomerService.primaryKey = 'customerId'
 
 export default CustomerService
-export {CustomerService}
+export { CustomerService }

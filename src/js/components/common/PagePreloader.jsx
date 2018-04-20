@@ -5,7 +5,7 @@ export default class PagePreloader extends Component {
     return (
       <div className="page-preloader">
         <div className="preloader">
-          <img src="img/preloader.gif" alt="Preloader" />
+          <img src="img/preloader.gif" alt="Preloader"/>
         </div>
       </div>
     )

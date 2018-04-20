@@ -11,12 +11,12 @@ export default class ArrayHelper {
   static recursiveMap = (fn, list) => {
     //return !list.length ? []: [fn(list[0])].concat(ArrayHelper.recursiveMap(fn, list.slice(1)))
     if (!list.length) {
-      return []   
+      return []
     } else {
       [fn(list[0])].concat(ArrayHelper.recursiveMap(fn, list.slice(1)))
     }
   }
-    
+
   /**
    * Method: App.helpers.Array.recursiveReduce
    *
@@ -29,13 +29,13 @@ export default class ArrayHelper {
       ArrayHelper.recursiveReduce(fn, fn(value, list[0], list.slice(1)))
     }
   }
-    
+
   /**
    * Method: App.helpers.Array.recursiveReduce
    *
    */
-  static recursiveFilter = (predicate,list) => {
-    return !list.length ? []: (predicate(list[0]) ? [list[0]] : []).concat(Array.prototype.filter(predicate,list.slice(1)))
+  static recursiveFilter = (predicate, list) => {
+    return !list.length ? [] : (predicate(list[0]) ? [list[0]] : []).concat(Array.prototype.filter(predicate, list.slice(1)))
   }
 
   /**
@@ -59,7 +59,7 @@ export default class ArrayHelper {
 
     return result
   }
-    
+
   /**
    * Method: App.helpers.Array.intersectDestructive
    *
@@ -80,7 +80,7 @@ export default class ArrayHelper {
 
     return result
   }
-    
+
   /**
    * Checks to see if one array contains all the members of another eg. [0,1,2,3] in [0,1,2,3,4]
    * This doesn't work if the array members are objects, and is designed to compare value types.
@@ -96,13 +96,13 @@ export default class ArrayHelper {
   static sameMembers = (arr1, arr2) => {
     return (ArrayHelper.containsAll(arr1, arr2) && ArrayHelper.containsAll(arr2, arr1))
   }
-    
+
   /**
    * Quick and dirty way to compare arrays or objects without getting into too much detail.
    * This isn't the fastest solution by any means but it generally works.
    * I don't recommend using this to compare complex structures (it'll be slow).
    */
   static jsonSameMembers = (arr1, arr2) => {
-    return JSON.stringify(arr1) === JSON.stringify(arr2) 
+    return JSON.stringify(arr1) === JSON.stringify(arr2)
   }
 }

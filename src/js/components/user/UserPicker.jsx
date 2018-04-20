@@ -1,25 +1,21 @@
 import React, { Component } from 'react'
 
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import { Button, Checkbox, Radio } from 'react-bootstrap'
+import { Button, Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap'
 
 export default class UserPicker extends Component {
   constructor(props) {
     super(props)
-        
+
     this.onSubmit = this.onSubmit.bind(this)
-        
+
     console.log('sign in props')
     console.log(props)
   }
-    
+
   onSubmit(e) {
     e.preventDefault()
     e.stopPropagation()
-        
+
     console.log('executing onSubmit')
     if (typeof this.props.onClick === 'function') {
       console.log('execute handler')
@@ -27,7 +23,7 @@ export default class UserPicker extends Component {
       fn.call(this, e)
     }
   }
-    
+
   render() {
     return (
       <Col sm={12}>
@@ -37,9 +33,9 @@ export default class UserPicker extends Component {
               <form>
                 <FormGroup>
                   <ControlLabel>Username (E-mail Address)</ControlLabel>
-                  <FormControl name='account' type='text' />
+                  <FormControl name='account' type='text'/>
                 </FormGroup>
-                                
+
                 <FormGroup>
                   <Button onClick={this.onSubmit}>New User</Button>&nbsp;
                   <Button onClick={this.onSubmit}>Edit User</Button>
@@ -50,8 +46,6 @@ export default class UserPicker extends Component {
         </Row>
       </Col>
     )
-  }   
+  }
 }
-
-
 

@@ -3,9 +3,7 @@ import CustomerConstants from '../constants/CustomerConstants.jsx'
 export default (dispatcher) => {
   return {
     clearCustomer: () => {
-      dispatcher.dispatch({
-        actionType: CustomerConstants.CLEAR_CUSTOMER
-      })
+      dispatcher.dispatch({actionType: CustomerConstants.CLEAR_CUSTOMER})
     },
     setCustomer: (data) => {
       dispatcher.dispatch({

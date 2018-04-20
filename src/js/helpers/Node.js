@@ -6,8 +6,7 @@ export default {
     getFS: function () {
       fs = require('fs') // Global for now
       return fs
-    },
-        // We can do better than this
+    }, // We can do better than this
     readFile: function (fileName, fileDir, callback, options) {
       fs = this.getFS()
       fs.readFile(fileDir + fileName, options, callback)

@@ -1,32 +1,18 @@
+import { inject, observer } from 'mobx-react'
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
-import {inject, observer, Provider} from 'mobx-react'
-
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import { Button, Checkbox, Radio } from 'react-bootstrap'
-import Autocomplete from 'react-autocomplete'
-
-import { DateInput } from '../form/Input.jsx'
-
-import FormComponent from '../FormComponent.jsx'
-import CurrentAddress from './CurrentAddress.jsx'
 
 import fieldNames from '../../forms/AddressFields.jsx'
+import CurrentAddress from './CurrentAddress.jsx'
 
 @inject(deps => ({
   actions: deps.actions,
   customerService: deps.customerService, // Not used, just in case!
   customerAddressService: deps.customerAddressService,
   geoService: deps.geoService,
-  settingStore: deps.settingStore,
-}))
-@observer
+  settingStore: deps.settingStore
+  })) @observer
 class Address extends Component {
   constructor(props) {
     super(props)
@@ -57,8 +43,7 @@ class Address extends Component {
 
     let data = {} //this.props.getForm()
 
-    let state = assign({}, this.state, {
-      data: {} //assign({}, props.data, this.state.data, data)
+    let state = assign({}, this.state, {data: {} //assign({}, props.data, this.state.data, data)
     })
 
     let city = state.data.city || null
@@ -70,8 +55,7 @@ class Address extends Component {
     let countryName = ''
 
     // TODO: Do something if the data is wrong or something screws up
-    if ((country !== null && typeof country !== 'string') &&
-      (zone !== null && typeof zone !== 'string')) {
+    if ((country !== null && typeof country !== 'string') && (zone !== null && typeof zone !== 'string')) {
       let zones = this.props.settingStore.getZones(country[mappings.COUNTRY_ID])
       let filteredZones = zones.filter(obj => Number(obj.id) === Number(zone[mappings.ZONE_ID]))
       zoneName = (filteredZones instanceof Array && filteredZones.length > 0) ? filteredZones[0].value : ''
@@ -103,7 +87,7 @@ class Address extends Component {
       this.setInitialState(this.props)
     }
   }
-  
+
   componentDidMount() {
     const { geoService } = this.props
 
@@ -111,30 +95,24 @@ class Address extends Component {
       //console.log('cities')
       //console.log(data)
 
-      this.setState({
-        cities: data
-      })
+      this.setState({cities: data})
     })
 
     geoService.getZones((data) => {
       //console.log('zones')
       //console.log(data)
 
-      this.setState({
-        zones: data
-      })
+      this.setState({zones: data})
     })
 
     geoService.getCountries((data) => {
       //console.log('countries')
       //console.log(data)
 
-      this.setState({
-        countries: data
-      })
+      this.setState({countries: data})
     })
   }
-  
+
   componentWillReceiveProps(newProps) {
     let countries = this.props.settingStore.getCountries() || []
     let zones = this.props.settingStore.zones || []
@@ -221,9 +199,7 @@ class Address extends Component {
       fn(response)
     }
 
-    this.setState({
-      errors: response.error
-    })
+    this.setState({errors: response.error})
   }
 
   onCityValueChanged(event, value) {
@@ -257,14 +233,12 @@ class Address extends Component {
       //console.log('zones')
       //console.log(data)
 
-      this.setState({
-        zones: data
-      })
+      this.setState({zones: data})
     })
   }
 
   getCountryCities(countryCode) {
-    if (typeof this.props.getCountryCities === 'function'){
+    if (typeof this.props.getCountryCities === 'function') {
       this.props.getCountryCities()
     }
 
@@ -274,9 +248,7 @@ class Address extends Component {
       //console.log('cities')
       //console.log(data)
 
-      this.setState({
-        cities: data
-      })
+      this.setState({cities: data})
     })
   }
 
@@ -291,9 +263,7 @@ class Address extends Component {
       //console.log('cities')
       //console.log(data)
 
-      this.setState({
-        cities: data
-      })
+      this.setState({cities: data})
     })
   }
 

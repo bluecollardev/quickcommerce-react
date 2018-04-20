@@ -3,7 +3,7 @@
  * Type: Class
  *
  * Dependency Injection container
- * 
+ *
  * Note: I should probably be using a AMD/CommonJS loader instead
  */
 export default () => {

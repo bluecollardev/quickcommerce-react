@@ -5,14 +5,14 @@ import OwlCarousel from 'react-owl-carousel'
 
 export default class Hero extends Component {
   render() {
-        /* Data API:
-        data-loop="true/false" enable/disable looping
-        data-autoplay="true/false" enable/disable carousel autoplay
-        data-interval="3000" autoplay interval timeout in miliseconds
-        Simply add necessary data attribute to the ".hero-carousel" with appropriate value to adjust carousel functionality.
-        */
-    return (  
-      <OwlCarousel 
+    /* Data API:
+     data-loop="true/false" enable/disable looping
+     data-autoplay="true/false" enable/disable carousel autoplay
+     data-interval="3000" autoplay interval timeout in miliseconds
+     Simply add necessary data attribute to the ".hero-carousel" with appropriate value to adjust carousel functionality.
+     */
+    return (
+      <OwlCarousel
         className='inner'
         items={1}
         loop={this.props.loop}
@@ -23,7 +23,7 @@ export default class Hero extends Component {
         autoplay={true}
         autoplayTimeout={10000}
         autoplayHoverPause={true}
-        smartSpeed={450}> 
+        smartSpeed={450}>
         {this.props.slides.map((slide, idx) => {
           const style = assign({ backgroundImage: 'url(' + slide.backgroundImage + ')' }, slide.style)
           const action = slide.action.href
@@ -33,7 +33,7 @@ export default class Hero extends Component {
                 <div className='absolute from-top' style={slide.textPosition.fromTop}>
                   <span className='h1'>
                     <i className="cursive"><strong>{slide.title}</strong></i>
-                    <br />
+                    <br/>
                     {slide.subtitle1}
                   </span>
                   <div className="flex-column action-wrapper">
@@ -43,14 +43,14 @@ export default class Hero extends Component {
                 <div className='absolute text-right from-bottom' style={slide.textPosition.fromBottom}>
                   <span className='h2'>
                     <span className='text-thin'><i>{slide.subtitle2}</i></span>
-                    <br />
+                    <br/>
                     <strong>{slide.subtitle3}</strong>
                   </span>
-                  <br />
+                  <br/>
                   {/*<a href='#' className='btn btn-primary btn-with-icon-right waves-effect waves-light space-top-none'>
-                                    {slide.ctaText}
-                                    <i className='material-icons arrow_forward' />
-                                </a>*/}
+                   {slide.ctaText}
+                   <i className='material-icons arrow_forward' />
+                   </a>*/}
                 </div>
               </div>
             </div>

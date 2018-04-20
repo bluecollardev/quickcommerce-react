@@ -1,20 +1,16 @@
+import { schema } from 'normalizr'
 import assign from 'object-assign'
 
 import CustomerSearchConstants from '../constants/CustomerSearchConstants.jsx'
-import CustomerListConstants from '../constants/CustomerListConstants.jsx'
-
-import { normalize, denormalize, schema } from 'normalizr'
 
 const key = 'customers'
 
 const result = new schema.Entity('content', {
-    //idAttribute: 'customer_id'
+  //idAttribute: 'customer_id'
   idAttribute: 'customerId'
 })
 
-const schemaDef = {
-  customers: [result]
-}
+const schemaDef = {customers: [result]}
 
 export default (dispatcher) => {
   return {

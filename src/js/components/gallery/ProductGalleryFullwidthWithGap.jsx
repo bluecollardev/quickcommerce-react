@@ -1,8 +1,6 @@
+import Isotope from 'isotope-layout'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import Isotope from 'isotope-layout'
-
-import VehicleHelper from '../../../../../../src/app/js/helpers/Vehicle.js'
 import ImageHelper from '../../helpers/Image.js'
 
 const GalleryItem = (props) => {
@@ -13,7 +11,7 @@ const GalleryItem = (props) => {
     <div className='grid-item thumbnail devices'>
       {embeddedThumb !== true && (
         <a href={data['image']} className='gallery-item'>
-          <img src={data['image']} alt='Gallery' />
+          <img src={data['image']} alt='Gallery'/>
           {/* No caption prop available */}
           {/*<span className='gallery-caption'>
            <p>{data['caption']}</p>
@@ -23,7 +21,7 @@ const GalleryItem = (props) => {
 
       {embeddedThumb === true && (
         <a className='gallery-item'>
-          <img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery' />
+          <img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery'/>
           {/* No caption prop available */}
           {/*<span className='gallery-caption'>
            <p>{data['caption']}</p>
@@ -90,9 +88,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
         }
       })
 
-      this.setState({
-        isotope: isotope
-      }, () => {
+      this.setState({isotope: isotope}, () => {
         setTimeout(() => {
           this.updateIsotope()
         }, 333)
@@ -147,8 +143,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       },
@@ -168,8 +163,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       },
@@ -189,8 +183,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       },
@@ -210,8 +203,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       },
@@ -231,8 +223,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       },
@@ -252,8 +243,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
           effective: true
         },
         primary: true,
-        size: 10366,
-        //tags: ['hot', 'new', 'fast'],
+        size: 10366, //tags: ['hot', 'new', 'fast'],
         vin: false,
         width: 240
       }
@@ -289,8 +279,8 @@ export default class ProductGalleryFullwidthWithGap extends Component {
             <div
               ref={(grid) => this.grid = grid}
               className='isotope-grid col-3 filter-grid'>
-              <div className='grid-sizer' />
-              <div className='gutter-sizer' />
+              <div className='grid-sizer'/>
+              <div className='gutter-sizer'/>
               {items.map((item, idx) => {
                 let image = item
 
@@ -327,8 +317,8 @@ export default class ProductGalleryFullwidthWithGap extends Component {
             <div
               ref={(grid) => this.grid = grid}
               className='isotope-grid col-3 filter-grid'>
-              <div className='grid-sizer' />
-              <div className='gutter-sizer' />
+              <div className='grid-sizer'/>
+              <div className='gutter-sizer'/>
             </div>
           </section>
         </div>

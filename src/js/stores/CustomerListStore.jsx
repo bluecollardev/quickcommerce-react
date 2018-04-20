@@ -19,15 +19,27 @@ class CustomerListStore extends BaseCollectionStore {
 
     if (data !== null && data.hasOwnProperty('address_id')) {
       formatted = [
-        [data.firstname, data.lastname].join(' '),
+        [
+          data.firstname,
+          data.lastname
+        ].join(' '),
         [data.company].filter((value) => {
           return filterValue(value)
         }).join(''),
-        [data.address1, data.address2].filter(function(value) {
+        [
+          data.address1,
+          data.address2
+        ].filter(function (value) {
           return filterValue(value)
         }).join('\n'),
-        [data.city, data.zone].join(', '),
-        [data.country, data.postcode].join(' ')
+        [
+          data.city,
+          data.zone
+        ].join(', '),
+        [
+          data.country,
+          data.postcode
+        ].join(' ')
       ]
 
       formatted = formatted.filter((value) => {

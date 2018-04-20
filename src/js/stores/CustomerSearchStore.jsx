@@ -1,7 +1,5 @@
-import assign from 'object-assign'
-
 import axios from 'axios'
-import {normalize, denormalize, schema} from 'normalizr'
+import { normalize, schema } from 'normalizr'
 
 import CustomerSearchConstants from '../constants/CustomerSearchConstants.jsx'
 //import FluxFactory from '../factory/Factory.jsx'
@@ -20,7 +18,6 @@ class CustomerSearchStore extends BaseStore {
 
     //this.fluxFactory = new FluxFactory()
 
-
     this.subscribe(() => {
       return this.registerToActions.bind(this)
     })
@@ -32,12 +29,12 @@ class CustomerSearchStore extends BaseStore {
 
     switch (action.actionType) {
     // onLoad actions
-    case CustomerSearchConstants.SEARCH_CUSTOMERS:
-      this.handleAction(payload)
-      break
+      case CustomerSearchConstants.SEARCH_CUSTOMERS:
+        this.handleAction(payload)
+        break
 
-    default:
-      break
+      default:
+        break
     }
   }
 
@@ -146,9 +143,9 @@ class CustomerSearchStore extends BaseStore {
         if (typeof onError === 'function') {
           onError()
         }
-        // Only if sample data is loaded...
-        //let normalizedData = normalize(SampleItems.data, that.config.schema)
-        //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
+      // Only if sample data is loaded...
+      //let normalizedData = normalize(SampleItems.data, that.config.schema)
+      //this.items = Object.keys(normalizedData.result).map(key => normalizedData.result[key])
       })
   }
 }
@@ -159,4 +156,4 @@ CustomerSearchStore.config = null
 CustomerSearchStore.items = {}
 
 export default new CustomerSearchStore()
-export {CustomerSearchStore}
+export { CustomerSearchStore }

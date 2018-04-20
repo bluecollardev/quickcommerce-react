@@ -5,8 +5,6 @@ const muiTableRowStyle = {
 }
 
 // Absolutely retarded default styles...
-const muiTableCellStyle = {
-  padding: '0.25rem'
-}
+const muiTableCellStyle = {padding: '0.25rem'}
 
 export { muiTableRowStyle, muiTableCellStyle }

@@ -41,24 +41,22 @@ var _onKeyboardAcceleratorKeyPress = (e) => {
 // Add listeners using startListeningToKeyboard().
 // Remove listeners using stopListeningToKeyboard().
 export default {
-  _initKeyboardAccelerators (element) {
+  _initKeyboardAccelerators(element) {
     const id = generateId(element)
-    _keyboardAccelerators[id] = {
-      handlers: {}
-    }
+    _keyboardAccelerators[id] = {handlers: {}}
   },
 
-  _getKeyboardAcceleratorHandlers (element) {
+  _getKeyboardAcceleratorHandlers(element) {
     const id = generateId(element)
     return _keyboardAccelerators[id].handlers
   },
 
-  _getDowns (element) {
+  _getDowns(element) {
     const id = generateId(element)
     return _keyboardAccelerators[id].downs
   },
 
-  _isComponentListening (element) {
+  _isComponentListening(element) {
     const id = generateId(element)
 
     return _listeners.some(function (listener) {
@@ -66,12 +64,12 @@ export default {
     })
   },
 
-  _subscribeComponent (element) {
+  _subscribeComponent(element) {
     const id = generateId(element)
     _listeners.push(id)
   },
 
-  _unsubscribeComponent (element) {
+  _unsubscribeComponent(element) {
     const id = generateId(element)
 
     var removeListenerIndex = _listeners.indexOf(id)
@@ -83,7 +81,7 @@ export default {
   // Add handlers for specific keys.
   // This function can be called multiple times, existing handlers will
   // be replaced, new handlers will be added.
-  startListeningToKeyboard (component, handlers) {
+  startListeningToKeyboard(component, handlers) {
     var element = findDOMNode(component)
     if (element) {
       this._initKeyboardAccelerators(element)
@@ -95,9 +93,7 @@ export default {
             keyCode = KEYS[key]
           }
           keys += 1
-          this._getKeyboardAcceleratorHandlers(element)[keyCode] = (
-            handlers[key]
-          )
+          this._getKeyboardAcceleratorHandlers(element)[keyCode] = (handlers[key])
         }
       }
 
@@ -117,7 +113,7 @@ export default {
   // If no argument is passed in, all handlers are removed.
   // This function can be called multiple times, only the handlers
   // specified will be removed.
-  stopListeningToKeyboard (component, handlers) {
+  stopListeningToKeyboard(component, handlers) {
     var element = findDOMNode(component)
     if (!this._isComponentListening(element)) {
       return
@@ -136,13 +132,12 @@ export default {
 
     var keyCount = 0
     for (var keyHandler in this._getKeyboardAcceleratorHandlers(element)) {
-      if (this._getKeyboardAcceleratorHandlers(element).
-        hasOwnProperty(keyHandler)) {
+      if (this._getKeyboardAcceleratorHandlers(element).hasOwnProperty(keyHandler)) {
         keyCount += 1
       }
     }
 
-    if (! handlers || 0 === keyCount) {
+    if (!handlers || 0 === keyCount) {
       this._initKeyboardAccelerators(element)
       this._unsubscribeComponent(element)
     }

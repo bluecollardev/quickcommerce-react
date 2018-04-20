@@ -2,9 +2,7 @@ class ImageHelper {
   static primaryImageOrPlaceholder = (data, imageProperty) => {
     let thumbnail = ''
 
-    if (data.hasOwnProperty(imageProperty) &&
-      typeof data[imageProperty] === 'string' &&
-      data[imageProperty] !== '') {
+    if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
       if (ImageHelper.isBase64Encoded(data[imageProperty])) {
         thumbnail = ImageHelper.base64ImageOrPlaceholder(data, imageProperty)
       } else {
@@ -29,9 +27,7 @@ class ImageHelper {
     let thumbnail = ''
 
     // TODO: Detect base64 encoding?
-    if (data.hasOwnProperty(imageProperty) &&
-      typeof data[imageProperty] === 'string' &&
-      data[imageProperty] !== '') {
+    if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
       thumbnail = 'data:' + data[mimeTypeProperty] + ';base64,' + data[imageProperty]
     } else {
       // Load default thumbnail
@@ -65,11 +61,7 @@ class ImageHelper {
     data = data || null
 
     // TODO: Duck-type object properties properly
-    if (data !== null &&
-      data.hasOwnProperty(propertyName) &&
-      data[propertyName] !== null &&
-      typeof data[propertyName]['image'] === 'string' &&
-      data[propertyName]['image'] !== '') {
+    if (data !== null && data.hasOwnProperty(propertyName) && data[propertyName] !== null && typeof data[propertyName]['image'] === 'string' && data[propertyName]['image'] !== '') {
       thumbnail = 'data:' + data[propertyName]['mimeType'] + ';base64,' + data[propertyName]['image']
     }
 

@@ -6,7 +6,7 @@
 export default () => {
   var stack = Object.create({
     stack: [],
-        
+
     init: function () {
       return this
     },
@@ -17,6 +17,6 @@ export default () => {
       this.stack.push(item)
     }
   })
-    
+
   return stack.init()
 }

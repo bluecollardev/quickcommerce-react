@@ -15,7 +15,7 @@ export default function HashProxy(obj, obj2) {
       if (typeof key !== 'string') {
         return undefined
       }
-            
+
       return hashTable.getItem(key)
     },
     set: (hashTable, key, value) => {
@@ -26,6 +26,6 @@ export default function HashProxy(obj, obj2) {
       return hashTable.apply(context, argumentsList)
     }
   }
-	
+
   return new Proxy(new HashTable(obj), obj1, obj2)
 }

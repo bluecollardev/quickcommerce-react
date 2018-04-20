@@ -1,5 +1,5 @@
 export default {
-  getMessage (intl, key, values) {
+  getMessage(intl, key, values) {
     if (intl) {
       return intl.formatMessage({
         id: key,

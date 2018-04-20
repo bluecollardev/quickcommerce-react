@@ -1,20 +1,17 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Payment from 'payment'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+
 //import './styles.scss'
 
 class ReactCreditCards extends Component {
   static defaultProps = {
     acceptedCards: [],
     expiry: '',
-    locale: {
-      valid: 'valid thru'
-    },
-    placeholders: {
-      name: 'YOUR NAME HERE'
-    }
+    locale: {valid: 'valid thru'},
+    placeholders: {name: 'YOUR NAME HERE'}
   }
-    
+
   constructor(props) {
     super(props)
 
@@ -22,7 +19,7 @@ class ReactCreditCards extends Component {
       isValid: false,
       type: {
         name: 'unknown',
-        maxLength: 16,
+        maxLength: 16
       }
     }
 
@@ -30,7 +27,10 @@ class ReactCreditCards extends Component {
       type: 'hipercard',
       pattern: /^(3841|606282|637)/,
       format: /(\d{1,4})/g,
-      length: [16, 19],
+      length: [
+        16,
+        19
+      ],
       cvcLength: [3],
       luhn: true
     }
@@ -48,10 +48,7 @@ class ReactCreditCards extends Component {
   componentWillReceiveProps(nextProps) {
     const { acceptedCards, number } = this.props
 
-    const {
-          acceptedCards: nextAcceptedCards,
-          number: nextNumber,
-        } = nextProps
+    const {acceptedCards: nextAcceptedCards, number: nextNumber} = nextProps
 
     if (number !== nextNumber) {
       this.updateType(nextNumber)
@@ -67,7 +64,7 @@ class ReactCreditCards extends Component {
     let newCardArray = []
 
     if (acceptedCards.length) {
-          /* istanbul ignore else */
+      /* istanbul ignore else */
       if (acceptedCards.includes('hipercard')) {
         newCardArray.push(this.hipercard)
       }
@@ -77,8 +74,7 @@ class ReactCreditCards extends Component {
           newCardArray.push(d)
         }
       })
-    }
-    else {
+    } else {
       newCardArray.push(this.hipercard)
       newCardArray = newCardArray.concat(Payment.getCardArray())
     }
@@ -95,26 +91,24 @@ class ReactCreditCards extends Component {
 
     if (type === 'amex') {
       maxLength = 15
-    }
-    else if (type === 'dinersclub') {
+    } else if (type === 'dinersclub') {
       maxLength = 14
-    }
-    else if (type === 'hipercard' || type === 'visa') {
+    } else if (type === 'hipercard' || type === 'visa') {
       maxLength = 19
     }
 
     const typeState = {
       issuer: type,
-      maxLength,
+      maxLength
     }
     const isValid = Payment.fns.validateCardNumber(number)
 
     this.setState({
       isValid,
-      type: typeState,
+      type: typeState
     })
 
-        /* istanbul ignore else */
+    /* istanbul ignore else */
     if (typeof callback === 'function') {
       callback(typeState, isValid)
     }
@@ -142,17 +136,34 @@ class ReactCreditCards extends Component {
       string += '•'
     }
 
-    if (['amex', 'dinersclub'].includes(type.issuer)) {
-      const format = [0, 4, 10]
-      const limit = [4, 6, 5]
+    if ([
+      'amex',
+      'dinersclub'
+    ].includes(type.issuer)) {
+      const format = [
+        0,
+        4,
+        10
+      ]
+      const limit = [
+        4,
+        6,
+        5
+      ]
       string = `${string.substr(format[0], limit[0])} ${string.substr(format[1], limit[1])} ${string.substr(format[2], limit[2])}`
-    }
-    else if (number.length > 16) {
-      const format = [0, 4, 8, 12]
-      const limit = [4, 7]
+    } else if (number.length > 16) {
+      const format = [
+        0,
+        4,
+        8,
+        12
+      ]
+      const limit = [
+        4,
+        7
+      ]
       string = `${string.substr(format[0], limit[0])} ${string.substr(format[1], limit[0])} ${string.substr(format[2], limit[0])} ${string.substr(format[3], limit[1])}`
-    }
-    else {
+    } else {
       for (let i = 1; i < (maxLength / 4); i++) {
         const space_index = (i * 4) + (i - 1)
         string = `${string.slice(0, space_index)} ${string.slice(space_index)}`
@@ -196,18 +207,16 @@ class ReactCreditCards extends Component {
           className={[
             'rccs__card',
             `rccs__card--${type.issuer}`,
-            focused === 'cvc' && type.issuer !== 'amex' ? 'rccs__card--flipped' : '',
-          ].join(' ').trim()}
-            >
+            focused === 'cvc' && type.issuer !== 'amex' ? 'rccs__card--flipped' : ''
+          ].join(' ').trim()}>
           <div className="rccs__card--front">
-            <div className="rccs__card__background" />
-            <div className="rccs__issuer" />
+            <div className="rccs__card__background"/>
+            <div className="rccs__issuer"/>
             <div
               className={[
                 'rccs__cvc__front',
-                focused === 'cvc' ? 'rccs--focused' : '',
-              ].join(' ').trim()}
-                >
+                focused === 'cvc' ? 'rccs--focused' : ''
+              ].join(' ').trim()}>
               {cvc}
             </div>
             <div
@@ -215,45 +224,41 @@ class ReactCreditCards extends Component {
                 'rccs__number',
                 number.replace(/ /g, '').length > 16 ? 'rccs__number--large' : '',
                 focused === 'number' ? 'rccs--focused' : '',
-                number.substr(0, 1) !== '•' ? 'rccs--filled' : '',
-              ].join(' ').trim()}
-                >
+                number.substr(0, 1) !== '•' ? 'rccs--filled' : ''
+              ].join(' ').trim()}>
               {number}
             </div>
             <div
               className={[
                 'rccs__name',
                 focused === 'name' ? 'rccs--focused' : '',
-                name ? 'rccs--filled' : '',
-              ].join(' ').trim()}
-                >
+                name ? 'rccs--filled' : ''
+              ].join(' ').trim()}>
               {name || placeholders.name}
             </div>
             <div
               className={[
                 'rccs__expiry',
                 focused === 'expiry' ? 'rccs--focused' : '',
-                expiry.substr(0, 1) !== '•' ? 'rccs--filled' : '',
-              ].join(' ').trim()}
-                >
+                expiry.substr(0, 1) !== '•' ? 'rccs--filled' : ''
+              ].join(' ').trim()}>
               <div className="rccs__expiry__valid">{locale.valid}</div>
               <div className="rccs__expiry__value">{expiry}</div>
             </div>
-            <div className="rccs__chip" />
+            <div className="rccs__chip"/>
           </div>
           <div className="rccs__card--back">
-            <div className="rccs__card__background" />
-            <div className="rccs__stripe" />
-            <div className="rccs__signature" />
+            <div className="rccs__card__background"/>
+            <div className="rccs__stripe"/>
+            <div className="rccs__signature"/>
             <div
               className={[
                 'rccs__cvc',
-                focused === 'cvc' ? 'rccs--focused' : '',
-              ].join(' ').trim()}
-                >
+                focused === 'cvc' ? 'rccs--focused' : ''
+              ].join(' ').trim()}>
               {cvc}
             </div>
-            <div className="rccs__issuer" />
+            <div className="rccs__issuer"/>
           </div>
         </div>
       </div>
@@ -273,17 +278,13 @@ ReactCreditCards.propTypes = {
     PropTypes.number
   ]).isRequired,
   focused: PropTypes.string,
-  locale: PropTypes.shape({
-    valid: PropTypes.string,
-  }),
+  locale: PropTypes.shape({valid: PropTypes.string}),
   name: PropTypes.string.isRequired,
   number: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
   ]).isRequired,
-  placeholders: PropTypes.shape({
-    name: PropTypes.string
-  })
+  placeholders: PropTypes.shape({name: PropTypes.string})
 }
 
 export default ReactCreditCards

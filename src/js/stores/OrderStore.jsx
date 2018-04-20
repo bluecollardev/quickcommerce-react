@@ -1,82 +1,81 @@
-import assign from 'object-assign'
-
-import BaseStore from './BaseStore.jsx'
 import OrderConstants from '../constants/OrderConstants.jsx'
 
 import HashTable from '../utils/HashTable.js'
+
+import BaseStore from './BaseStore.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
 export class OrderStore extends BaseStore {
   constructor(dispatcher, stores) {
     super(dispatcher, stores)
-		
+
     this.variants = new HashTable()
   }
 
   registerToActions(action) {
     switch (action.actionType) {
-    case OrderConstants.NEW_ORDER:
-      this.newOrder(action.customer)
-      break
-    case OrderConstants.SET_ORDER:
-      this.setOrder(action.order)
-      break
-    case OrderConstants.SET_ORDER_VARIANT:
-      this.setVariant(action.key, action.variant)
-      break
-    case OrderConstants.SET_ORDER_VARIANTS:
-      this.setVariants(action.keyProperty, action.variant)
-      break
-    case OrderConstants.SET_BUILTIN_CUSTOMER:
-      this.setBuiltInCustomer(action.customer)
-      this.emit('set-customer', 'builtin')
-      break
-    case OrderConstants.SET_CUSTOM_CUSTOMER:
-      this.setCustomCustomer(action.customer)
-      this.emit('set-customer', 'custom')
-      break
-    case OrderConstants.SET_EXISTING_CUSTOMER:
-      this.setExistingCustomer(action.customer)
-      this.emit('set-customer', 'existing')
-      break
-    case OrderConstants.SET_ADDITIONAL_CUSTOMERS:
-      this.setAdditionalCustomers(action.customers, action.key, action.silent)
-      this.emit('set-additional-customers') // TODO: No silent support yet here :(
-      break
-    case OrderConstants.SET_BILLING_ADDRESS:
+      case OrderConstants.NEW_ORDER:
+        this.newOrder(action.customer)
+        break
+      case OrderConstants.SET_ORDER:
+        this.setOrder(action.order)
+        break
+      case OrderConstants.SET_ORDER_VARIANT:
+        this.setVariant(action.key, action.variant)
+        break
+      case OrderConstants.SET_ORDER_VARIANTS:
+        this.setVariants(action.keyProperty, action.variant)
+        break
+      case OrderConstants.SET_BUILTIN_CUSTOMER:
+        this.setBuiltInCustomer(action.customer)
+        this.emit('set-customer', 'builtin')
+        break
+      case OrderConstants.SET_CUSTOM_CUSTOMER:
+        this.setCustomCustomer(action.customer)
+        this.emit('set-customer', 'custom')
+        break
+      case OrderConstants.SET_EXISTING_CUSTOMER:
+        this.setExistingCustomer(action.customer)
+        this.emit('set-customer', 'existing')
+        break
+      case OrderConstants.SET_ADDITIONAL_CUSTOMERS:
+        this.setAdditionalCustomers(action.customers, action.key, action.silent)
+        this.emit('set-additional-customers') // TODO: No silent support yet here :(
+        break
+      case OrderConstants.SET_BILLING_ADDRESS:
       //this.setBillingAddress(action.address)
-      break
-    case OrderConstants.SET_SHIPPING_ADDRESS:
+        break
+      case OrderConstants.SET_SHIPPING_ADDRESS:
       //this.setShippingAddress(action.address)
-      break
-    case OrderConstants.SET_PAYMENT_METHOD:
-      this.setPaymentMethod(action.code, action.method)
-      break
-    case OrderConstants.SET_SHIPPING_METHOD:
-      this.setShippingMethod(action.code, action.method)
-      break
-    case OrderConstants.SET_PAYMENT_TYPE:
-      this.setPaymentType(action.paymentType)
-      break
-    case OrderConstants.SET_ORDER_STATUS:
-      this.setOrderStatus(action.status)
-      break
-    case OrderConstants.SET_NOTES:
-      this.setNotes(action.notes)
-      break
-    default:
-      break
+        break
+      case OrderConstants.SET_PAYMENT_METHOD:
+        this.setPaymentMethod(action.code, action.method)
+        break
+      case OrderConstants.SET_SHIPPING_METHOD:
+        this.setShippingMethod(action.code, action.method)
+        break
+      case OrderConstants.SET_PAYMENT_TYPE:
+        this.setPaymentType(action.paymentType)
+        break
+      case OrderConstants.SET_ORDER_STATUS:
+        this.setOrderStatus(action.status)
+        break
+      case OrderConstants.SET_NOTES:
+        this.setNotes(action.notes)
+        break
+      default:
+        break
     }
   }
 
   getOrderDetails(orderId) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-    
+
   getDetails(orderId) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-    
+
   /**
    * Privately invoked.
    */
@@ -87,7 +86,7 @@ export class OrderStore extends BaseStore {
     if (orderAction.action !== 'insert') {
       // Do something
     }
-        
+
     //let orderId = this.newOrder(orderAction.customer)
     this.newOrder(orderAction.customer)
   }
@@ -98,7 +97,7 @@ export class OrderStore extends BaseStore {
   newOrder(customer) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-    
+
   setOrder(orderPayload) {
     this.payload = orderPayload // TODO: Use mappings(?)
     this.emit('set-order')
@@ -117,7 +116,7 @@ export class OrderStore extends BaseStore {
     if (this.variants.has(key)) {
       return this.variants.get(key)
     }
-		
+
     return null
   }
 
@@ -135,8 +134,8 @@ export class OrderStore extends BaseStore {
    */
   getVariantAtIndex(idx) {
     let keys = this.variants.keys()
-    let variant =  this.variants.get(keys[idx]) || null
-		
+    let variant = this.variants.get(keys[idx]) || null
+
     return variant
   }
 
@@ -166,11 +165,11 @@ export class OrderStore extends BaseStore {
       variants.map((variant) => {
         this.variants.set(variant[keyProperty], variant)
       })
-      
+
       this.emit('set-variants', variants)
     }
   }
-  
+
   clearOrder(onSuccess, onError) {
     let that = this
 
@@ -181,83 +180,89 @@ export class OrderStore extends BaseStore {
   }
 
   /**
-	 * This abstract method may be implemented in classes inheriting from OrderStore.
-	 *
-	 * @param CustomerDto customer A customer DTO object
-	 * @return void
-	 * 
-	 */
+   * This abstract method may be implemented in classes inheriting from OrderStore.
+   *
+   * @param CustomerDto customer A customer DTO object
+   * @return void
+   *
+   */
   setBuiltInCustomer(customer) {
     //throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
   /**
-	 * This abstract method may be implemented in classes inheriting from OrderStore.
-	 *
-	 * @param CustomerDto customer A customer DTO object
-	 */
+   * This abstract method may be implemented in classes inheriting from OrderStore.
+   *
+   * @param CustomerDto customer A customer DTO object
+   */
   setCustomCustomer(customer) {
     //throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
   /**
-	 * This abstract method must be implemented in classes inheriting from OrderStore.
-	 * If not defined, a Not Implemented exception will be thrown.
-	 *
-	 * @param CustomerDto customer A customer DTO object
-	 * @return void
-	 * 
-	 */
+   * This abstract method must be implemented in classes inheriting from OrderStore.
+   * If not defined, a Not Implemented exception will be thrown.
+   *
+   * @param CustomerDto customer A customer DTO object
+   * @return void
+   *
+   */
   setExistingCustomer(customer) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-	
+
   /**
-	 * This abstract method may be implemented in classes inheriting from OrderStore.
-	 *
-	 * @param CustomerDto customer A customer DTO object
-	 */
+   * This abstract method may be implemented in classes inheriting from OrderStore.
+   *
+   * @param CustomerDto customer A customer DTO object
+   */
   setAdditionalCustomers(customers, key) {
     //throw new Error('Not implemented') // TODO: Make a real exception class
   }
-	
+
   /**
-	 * This abstract method may be implemented in classes inheriting from OrderStore.
-	 *
-	 * @return void
-	 */
+   * This abstract method may be implemented in classes inheriting from OrderStore.
+   *
+   * @return void
+   */
   setBillingAddress(address) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
   /**
-	 * This abstract method may be implemented in classes inheriting from OrderStore.
-	 *
-	 * @return void
-	 */
+   * This abstract method may be implemented in classes inheriting from OrderStore.
+   *
+   * @return void
+   */
   setShippingAddress(address) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
   setPaymentMethod(code, method) {
-    this.paymentMethod = { code: code, method: method }
+    this.paymentMethod = {
+      code: code,
+      method: method
+    }
     this.payload.order.paymentMethod = method
     this.payload.order.paymentCode = code
     this.emit('set-payment-method')
   }
 
   setShippingMethod(code, method) {
-    this.shippingMethod = { code: code, method: method }
+    this.shippingMethod = {
+      code: code,
+      method: method
+    }
     this.payload.order.shippingMethod = method
     this.payload.order.shippingCode = code
     this.emit('set-shipping-method')
   }
-    
+
   setOrderStatus(status) {
     this.orderStatus = status
     this.emit('set-order-status')
   }
-    
+
   setNotes(notes) {
     this.payload.order.comment = notes // TODO: Clean and sanitize!
     this.emit('set-notes', notes)
@@ -269,7 +274,7 @@ export class OrderStore extends BaseStore {
 
     // If there's no total, output zero
     if (typeof totals !== 'undefined' && totals !== null) {
-            
+
       if (!(totals instanceof Array || totals.length > 0)) return data //0.00
 
       // Sort the totals
@@ -278,13 +283,13 @@ export class OrderStore extends BaseStore {
         data[idx] = totals[idx]
 
         /* Format:
-        orderTotalId": 49,
-        "orderId": 13,
-        "code": "tax",
-        "title": "VAT",
-        "value": "73.3900",
-        "sortOrder": 5
-        */
+         orderTotalId": 49,
+         "orderId": 13,
+         "code": "tax",
+         "title": "VAT",
+         "value": "73.3900",
+         "sortOrder": 5
+         */
       }
 
       data = data.filter(val => val) // Re-index array
@@ -304,7 +309,7 @@ export class OrderStore extends BaseStore {
 
     return total
   }
-    
+
   getSubTotal() {
     let totals = this.getTotals() || null
     let total = {
@@ -316,12 +321,12 @@ export class OrderStore extends BaseStore {
 
     return total
   }
-    
+
   processSelectionOptions(item, callback) {
     // Process selected item options
     if (item.options instanceof Array) {
       let selected = item.options
-            
+
       // Just a simple loop over selected options 
       // Don't worry about performance there won't be a million of these
       for (let idx = 0; idx < selected.length; idx++) {
@@ -330,15 +335,15 @@ export class OrderStore extends BaseStore {
       }
     }
   }
-    
+
   createPayloadOption(selection, data) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-    
+
   updatePayloadOption(selectionOption, payloadOption) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
-    
+
   /**
    * Builds an array of order options which we will send to the server later.
    * This method returns an object that we store to this.payload.orderOptions,
@@ -443,9 +448,8 @@ export class OrderStore extends BaseStore {
    * (orig. (Cart) methods, and is generally only for 'private use'.
    */
   getTaxRates(value, taxClassId) {
-    let rateData = {},
-      rates = this.settings.cartConfig.taxRates['1_1_5_store']
-      
+    let rateData = {}, rates = this.settings.cartConfig.taxRates['1_1_5_store']
+
     // TODO: Need to grab store dynamically!!!! 1_1_5 Correlates to languageId = 1, storeId = 1, taxClassId = 5?
 
     // Pretty sure returned data is already filtered by tax class
@@ -469,10 +473,10 @@ export class OrderStore extends BaseStore {
 
       rateData[rate['taxRateId']] = {
         'rate_id': rate['taxRateId'],
-        'name'       : rate['name'],
-        'rate'       : rate['rate'],
-        'type'       : rate['type'],
-        'amount'     : amount
+        'name': rate['name'],
+        'rate': rate['rate'],
+        'type': rate['type'],
+        'amount': amount
       }
     }
     //}

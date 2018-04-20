@@ -1,7 +1,4 @@
-import assign from 'object-assign'
-
-import axios from 'axios'
-import { normalize, denormalize, schema } from 'normalizr'
+import { schema } from 'normalizr'
 
 import BaseStore from './BaseStore.jsx'
 
@@ -10,7 +7,7 @@ let instance = null
 class StarMicronicsStore extends BaseStore {
   constructor(dispatcher) {
     super(dispatcher)
-        
+
     if (instance !== null) {
       return instance
     }
@@ -22,17 +19,16 @@ class StarMicronicsStore extends BaseStore {
       macAddress: null
     }
 
-       
-        //this.subscribe(() => this.registerToActions.bind(this))
-        
-        // Easy access while developing app
+    //this.subscribe(() => this.registerToActions.bind(this))
+
+    // Easy access while developing app
     window.StarMicronicsStore = instance = this
-        
+
     document.addEventListener('deviceready', () => {
       this.connectToStarPrinter()
     }, false)
   }
-    
+
   connectToStarPrinter(onSuccess, onError) {
     this.discoverStarPrinterPorts(printerList => {
       printerList = printerList || false
@@ -42,7 +38,7 @@ class StarMicronicsStore extends BaseStore {
         return
       }
 
-            // Connect and listen for hardware events (mPOP on iOS only)
+      // Connect and listen for hardware events (mPOP on iOS only)
       window.plugins.starMicronics.connect(printerList[0].portName, (error, result) => {
         if (error) {
           console.log(error)
@@ -53,36 +49,36 @@ class StarMicronicsStore extends BaseStore {
           this.starPrinter.macAddress = printerList[0].macAddress
           this.starPrinter.isConnected = true
 
-                    //alert(JSON.stringify(that.starPrinter))
-                    // Connect and listen for hardware events (mPOP on iOS only)
+          //alert(JSON.stringify(that.starPrinter))
+          // Connect and listen for hardware events (mPOP on iOS only)
           window.addEventListener('starIOPluginData', (e) => {
             switch (e.dataType) {
-            case 'printerCoverOpen':
-              break
-            case 'printerCoverClose':
-              break
-            case 'printerImpossible':
-              break
-            case 'printerOnline':
-              break
-            case 'printerOffline':
-              break
-            case 'printerPaperEmpty':
-              break
-            case 'printerPaperNearEmpty':
-              break
-            case 'printerPaperReady':
-              break
-            case 'barcodeReaderConnect':
-              break
-            case 'barcodeDataReceive':
-              break
-            case 'barcodeReaderImpossible':
-              break
-            case 'cashDrawerOpen':
-              break
-            case 'cashDrawerClose':
-              break
+              case 'printerCoverOpen':
+                break
+              case 'printerCoverClose':
+                break
+              case 'printerImpossible':
+                break
+              case 'printerOnline':
+                break
+              case 'printerOffline':
+                break
+              case 'printerPaperEmpty':
+                break
+              case 'printerPaperNearEmpty':
+                break
+              case 'printerPaperReady':
+                break
+              case 'barcodeReaderConnect':
+                break
+              case 'barcodeDataReceive':
+                break
+              case 'barcodeReaderImpossible':
+                break
+              case 'cashDrawerOpen':
+                break
+              case 'cashDrawerClose':
+                break
             }
           }) // TODO: Unbind event listener on destruct
         }
@@ -91,13 +87,13 @@ class StarMicronicsStore extends BaseStore {
   }
 
   discoverStarPrinterPorts(onSuccess) {
-        // Make sure Cordova is initialized
+    // Make sure Cordova is initialized
     if (!window.hasOwnProperty('plugins')) {
       throw new Error('Cordova was not detected')
       alert('Cordova was not detected')
     }
 
-        // Make sure the Star Micronics Cordova plugin is installed and working
+    // Make sure the Star Micronics Cordova plugin is installed and working
     if (!window.plugins.hasOwnProperty('starMicronics')) {
       throw new Error('Star Micronics plugin was not detected')
       alert('Star Micronics plugin was not detected')
@@ -108,7 +104,7 @@ class StarMicronicsStore extends BaseStore {
         console.error(error)
         alert(JSON.stringify(error))
       } else {
-                // TODO: Check to make sure it's a function!
+        // TODO: Check to make sure it's a function!
         onSuccess(printerList) // Trigger our onSuccess callback
       }
     })
@@ -119,7 +115,7 @@ class StarMicronicsStore extends BaseStore {
       alert('Could not open drawer - device not found')
       return
     }
-        
+
     window.plugins.starMicronics.openCashDrawer(this.starPrinter.portName, (error, result) => {
       if (error) {
         alert(JSON.stringify(error))
@@ -134,10 +130,10 @@ class StarMicronicsStore extends BaseStore {
       alert('Could not print order - printer not found')
       return
     }
-        
+
     this.discoverStarPrinterPorts(printerList => {
       if (!this.starPrinter.isConnected) return
-            
+
       window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
         if (error) {
           console.log(error)
@@ -154,10 +150,10 @@ class StarMicronicsStore extends BaseStore {
       alert('Could not print receipt - printer not found')
       return
     }
-        
+
     this.discoverStarPrinterPorts(printerList => {
       if (!this.starPrinter.isConnected) return
-            
+
       window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
         if (error) {
           console.log(error)
@@ -174,10 +170,10 @@ class StarMicronicsStore extends BaseStore {
       alert('Could not print report - printer not found')
       return
     }
-        
+
     this.discoverStarPrinterPorts(printerList => {
       if (!this.starPrinter.isConnected) return
-            
+
       window.plugins.starMicronics.printReceipt(this.starPrinter.portName, output, (error, result) => {
         if (error) {
           console.log(error)

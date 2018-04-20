@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { render, unmountComponentAtNode } from 'react-dom'
 import classnames from 'classnames'
-import { filterByFocusable, findScrollParents } from './DOM'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
+import { render, unmountComponentAtNode } from 'react-dom'
 import CSSClassnames from './CSSClassnames'
+import { filterByFocusable, findScrollParents } from './DOM'
 import KeyboardAccelerators from './KeyboardAccelerators'
 
 const CLASS_ROOT = CSSClassnames.DROP
@@ -14,43 +14,43 @@ const BACKGROUND_COLOR_INDEX = CSSClassnames.BACKGROUND_COLOR_INDEX
  * their initiating controls.
  */
 
-const VERTICAL_ALIGN_OPTIONS = ['top', 'bottom']
-const HORIZONTAL_ALIGN_OPTIONS = ['right', 'left']
+const VERTICAL_ALIGN_OPTIONS = [
+  'top',
+  'bottom'
+]
+const HORIZONTAL_ALIGN_OPTIONS = [
+  'right',
+  'left'
+]
 
 class DropContents extends Component {
 
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context)
     this._processTab = this._processTab.bind(this)
   }
 
-  getChildContext () {
+  getChildContext() {
     const { context } = this.props
     return { ...context }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { focusControl } = this.props
     if (focusControl) {
-      this._keyboardHandlers = {
-        tab: this._processTab
-      }
-      KeyboardAccelerators.startListeningToKeyboard(
-        this, this._keyboardHandlers
-      )
+      this._keyboardHandlers = {tab: this._processTab}
+      KeyboardAccelerators.startListeningToKeyboard(this, this._keyboardHandlers)
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { focusControl } = this.props
     if (focusControl) {
-      KeyboardAccelerators.stopListeningToKeyboard(
-        this, this._keyboardHandlers
-      )
+      KeyboardAccelerators.stopListeningToKeyboard(this, this._keyboardHandlers)
     }
   }
 
-  _processTab (event) {
+  _processTab(event) {
     let items = this._containerRef.getElementsByTagName('*')
     items = filterByFocusable(items)
     if (!items || items.length === 0) {
@@ -68,14 +68,15 @@ class DropContents extends Component {
     }
   }
 
-  render () {
+  render() {
     const { content, focusControl } = this.props
 
     let anchorStep
     if (focusControl) {
       anchorStep = (
         <a tabIndex='-1' aria-hidden='true'
-          className={`${CLASS_ROOT}__anchor`} />
+          className={`${CLASS_ROOT}__anchor`}
+        />
       )
     }
     return (
@@ -108,37 +109,23 @@ const _normalizeOptions = (options) => {
     opts = { align: { ...options } }
   }
   // validate align
-  if (options && options.align && options.align.top &&
-    VERTICAL_ALIGN_OPTIONS.indexOf(options.align.top) === -1) {
-    console.warn('Warning: Invalid align.top value ' + options.align.top +
-      ' supplied to Drop,' +
-      'expected one of [' + VERTICAL_ALIGN_OPTIONS.join(',') + ']')
+  if (options && options.align && options.align.top && VERTICAL_ALIGN_OPTIONS.indexOf(options.align.top) === -1) {
+    console.warn('Warning: Invalid align.top value ' + options.align.top + ' supplied to Drop,' + 'expected one of [' + VERTICAL_ALIGN_OPTIONS.join(',') + ']')
   }
-  if (options.align && options.align.bottom &&
-    VERTICAL_ALIGN_OPTIONS.indexOf(options.align.bottom) === -1) {
-    console.warn('Warning: Invalid align.bottom value ' +
-      options.align.bottom +
-      ' supplied to Drop,' +
-      'expected one of [' + VERTICAL_ALIGN_OPTIONS.join(',') + ']')
+  if (options.align && options.align.bottom && VERTICAL_ALIGN_OPTIONS.indexOf(options.align.bottom) === -1) {
+    console.warn('Warning: Invalid align.bottom value ' + options.align.bottom + ' supplied to Drop,' + 'expected one of [' + VERTICAL_ALIGN_OPTIONS.join(',') + ']')
   }
-  if (options.align && options.align.left &&
-    HORIZONTAL_ALIGN_OPTIONS.indexOf(options.align.left) === -1) {
-    console.warn('Warning: Invalid align.left value ' + options.align.left +
-      ' supplied to Drop,' +
-      'expected one of [' + HORIZONTAL_ALIGN_OPTIONS.join(',') + ']')
+  if (options.align && options.align.left && HORIZONTAL_ALIGN_OPTIONS.indexOf(options.align.left) === -1) {
+    console.warn('Warning: Invalid align.left value ' + options.align.left + ' supplied to Drop,' + 'expected one of [' + HORIZONTAL_ALIGN_OPTIONS.join(',') + ']')
   }
-  if (options.align && options.align.right &&
-    HORIZONTAL_ALIGN_OPTIONS.indexOf(options.align.right) === -1) {
-    console.warn('Warning: Invalid align.right value ' +
-      options.align.right +
-      ' supplied to Drop,' +
-      'expected one of [' + HORIZONTAL_ALIGN_OPTIONS.join(',') + ']')
+  if (options.align && options.align.right && HORIZONTAL_ALIGN_OPTIONS.indexOf(options.align.right) === -1) {
+    console.warn('Warning: Invalid align.right value ' + options.align.right + ' supplied to Drop,' + 'expected one of [' + HORIZONTAL_ALIGN_OPTIONS.join(',') + ']')
   }
   opts.align = { ...opts.align } || {}
-  if (! options.align.top && ! options.align.bottom) {
+  if (!options.align.top && !options.align.bottom) {
     opts.align.top = 'top'
   }
-  if (! options.align.left && ! options.align.right) {
+  if (!options.align.left && !options.align.right) {
     opts.align.left = 'left'
   }
   opts.responsive = options.responsive !== false ? true : options.responsive
@@ -161,7 +148,7 @@ const _normalizeOptions = (options) => {
 
 export default class Drop {
 
-  constructor (control, content, opts) {
+  constructor(control, content, opts) {
     const options = _normalizeOptions(opts)
     const { context, focusControl } = options
 
@@ -182,17 +169,18 @@ export default class Drop {
     // prepend in body to avoid browser scroll issues
     document.body.insertBefore(container, document.body.firstChild)
 
-    render(
-      <DropContents content={content} context={context}
-        focusControl={focusControl} />,
-      container
-    )
+    render(<DropContents content={content} context={context}
+      focusControl={focusControl}
+    />, container)
 
     const scrollParents = findScrollParents(control)
 
     // initialize state
     this.state = {
-      container, control, initialFocusNeeded: focusControl, options,
+      container,
+      control,
+      initialFocusNeeded: focusControl,
+      options,
       scrollParents
     }
 
@@ -202,7 +190,7 @@ export default class Drop {
     this.place()
   }
 
-  _listen () {
+  _listen() {
     const { scrollParents } = this.state
     scrollParents.forEach(scrollParent => {
       scrollParent.addEventListener('scroll', this.place)
@@ -213,7 +201,7 @@ export default class Drop {
     window.addEventListener('resize', this._onResize)
   }
 
-  _onResize () {
+  _onResize() {
     const { scrollParents } = this.state
     // we need to update scroll parents as Responsive options may change
     // the parent for the target element
@@ -232,10 +220,8 @@ export default class Drop {
     this.place()
   }
 
-  place () {
-    const {
-      control, container, initialFocusNeeded, options: { align, responsive }
-    } = this.state
+  place() {
+    const {control, container, initialFocusNeeded, options: { align, responsive }} = this.state
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
 
@@ -250,10 +236,7 @@ export default class Drop {
     const containerRect = container.getBoundingClientRect()
 
     // determine width
-    const width = Math.min(
-      Math.max(controlRect.width, containerRect.width),
-      windowWidth
-    )
+    const width = Math.min(Math.max(controlRect.width, containerRect.width), windowWidth)
 
     // set left position
     let left
@@ -285,10 +268,7 @@ export default class Drop {
         maxHeight = Math.min(windowHeight - controlRect.top, windowHeight)
       } else {
         top = controlRect.bottom
-        maxHeight = Math.min(
-          windowHeight - controlRect.bottom,
-          windowHeight - controlRect.height
-        )
+        maxHeight = Math.min(windowHeight - controlRect.bottom, windowHeight - controlRect.height)
       }
     } else if (align.bottom) {
       if ('bottom' === align.bottom) {
@@ -327,10 +307,7 @@ export default class Drop {
           if (responsive) {
             top = controlRect.bottom
           }
-          maxHeight = Math.min(
-            windowHeight - top,
-            windowHeight - controlRect.height
-          )
+          maxHeight = Math.min(windowHeight - top, windowHeight - controlRect.height)
         }
       }
     }
@@ -350,10 +327,10 @@ export default class Drop {
     }
   }
 
-  _focus () {
+  _focus() {
     const { container } = this.state
     this.state.originalFocusedElement = document.activeElement
-    if (! container.contains(document.activeElement)) {
+    if (!container.contains(document.activeElement)) {
       const anchor = container.querySelector(`${CLASS_ROOT}__anchor`)
       if (anchor) {
         anchor.focus()
@@ -363,35 +340,32 @@ export default class Drop {
     delete this.state.initialFocusNeeded
   }
 
-  render (content) {
+  render(content) {
     const { container, options: { context, focusControl } } = this.state
     const originalScrollPosition = container.scrollTop
-    render(
-      <DropContents content={content} context={context}
-        focusControl={focusControl}/>,
-      container,
-      () => {
-        this.place()
-        // reset container to its original scroll position
-        container.scrollTop = originalScrollPosition
-      }
-    )
+    render(<DropContents content={content} context={context}
+      focusControl={focusControl}
+    />, container, () => {
+      this.place()
+      // reset container to its original scroll position
+      container.scrollTop = originalScrollPosition
+    })
   }
 
-  remove () {
+  remove() {
     const { container, originalFocusedElement, scrollParents } = this.state
     scrollParents.forEach(scrollParent => {
       scrollParent.removeEventListener('scroll', this.place)
     })
     window.removeEventListener('resize', this._onResize)
-    
+
     unmountComponentAtNode(container)
     document.body.removeChild(container)
     // weird bug in Chrome does not remove child if
     // document.body.insertBefore is called in another new drop.
     // the code below will go over remaining drop that was not removed
     Array.forEach.call(document.getElementsByClassName(CLASS_ROOT), (element) => {
-      if(element.getAttribute('style') === container.getAttribute('style')) {
+      if (element.getAttribute('style') === container.getAttribute('style')) {
         document.body.removeChild(element)
       }
     })

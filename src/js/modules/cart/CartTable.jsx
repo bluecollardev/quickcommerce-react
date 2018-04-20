@@ -14,7 +14,7 @@ class CartTable extends Component {
               )
             })}
             <th>Quantity</th>
-            <th />
+            <th/>
           </tr>
         </thead>
         <tbody>

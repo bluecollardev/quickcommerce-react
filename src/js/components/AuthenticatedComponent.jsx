@@ -1,33 +1,29 @@
+import { inject, observer } from 'mobx-react'
 import assign from 'object-assign'
 
 import React, { Component } from 'react'
-import {inject, observer, Provider} from 'mobx-react'
 
 // TODO: Double check that this still works after commenting out events
 export default (ComposedComponent) => {
-    @inject(deps => ({
-      actions: deps.actions,
-      authService: deps.authService,
-      customerService: deps.customerService,
-      loginStore: deps.loginStore,
-      userStore: deps.userStore
-    }))
-    @observer
-    // Wrapping this class is causing issues
+  @inject(deps => ({
+    actions: deps.actions,
+    authService: deps.authService,
+    customerService: deps.customerService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore
+    })) @observer
+  // Wrapping this class is causing issues
   class AuthenticatedComponent extends Component {
+    constructor(props) {
+      super(props)
+
+      this.state = assign({}, this.getLoginState(), this.getUserState())
+    }
+
     static willTransitionTo(transition) {
       if (!this.props.loginStore.isLoggedIn()) {
         //transition.redirect('/login', {}, {'nextPath' : transition.path})
       }
-    }
-
-    constructor(props) {
-      super(props)
-            
-      this.state = assign({},
-                this.getLoginState(),
-                this.getUserState()
-            )
     }
 
     getLoginState() {
@@ -37,7 +33,7 @@ export default (ComposedComponent) => {
         user: this.props.loginStore.user
       }
     }
-        
+
     getUserState() {
       return {
         loggedIn: this.props.loginStore.isLoggedIn(),
@@ -45,13 +41,9 @@ export default (ComposedComponent) => {
         user: this.props.userStore.user
       }
     }
-        
+
     onChange() {
-      this.setState(
-        assign({},
-          this.getLoginState(),
-          this.getUserState())
-      )
+      this.setState(assign({}, this.getLoginState(), this.getUserState()))
     }
 
     componentWillMount() {
@@ -59,26 +51,27 @@ export default (ComposedComponent) => {
       //this.props.loginStore.addChangeListener(this.changeListener)
       //this.props.userStore.addChangeListener(this.changeListener)
     }
-        
+
     componentWillUnmount() {
       if (typeof this.changeListener === 'function') {
         //this.props.loginStore.removeChangeListener(this.changeListener)
         //this.props.userStore.removeChangeListener(this.changeListener)
-                
+
         delete this.changeListener
       }
     }
 
-    render() {            
+    render() {
       return (
         <ComposedComponent
           {...this.props}
           user={this.state.user}
           userToken={this.state.userToken}
-          loggedIn={this.state.loggedIn} />
+          loggedIn={this.state.loggedIn}
+        />
       )
     }
-    }
-    
+  }
+
   return AuthenticatedComponent
 }

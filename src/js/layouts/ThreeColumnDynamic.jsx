@@ -1,12 +1,6 @@
-import React, { Component } from 'react'
-
-import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
-import { Tabs, Tab, TabContent, TabContainer, TabPanes } from 'react-bootstrap'
-import { Nav, Navbar, NavItem, MenuItem, NavDropdown } from 'react-bootstrap'
-import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
-import { SplitButton, ButtonGroup, Button, Checkbox, Radio, } from 'react-bootstrap'
-
-import Slot, { slot, findNamedSlotNode } from 'quickcommerce-react/modules/slots/Slots.jsx'
+import Slot from '../modules/slots/Slots.jsx'
+import React from 'react'
+import { Modal } from 'react-bootstrap'
 
 const ThreeColumnDynamicLayout = (props) => {
   let displayLeftCol = props.displayLeftCol
@@ -16,8 +10,7 @@ const ThreeColumnDynamicLayout = (props) => {
   let rightColWidth = 3
   let centerColWidth = 6
 
-  if (props.columnConfiguration instanceof Array &&
-    props.columnConfiguration.length == 3) {
+  if (props.columnConfiguration instanceof Array && props.columnConfiguration.length == 3) {
     // eg. [4,5,3]
     leftColWidth = props.columnConfiguration[0]
     rightColWidth = props.columnConfiguration[2]
@@ -30,18 +23,15 @@ const ThreeColumnDynamicLayout = (props) => {
 
   if (displayLeftCol && displayRightCol) {
     // Do nothing
-  }
-  else if (displayLeftCol && !displayRightCol) {
+  } else if (displayLeftCol && !displayRightCol) {
     leftColClass = 'col-xs-12 col-md-' + leftColWidth
     rightColClass = ''
     centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
-  }
-  else if (!displayLeftCol && displayRightCol) {
+  } else if (!displayLeftCol && displayRightCol) {
     leftColClass = ''
     rightColClass = 'col-xs-12 col-md-' + leftColWidth
     centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
-  }
-  else if (!displayLeftCol && !displayRightCol) {
+  } else if (!displayLeftCol && !displayRightCol) {
     leftColClass = ''
     rightColClass = ''
     centerColClass = 'col-xs-12'
@@ -54,21 +44,21 @@ const ThreeColumnDynamicLayout = (props) => {
           {displayLeftCol && (
             <div className={leftColClass}>
               <div className='row'>
-                <Slot name='leftColumn' content={props.children} />
+                <Slot name='leftColumn' content={props.children}/>
               </div>
             </div>
           )}
 
           {props.children && (
             <div className={centerColClass}>
-              <Slot className='main' role='main' content={props.children} />
+              <Slot className='main' role='main' content={props.children}/>
             </div>
           )}
 
           {displayRightCol && (
             <div className={rightColClass}>
               <div className='row'>
-                <Slot name='rightColumn' content={props.children} />
+                <Slot name='rightColumn' content={props.children}/>
               </div>
             </div>
           )}

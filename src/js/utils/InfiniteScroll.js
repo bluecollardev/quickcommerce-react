@@ -25,19 +25,17 @@ function _evaluate(scrollState) {
 function _onScroll(scrollState) {
   // delay a bit to ride out quick users
   clearTimeout(scrollState.scrollTimer)
-  scrollState.scrollTimer = setTimeout(() => _evaluate(scrollState),
-    SCROLL_MORE_DELAY)
+  scrollState.scrollTimer = setTimeout(() => _evaluate(scrollState), SCROLL_MORE_DELAY)
 }
 
 function _onResize(scrollState) {
   clearTimeout(scrollState.scrollTimer)
-  scrollState.scrollTimer = setTimeout(() => _evaluate(scrollState),
-    SCROLL_MORE_DELAY)
+  scrollState.scrollTimer = setTimeout(() => _evaluate(scrollState), SCROLL_MORE_DELAY)
 }
 
 export default {
 
-  startListeningForScroll (indicatorElement, onEnd) {
+  startListeningForScroll(indicatorElement, onEnd) {
     var scrollState = {
       onEnd: onEnd,
       indicatorElement: indicatorElement,
@@ -48,26 +46,22 @@ export default {
     scrollState._onScroll = _onScroll.bind(this, scrollState)
 
     window.addEventListener('resize', scrollState._onResize)
-    // check in case we're already at the bottom and the indicator is visible
-    (scrollState.scrollParents || []).forEach((scrollParent) => {
+    // check in case we're already at the bottom and the indicator is visible(scrollState.scrollParents || []).forEach((scrollParent) => {
       scrollParent.addEventListener('scroll', scrollState._onScroll)
       if (scrollParent === document || scrollParent === document.body) {
         var rect = indicatorElement.getBoundingClientRect()
         if (rect.top < window.innerHeight) {
-          scrollState.scrollTimer = setTimeout(
-            onEnd, SCROLL_MORE_INITIAL_DELAY
-          )
+          scrollState.scrollTimer = setTimeout(onEnd, SCROLL_MORE_INITIAL_DELAY)
         }
       }
     })
     return scrollState
   },
 
-  stopListeningForScroll (scrollState) {
+  stopListeningForScroll(scrollState) {
     (scrollState.scrollParents || []).forEach((scrollParent) => {
       clearTimeout(scrollState.scrollTimer)
-      scrollParent.removeEventListener('scroll',
-        scrollState._onScroll)
+      scrollParent.removeEventListener('scroll', scrollState._onScroll)
       window.removeEventListener('resize', scrollState._onResize)
     })
     scrollState.scrollParents = undefined

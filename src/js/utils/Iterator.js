@@ -10,7 +10,7 @@ export default (obj) => {
     keys: [],
     index: 0,
     len: 0,
-        
+
     init: function (obj) {
       if (obj) {
         this.data = obj
@@ -18,15 +18,12 @@ export default (obj) => {
         this.len = this.keys.length
         this.index = 0
       }
-            
+
       return this
     },
     next: function () {
-      let element,
-        data = this.data,
-        keys = this.keys,
-        index = this.index
-                
+      let element, data = this.data, keys = this.keys, index = this.index
+
       if (!this.hasNext()) {
         return null
       }
@@ -37,34 +34,28 @@ export default (obj) => {
       return element
     },
     hasNext: function () {
-      let index = this.index,
-        len = this.len
-                    
+      let index = this.index, len = this.len
+
       return index < len
     },
     rewind: function () {
-      let data = this.data,
-        keys = this.keys,
-        index = this.index
-            
+      let data = this.data, keys = this.keys, index = this.index
+
       this.index = 0
-            
+
       return data[keys[index]]
     },
     current: function () {
-      let data = this.data,
-        keys = this.keys,
-        index = this.index
-                
+      let data = this.data, keys = this.keys, index = this.index
+
       return data[keys[index]]
     },
     key: function () {
-      let keys = this.keys,
-        index = this.index
-                
+      let keys = this.keys, index = this.index
+
       return keys[index]
     }
   })
-    
+
   return iterator.init(obj)
 }

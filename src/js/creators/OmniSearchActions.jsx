@@ -1,12 +1,11 @@
+import { schema } from 'normalizr'
 import assign from 'object-assign'
 
 import OmniSearchConstants from '../constants/OmniSearchConstants.jsx'
 
-import { normalize, denormalize, schema } from 'normalizr'
-
 let result = new schema.Entity('data', {}, {
-    // TODO: Allow for configurable key in constants, it's not always payload.data...
-    //idAttribute: 'customer_id'
+  // TODO: Allow for configurable key in constants, it's not always payload.data...
+  //idAttribute: 'customer_id'
   idAttribute: 'userId'
 })
 
@@ -27,11 +26,8 @@ export default (dispatcher) => {
                 data: params
               }
             }
-          },
-                    //entityName: 'OcCustomer',
-          schema: {
-            customers: [result]
-          }
+          }, //entityName: 'OcCustomer',
+          schema: {customers: [result]}
         })
       })
     }

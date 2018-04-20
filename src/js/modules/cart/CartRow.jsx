@@ -3,17 +3,17 @@ import React, { Component } from 'react'
 class CartRow extends Component {
   constructor(props) {
     super(props)
-        
+
     this.handleChange = this.handleChange.bind(this)
   }
-    
+
   handleChange(event) {
     const value = event.target.value
     if (!isNaN(value) && value > 0) {
       this.props.setItemQty(value)
     }
   }
-    
+
   render() {
     return (
       <tr>
@@ -26,15 +26,19 @@ class CartRow extends Component {
         })}
         <td>
           <input
-            style={{textAlign: 'right', width: '100px'}}
+            style={{
+              textAlign: 'right',
+              width: '100px'
+            }}
             type='number'
             value={this.props.item.quantity}
-            onChange={this.handleChange} />
+            onChange={this.handleChange}
+          />
         </td>
         <td>
-          <button 
+          <button
             onClick={this.props.removeItem}>
-                        Remove
+            Remove
           </button>
         </td>
       </tr>

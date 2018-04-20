@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 
-import { Alert, Table, Grid, Col, Row, Thumbnail, Input, Button, Modal } from 'react-bootstrap'
+import { Button, Col, Input } from 'react-bootstrap'
 
 import CartDragItem from '../cart/CartMenuDragItem.jsx'
 
 export default class TextMenuRow extends Component {
   static defaultProps = {
-    data : {}, 
+    data: {},
     onItemClicked: () => {},
     onAddToCartClicked: () => {}
   }
-    
+
   constructor(props) {
     super(props)
   }
-    
+
   render() {
     return (
       <Col xs={12} sm={12}>
@@ -25,7 +25,7 @@ export default class TextMenuRow extends Component {
           displayDetails={true}
           item={this.props.data}
           id={this.props.data.id}>
-          <Button block onClick={this.props.onAddToCartClicked}><i className='fa fa-shopping-cart' /> Quick Add</Button>
+          <Button block onClick={this.props.onAddToCartClicked}><i className='fa fa-shopping-cart'/> Quick Add</Button>
         </CartDragItem>
       </Col>
     )

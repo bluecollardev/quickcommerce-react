@@ -1,14 +1,11 @@
+import { schema } from 'normalizr'
 import assign from 'object-assign'
 
 import CustomerListConstants from '../constants/CustomerListConstants.jsx'
 
-import { normalize, denormalize, schema } from 'normalizr'
-
 let data = []
 
-let customer = new schema.Entity('data', {}, {
-  idAttribute: 'customer_id'
-})
+let customer = new schema.Entity('data', {}, {idAttribute: 'customer_id'})
 
 export default (dispatcher) => {
   return {
@@ -29,9 +26,7 @@ export default (dispatcher) => {
           },
           data: data, // Inject dummy data, just patch it in above if you want...
           entityName: 'OcCustomer',
-          schema: {
-            customers: [customer]
-          }
+          schema: {customers: [customer]}
         })
       })
     }

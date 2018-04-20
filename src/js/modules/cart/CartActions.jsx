@@ -41,14 +41,10 @@ export default (dispatcher) => {
       })
     },
     emptyCart() {
-      dispatcher.dispatch({
-        actionType: 'cart-reset'
-      })
+      dispatcher.dispatch({actionType: 'cart-reset'})
     },
     clearCart() {
-      dispatcher.dispatch({
-        actionType: 'cart-clear'
-      })
+      dispatcher.dispatch({actionType: 'cart-clear'})
     },
     reset() {
       dispatcher.dispatch({

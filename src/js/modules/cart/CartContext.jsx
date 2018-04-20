@@ -1,13 +1,13 @@
+import { Dispatcher } from 'flux'
+import { inject, observer } from 'mobx-react'
 import assign from 'object-assign'
-import React, { Component } from 'react'
-import {inject, observer} from 'mobx-react'
 import PropTypes from 'prop-types'
-import {Dispatcher} from 'flux'
-
-import createCartActions from './CartActions.jsx'
-import {CartStore} from './CartStore.jsx'
+import React, { Component } from 'react'
 
 import FormHelper from '../../helpers/Form.js'
+
+import createCartActions from './CartActions.jsx'
+import { CartStore } from './CartStore.jsx'
 
 let createCartContextManager = () => {
   let dispatcher = new Dispatcher()
@@ -62,31 +62,30 @@ let createCartContextManager = () => {
  * with the shopping cart.
  */
 export default (ComposedComponent) => {
-    let displayName = ComposedComponent.displayName || ComposedComponent.name || 'Component'
+  let displayName = ComposedComponent.displayName || ComposedComponent.name || 'Component'
 
-    @inject(deps => ({
-      //actions: deps.actions,
-      authService: deps.authService,
-      customerService: deps.customerService,
-      checkoutService: deps.checkoutService,
-      settingService: deps.authService,
-      loginStore: deps.loginStore,
-      userStore: deps.userStore,
-      customerStore: deps.customerStore,
-      catalogStore: deps.catalogStore,
-      cartStore: deps.cartStore,
-      checkoutStore: deps.checkoutStore,
-      starMicronicsStore: deps.starMicronicsStore,
-      productStore: deps.productStore,
-      settingStore: deps.settingStore,
-      mappings: deps.mappings, // Mappings correlate directly to stores
-      // For instance, if the store dep is named 'cartStore', we would expect its mappings to be under the object key 'cartStore'
-      translations: deps.translations, // i8ln transations
-      roles: deps.roles, // App level roles, general authenticated user (not customer!)
-      userRoles: deps.userRoles, // Shortcut or implement via HoC?
-      user: deps.user // Shortcut or implement via HoC?
-    }))
-    @observer
+  @inject(deps => ({
+    //actions: deps.actions,
+    authService: deps.authService,
+    customerService: deps.customerService,
+    checkoutService: deps.checkoutService,
+    settingService: deps.authService,
+    loginStore: deps.loginStore,
+    userStore: deps.userStore,
+    customerStore: deps.customerStore,
+    catalogStore: deps.catalogStore,
+    cartStore: deps.cartStore,
+    checkoutStore: deps.checkoutStore,
+    starMicronicsStore: deps.starMicronicsStore,
+    productStore: deps.productStore,
+    settingStore: deps.settingStore,
+    mappings: deps.mappings, // Mappings correlate directly to stores
+    // For instance, if the store dep is named 'cartStore', we would expect its mappings to be under the object key 'cartStore'
+    translations: deps.translations, // i8ln transations
+    roles: deps.roles, // App level roles, general authenticated user (not customer!)
+    userRoles: deps.userRoles, // Shortcut or implement via HoC?
+    user: deps.user // Shortcut or implement via HoC?
+    })) @observer
   class CartContext extends Component {
     static contextTypes = {
       cartContextManager: PropTypes.object,
@@ -124,7 +123,9 @@ export default (ComposedComponent) => {
       this.doCheckout = this.doCheckout.bind(this)
 
       this.state = {
-        blockUi: false, chooseQuantity: false, settings: {}
+        blockUi: false,
+        chooseQuantity: false,
+        settings: {}
       }
 
       const cartContextValue = this.cartContextManager.getCartContextValue()
@@ -202,39 +203,39 @@ export default (ComposedComponent) => {
 
     categoryClicked(e, item) {
       /*let stepId = 'cart'
-      let stepDescriptor = this.stepper.getStepById(stepId) || null
+       let stepDescriptor = this.stepper.getStepById(stepId) || null
 
-      if (stepDescriptor !== null) {
-        // Clear existing selections
-        if (this.stepper.getSelection().length > 0) {
-          this.stepper.clear()
-        }
+       if (stepDescriptor !== null) {
+       // Clear existing selections
+       if (this.stepper.getSelection().length > 0) {
+       this.stepper.clear()
+       }
 
-        let data = item
+       let data = item
 
-        let isEnded = false
-        // Execute the step handler
-        this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
-      }*/
+       let isEnded = false
+       // Execute the step handler
+       this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+       }*/
     }
 
     /*itemClicked(e, item) {
-      // If the Quick Add button was clicked
-      if (e.target.type === 'button') {
-        this.addToCartClicked(e, item)
-        return
-      }
-      let stepId = 'options'
-      let stepDescriptor = this.stepper.getStepById(stepId) || null
-      if (stepDescriptor !== null) {
-        let data = item
-        let isEnded = false
-        // Execute the step handler
-        this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
-        // TODO: Replace with mapping!
-        this.stepper.addItem(item['product_id'], 1, item)
-      }
-    }*/
+     // If the Quick Add button was clicked
+     if (e.target.type === 'button') {
+     this.addToCartClicked(e, item)
+     return
+     }
+     let stepId = 'options'
+     let stepDescriptor = this.stepper.getStepById(stepId) || null
+     if (stepDescriptor !== null) {
+     let data = item
+     let isEnded = false
+     // Execute the step handler
+     this.stepper.load(stepDescriptor, data, isEnded, this.setStep.bind(this, stepId))
+     // TODO: Replace with mapping!
+     this.stepper.addItem(item['product_id'], 1, item)
+     }
+     }*/
 
     /**
      * onItemClicked must be implemented in the extending class?
@@ -349,9 +350,7 @@ export default (ComposedComponent) => {
         let settings = this.props.settingStore.getSettings().posSettings
         if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
           console.log('pinned category, auto select category : ' + settings['pinned_category'])
-          this.categoryClicked(null, {
-            category_id: settings['pinned_category_id']
-          })
+          this.categoryClicked(null, {category_id: settings['pinned_category_id']})
         } else {
           //this.setStep('shop') // TODO: Uncomment
         }
@@ -364,15 +363,13 @@ export default (ComposedComponent) => {
 
     quickAddToCart(e) {
       // CartContext.quickAddToCart
-      this.addToCart(e); // Add to cart
+      this.addToCart(e) // Add to cart
       if (this.wrappedInstance.hasOwnProperty('popupKeypad')) {
         this.wrappedInstance.popupKeypad.component.clear()
       }
 
       // Close quantity keypad popup modal
-      this.setState({
-        chooseQuantity: false
-      })
+      this.setState({chooseQuantity: false})
     }
 
     addToCartClicked(e, item, quantity) {
@@ -416,9 +413,7 @@ export default (ComposedComponent) => {
           }
 
           // And open the Keypad / Quantity selection modal
-          this.setState({
-            chooseQuantity: true
-          })
+          this.setState({chooseQuantity: true})
 
           break
         case 'normal':
@@ -472,7 +467,7 @@ export default (ComposedComponent) => {
         window.location.href = '#/checkout'
       })
     }
-        
+
     render() {
       let props = assign({}, this.props, {
         getContextManager: this.getContextManager,
@@ -484,7 +479,7 @@ export default (ComposedComponent) => {
         getTotal: this.getTotal,
         doCheckout: this.doCheckout
       })
-            
+
       return (
         <ComposedComponent
           ref={(instance) => this.wrappedInstance = instance}

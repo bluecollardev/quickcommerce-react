@@ -6,7 +6,7 @@
  * https://gist.github.com/gaearon/ffd88b0e4f00b22c3159
  *
  */
- 
+
 function mapValues(obj, fn) {
   return Object.keys(obj).reduce((result, key) => {
     result[key] = fn(obj[key], key)
@@ -20,18 +20,16 @@ function bindActionCreator(actionCreator, dispatcher) {
 
 export default class FluxHelper {
   static bindActionCreators = (actionCreators, dispatcher) => {
-        // Bind action creators
-    return typeof actionCreators === 'function' ?
-            bindActionCreator(actionCreators, dispatcher) : 
-            mapValues(actionCreators, actionCreator => bindActionCreator(actionCreator, dispatcher))
+    // Bind action creators
+    return typeof actionCreators === 'function' ? bindActionCreator(actionCreators, dispatcher) : mapValues(actionCreators, actionCreator => bindActionCreator(actionCreator, dispatcher))
   }
-    
-    /* Just an idea for now...
-    static bindServices = (actionCreators, dispatch) => {
-        return typeof actionCreators === 'function' ?
-            bindActionCreator(actionCreators, dispatch) :
-            mapValues(actionCreators, actionCreator =>
-            bindActionCreator(actionCreator, dispatch)
-        )
-    }*/
+
+  /* Just an idea for now...
+   static bindServices = (actionCreators, dispatch) => {
+   return typeof actionCreators === 'function' ?
+   bindActionCreator(actionCreators, dispatch) :
+   mapValues(actionCreators, actionCreator =>
+   bindActionCreator(actionCreator, dispatch)
+   )
+   }*/
 }

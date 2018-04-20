@@ -1,5 +1,5 @@
-import React from 'react'
 import createReactClass from 'create-react-class'
+import React from 'react'
 
 const CartContainerComponent = createReactClass({
   render() {
@@ -15,10 +15,11 @@ const CartContainerComponent = createReactClass({
               )
             })}
             <th>
-                            Quantity
+            Quantity
             </th>
-            <th />
-          </tr>+
+            <th/>
+          </tr>
+        +
         </thead>
         <tbody>
           {this.props.body}

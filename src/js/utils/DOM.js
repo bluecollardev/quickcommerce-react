@@ -15,7 +15,7 @@ function hash(input) {
   return hash
 }
 
-export function findScrollParents (element, horizontal) {
+export function findScrollParents(element, horizontal) {
   var result = []
   var parent = element.parentNode
   while (parent && parent.getBoundingClientRect) {
@@ -40,7 +40,7 @@ export function findScrollParents (element, horizontal) {
   return result
 }
 
-export function isDescendant (parent, child) {
+export function isDescendant(parent, child) {
   var node = child.parentNode
   while (node != null) {
     if (node == parent) {
@@ -51,7 +51,7 @@ export function isDescendant (parent, child) {
   return false
 }
 
-export function findAncestor (element, className) {
+export function findAncestor(element, className) {
   var node = element.parentNode
   while (node != null) {
     if (node.classList && node.classList.contains(className)) {
@@ -62,15 +62,14 @@ export function findAncestor (element, className) {
   return node
 }
 
-export function filterByFocusable (elements) {
+export function filterByFocusable(elements) {
   return Array.prototype.filter.call(elements || [], (element) => {
     var currentTag = element.tagName.toLowerCase()
     var validTags = /(svg|a|area|input|select|textarea|button|iframe|div)$/
     var isValidTag = currentTag.match(validTags) && element.focus
 
     if (currentTag === 'a') {
-      return isValidTag && element.childNodes.length > 0 &&
-        element.getAttribute('href')
+      return isValidTag && element.childNodes.length > 0 && element.getAttribute('href')
     } else if (currentTag === 'svg' || currentTag === 'div') {
       return isValidTag && element.hasAttribute('tabindex')
     }
@@ -79,7 +78,7 @@ export function filterByFocusable (elements) {
   })
 }
 
-export function getBestFirstFocusable (elements) {
+export function getBestFirstFocusable(elements) {
   var bestFirstFocusable
 
   Array.prototype.some.call(elements || [], (element) => {
@@ -95,14 +94,12 @@ export function getBestFirstFocusable (elements) {
   return bestFirstFocusable
 }
 
-export function isFormElement (element) {
+export function isFormElement(element) {
   const elementType = element ? element.tagName.toLowerCase() : undefined
-  return elementType && (
-    elementType === 'input' || elementType === 'textarea'
-  )
+  return elementType && (elementType === 'input' || elementType === 'textarea')
 }
 
-export function generateId (element) {
+export function generateId(element) {
   if (element) {
     let id
     const elementId = element.getAttribute('id')
@@ -120,30 +117,31 @@ export function generateId (element) {
   }
 }
 
-export function generateUUID () {
+export function generateUUID() {
   function S4() {
-    return (((1+Math.random())*0x10000)|0).toString(16).substring(1)
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
   }
-  const uuid = `${S4()}${S4()}` +
-    `-${S4()}-4${S4().substr(0, 3)}` +
-    `-${S4()}-${S4()}${S4()}${S4()}`.toLowerCase()
+
+  const uuid = `${S4()}${S4()}` + `-${S4()}-4${S4().substr(0, 3)}` + `-${S4()}-${S4()}${S4()}${S4()}`.toLowerCase()
   return uuid
 }
 
-const CHECK_DARK_BACKGROUND_BACKOFFS = [0, 20, 80, 200]
+const CHECK_DARK_BACKGROUND_BACKOFFS = [
+  0,
+  20,
+  80,
+  200
+]
 
-function hasDarkBackground (element) {
+function hasDarkBackground(element) {
   let result = false
   const color = window.getComputedStyle(element).backgroundColor
-  const match = color.match(COLOR_RGB_REGEXP) ||
-    color.match(COLOR_RGBA_REGEXP)
+  const match = color.match(COLOR_RGB_REGEXP) || color.match(COLOR_RGBA_REGEXP)
   if (match) {
     const [red, green, blue] = match.slice(1).map(n => parseInt(n, 10))
     // http://www.had2know.com/technology/
     //  color-contrast-calculator-web-design.html
-    const brightness = (
-      (299 * red) + (587 * green) + (114 * blue)
-    ) / 1000
+    const brightness = ((299 * red) + (587 * green) + (114 * blue)) / 1000
     if (0 === brightness) {
       // Browsers return 0,0,0 when they don't know yet.
       result = undefined
@@ -155,7 +153,7 @@ function hasDarkBackground (element) {
   return result
 }
 
-function checkDarkBackgroundBackoff (element, handler, backoffDurations) {
+function checkDarkBackgroundBackoff(element, handler, backoffDurations) {
   return setTimeout(() => {
     let dark = hasDarkBackground(element)
     if (undefined === dark && backoffDurations.length > 0) {
@@ -166,7 +164,7 @@ function checkDarkBackgroundBackoff (element, handler, backoffDurations) {
   }, backoffDurations.shift())
 }
 
-export function checkDarkBackground (colorIndex, element, handler) {
+export function checkDarkBackground(colorIndex, element, handler) {
   let timer
   if (colorIndex) {
     if ('dark' === colorIndex) {
@@ -179,8 +177,7 @@ export function checkDarkBackground (colorIndex, element, handler) {
       // Measure the actual background color brightness to determine whether
       // to set a dark or light context.
       if (element && window.getComputedStyle) {
-        timer = checkDarkBackgroundBackoff(element, handler,
-          CHECK_DARK_BACKGROUND_BACKOFFS)
+        timer = checkDarkBackgroundBackoff(element, handler, CHECK_DARK_BACKGROUND_BACKOFFS)
       }
     }
   }

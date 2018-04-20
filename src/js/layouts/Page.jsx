@@ -25,9 +25,9 @@ const PageLayout = (props) => {
                 <CardHeader
                   title='Moneypenny'
                   subheader='Behave, James...'
-                  avatar={<Avatar src='https://upload.wikimedia.org/wikipedia/en/9/9b/Miss_Moneypenny_by_Lois_Maxwell.jpg' />}
+                  avatar={<Avatar src='https://upload.wikimedia.org/wikipedia/en/9/9b/Miss_Moneypenny_by_Lois_Maxwell.jpg'/>}
                 />
-                <CardMedia image='images/nature-600-337.jpg' />
+                <CardMedia image='images/nature-600-337.jpg'/>
                 <CardContent>
                   <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
@@ -39,14 +39,14 @@ const PageLayout = (props) => {
                 </CardActions>
               </Card>
 
-              <hr />
+              <hr/>
 
               <Card>
                 <CardHeader
                   title='System'
                   subheader='Blah blah blah'
                 />
-                <CardMedia image='images/nature-600-337.jpg' />
+                <CardMedia image='images/nature-600-337.jpg'/>
                 <CardContent>
                   <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
@@ -58,15 +58,15 @@ const PageLayout = (props) => {
                 </CardActions>
               </Card>
 
-              <hr />
+              <hr/>
 
               <Card>
                 <CardHeader
                   title='Moneypenny'
                   subheader='From Russia with love'
-                  avatar={<Avatar src='https://upload.wikimedia.org/wikipedia/en/9/9b/Miss_Moneypenny_by_Lois_Maxwell.jpg' />}
+                  avatar={<Avatar src='https://upload.wikimedia.org/wikipedia/en/9/9b/Miss_Moneypenny_by_Lois_Maxwell.jpg'/>}
                 />
-                <CardMedia image='images/nature-600-337.jpg' />
+                <CardMedia image='images/nature-600-337.jpg'/>
                 <CardContent>
                   <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
@@ -78,14 +78,14 @@ const PageLayout = (props) => {
                 </CardActions>
               </Card>
 
-              <hr />
+              <hr/>
 
               <Card>
                 <CardHeader
                   title='System'
                   subheader='Just a random notice'
                 />
-                <CardMedia image='images/nature-600-337.jpg' />
+                <CardMedia image='images/nature-600-337.jpg'/>
                 <CardContent>
                   <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.

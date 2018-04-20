@@ -16,38 +16,42 @@ export default class ObjectHelper {
     for (let prop in obj) {
       if (obj.hasOwnProperty(prop) && obj.prop !== null) return false
     }
-        
+
     return true
   }
-    
+
   static recursiveFormatKeys = (data, from, to) => {
     let clone = {}
-    let modes = ['underscore', 'camelcase', 'hyphenate']
+    let modes = [
+      'underscore',
+      'camelcase',
+      'hyphenate'
+    ]
     if (!(modes.indexOf(from) > -1 || !modes.indexOf(to) > -1)) {
       throw new Error('Cannot normalize data: incorrect mode and currentMode supplied. Valid modes are \'underscore\', \'camelcase\' and \'hyphenate\'.')
     }
-        
+
     Object.keys(data).reduce((obj, prop) => {
       let val = data[prop]
       let newVal = (typeof val === 'object' && val !== null) ? ObjectHelper.recursiveFormatKeys(val, from, to) : val
 
       switch (to) {
-      case 'underscore':
-        obj[StringHelper.underscore(prop)] = newVal
-        break
-      case 'camelcase':
-        obj[StringHelper.camelize(prop)] = newVal
-        break
-      case 'hyphenate':
-        obj[StringHelper.hyphenize(prop)] = newVal
-        break
+        case 'underscore':
+          obj[StringHelper.underscore(prop)] = newVal
+          break
+        case 'camelcase':
+          obj[StringHelper.camelize(prop)] = newVal
+          break
+        case 'hyphenate':
+          obj[StringHelper.hyphenize(prop)] = newVal
+          break
       }
       return obj
     }, clone)
-        
+
     return clone
   }
-    
+
   /**
    * TODO: A handler like below preserves properties
    * if (old_key !== new_key) {
@@ -84,7 +88,7 @@ export default class ObjectHelper {
     })
   }
 
-  static prefixKeys (obj, prefix, dest = {}) {
+  static prefixKeys(obj, prefix, dest = {}) {
     return Object.keys(obj).reduce((o, key) => {
       o[`${prefix}${key}`] = obj[key]
       return o

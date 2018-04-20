@@ -12,7 +12,7 @@ export default (dispatcher) => {
       dispatcher.dispatch({
         actionType: CheckoutConstants.SET_ORDER,
         order: order
-                
+
       })
     },
     setBuiltInCustomer: (customer) => {

@@ -5,19 +5,19 @@ export default class XhrRequestHelper {
       for (let idx = 0; idx < headers.length; idx++) {
         request.setRequestHeader(headers[idx][0], headers[idx][1])
       }
-            
-            /*if (typeof callback === 'function') {
-                callback = fn
-                fn = function () {                                                    
-                    let args = Array.prototype.slice.call(arguments, 0)
-                    
-                    callback.apply(context, args)
-                }
-                
-                fn(request, headers, context)
-            }*/
+
+      /*if (typeof callback === 'function') {
+       callback = fn
+       fn = function () {
+       let args = Array.prototype.slice.call(arguments, 0)
+
+       callback.apply(context, args)
+       }
+
+       fn(request, headers, context)
+       }*/
     }
-        
+
     return request
   }
 }

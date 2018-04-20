@@ -6,28 +6,28 @@ export default {
 
   'signals': [
     {
-      'name': 'startAngle', 'value': 0,
-      //'bind': {'input': 'range', 'min': 0, 'max': 6.29, 'step': 0.01}
+      'name': 'startAngle',
+      'value': 0 //'bind': {'input': 'range', 'min': 0, 'max': 6.29, 'step': 0.01}
     },
     {
-      'name': 'endAngle', 'value': 6.29,
-      //'bind': {'input': 'range', 'min': 0, 'max': 6.29, 'step': 0.01}
+      'name': 'endAngle',
+      'value': 6.29 //'bind': {'input': 'range', 'min': 0, 'max': 6.29, 'step': 0.01}
     },
     {
-      'name': 'padAngle', 'value': 0,
-      //'bind': {'input': 'range', 'min': 0, 'max': 0.1}
+      'name': 'padAngle',
+      'value': 0 //'bind': {'input': 'range', 'min': 0, 'max': 0.1}
     },
     {
-      'name': 'innerRadius', 'value': 0,
-      //'bind': {'input': 'range', 'min': 0, 'max': 90, 'step': 1}
+      'name': 'innerRadius',
+      'value': 0 //'bind': {'input': 'range', 'min': 0, 'max': 90, 'step': 1}
     },
     {
-      'name': 'cornerRadius', 'value': 0,
-      //'bind': {'input': 'range', 'min': 0, 'max': 10, 'step': 0.5}
+      'name': 'cornerRadius',
+      'value': 0 //'bind': {'input': 'range', 'min': 0, 'max': 10, 'step': 0.5}
     },
     {
-      'name': 'sort', 'value': false,
-      //'bind': {'input': 'checkbox'}
+      'name': 'sort',
+      'value': false //'bind': {'input': 'checkbox'}
     }
   ],
 
@@ -35,17 +35,26 @@ export default {
     {
       'name': 'table',
       'values': [
-        {'id': 1, 'field': 60},
-        {'id': 2, 'field': 30},
-        {'id': 3, 'field': 10}
+        {
+          'id': 1,
+          'field': 60
+        },
+        {
+          'id': 2,
+          'field': 30
+        },
+        {
+          'id': 3,
+          'field': 10
+        }
       ],
       'transform': [
         {
           'type': 'pie',
           'field': 'field',
-          'startAngle': {'signal': 'startAngle'},
-          'endAngle': {'signal': 'endAngle'},
-          'sort': {'signal': 'sort'}
+          'startAngle': { 'signal': 'startAngle' },
+          'endAngle': { 'signal': 'endAngle' },
+          'sort': { 'signal': 'sort' }
         }
       ]
     }
@@ -55,27 +64,30 @@ export default {
     {
       'name': 'color',
       'type': 'ordinal',
-      'range': {'scheme': 'category20'}
+      'range': { 'scheme': 'category20' }
     }
   ],
 
   'marks': [
     {
       'type': 'arc',
-      'from': {'data': 'table'},
+      'from': { 'data': 'table' },
       'encode': {
         'enter': {
-          'fill': {'scale': 'color', 'field': 'id'},
-          'x': {'signal': 'width / 2'},
-          'y': {'signal': 'height / 2'}
+          'fill': {
+            'scale': 'color',
+            'field': 'id'
+          },
+          'x': { 'signal': 'width / 2' },
+          'y': { 'signal': 'height / 2' }
         },
         'update': {
-          'startAngle': {'field': 'startAngle'},
-          'endAngle': {'field': 'endAngle'},
-          'padAngle': {'signal': 'padAngle'},
-          'innerRadius': {'signal': 'innerRadius'},
-          'outerRadius': {'signal': 'width / 2'},
-          'cornerRadius': {'signal': 'cornerRadius'}
+          'startAngle': { 'field': 'startAngle' },
+          'endAngle': { 'field': 'endAngle' },
+          'padAngle': { 'signal': 'padAngle' },
+          'innerRadius': { 'signal': 'innerRadius' },
+          'outerRadius': { 'signal': 'width / 2' },
+          'cornerRadius': { 'signal': 'cornerRadius' }
         }
       }
     }

@@ -1,5 +1,5 @@
 export default {
-  validate (rules) {
+  validate(rules) {
     var result = {
       valid: true,
       errors: {},

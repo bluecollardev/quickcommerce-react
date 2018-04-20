@@ -12,7 +12,7 @@ export default (dispatcher) => {
       dispatcher.dispatch({
         actionType: CheckoutConstants.SET_ORDER,
         order: order
-                
+
       })
     },
     setBuiltInCustomer: (customer) => {
@@ -28,9 +28,7 @@ export default (dispatcher) => {
       })
     },
     setExistingCustomer: () => {
-      dispatcher.dispatch({
-        actionType: CheckoutConstants.SET_EXISTING_CUSTOMER
-      })
+      dispatcher.dispatch({actionType: CheckoutConstants.SET_EXISTING_CUSTOMER})
     },
     setBillingAddress: (data) => {
       dispatcher.dispatch({

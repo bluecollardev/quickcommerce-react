@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import classNames from 'classnames'
+import { inject, observer } from 'mobx-react'
 import PropTypes from 'prop-types'
-import {inject, observer} from 'mobx-react'
+import React, { Component } from 'react'
 
 import { DropTarget } from 'react-dnd'
-import classNames from 'classnames'
 
 import RowComponent from './CartRow.jsx'
 import ContainerComponent from './CartTable.jsx'
@@ -30,8 +30,7 @@ function collect(connect, monitor) {
 @inject(deps => ({
   actions: deps.actions,
   cartStore: deps.cartStore
-}))
-@observer
+  })) @observer
 class Cart extends Component {
   static propTypes = {
     items: PropTypes.object,
@@ -61,9 +60,7 @@ class Cart extends Component {
     containerComponent: ContainerComponent,
     rowComponent: RowComponent,
     tableClassName: '',
-    cartEmptyMessage: (
-      <span><b>You haven't made any selections.</b><span className=''><br/>Please add an item to continue.</span></span>
-    )
+    cartEmptyMessage: (<span><b>You haven't made any selections.</b><span className=''><br/>Please add an item to continue.</span></span>)
   }
 
   static contextTypes = {
@@ -81,9 +78,7 @@ class Cart extends Component {
     this.clearCart = this.clearCart.bind(this)
     this.reset = this.reset.bind(this)
 
-    this.state = {
-      selection: []
-    }
+    this.state = {selection: []}
   }
 
   componentDidMount() {
@@ -92,9 +87,7 @@ class Cart extends Component {
     this.context.cartContextManager.subscribe((contextValue) => {
       console.log('update cart using context')
       console.log(contextValue)
-      this.setState({
-        selection: contextValue.store.getSelection()
-      })
+      this.setState({selection: contextValue.store.getSelection()})
     })
   }
 
@@ -102,9 +95,7 @@ class Cart extends Component {
     const cartContextValue = this.context.cartContextManager.getCartContextValue()
     const store = cartContextValue.store
 
-    this.setState({
-      selection: store.getSelection()
-    })
+    this.setState({selection: store.getSelection()})
   }
 
   addItem(key, quantity, item) {
@@ -168,31 +159,30 @@ class Cart extends Component {
     const store = cartContextValue.store
 
     if (store !== null && store.isEmpty()) {
-      return connectDropTarget(
-        <div className='dnd-target-wrapper'>
-          <div
-            className={'padding-top ' + classNames({'well-is-over': isOver})}
-            style={{marginBottom: '.5em'}}
-            bssize='large'>
-            {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
-            <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
-          </div>
+      return connectDropTarget(<div className='dnd-target-wrapper'>
+        <div
+          className={'padding-top ' + classNames({ 'well-is-over': isOver })}
+          style={{ marginBottom: '.5em' }}
+          bssize='large'>
+          {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
+          <p style={{
+            textAlign: 'center',
+            maxWidth: 'auto'
+          }}>{this.props.cartEmptyMessage}</p>
         </div>
-      )
+      </div>)
     } else {
-      return connectDropTarget(
-        <div className='dnd-target-wrapper'>
-          <Container
-            tableClassName={this.props.tableClassName}
-            columns={this.props.columns}
-            selection={this.state.selection}
-            rowComponent={this.props.rowComponent}
-            removeItem={this.removeItem}
-            setItemQty={this.updateQuantity}
-            context={context}
-          />
-        </div>
-      )
+      return connectDropTarget(<div className='dnd-target-wrapper'>
+        <Container
+          tableClassName={this.props.tableClassName}
+          columns={this.props.columns}
+          selection={this.state.selection}
+          rowComponent={this.props.rowComponent}
+          removeItem={this.removeItem}
+          setItemQty={this.updateQuantity}
+          context={context}
+        />
+      </div>)
     }
   }
 }

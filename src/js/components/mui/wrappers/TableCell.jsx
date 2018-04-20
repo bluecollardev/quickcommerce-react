@@ -1,5 +1,5 @@
-import React from 'react'
 import { TableCell as MuiTableCell } from 'material-ui/Table'
+import React from 'react'
 
 import { muiTableCellStyle as cellStyle } from '../../../styles/MuiStyles.jsx'
 

@@ -1,21 +1,18 @@
-import assign from 'object-assign'
-import axios from 'axios'
-
 import { Dispatcher } from 'flux'
+import NumberHelper from '../helpers/Number.js'
+//import ArrayHelper from '../helpers/Array.js'
+import ObjectHelper from '../helpers/Object.js'
 
 //import HashTable from '../utils/HashTable.js'
 //import HashProxy from '../utils/HashProxy.js'
 
-//import ArrayHelper from 'quickcommerce-react/helpers/Array.js'
-import ObjectHelper from 'quickcommerce-react/helpers/Object.js'
-import NumberHelper from 'quickcommerce-react/helpers/Number.js'
-//import StringHelper from 'quickcommerce-react/helpers/String.js'
+//import StringHelper from '../helpers/String.js'
 
 export class BaseService {
   // BaseService constructor
   constructor(deps) {
     deps = deps || null
-        
+
     this.actions = {} // Private? (TODO: Symbols)
     this.dispatcher = {} // Private? (TODO: Symbols)
 
@@ -24,21 +21,21 @@ export class BaseService {
       if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
         this.dispatcher = deps.dispatcher
       }
-            
+
       if (deps.hasOwnProperty('actions') && deps.actions !== null && Object.keys(deps.actions).length > 0) {
         this.actions = deps.actions
       }
-            
+
       if (deps.hasOwnProperty('services') && deps.services !== null && Object.keys(deps.services).length > 0) {
         this.services = deps.services
       }
-            
+
       if (deps.hasOwnProperty('stores') && deps.stores !== null && Object.keys(deps.stores).length > 0) {
         this.stores = deps.stores
       }
-    }   
+    }
   }
-    
+
   handleResponse(response, onSuccess, onError, legacy = false) {
     if (legacy) {
       this.handleLegacyResponse(response, onSuccess, onError)
@@ -60,7 +57,7 @@ export class BaseService {
       this.handleApiError(response, onError)
     }
   }
-    
+
   handleLegacyResponse(response, onSuccess, onError) {
     if (response.success || response.status === 200 || response.status === 201) {
       if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
@@ -76,12 +73,12 @@ export class BaseService {
           onSuccess()
         }
       }
-            
+
     } else {
       this.handleApiError(response, onError)
     }
   }
-    
+
   handleError(message, onError, data) {
     console.log('handle ERROR!')
     //console.log(message)
@@ -93,21 +90,29 @@ export class BaseService {
       throw new Error(message)
     }
   }
-    
+
   // Override me on an as needed basis in inheriting classes
   handleApiError(response, onError) {
     if (typeof onError === 'function') {
       onError() // TODO: Type check
     }
   }
-	
+
   normalizePayload(data, from, to) {
     return ObjectHelper.recursiveFormatKeys(data, from, to)
   }
 
   filterKeys(data) {
     //let filterData = false
-    let filterKeys = ['_block', '_page', '$id', 'password', 'cart', 'wishlist', 'session'] // Also strip password and cart
+    let filterKeys = [
+      '_block',
+      '_page',
+      '$id',
+      'password',
+      'cart',
+      'wishlist',
+      'session'
+    ] // Also strip password and cart
 
     // TODO: Let's change the var names... prop/key same thing in JS
     data.forEach(function (prop, key) {
@@ -155,12 +160,12 @@ export class BaseService {
   }
 
   /*get dispatcher() {
-      let dispatcher = this._dispatcher || null
+   let dispatcher = this._dispatcher || null
 
-      if (dispatcher instanceof Dispatcher) {
-          return this._dispatcher
-      }
+   if (dispatcher instanceof Dispatcher) {
+   return this._dispatcher
+   }
 
-      return null
-  }*/
+   return null
+   }*/
 }

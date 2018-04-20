@@ -1,12 +1,4 @@
-import {EventEmitter} from 'events'
-import {Dispatcher} from 'flux'
-
-import ArrayHelper from '../helpers/Array.js'
-import ObjectHelper from '../helpers/Object.js'
-import StringHelper from '../helpers/String.js'
-import SpringDateHelper from '../helpers/SpringDate.js'
-
-import HashProxy from '../utils/HashProxy.js'
+import { EventEmitter } from 'events'
 
 import BaseStore from './BaseStore.jsx'
 
@@ -83,7 +75,6 @@ class BaseCollectionStore extends BaseStore {
 
     return undefined
   }
-
 
   /**
    * Allows you to set a custom property on an item in the store.

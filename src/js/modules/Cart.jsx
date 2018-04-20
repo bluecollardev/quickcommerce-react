@@ -1,15 +1,15 @@
-import React from 'react'
+import classNames from 'classnames'
 import createReactClass from 'create-react-class'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
-import { DropTarget } from 'react-dnd'
+import React from 'react'
 
 import { Well } from 'react-bootstrap'
-
-import RowComponent from './CartRowComponent.jsx'
+import { DropTarget } from 'react-dnd'
 import ContainerComponent from './CartContainerComponent.jsx'
 
 import CartDispatcher from './CartDispatcher.jsx'
+
+import RowComponent from './CartRowComponent.jsx'
 import InternalCartStore from './CartStore.jsx'
 
 // Dirty global hack to maintain store instance until I refactor 
@@ -24,7 +24,7 @@ let cartTarget = {
     if (monitor.didDrop()) {
       return
     }
-        
+
     const item = monitor.getItem()
     component.props.onItemDropped(item.id)
   }
@@ -33,53 +33,47 @@ let cartTarget = {
 
 function collect(connect, monitor) {
   return {
-    connectDropTarget : connect.dropTarget(),
-    isOver            : monitor.isOver(),
-    canDrop           : monitor.canDrop()
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop()
   }
 }
 
 const Cart = createReactClass({
   propTypes: {
-    items             : PropTypes.object,
-    selection         : PropTypes.array,
-    onItemDropped     : PropTypes.func,
-    onItemAdded       : PropTypes.func,
-    onItemRemoved     : PropTypes.func,
-    onItemQtyChanged  : PropTypes.func,
-    onChange          : PropTypes.func,
-    iterator          : PropTypes.func,
-    tableClassName    : PropTypes.string,
-    cartEmptyMessage  : PropTypes.node
+    items: PropTypes.object,
+    selection: PropTypes.array,
+    onItemDropped: PropTypes.func,
+    onItemAdded: PropTypes.func,
+    onItemRemoved: PropTypes.func,
+    onItemQtyChanged: PropTypes.func,
+    onChange: PropTypes.func,
+    iterator: PropTypes.func,
+    tableClassName: PropTypes.string,
+    cartEmptyMessage: PropTypes.node
 
   },
   getDefaultProps() {
     return {
-      items               : {},
-      selection           : [],
-      onItemDropped       : () => {},
-      onItemAdded         : () => {},
-      onItemRemoved       : () => {},
-      onItemQtyChanged    : () => {},
-      onChange            : () => {},
-      iterator            : () => { return {} },
-      containerComponent  : ContainerComponent,
-      rowComponent        : RowComponent,
-      tableClassName      : '',
-      cartEmptyMessage    : (
-        <span><b>Your shopping cart is empty.</b><br/>Please add some products to continue.</span>
-      )
+      items: {},
+      selection: [],
+      onItemDropped: () => {},
+      onItemAdded: () => {},
+      onItemRemoved: () => {},
+      onItemQtyChanged: () => {},
+      onChange: () => {},
+      iterator: () => { return {} },
+      containerComponent: ContainerComponent,
+      rowComponent: RowComponent,
+      tableClassName: '',
+      cartEmptyMessage: (<span><b>Your shopping cart is empty.</b><br/>Please add some products to continue.</span>)
     }
   },
   getInitialState() {
-    return {
-      selection: []
-    }
+    return {selection: []}
   },
   refresh() {
-    this.setState({
-      selection: CartStore.getSelection()
-    })
+    this.setState({selection: CartStore.getSelection()})
   },
   onChange() {
     this.refresh()
@@ -137,14 +131,10 @@ const Cart = createReactClass({
     })
   },
   emptyCart() {
-    CartDispatcher.dispatch({
-      actionType: 'cart-reset'
-    })
+    CartDispatcher.dispatch({actionType: 'cart-reset'})
   },
   clearCart() {
-    CartDispatcher.dispatch({
-      actionType: 'cart-clear'
-    })
+    CartDispatcher.dispatch({actionType: 'cart-clear'})
   },
   reset() {
     CartDispatcher.dispatch({
@@ -164,46 +154,44 @@ const Cart = createReactClass({
   render() {
     const { position, isOver, canDrop, connectDropTarget } = this.props
 
-    let context = this.props.iterator(),
-      Container = this.props.containerComponent,
-      Row = this.props.rowComponent
+    let context = this.props.iterator(), Container = this.props.containerComponent, Row = this.props.rowComponent
     if (this.isEmpty()) {
-      return connectDropTarget(
-        <div className='dnd-target-wrapper'>
-          <div>
-            <Well
-              className={classNames({'well-is-over': isOver})}
-              style={{marginBottom: '.5em'}}
-              bssize='large'>
-              {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
-              <p style={{textAlign: 'center', maxWidth: 'auto'}}>{this.props.cartEmptyMessage}</p>
-            </Well>
-            <p></p>
-          </div>
+      return connectDropTarget(<div className='dnd-target-wrapper'>
+        <div>
+          <Well
+            className={classNames({ 'well-is-over': isOver })}
+            style={{ marginBottom: '.5em' }}
+            bssize='large'>
+            {/*<h1 className='drop-target-icon' style={{textAlign: 'center'}}><i className='fa fa-bullseye fa-2x' /></h1>*/}
+            <p style={{
+              textAlign: 'center',
+              maxWidth: 'auto'
+            }}>{this.props.cartEmptyMessage}</p>
+          </Well>
+          <p></p>
         </div>
-      )
+      </div>)
     }
-        
-    return connectDropTarget(
-      <div className='dnd-target-wrapper'>
-        <Container
-          tableClassName={this.props.tableClassName}
-          columns={this.props.columns}
-          body={this.state.selection.map(item => {
-            let context = this.props.iterator(context, item)
-            return (
-              <Row
-                key={item._key}
-                item={item}
-                columns={this.props.columns}
-                removeItem={()  => this.removeItem(item._index)}
-                setItemQty={qty => this.updateQuantity(item._index, qty)} />
-            )
-          })}
-          context={context}
-                />
-      </div>
-        )
+
+    return connectDropTarget(<div className='dnd-target-wrapper'>
+      <Container
+        tableClassName={this.props.tableClassName}
+        columns={this.props.columns}
+        body={this.state.selection.map(item => {
+          let context = this.props.iterator(context, item)
+          return (
+            <Row
+              key={item._key}
+              item={item}
+              columns={this.props.columns}
+              removeItem={() => this.removeItem(item._index)}
+              setItemQty={qty => this.updateQuantity(item._index, qty)}
+            />
+          )
+        })}
+        context={context}
+      />
+    </div>)
   }
 })
 

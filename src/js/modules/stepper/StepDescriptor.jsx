@@ -1,8 +1,8 @@
 class StepDescriptor {
-    /**
-     * @param {Function} step - action, which will be carried out in the executing of this step
-     * @param {Stepper} stepper - instance of Stepper, which contains this StepDescriptor
-     * */
+  /**
+   * @param {Function} step - action, which will be carried out in the executing of this step
+   * @param {Stepper} stepper - instance of Stepper, which contains this StepDescriptor
+   * */
   constructor(step, stepper) {
     this.id = StepDescriptor.ID_COUNTER
     StepDescriptor.ID_COUNTER++
@@ -12,9 +12,9 @@ class StepDescriptor {
     this.execute = (data, done) => step(this, data, done)
   }
 
-    /**
-     * @param {*} [data]
-     * */
+  /**
+   * @param {*} [data]
+   * */
   next(data) {
     this.stepper.next(data, this)
   }
@@ -27,26 +27,26 @@ class StepDescriptor {
   remove() {
     this.stepper.remove(this)
   }
-    
-    /**
-     * @param {*} data
-     * */
+
+  /**
+   * @param {*} data
+   * */
   reject(data) {
     this.stepper.reject(data)
   }
-    
-    /**
-     * @param {Function} step
-     * @return {StepDescriptor}
-     * */
+
+  /**
+   * @param {Function} step
+   * @return {StepDescriptor}
+   * */
   insertAfter(step) {
     this.stepper.insertAfter(this, step)
   }
 
-    /**
-     * @param {Function} step
-     * @return {StepDescriptor}
-     * */
+  /**
+   * @param {Function} step
+   * @return {StepDescriptor}
+   * */
   insertBefore(step) {
     this.stepper.insertBefore(this, step)
   }
