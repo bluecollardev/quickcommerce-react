@@ -2404,11 +2404,11 @@ class PosComponent extends Component {
                       onStepClicked={this.stepClicked}>
                       <Keypad ref={(keypad) => this.keypad = keypad}/>
                       <FormGroup
-                  style={{display: 'block'}}>
-                  <Button block bsStyle='success' onClick={this.addToCart}>
+                        style={{display: 'block'}}>
+                        <Button block bsStyle='success' onClick={this.addToCart}>
                           <h4><i className='fa fa-shopping-cart'/> Add to Order</h4>
                         </Button>
-                </FormGroup>
+                      </FormGroup>
                     </ProductBrowser>
                   </BlockUi>
                 </Col>
@@ -2421,14 +2421,14 @@ class PosComponent extends Component {
                   <div className='browser-container'>
                     <div className='browser-menu-container'>
                       <BrowserMenu
-                  activeStep='checkout'
-                  steps={steps}
-                  onStepClicked={this.stepClicked}
-                />
+                        activeStep='checkout'
+                        steps={steps}
+                        onStepClicked={this.stepClicked}
+                      />
                     </div>
                     <div className='browser-content'>
                       <div className='container-fluid'>
-                  {/*<Row>
+                        {/*<Row>
                          <Col sm={12}>
                          <Header direction='row'
                          pad={{horizontal: 'medium'}}>
@@ -2436,7 +2436,7 @@ class PosComponent extends Component {
                          </Header>
                          </Col>
                          </Row>*/}
-                  <Row>
+                        <Row>
                           {/*<CustomerProfile
                            customer = {this.props.checkoutStore.customer}
                            billingAddress = {this.props.checkoutStore.billingAddress}
@@ -2446,7 +2446,7 @@ class PosComponent extends Component {
                            displayShippingAddress = {true}
                            />*/}
                         </Row>
-                </div>
+                      </div>
                     </div>
                   </div>
                 </Col>
@@ -2487,15 +2487,15 @@ class PosComponent extends Component {
                        onLoginSuccess = {this.props.onLoginSuccess}
                        />*/}
                       <SignInForm
-                user={this.props.loginStore.user}
-                onCreate={this.showNewCustomerForm}
-                onLoginSuccess={this.props.onLoginSuccess}
-              />
+                        user={this.props.loginStore.user}
+                        onCreate={this.showNewCustomerForm}
+                        onLoginSuccess={this.props.onLoginSuccess}
+                      />
                     </Col>
                     <Col xs={12} md={12} lg={6}>
                       <TopMenu>
-                <AccountMenu/>
-              </TopMenu>
+                        <AccountMenu/>
+                      </TopMenu>
                     </Col>
                   </Row>
                 )}

@@ -45,7 +45,7 @@ export default (ComposedComponent) => {
     roles: deps.roles, // App level roles, general authenticated user (not customer!)
     userRoles: deps.userRoles, // Shortcut or implement via HoC?
     user: deps.user // Shortcut or implement via HoC?
-  })) @observer
+    })) @observer
   class PosContext extends Component {
     constructor(props) {
       super(props)
@@ -289,14 +289,10 @@ export default (ComposedComponent) => {
       if (typeof this.props.match !== 'undefined' && typeof this.props.match.params !== 'undefined' && typeof this.props.match.params.cat !== 'undefined' && !isNaN(this.props.match.params.cat)) {
         console.log('load category id: ' + this.props.match.params.cat)
         categoryId = parseInt(this.props.match.params.cat)
-        this.categoryClicked({
-          category_id: categoryId
-        })
+        this.categoryClicked({category_id: categoryId})
       } else if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
         console.log('pinned category, auto select category : ' + settings['pinned_category'])
-        this.categoryClicked(null, {
-          category_id: settings['pinned_category_id']
-        })
+        this.categoryClicked(null, {category_id: settings['pinned_category_id']})
       }
 
       this.stepper.on('item-added', (item, quantity, oldQuantity) => {
@@ -323,9 +319,7 @@ export default (ComposedComponent) => {
         if (typeof this.props.match !== 'undefined' && typeof this.props.match.params !== 'undefined' && typeof this.props.match.params.cat !== 'undefined') {
           console.log('load category id: ' + this.props.match.params.cat)
           categoryId = parseInt(this.props.match.params.cat)
-          this.categoryClicked({
-            category_id: categoryId
-          })
+          this.categoryClicked({category_id: categoryId})
         }
       }
     }
@@ -470,9 +464,7 @@ export default (ComposedComponent) => {
     }
 
     updateNotes(notes) {
-      this.setState({
-        notes: notes
-      }, () => {
+      this.setState({notes: notes}, () => {
         this.props.checkoutStore.setNotes(notes)
       })
     }
@@ -675,7 +667,7 @@ export default (ComposedComponent) => {
 
         }).catch(err => {
         // Do nothing
-      })
+        })
     }
 
     showCompleteModal() {
@@ -700,9 +692,7 @@ export default (ComposedComponent) => {
     }
 
     hideCompleteModal() {
-      this.setState({
-        complete: null
-      })
+      this.setState({complete: null})
     }
 
     setStep(stepId, stepDescriptor, data) {
@@ -809,9 +799,7 @@ export default (ComposedComponent) => {
       let stepDescriptor = this.stepper.getStepById(stepId) || null
 
       if (stepDescriptor !== null) {
-        let data = {
-          category_id: categoryId
-        }
+        let data = {category_id: categoryId}
 
         let isEnded = false
         // Execute the step handler
@@ -825,9 +813,7 @@ export default (ComposedComponent) => {
     }
 
     updateNotes(notes) {
-      this.setState({
-        notes: notes
-      }, () => {
+      this.setState({notes: notes}, () => {
         this.props.checkoutStore.setNotes(notes)
       })
     }
@@ -867,9 +853,7 @@ export default (ComposedComponent) => {
     }
 
     toggleCustomPaymentAmount() {
-      this.setState({
-        customPaymentAmount: !this.state.customPaymentAmount
-      })
+      this.setState({customPaymentAmount: !this.state.customPaymentAmount})
     }
 
     updateShippingMethod(code, method) {
@@ -982,14 +966,16 @@ export default (ComposedComponent) => {
     }
 
     renderPaymentOptions() {
-      return (<div className='cash-options payment-options'>
+      return (
+        <div className='cash-options payment-options'>
           <Button data-type='cash' onClick={this.selectPaymentMethod.bind(this, 'cash')}>Cash</Button>&nbsp;
           <Button data-type='visa' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Visa</Button>&nbsp;
           <Button data-type='mastercard' onClick={this.selectPaymentMethod.bind(this, 'credit')}>Mastercard</Button>&nbsp;
           <Button data-type={'debit'} onClick={this.selectPaymentMethod.bind(this, 'debit')}>Debit</Button>&nbsp;
           <Button data-type={'cheque'} onClick={this.selectPaymentMethod.bind(this, 'cheque')}>Cheque</Button>&nbsp;
           <Button data-type={'giftcard'} onClick={this.selectPaymentMethod.bind(this, 'giftcard')}>Gift Card</Button>
-        </div>)
+        </div>
+      )
     }
 
     renderCashOptions() {
@@ -1001,7 +987,8 @@ export default (ComposedComponent) => {
         options.push(min * (idx + 1))
       }
 
-      return (<div className='cash-options'>
+      return (
+        <div className='cash-options'>
           <Button bsStyle='success' data-amount={total} onClick={this.selectChangePreset}>${total.toFixed(2)}</Button>&nbsp;
           <Button bsStyle='success' data-amount={options[0]} onClick={this.selectChangePreset}>${options[0].toFixed(2)}</Button>&nbsp;
           <Button bsStyle='success' data-amount={options[1]} onClick={this.selectChangePreset}>${options[1].toFixed(2)}</Button>&nbsp;
@@ -1009,7 +996,8 @@ export default (ComposedComponent) => {
           <Button bsStyle='success' data-amount={options[3]} onClick={this.selectChangePreset}>${options[3].toFixed(2)}</Button>&nbsp;
           {/*<Button data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
           <Button bsStyle='disabled' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
-        </div>)
+        </div>
+      )
     }
 
     renderReceipt(cached = true) {
@@ -1079,18 +1067,18 @@ export default (ComposedComponent) => {
             'display': 'block',
             clear: 'both'
           }} className='receipt-line-item'>
-              <span>{item.quantity} x {model}</span>
-              <span style={{ 'float': 'right' }}>${lineTotal}</span>
+            <span>{item.quantity} x {model}</span>
+            <span style={{ 'float': 'right' }}>${lineTotal}</span>
             {this.renderOptions(items[idx].options, item.quantity)}
-            </span>)
+          </span>)
         } else {
           output.push(<span style={{
             'display': 'block',
             clear: 'both'
           }} className='receipt-line-item'>
-              <span>{item.quantity} x {model}</span>
-              <span style={{ 'float': 'right' }}>${lineTotal}</span>
-            </span>)
+            <span>{item.quantity} x {model}</span>
+            <span style={{ 'float': 'right' }}>${lineTotal}</span>
+          </span>)
         }
       }
 
@@ -1103,11 +1091,11 @@ export default (ComposedComponent) => {
         'display': 'block',
         'clear': 'both'
       }} className='receipt-line-item'>
-          <span style={{
-            'font-size': '16px',
-            'font-weight': 'normal'
-          }}>{this.state.notes}</span>
-        </span>)
+        <span style={{
+          'font-size': '16px',
+          'font-weight': 'normal'
+        }}>{this.state.notes}</span>
+      </span>)
 
       output.push(<br/>)
 
@@ -1123,9 +1111,9 @@ export default (ComposedComponent) => {
           'display': 'block',
           'clear': 'both'
         }} className='receipt-line-item'>
-            {totals[idx].title}
+          {totals[idx].title}
           <span style={{ 'float': 'right' }}>${parseFloat(totals[idx].value).toFixed(2)}</span>
-          </span>)
+        </span>)
       }
 
       if (total !== null) {
@@ -1137,13 +1125,13 @@ export default (ComposedComponent) => {
           'display': 'block',
           'clear': 'both'
         }} className='receipt-line-item'>
-            <h4 style={{ display: 'inline-block' }}>{total.title}</h4>
-            <span style={{
-              'float': 'right',
-              'font-size': '18px',
-              'font-weight': 'bold'
-            }}>${parseFloat(total.value).toFixed(2)}</span>
-          </span>)
+          <h4 style={{ display: 'inline-block' }}>{total.title}</h4>
+          <span style={{
+            'float': 'right',
+            'font-size': '18px',
+            'font-weight': 'bold'
+          }}>${parseFloat(total.value).toFixed(2)}</span>
+        </span>)
       }
 
       output.push(<br/>)
@@ -1154,12 +1142,12 @@ export default (ComposedComponent) => {
         'clear': 'both'
       }} className='receipt-line-item'>
                     Payment Method
-          <span style={{
-            'float': 'right',
-            'font-size': '16px',
-            'font-weight': 'bold'
-          }}>{this.state.paymentMethod}</span>
-        </span>)
+        <span style={{
+          'float': 'right',
+          'font-size': '16px',
+          'font-weight': 'bold'
+        }}>{this.state.paymentMethod}</span>
+      </span>)
 
       return output
     }
@@ -1228,18 +1216,18 @@ export default (ComposedComponent) => {
             'display': 'block',
             clear: 'both'
           }} className='receipt-line-item'>
-              <span>{item.quantity} x {model}</span>
-              <span style={{ 'float': 'right' }}>${lineTotal}</span>
+            <span>{item.quantity} x {model}</span>
+            <span style={{ 'float': 'right' }}>${lineTotal}</span>
             {this.renderOptions(items[idx].options, item.quantity)}
-            </span>)
+          </span>)
         } else {
           output.push(<span style={{
             'display': 'block',
             clear: 'both'
           }} className='receipt-line-item'>
-              <span>{item.quantity} x {model}</span>
-              <span style={{ 'float': 'right' }}>${lineTotal}</span>
-            </span>)
+            <span>{item.quantity} x {model}</span>
+            <span style={{ 'float': 'right' }}>${lineTotal}</span>
+          </span>)
         }
       }
 
@@ -1257,9 +1245,9 @@ export default (ComposedComponent) => {
           'display': 'block',
           'clear': 'both'
         }} className='receipt-line-item'>
-            {totals[idx].title}
+          {totals[idx].title}
           <span style={{ 'float': 'right' }}>${parseFloat(totals[idx].value).toFixed(2)}</span>
-          </span>)
+        </span>)
       }
 
       if (total !== null) {
@@ -1271,13 +1259,13 @@ export default (ComposedComponent) => {
           'display': 'block',
           'clear': 'both'
         }} className='receipt-line-item'>
-            {total.title}
+          {total.title}
           <span style={{
             'float': 'right',
             'font-size': '18px',
             'font-weight': 'bold'
           }}>${parseFloat(total.value).toFixed(2)}</span>
-          </span>)
+        </span>)
       }
 
       return output
@@ -1545,15 +1533,11 @@ export default (ComposedComponent) => {
 
     // Event listeners
     onBlockUI() {
-      this.setState({
-        blockUi: true
-      })
+      this.setState({blockUi: true})
     }
 
     onUnblockUI() {
-      this.setState({
-        blockUi: true
-      })
+      this.setState({blockUi: true})
     }
 
     onStoreInfoLoaded(id, payload) {
@@ -2174,9 +2158,7 @@ export default (ComposedComponent) => {
       console.log('clearing checkout store - cart was checked-out') // TODO: Have clear and reset, they aren't really the same thing
 
       // Don't reset, which deletes order, just create a new order
-      this.props.checkoutService.createOrder({
-        action: 'insert'
-      })
+      this.props.checkoutService.createOrder({action: 'insert'})
     }
 
     onComplete() {
@@ -2244,9 +2226,7 @@ export default (ComposedComponent) => {
       let settings = this.props.settingStore.getSettings().posSettings
       if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
         console.log('pinned category, auto select category : ' + settings['pinned_category'])
-        this.categoryClicked(null, {
-          category_id: settings['pinned_category_id']
-        })
+        this.categoryClicked(null, {category_id: settings['pinned_category_id']})
       } else {
         let stepId = 'shop'
         let stepDescriptor = this.stepper.getStepById(stepId) || null
@@ -2377,7 +2357,8 @@ export default (ComposedComponent) => {
         }
       }
 
-      return (<ComposedComponent
+      return (
+        <ComposedComponent
           {...props}
           steps={steps}
           state={this.state}
@@ -2422,44 +2403,58 @@ export default (ComposedComponent) => {
 
                     <hr/>
 
-                    {this.state.paymentCode === 'cash' && (<FormGroup>
+                    {this.state.paymentCode === 'cash' && (
+                      <FormGroup>
                         {this.renderCashOptions()}
                         <input type='hidden' name='hid_cash'/>
-                      </FormGroup>)}
+                      </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'cash' && this.state.customPaymentAmount && (<FormGroup>
+                    {this.state.paymentCode === 'cash' && this.state.customPaymentAmount && (
+                      <FormGroup>
                         <i className='fa fa-dollar'/> <ControlLabel>Custom Amount</ControlLabel>
                         <FormControl type='text' name='custom_amount' inputRef={(amount) => this.customPaymentAmount = amount}/>
-                      </FormGroup>)}
+                      </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'credit' && (<FormGroup>
+                    {this.state.paymentCode === 'credit' && (
+                      <FormGroup>
                         <i className='fa fa-credit-card'/> <ControlLabel>Credit Card</ControlLabel>
-                        <FormControl type='text' name='card' placeholder='1234 5678 9012 3456'/>
-                        <input type='hidden' name='hid_card'/>
-                      </FormGroup>)}
+                      <FormControl type='text' name='card' placeholder='1234 5678 9012 3456'/>
+                      <input type='hidden' name='hid_card'/>
+                    </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'debit' && (<FormGroup>
+                    {this.state.paymentCode === 'debit' && (
+                      <FormGroup>
                         <i className='fa fa-credit-card'/> <ControlLabel>Debit Card</ControlLabel>
                         <FormControl type='text' name='card' placeholder='1234 5678 9012 3456'/>
                         <input type='hidden' name='hid_debit'/>
-                      </FormGroup>)}
+                      </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'cheque' && (<FormGroup>
+                    {this.state.paymentCode === 'cheque' && (
+                      <FormGroup>
                         <i className='fa fa-money'/> <ControlLabel>Cheque / Money Order</ControlLabel>
                         <FormControl type='text' name='cheque' placeholder='Reference Number'/>
                         <input type='hidden' name='hid_cheque'/>
-                      </FormGroup>)}
+                      </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (<FormGroup>
+                    {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (
+                      <FormGroup>
                         <i className='fa fa-dollar'/> <ControlLabel>Amount</ControlLabel>
-                        <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount}/>
-                      </FormGroup>)}
+                      <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount}/>
+                    </FormGroup>
+                    )}
 
-                    {this.state.paymentCode === 'giftcard' && (<FormGroup>
+                    {this.state.paymentCode === 'giftcard' && (
+                      <FormGroup>
                         <i className='fa fa-gift'/> <ControlLabel>Gift Card</ControlLabel>
                         <FormControl type='text' name='gift' placeholder='Card Number or Swipe'/>
                         <input type='hidden' name='hid_gift'/>
-                      </FormGroup>)}
+                      </FormGroup>
+                    )}
 
                     {/* TODO: Check if is a valid method */}
                     {this.state.paymentCode !== null && (<hr/>)}
@@ -2474,13 +2469,13 @@ export default (ComposedComponent) => {
                   </form>
 
                   <div className='receipt'
-                       style={{
-                         margin: '0 auto',
-                         maxWidth: '570px',
-                         boxSizing: 'border-box',
-                         padding: '18px',
-                         border: '1px solid black'
-                       }}>
+                    style={{
+                      margin: '0 auto',
+                      maxWidth: '570px',
+                      boxSizing: 'border-box',
+                      padding: '18px',
+                      border: '1px solid black'
+                    }}>
                     {this.renderReceipt()}
                   </div>
 
@@ -2608,16 +2603,18 @@ export default (ComposedComponent) => {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {this.state.hasOwnProperty('prevCheckout') && this.state.prevCheckout.hasOwnProperty('order') && typeof this.state.prevCheckout.order !== 'undefined' && (<div className='receipt'
-                                                                                                                                                                             style={{
-                                                                                                                                                                               margin: '0 auto',
-                                                                                                                                                                               maxWidth: '300px',
-                                                                                                                                                                               boxSizing: 'border-box',
-                                                                                                                                                                               padding: '18px',
-                                                                                                                                                                               border: '1px solid black'
-                                                                                                                                                                             }}>
+              {this.state.hasOwnProperty('prevCheckout') && this.state.prevCheckout.hasOwnProperty('order') && typeof this.state.prevCheckout.order !== 'undefined' && (
+                <div className='receipt'
+                  style={{
+                    margin: '0 auto',
+                    maxWidth: '300px',
+                    boxSizing: 'border-box',
+                    padding: '18px',
+                    border: '1px solid black'
+                  }}>
                   {this.renderCachedReceipt()}
-                </div>)}
+                </div>
+              )}
             </Modal.Body>
           </Modal>
 
@@ -2630,12 +2627,14 @@ export default (ComposedComponent) => {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {this.state.code && (<div>
+              {this.state.code && (
+                <div>
                   <Alert bsStyle='warning'>
                     Please enter the item code. <i className='fa fa-smile-o'/>
                   </Alert>
                   <Button block onClick={this.hideCodeModal}>Ok</Button>
-                </div>)}
+                </div>
+              )}
             </Modal.Body>
           </Modal>
           <Modal
@@ -2647,12 +2646,14 @@ export default (ComposedComponent) => {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {this.state.scan && (<div>
+              {this.state.scan && (
+                <div>
                   <Alert bsStyle='warning'>
                     Please scan your item. <i className='fa fa-barcode'/>
                   </Alert>
                   <Button block onClick={this.hideScanModal}>Ok</Button>
-                </div>)}
+                </div>
+              )}
             </Modal.Body>
           </Modal>
 
@@ -2678,7 +2679,8 @@ export default (ComposedComponent) => {
            </FormGroup>
            </Modal.Body>
            </Modal>*/}
-        </ComposedComponent>)
+        </ComposedComponent>
+      )
     }
   }
 

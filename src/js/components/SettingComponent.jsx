@@ -412,14 +412,14 @@ class SettingComponent extends Component {
                     <div className='customer-full-info'>
                       <form>
                         <Col xs={12}>
-                  <h4>Store Settings</h4>
-                  <hr/>
-                  <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4'>
+                          <h4>Store Settings</h4>
+                          <hr/>
+                          <FormGroup className='col-sm-12 col-md-12 col-lg-12 col-xl-4'>
                             <ControlLabel>QuickCommerce Shop URL</ControlLabel>
                             <FormControl type='text' name='shop_url' {...this.props.fields('shop_url', data.shop_url)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-12'>
+                          <FormGroup className='autocomplete-control-group col-sm-12'>
                             <ControlLabel>Assign to Store</ControlLabel>
                             <Autocomplete
                               name='store'
@@ -460,9 +460,9 @@ class SettingComponent extends Component {
                             />
                             <input type='hidden' name='store_id' {...this.props.field('store_id', data.store_id)} />
                           </FormGroup>
-                  <h4>Layout Settings</h4>
-                  <hr/>
-                  <FormGroup className='autocomplete-control-group col-sm-12'>
+                          <h4>Layout Settings</h4>
+                          <hr/>
+                          <FormGroup className='autocomplete-control-group col-sm-12'>
                             <ControlLabel>Default Display Category</ControlLabel>
                             <Autocomplete
                               name='pinned_category'
@@ -503,10 +503,10 @@ class SettingComponent extends Component {
                             />
                             <input type='hidden' name='pinned_category_id' {...this.props.field('pinned_category_id', data.pinned_category_id)} />
                           </FormGroup>
-                  <h4>Location Settings</h4>
-                  <hr/>
-                  {/* Only display if purchaser is a company */}
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <h4>Location Settings</h4>
+                          <hr/>
+                          {/* Only display if purchaser is a company */}
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Default Country</ControlLabel>
                             <Autocomplete
                               name='default_country'
@@ -550,7 +550,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='default_country_id' {...this.props.field('default_country_id', data.default_country_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Default Province</ControlLabel>
                             <Autocomplete
                               name='default_zone'
@@ -589,12 +589,12 @@ class SettingComponent extends Component {
                             />
                             <input type='hidden' name='default_zone_id' {...this.props.field('default_zone_id', data.default_zone_id)} />
                           </FormGroup>
-                </Col>
+                        </Col>
 
                         <Col xs={12}>
-                  <h4>Order Settings</h4>
-                  <hr/>
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <h4>Order Settings</h4>
+                          <hr/>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Initial Order Status</ControlLabel>
                             <Autocomplete
                               name='order_status'
@@ -634,7 +634,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='POS_initial_status_id' {...this.props.field('POS_initial_status_id', data.POS_initial_status_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Completed Order Status</ControlLabel>
                             <Autocomplete
                               name='order_status'
@@ -673,12 +673,12 @@ class SettingComponent extends Component {
                             />
                             <input type='hidden' name='POS_complete_status_id' {...this.props.field('POS_complete_status_id', data.POS_complete_status_id)} />
                           </FormGroup>
-                </Col>
+                        </Col>
 
                         <Col xs={12}>
-                  <h4>Customer Settings</h4>
-                  <hr/>
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <h4>Customer Settings</h4>
+                          <hr/>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Cash Sales Customer</ControlLabel>
                             <Autocomplete
                               name='customer'
@@ -724,7 +724,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='cash_customer_id' {...this.props.field('cash_customer_id', data.cash_customer_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Cash Sales Group</ControlLabel>
                             <Autocomplete
                               name='cash_customer_group'
@@ -764,7 +764,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='cash_customer_group_id' {...this.props.field('cash_customer_group_id', data.cash_customer_group_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Default Customer</ControlLabel>
                             <Autocomplete
                               name='customer'
@@ -810,7 +810,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='default_customer_id' {...this.props.field('default_customer_id', data.default_customer_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group col-sm-6'>
+                          <FormGroup className='autocomplete-control-group col-sm-6'>
                             <ControlLabel>Default Group</ControlLabel>
                             <Autocomplete
                               name='default_customer_group'
@@ -850,7 +850,7 @@ class SettingComponent extends Component {
                             <input type='hidden' name='default_customer_group_id' {...this.props.field('default_customer_group_id', data.default_customer_group_id)} />
                           </FormGroup>
 
-                  <FormGroup className='autocomplete-control-group'>
+                          <FormGroup className='autocomplete-control-group'>
                             <ControlLabel>Default Customer Address</ControlLabel>
                             <CurrentAddress
                               ref={(address) => {this.address = address}}
@@ -867,14 +867,14 @@ class SettingComponent extends Component {
                             />
                           </FormGroup>
 
-                  <FormGroup className='col-xs-12 col-sm-6'>
+                          <FormGroup className='col-xs-12 col-sm-6'>
                             <Button block bsStyle='success' onClick={this.onUpdate}><h4><i className='fa fa-check'/> Update Settings</h4></Button>
                           </FormGroup>
 
-                  <FormGroup className='col-xs-12 col-sm-6'>
+                          <FormGroup className='col-xs-12 col-sm-6'>
                             <Button block onClick={this.onCancel}><h4><i className='fa fa-ban'/> Cancel</h4></Button>
                           </FormGroup>
-                </Col>
+                        </Col>
                       </form>
                     </div>
                   </Col>

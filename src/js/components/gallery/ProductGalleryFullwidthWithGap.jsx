@@ -78,7 +78,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
   componentDidMount() {
     const node = ReactDOM.findDOMNode(this.grid)
 
-    if (!this.state.isotope) {
+    /*if (!this.state.isotope) {
       const isotope = new Isotope(node, {
         itemSelector: '.grid-item',
         transitionDuration: '0.7s',
@@ -95,7 +95,7 @@ export default class ProductGalleryFullwidthWithGap extends Component {
       })
     } else {
       this.updateIsotope()
-    }
+    }*/
 
     // Filtering
     /*if (('.filter-grid').length > 0) {
@@ -112,16 +112,16 @@ export default class ProductGalleryFullwidthWithGap extends Component {
 
   // update isotope layout
   componentDidUpdate() {
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.updateIsotope()
-    }, 333)
+    }, 333)*/
   }
 
   updateIsotope() {
-    if (this.state.isotope) {
+    /*if (this.state.isotope) {
       this.state.isotope.reloadItems()
       this.state.isotope.layout()
-    }
+    }*/
   }
 
   render() {
