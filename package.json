@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "QuickCommerce ReactJS components",
   "scripts": {
-    "setup": "npm install --no-bin-links & bower install",
-    "postinstall": "bower install",
+    "setup": "npm install --no-bin-links",
+    "postinstall": "",
     "build": "gulp build",
     "watch": "./node_modules/.bin/webpack --watch",
     "pack": "webpack",
