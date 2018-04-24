@@ -21,7 +21,7 @@ export { default as Actions } from './actions/index.js'
 //export { default as Modules } from './modules/index.js'
 //export { default as Steps } from './steps/index.js'
 //export { default as Stores } from './stores/index.js'
-//export { default as Services } from './services/index.js'
+export { default as Services } from './services/index.js'
 
 export {
   PosComponent,
