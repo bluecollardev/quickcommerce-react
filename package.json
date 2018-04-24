@@ -13,6 +13,8 @@
   "author": "Lucas Lopatka",
   "license": "Proprietary",
   "homepage": "http://firebrandwebsolutions.com",
+  "main": "./src/js/index.js",
+  "module": "./src/js/index.es.js",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.4.5",
