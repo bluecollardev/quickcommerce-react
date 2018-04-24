@@ -155,5 +155,5 @@ CustomerSearchStore.config = null
 // Data
 CustomerSearchStore.items = {}
 
-export default new CustomerSearchStore()
+export default CustomerSearchStore
 export { CustomerSearchStore }

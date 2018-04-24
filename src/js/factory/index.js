@@ -12,8 +12,7 @@ import makeDispatcher from './makeDispatcher.jsx'
 import makeStore from './makeStore.jsx'
 import utils from './utils.jsx'
 
-export default Factory
-export {
+export default {
   Factory,
   makeAction,
   makeConstant,

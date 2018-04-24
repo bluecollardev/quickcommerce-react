@@ -98,4 +98,5 @@ CustomerListStore.shippingAddress = {
   postcode: ''
 }
 
+export default CustomerListStore
 export { CustomerListStore }

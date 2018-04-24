@@ -33,4 +33,5 @@ class UserStore extends BaseStore {
 UserStore.PK = 'user_id'
 UserStore.user = null
 
+export default UserStore
 export { UserStore }

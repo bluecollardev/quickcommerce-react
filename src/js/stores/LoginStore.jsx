@@ -43,4 +43,5 @@ LoginStore.userToken = null
 LoginStore.userCreds = null
 LoginStore.isLogged = null
 
+export default LoginStore
 export { LoginStore }

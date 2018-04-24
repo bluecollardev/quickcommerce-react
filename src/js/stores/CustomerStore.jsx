@@ -193,5 +193,5 @@ CustomerStore.shippingAddress = {
   postcode: ''
 }
 
-export default new CustomerStore()
+export default CustomerStore
 export { CustomerStore }

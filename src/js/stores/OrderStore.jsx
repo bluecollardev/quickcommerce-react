@@ -5,7 +5,7 @@ import HashTable from '../utils/HashTable.js'
 import BaseStore from './BaseStore.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
-export class OrderStore extends BaseStore {
+class OrderStore extends BaseStore {
   constructor(dispatcher, stores) {
     super(dispatcher, stores)
 
@@ -484,3 +484,5 @@ export class OrderStore extends BaseStore {
     return rateData
   }
 }
+
+export default OrderStore

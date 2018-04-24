@@ -297,4 +297,5 @@ BrowserStore.availableDates = [] // VEST as well
 BrowserStore.unavailableDates = [] // Bookings
 BrowserStore.dispatchToken = null
 
+export default BrowserStore
 export { BrowserStore }

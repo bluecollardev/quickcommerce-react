@@ -693,5 +693,5 @@ class SettingStore extends BaseStore {
   }
 }
 
-export default new SettingStore()
+export default SettingStore
 export { SettingStore }

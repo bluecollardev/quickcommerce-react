@@ -159,5 +159,5 @@ OmniSearchStore.config = null
 // Data
 OmniSearchStore.items = {}
 
-export default new OmniSearchStore()
+export default OmniSearchStore
 export { OmniSearchStore }

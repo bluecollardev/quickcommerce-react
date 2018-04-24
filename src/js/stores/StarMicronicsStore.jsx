@@ -186,5 +186,5 @@ class StarMicronicsStore extends BaseStore {
   }
 }
 
-export default new StarMicronicsStore()
+export default StarMicronicsStore
 export { StarMicronicsStore }
