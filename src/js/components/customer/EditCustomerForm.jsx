@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import CustomerProfile from '../customer/CustomerProfile.jsx'
 
-export default class EditAccountForm extends Component {
+class EditAccountForm extends Component {
   constructor(props) {
     super(props)
   }
@@ -34,3 +34,4 @@ export default class EditAccountForm extends Component {
   }
 }
 
+export default EditAccountForm

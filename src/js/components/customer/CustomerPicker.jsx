@@ -16,7 +16,7 @@ import { Button, ControlLabel, FormGroup, Row } from 'react-bootstrap'
   checkoutStore: deps.checkoutStore,
   settingStore: deps.settingStore
   })) @observer
-export default class CustomerPicker extends Component {
+class CustomerPicker extends Component {
   constructor(props) {
     super(props)
 
@@ -235,3 +235,5 @@ export default class CustomerPicker extends Component {
     )
   }
 }
+
+export default CustomerPicker

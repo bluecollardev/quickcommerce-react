@@ -1,3 +1,1 @@
-import MuiStyles from './MuiStyles.jsx'
-
-export default { MuiStyles }
+export { default as MuiStyles } from './MuiStyles.jsx'

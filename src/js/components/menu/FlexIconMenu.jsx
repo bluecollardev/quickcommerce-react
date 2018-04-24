@@ -25,16 +25,12 @@ class FlexIconMenu extends Component {
   }
 
   render() {
-    let classNames = 'flex-icon-menu column mcb-column one column_divider column-margin-40px'
-    let className = [
-      this.props.className,
-      classNames
-    ].join(' ')
+    let className = this.props.className || ''
 
     return (
-      <Row className={className}>
+      <div className={className}>
         {this.props.children}
-      </Row>
+      </div>
     )
   }
 }

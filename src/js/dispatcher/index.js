@@ -1,3 +1,1 @@
-import AppDispatcher from './AppDispatcher.jsx'
-
-export default {AppDispatcher}
+export { default as AppDispatcher } from './AppDispatcher.jsx'

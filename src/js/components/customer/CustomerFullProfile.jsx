@@ -200,7 +200,7 @@ class CustomerFullProfile extends Component {
       shipToBilling = false
     }
 
-    this.setState({shipToBillingAddress: shipToBilling}, () => {
+    this.setState({ shipToBillingAddress: shipToBilling }, () => {
       console.log('changed shiptobillingaddress: shipToBillingAddress = ' + this.state.shipToBillingAddress)
     })
   }
@@ -294,7 +294,7 @@ class CustomerFullProfile extends Component {
       fn(response)
     }
 
-    this.setState({errors: response.error})
+    this.setState({ errors: response.error })
   }
 
   renderErrors() {
@@ -526,54 +526,53 @@ class CustomerFullProfile extends Component {
           ))}
 
           {/* If single / shipping / billing address */}
-          {[
-            true,
-            'single'
-          ].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
+          {[true, 'single'].indexOf(this.props.displayAddresses) > -1 &&
+            this.props.displayCurrentAddress && (
               <div className='customer-profile-block row full-width-inputs'>
-            <div className='billing-address'>
+                <div className='billing-address'>
                   <Address
-                mappings={mappings.address}
-                ref={(address) => {this.billingAddress = address}}
-                title='Current Address'
-                modal={this.props.modal}
-                data={this.props.billingAddress}
-                durationRequired={this.props.durationRequired}
-                nameRequired={false}
-                mode='create'
-              />
+                    mappings={mappings.address}
+                    ref={(address) => {this.billingAddress = address}}
+                    title='Current Address'
+                    modal={this.props.modal}
+                    data={this.props.billingAddress}
+                    durationRequired={this.props.durationRequired}
+                    nameRequired={false}
+                    mode='create'
+                  />
                   <hr/>
                   <div className='form-group'>
-                <label className='radio radio-inline'>
+                    <label className='radio radio-inline'>
                       <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} value='billing' onClick={this.onShipToBillingAddressChange}/> Ship to this address
                     </label>
-                <label className='radio radio-inline'>
+                    <label className='radio radio-inline'>
                       <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} value='shipping' onClick={this.onShipToBillingAddressChange}/> Ship to different address
                     </label>
-              </div>
+                  </div>
                 </div>
-          </div>
+              </div>
             )}
 
           {/* If single / shipping / billing address */}
-          {[
-            true,
-            'single'
-          ].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
+          {[true, 'single'].indexOf(this.props.displayAddresses) > -1 &&
+            this.props.displayShippingAddress &&
+            this.state.shipToBillingAddress === false && (
               <div className='customer-profile-block row full-width-inputs'>
-            <div className='shipping-address'>
+                <div className='shipping-address'>
                   <Address
-                mappings={mappings.address}
-                ref={(address) => {this.shippingAddress = address}}
-                title='Shipping Address'
-                modal={this.props.modal}
-                data={this.props.shippingAddress}
-                durationRequired={this.props.durationRequired}
-                nameRequired={false}
-                mode='create'
-              />
+                    mappings={mappings.address}
+                    ref={(address) => {this.shippingAddress = address}}
+                    title='Shipping Address'
+                    modal={this.props.modal}
+                    data={this.props.shippingAddress}
+                    durationRequired={this.props.durationRequired}
+                    nameRequired={false}
+                    mode='create'
+                  />
                 </div>
-          </div>)}
+              </div>
+            )
+          }
 
           {this.props.displayActions && (
             <div className='customer-profile-block row full-width-inputs align-center'>
@@ -776,53 +775,53 @@ class CustomerFullProfile extends Component {
           ))}
 
           {/* If single / shipping / billing address */}
-          {[
-            true,
-            'single'
-          ].indexOf(this.props.displayAddresses) > -1 && this.props.displayCurrentAddress && (
+          {[true, 'single'].indexOf(this.props.displayAddresses) > -1 &&
+            this.props.displayCurrentAddress && (
               <div className='customer-profile-block row full-width-inputs'>
-            <div className='billing-address'>
+                <div className='billing-address'>
                   <Address
-                mappings={mappings.address}
-                ref={(address) => {this.billingAddress = address}}
-                title='Billing Address'
-                modal={this.props.modal}
-                data={this.props.billingAddress}
-                durationRequired={this.props.durationRequired}
-                nameRequired={false}
-                mode='edit'
-              />
+                    mappings={mappings.address}
+                    ref={(address) => {this.billingAddress = address}}
+                    title='Billing Address'
+                    modal={this.props.modal}
+                    data={this.props.billingAddress}
+                    durationRequired={this.props.durationRequired}
+                    nameRequired={false}
+                    mode='edit'
+                  />
                   <hr/>
                   <div className='form-group'>
-                <label className='radio radio-inline'>
+                    <label className='radio radio-inline'>
                       <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === true} value='billing' onClick={this.onShipToBillingAddressChange}/> Ship to this address
                     </label>
-                <label className='radio radio-inline'>
+                    <label className='radio radio-inline'>
                       <input type='radio' name='co_shipping' checked={this.state.shipToBillingAddress === false} value='shipping' onClick={this.onShipToBillingAddressChange}/> Ship to different address
                     </label>
-              </div>
+                  </div>
                 </div>
-          </div>
-            )}
+              </div>
+            )
+          }
 
           {/* If single / shipping / billing address */}
-          {[
-            true,
-            'single'
-          ].indexOf(this.props.displayAddresses) > -1 && this.props.displayShippingAddress && this.state.shipToBillingAddress === false && (
+          {[true, 'single'].indexOf(this.props.displayAddresses) > -1 &&
+            this.props.displayShippingAddress &&
+            this.state.shipToBillingAddress === false && (
               <div className='customer-profile-block row full-width-inputs'>
-            <div className='shipping-address'>
+                <div className='shipping-address'>
                   <Address
-                mappings={mappings.address}
-                ref={(address) => {this.shippingAddress = address}}
-                title='Shipping Address'
-                modal={this.props.modal}
-                data={this.props.shippingAddress}
-                durationRequired={this.props.durationRequired}
-                mode='edit'
-              />
+                    mappings={mappings.address}
+                    ref={(address) => {this.shippingAddress = address}}
+                    title='Shipping Address'
+                    modal={this.props.modal}
+                    data={this.props.shippingAddress}
+                    durationRequired={this.props.durationRequired}
+                    mode='edit'
+                  />
                 </div>
-          </div>)}
+              </div>
+            )
+          }
 
           {this.props.displayActions && (
             <div className='customer-profile-block row full-width-inputs align-center'>
