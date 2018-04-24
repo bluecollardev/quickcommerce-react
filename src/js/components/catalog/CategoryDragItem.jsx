@@ -37,15 +37,17 @@ const CategoryDragItem = createReactClass({
   render() {
     // CategoryDragItem render
     const { id, isDragging, connectDragSource } = this.props
-    return connectDragSource(<div className='card'
-      onClick={this.onClick}>
-      {/* Looks like these are cached... may need to rethink my approach this should be overridden */}
-      <Thumbnail src={this.props.item.image}/>
+    return connectDragSource(
+      <div className='card'
+        onClick={this.onClick}>
+        {/* Looks like these are cached... may need to rethink my approach this should be overridden */}
+        <Thumbnail src={this.props.item.image}/>
 
-      <p className='item-name'>
-        {this.props.item['name']}
-      </p>
-    </div>)
+        <p className='item-name'>
+          {this.props.item['name']}
+        </p>
+      </div>
+    )
   }
 })
 

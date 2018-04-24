@@ -30,14 +30,16 @@ const CartDropTarget = createReactClass({
   },
   render() {
     const { position, isOver, canDrop, connectDropTarget } = this.props
-    return connectDropTarget(<div>
-      <Well
-        className={classNames('text-center', { 'well-is-over': isOver })}
-        style={{ marginBottom: '.5em' }}
-        bssize='large'>
-        {/*<h1 className='drop-target-icon'><i className='fa fa-bullseye fa-2x' /></h1>*/}
-      </Well>
-    </div>)
+    return connectDropTarget(
+      <div>
+        <Well
+          className={classNames('text-center', { 'well-is-over': isOver })}
+          style={{ marginBottom: '.5em' }}
+          bssize='large'>
+          {/*<h1 className='drop-target-icon'><i className='fa fa-bullseye fa-2x' /></h1>*/}
+        </Well>
+      </div>
+    )
   }
 })
 
