@@ -1,4 +1,5 @@
-export { default as Account } from './components/account/index.js'
+// We have to compile down to js
+/*export { default as Account } from './components/account/index.js'
 export { default as Address } from './components/address/index.js'
 export { default as Browser } from './components/browser/index.js'
 export { default as Cart } from './components/cart/index.js'
@@ -29,4 +30,4 @@ export {
   AuthenticatedComponent,
   AccountComponent,
   AuthenticatedAccountComponent
-} from './components/index.js'
+} from './components/index.js'*/
