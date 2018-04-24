@@ -41,4 +41,4 @@ makeConstant.destructor = function () {
   cache = {}
 }
 
-module.exports = makeConstant
+export default makeConstant

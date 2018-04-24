@@ -50,4 +50,4 @@ makeDispatcher.destructor = function () {
   cache = {}
 }
 
-module.exports = makeDispatcher
+export default makeDispatcher

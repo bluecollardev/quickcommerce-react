@@ -63,4 +63,4 @@ makeAction.destructor = function () {
   cache = {}
 }
 
-module.exports = makeAction
+export default makeAction

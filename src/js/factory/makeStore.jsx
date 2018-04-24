@@ -129,4 +129,4 @@ makeStore.destructor = function () {
   cache = {}
 }
 
-module.exports = makeStore
+export default makeStore

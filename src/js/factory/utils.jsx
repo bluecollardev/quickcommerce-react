@@ -1,7 +1,7 @@
 /**
  * @providesModule utils
  */
-module.exports = {
+export default {
   // SEARCH_TEXT -> SEARCH_TEXT  (Store letiable)
   getStoreFieldKey: function (configKey) {
     let str = hyphenate(configKey)
