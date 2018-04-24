@@ -3,7 +3,7 @@ import { GithubPicker } from 'react-color'
 
 // Wrap the component in <div className={'color-picker'}> colorpicker </div>
 // import an array of 12 colours
-export default class ColorPicker extends React.Component {
+class ColorPicker extends React.Component {
   state = {
     colors: [
       '#B80000',
@@ -28,3 +28,5 @@ export default class ColorPicker extends React.Component {
     )
   }
 }
+
+export default ColorPicker

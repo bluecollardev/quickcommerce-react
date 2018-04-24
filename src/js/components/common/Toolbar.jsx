@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Toolbar extends Component {
+class Toolbar extends Component {
   constructor(props) {
     super(props)
 
@@ -333,3 +333,5 @@ export default class Toolbar extends Component {
     )
   }
 }
+
+export default Toolbar

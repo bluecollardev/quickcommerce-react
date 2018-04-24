@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class LanguageSwitcher extends Component {
+class LanguageSwitcher extends Component {
   constructor(props) {
     super(props)
 
@@ -69,3 +69,5 @@ export default class LanguageSwitcher extends Component {
     )
   }
 }
+
+export default LanguageSwitcher

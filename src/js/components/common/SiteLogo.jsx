@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class SiteLogo extends Component {
+class SiteLogo extends Component {
   render() {
     return (
       <div className="site-logo-wrapper">
@@ -14,3 +14,5 @@ export default class SiteLogo extends Component {
     )
   }
 }
+
+export default SiteLogo

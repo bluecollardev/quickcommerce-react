@@ -5,7 +5,7 @@ import { Col, ControlLabel, FormControl, FormGroup, Row } from 'react-bootstrap'
 
 import Cards from './CreditCards.jsx'
 
-export default class CreditCardForm extends Component {
+class CreditCardForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -120,3 +120,5 @@ export default class CreditCardForm extends Component {
     )
   }
 }
+
+export default CreditCardForm

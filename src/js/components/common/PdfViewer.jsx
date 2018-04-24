@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Button, Modal } from 'react-bootstrap'
 
-export default class PdfViewer extends Component {
+class PdfViewer extends Component {
   constructor(props) {
     super(props)
 
@@ -92,3 +92,5 @@ export default class PdfViewer extends Component {
     }
   }
 }
+
+export default PdfViewer

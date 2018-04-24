@@ -32,7 +32,7 @@ const GalleryItem = (props) => {
   )
 }
 
-export default class ProductGalleryFullwidthWithGap extends Component {
+class ProductGalleryFullwidthWithGap extends Component {
   constructor(props) {
     super(props)
 
@@ -326,3 +326,5 @@ export default class ProductGalleryFullwidthWithGap extends Component {
     }
   }
 }
+
+export default ProductGalleryFullwidthWithGap

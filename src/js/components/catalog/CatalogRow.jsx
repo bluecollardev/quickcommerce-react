@@ -3,7 +3,7 @@ import { Col, Input } from 'react-bootstrap'
 
 import CartDragItem from '../cart/CartDragItem.jsx'
 
-export default class CatalogRow extends Component {
+class CatalogRow extends Component {
   static defaultProps = {
     data: {},
     onItemClicked: () => {}
@@ -26,3 +26,5 @@ export default class CatalogRow extends Component {
     )
   }
 }
+
+export default CatalogRow

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class GalleryFullwidthNoGap extends Component {
+class GalleryFullwidthNoGap extends Component {
   render() {
     return (
       <div className="row">
@@ -132,3 +132,5 @@ export default class GalleryFullwidthNoGap extends Component {
     )
   }
 }
+
+export default GalleryFullwidthNoGap

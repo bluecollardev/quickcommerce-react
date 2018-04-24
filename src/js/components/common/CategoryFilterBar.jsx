@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Col, Nav, Navbar, NavItem, Row } from 'react-bootstrap'
 
-export default class CategoryFilterBar extends Component {
+class CategoryFilterBar extends Component {
   constructor(props) {
     super(props)
 
@@ -67,3 +67,5 @@ export default class CategoryFilterBar extends Component {
     )
   }
 }
+
+export default CategoryFilterBar

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class PagePreloader extends Component {
+class PagePreloader extends Component {
   render() {
     return (
       <div className="page-preloader">
@@ -11,3 +11,5 @@ export default class PagePreloader extends Component {
     )
   }
 }
+
+export default PagePreloader

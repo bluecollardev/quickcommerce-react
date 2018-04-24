@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class GalleryBoxedNoGap extends Component {
+class GalleryBoxedNoGap extends Component {
   render() {
     return (
       <div className="row">
@@ -132,3 +132,5 @@ export default class GalleryBoxedNoGap extends Component {
     )
   }
 }
+
+export default GalleryBoxedNoGap

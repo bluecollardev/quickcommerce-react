@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Checkbox, Col, MenuItem, Nav, Navbar, NavDropdown, Row } from 'react-bootstrap'
 
-export default class FilterBar extends Component {
+class FilterBar extends Component {
   render() {
     return (
       <Row>
@@ -57,3 +57,5 @@ export default class FilterBar extends Component {
     )
   }
 }
+
+export default FilterBar

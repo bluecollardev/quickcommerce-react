@@ -115,3 +115,5 @@ NumberInput.propTypes = {
     PropTypes.string
   ])
 }
+
+export default NumberInput
