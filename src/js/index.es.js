@@ -15,7 +15,7 @@ export { default as User } from './components/user/index.js'
 
 export { default as Actions } from './actions/index.js'
 //export { default as Dispatcher } from './dispatcher/index.js'
-//export { default as Factory } from './factory/index.js'
+export { default as Factory } from './factory/index.js'
 //export { default as Helpers } from './helpers/index.js'
 //export { default as Layouts } from './layouts/index.js'
 //export { default as Modules } from './modules/index.js'
