@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import BaseService from './BaseService.jsx'
+
 export class SampleService extends BaseService {
   /**
    * Override parent implementation.
