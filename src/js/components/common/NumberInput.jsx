@@ -9,7 +9,7 @@ import CSSClassnames from '../../utils/CSSClassnames'
 const CLASS_ROOT = CSSClassnames.NUMBER_INPUT
 const INPUT = CSSClassnames.INPUT
 
-export default class NumberInput extends Component {
+class NumberInput extends Component {
 
   constructor(props, context) {
     super(props, context)
