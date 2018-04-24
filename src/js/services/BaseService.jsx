@@ -8,7 +8,7 @@ import ObjectHelper from '../helpers/Object.js'
 
 //import StringHelper from '../helpers/String.js'
 
-export class BaseService {
+class BaseService {
   // BaseService constructor
   constructor(deps) {
     deps = deps || null
@@ -169,3 +169,6 @@ export class BaseService {
    return null
    }*/
 }
+
+export default BaseService
+export { BaseService }
