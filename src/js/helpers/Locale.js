@@ -1,4 +1,4 @@
-import Cookies from './Cookies'
+/*import Cookies from './Cookies'
 
 let currentLocale = 'en-US'
 
@@ -47,4 +47,4 @@ export function getLocaleData(appMessages = {}, locale = getCurrentLocale()) {
     locale,
     messages
   }
-}
+}*/
