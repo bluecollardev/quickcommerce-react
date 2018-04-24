@@ -1,7 +1,7 @@
 import { schema } from 'normalizr'
 import assign from 'object-assign'
 
-import { OrderStore } from './OrderStore.jsx'
+import OrderStore from './OrderStore.jsx'
 
 class CheckoutStore extends OrderStore {
   /**
