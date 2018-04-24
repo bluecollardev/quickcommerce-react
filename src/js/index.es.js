@@ -19,7 +19,7 @@ export { default as Factory } from './factory/index.js'
 //export { default as Helpers } from './helpers/index.js'
 //export { default as Layouts } from './layouts/index.js'
 //export { default as Modules } from './modules/index.js'
-//export { default as Steps } from './steps/index.js'
+export { default as Steps } from './steps/index.js'
 //export { default as Stores } from './stores/index.js'
 export { default as Services } from './services/index.js'
 
