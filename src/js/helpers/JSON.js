@@ -67,4 +67,4 @@ const JSONHelper = {
   }
 }
 
-module.exports = JSONHelper
+export default JSONHelper

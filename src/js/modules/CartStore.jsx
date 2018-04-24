@@ -349,4 +349,4 @@ const CartStore = assign({}, EventEmitter.prototype, {
 
 })
 
-module.exports = CartStore
+export default CartStore

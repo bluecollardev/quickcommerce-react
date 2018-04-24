@@ -38,4 +38,4 @@ const GenericDragItem = createReactClass({
   }
 })
 
-module.exports = DragSource('sprite', mySource, collect)(GenericDragItem)
+export default DragSource('sprite', mySource, collect)(GenericDragItem)

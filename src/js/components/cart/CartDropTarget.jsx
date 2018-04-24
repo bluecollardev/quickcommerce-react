@@ -41,4 +41,4 @@ const CartDropTarget = createReactClass({
   }
 })
 
-module.exports = DropTarget('sprite', target, collect)(CartDropTarget)
+export default DropTarget('sprite', target, collect)(CartDropTarget)

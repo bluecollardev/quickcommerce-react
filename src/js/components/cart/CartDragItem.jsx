@@ -53,4 +53,4 @@ const CartDragItem = createReactClass({
   }
 })
 
-module.exports = DragSource('sprite', mySource, collect)(CartDragItem)
+export default DragSource('sprite', mySource, collect)(CartDragItem)

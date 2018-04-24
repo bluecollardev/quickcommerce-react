@@ -44,4 +44,4 @@ const GenericDropTarget = createReactClass({
   }
 })
 
-module.exports = DropTarget('sprite', myTarget, collect)(GenericDropTarget)
+export default DropTarget('sprite', myTarget, collect)(GenericDropTarget)

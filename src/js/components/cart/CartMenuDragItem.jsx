@@ -87,4 +87,4 @@ const CartMenuDragItem = createReactClass({
   }
 })
 
-module.exports = DragSource('sprite', mySource, collect)(CartMenuDragItem)
+export default DragSource('sprite', mySource, collect)(CartMenuDragItem)

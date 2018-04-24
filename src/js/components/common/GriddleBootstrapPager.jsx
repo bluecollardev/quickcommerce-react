@@ -41,4 +41,4 @@ const GriddleBootstrapPager = createReactClass({
   }
 })
 
-module.exports = GriddleBootstrapPager
+export default GriddleBootstrapPager

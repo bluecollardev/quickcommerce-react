@@ -40,4 +40,4 @@ const OcRequestHelper = {
   }
 }
 
-module.exports = OcRequestHelper
+export default OcRequestHelper

@@ -35,4 +35,4 @@ CartDispatcher.register(payload => {
   }
 })
 
-module.exports = CartDispatcher
+export default CartDispatcher

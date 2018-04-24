@@ -49,4 +49,4 @@ const CategoryDragItem = createReactClass({
   }
 })
 
-module.exports = DragSource('sprite', mySource, collect)(CategoryDragItem)
+export default DragSource('sprite', mySource, collect)(CategoryDragItem)
