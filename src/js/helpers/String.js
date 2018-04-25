@@ -1,4 +1,4 @@
-export default class StringHelper {
+class StringHelper {
   static capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
@@ -87,3 +87,5 @@ export default class StringHelper {
     return String(n) === str && n >= 0
   }
 }
+
+export default StringHelper

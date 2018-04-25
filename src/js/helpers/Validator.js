@@ -1,4 +1,4 @@
-export default {
+class ValidatorHelper {
   validate(rules) {
     var result = {
       valid: true,
@@ -29,3 +29,5 @@ export default {
     return result
   }
 }
+
+export default ValidatorHelper

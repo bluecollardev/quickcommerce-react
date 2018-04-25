@@ -1,4 +1,4 @@
-export default class NumberHelper {
+class NumberHelper {
   static isInteger(value) {
     if (typeof value === 'undefined' || value === null) {
       return false
@@ -8,3 +8,5 @@ export default class NumberHelper {
     return String(n) === String(value) && n >= 0
   }
 }
+
+export default NumberHelper

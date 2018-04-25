@@ -4,7 +4,7 @@
  **********************************************************/
 import StringHelper from './String.js'
 
-export default class ObjectHelper {
+class ObjectHelper {
   /**
    * Method: App.helpers.Object.isEmpty
    */
@@ -95,3 +95,5 @@ export default class ObjectHelper {
     }, dest || {})
   }
 }
+
+export default ObjectHelper

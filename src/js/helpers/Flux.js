@@ -18,7 +18,7 @@ function bindActionCreator(actionCreator, dispatcher) {
   return (...args) => dispatcher.dispatch(actionCreator(...args))
 }
 
-export default class FluxHelper {
+class FluxHelper {
   static bindActionCreators = (actionCreators, dispatcher) => {
     // Bind action creators
     return typeof actionCreators === 'function' ? bindActionCreator(actionCreators, dispatcher) : mapValues(actionCreators, actionCreator => bindActionCreator(actionCreator, dispatcher))
@@ -33,3 +33,5 @@ export default class FluxHelper {
    )
    }*/
 }
+
+export default FluxHelper

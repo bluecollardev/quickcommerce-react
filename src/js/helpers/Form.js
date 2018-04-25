@@ -2,7 +2,7 @@
  * Namespace: QC.Helpers.Form
  **********************************************************/
 
-export default class FormHelper {
+class FormHelper {
   /**
    * Retrieves a nested value from within an object given a string path.
    * @param path eg. path.to[0].my[1].object
@@ -146,3 +146,5 @@ export default class FormHelper {
     return chunks
   }
 }
+
+export default FormHelper

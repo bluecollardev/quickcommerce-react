@@ -1,4 +1,4 @@
-export default class Props {
+class PropsHelper {
   static pick = (props, fields) => {
     const has = (p) => props.hasOwnProperty(p)
     const obj = {}
@@ -40,3 +40,5 @@ export default class Props {
     return Object.assign({}, a, b)
   }
 }
+
+export default PropsHelper

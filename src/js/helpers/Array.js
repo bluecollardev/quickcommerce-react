@@ -3,7 +3,7 @@
  * Namespace: QC.Helpers.Array
  **********************************************************/
 
-export default class ArrayHelper {
+class ArrayHelper {
   /**
    * Method: App.helpers.Array.recursiveMap
    *
@@ -106,3 +106,5 @@ export default class ArrayHelper {
     return JSON.stringify(arr1) === JSON.stringify(arr2)
   }
 }
+
+export default ArrayHelper

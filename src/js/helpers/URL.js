@@ -4,7 +4,7 @@
 import pathToRegexp from 'path-to-regexp'
 import parse from 'url-parse'
 
-export default class UrlHelper {
+class UrlHelper {
   static getParams = (query) => {
     let params = {}
     let param
@@ -72,3 +72,5 @@ export default class UrlHelper {
     return parsed.toString()
   }
 }
+
+export default UrlHelper

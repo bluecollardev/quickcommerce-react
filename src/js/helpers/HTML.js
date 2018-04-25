@@ -2,7 +2,7 @@
  * Namespace: QC.Helpers.Html
  **********************************************************/
 
-export default class HtmlHelper {
+class HtmlHelper {
   static decodeHtmlEntities(str) {
     let element = document.createElement('div')
 
@@ -93,3 +93,5 @@ export default class HtmlHelper {
     }
   }
 }
+
+export default HtmlHelper

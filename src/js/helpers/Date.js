@@ -4,7 +4,7 @@ import moment from 'moment/moment'
 /**********************************************************
  * Namespace: QC.helpers.Date
  **********************************************************/
-export default class DateHelper {
+class DateHelper {
 
   static createDateFromString = (string, format) => moment(string, format).toDate()
 
@@ -92,3 +92,5 @@ export default class DateHelper {
     return new Date(timestamp)
   }
 }
+
+export default DateHelper
