@@ -26,14 +26,14 @@ class TopMenu extends Component {
 
   render() {
     return (
-      <Row className='top-menu flex-icon-menu column mcb-column one column_divider column-margin-40px'>
+      <div className='top-menu flex-icon-menu'>
         {this.props.children}
         {/*<hr className='no_line'/>*/}
         <div className='borderLine horzMenu' style={{
           'transformOrigin': '0% 100% 0px',
           'transform': 'matrix(1, 0, 0, 1, 0, 0)'
         }}></div>
-      </Row>
+      </div>
     )
   }
 }
