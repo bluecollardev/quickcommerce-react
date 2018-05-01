@@ -91,6 +91,15 @@ class DateHelper {
     timestamp = Date.parse(arr[0])
     return new Date(timestamp)
   }
+
+  /**
+   * Parses an ISO-8601 string representation of a date value.
+   * @param {String} str The date value as a string.
+   * @returns {Date} The parsed date object.
+   */
+  static parseDate(str) {
+    return new Date(str)
+  }
 }
 
 export default DateHelper
