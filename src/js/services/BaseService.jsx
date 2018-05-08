@@ -8,6 +8,11 @@ import ObjectHelper from '../helpers/Object.js'
 
 //import StringHelper from '../helpers/String.js'
 
+/**
+ * Although we could have implemented things differently (without inheritance), doing so doesn't add any value as this base
+ * service solely exists to cut down on the boilerplate needed when generating an api client using codegen templates.
+ * There's no concern regarding code-coupling in inheriting classes, as generated classes should be treated as "Final".
+ */
 class BaseService {
   // BaseService constructor
   constructor(deps) {
@@ -15,6 +20,7 @@ class BaseService {
 
     this.actions = {} // Private? (TODO: Symbols)
     this.dispatcher = {} // Private? (TODO: Symbols)
+    this.agent = undefined // Private? (TODO: Symbols)
 
     // TODO: Ensure actions are a HashProxy?
     if (deps !== null) {
@@ -33,70 +39,34 @@ class BaseService {
       if (deps.hasOwnProperty('stores') && deps.stores !== null && Object.keys(deps.stores).length > 0) {
         this.stores = deps.stores
       }
-    }
-  }
 
-  handleResponse(response, onSuccess, onError, legacy = false) {
-    if (legacy) {
-      this.handleLegacyResponse(response, onSuccess, onError)
-      return
-    }
-
-    // 200 OK, 201 Created
-    if (response.success || response.status === 200 || response.status === 201) {
-      if (response.hasOwnProperty('data')) {
-        if (typeof onSuccess === 'function') {
-          onSuccess(response.data)
-        }
-      } else {
-        if (typeof onSuccess === 'function') {
-          onSuccess()
+      // In order to keep things loose, we delegate authentication
+      // to an authentication agent of type AuthenticationAgent.
+      const agent = deps.agent || undefined
+      if (agent !== undefined) {
+        // TODO: Actually type-check...
+        if (typeof agent.init === 'function') {
+          this.agent = agent
         }
       }
-    } else {
-      this.handleApiError(response, onError)
     }
   }
 
-  handleLegacyResponse(response, onSuccess, onError) {
-    if (response.success || response.status === 200 || response.status === 201) {
-      if (response.hasOwnProperty('data') && response.data.hasOwnProperty('data')) {
-        if (typeof onSuccess === 'function') {
-          onSuccess(response.data.data)
-        }
-      } else if (response.hasOwnProperty('data')) {
-        if (typeof onSuccess === 'function') {
-          onSuccess(response.data)
-        }
-      } else {
-        if (typeof onSuccess === 'function') {
-          onSuccess()
-        }
-      }
+  // TODO: Not all params are mapped, just leaving in full params list so I don't have to regenerate JS code
+  callApi(url, method, pathParams, queryParams, headerParams, formParams, postBody, authNames, contentTypes, accepts, returnType, callback) {
+    authNames = []
+    let contentTypes = ['application/json']
+    let accepts = ['*/*']
 
-    } else {
-      this.handleApiError(response, onError)
-    }
+    // TODO: Check to see if apiClient was specified by inheriting class
+    return this.apiClient.callApi(
+      url, method,
+      pathParams, queryParams, headerParams, formParams, postBody,
+      authNames, contentTypes, accepts, returnType, callback
+    )
   }
 
-  handleError(message, onError, data) {
-    console.log('handle ERROR!')
-    //console.log(message)
-    //console.log(data)
-    if (typeof onError === 'function') {
-      onError(message, data) // TODO: Type check
-    } else {
-      // Catch and re-throw
-      throw new Error(message)
-    }
-  }
 
-  // Override me on an as needed basis in inheriting classes
-  handleApiError(response, onError) {
-    if (typeof onError === 'function') {
-      onError() // TODO: Type check
-    }
-  }
 
   normalizePayload(data, from, to) {
     return ObjectHelper.recursiveFormatKeys(data, from, to)
