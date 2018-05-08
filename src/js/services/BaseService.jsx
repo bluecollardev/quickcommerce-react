@@ -55,8 +55,8 @@ class BaseService {
   // TODO: Not all params are mapped, just leaving in full params list so I don't have to regenerate JS code
   callApi(url, method, pathParams, queryParams, headerParams, formParams, postBody, authNames, contentTypes, accepts, returnType, callback) {
     authNames = []
-    let contentTypes = ['application/json']
-    let accepts = ['*/*']
+    contentTypes = ['application/json']
+    accepts = ['*/*']
 
     // TODO: Check to see if apiClient was specified by inheriting class
     return this.apiClient.callApi(
