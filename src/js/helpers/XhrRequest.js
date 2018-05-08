@@ -1,6 +1,7 @@
 class XhrRequestHelper {
   static setHeaders = (request, headers, fn, context) => {
     let callback
+
     if (headers instanceof Array && headers.length > 0) {
       for (let idx = 0; idx < headers.length; idx++) {
         request.setRequestHeader(headers[idx][0], headers[idx][1])
