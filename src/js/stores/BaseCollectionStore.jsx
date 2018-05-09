@@ -102,9 +102,12 @@ class BaseCollectionStore extends BaseStore {
    *
    * @param key
    * @param value
+   * @param silent
    * @returns {*}
    */
-  setItem(key, value) {
+  setItem(key, value, silent) {
+    silent = (typeof silent === 'boolean') ? silent : false
+
     let previous
 
     if (this.hasItem(key)) {
@@ -115,7 +118,9 @@ class BaseCollectionStore extends BaseStore {
 
     this.items[key] = value
 
-    this.emitChange()
+    if (!silent) {
+      this.emitChange()
+    }
 
     return previous
   }
@@ -172,11 +177,14 @@ class BaseCollectionStore extends BaseStore {
   /**
    *
    * @param data
-   * @param onSuccess
-   * @param onError
+   * @param onSuccess I'm not sold on the existence of this parameter, move to services?
+   * @param onError I'm not sold on the existence of this parameter, move to services?
+   * @param silent
    */
-  setItems(data, onSuccess, onError) {
+  setItems(data, onSuccess, onError, silent) {
     // InventoryStore.setItems
+    silent = (typeof silent === 'boolean') ? silent : false
+
     try {
       data = data || []
 
@@ -205,7 +213,9 @@ class BaseCollectionStore extends BaseStore {
         }
       }
 
-      this.emitChange()
+        if (!silent) {
+          this.emitChange()
+        }
     } catch (err) {
       if (typeof onError === 'function') {
         onError(err)
