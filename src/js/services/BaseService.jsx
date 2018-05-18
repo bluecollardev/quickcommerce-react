@@ -18,8 +18,11 @@ class BaseService {
   constructor(deps) {
     deps = deps || null
 
-    this.actions = {} // Private? (TODO: Symbols)
     this.dispatcher = {} // Private? (TODO: Symbols)
+    this.headers = {} // Private? (TODO: Symbols)
+    this.actions = {} // Private? (TODO: Symbols)
+    this.services = {} // Private? (TODO: Symbols)
+    this.stores = {} // Private? (TODO: Symbols)
     this.agent = undefined // Private? (TODO: Symbols)
 
     // TODO: Ensure actions are a HashProxy?
