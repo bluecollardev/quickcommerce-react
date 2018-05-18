@@ -72,4 +72,3 @@ export default {
   TextMenuRow1x
 }
 
-

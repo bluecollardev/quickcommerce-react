@@ -13,7 +13,7 @@ import CustomerInfo from '../customer/CustomerInfo.jsx'
   authService: deps.authService,
   customerService: deps.customerService,
   customerAddressService: deps.customerAddressService
-  })) @observer
+})) @observer
 class CustomerProfile extends Component {
   static defaultProps = {
     pk: 'customer_id',

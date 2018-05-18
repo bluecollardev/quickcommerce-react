@@ -9,7 +9,7 @@ import FormComponent from '../FormComponent.jsx'
 @inject(deps => ({
   actions: deps.actions,
   authService: deps.authService
-  })) @observer
+})) @observer
 class SignInForm extends Component {
   constructor(props) {
     super(props)

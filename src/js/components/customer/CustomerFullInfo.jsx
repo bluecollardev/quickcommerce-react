@@ -14,7 +14,7 @@ import FormComponent from '../FormComponent.jsx'
   authService: deps.authService,
   customerService: deps.customerService,
   customerStore: deps.customerStore
-  })) @observer
+})) @observer
 class CustomerFullInfo extends Component {
   static defaultProps = {
     data: {

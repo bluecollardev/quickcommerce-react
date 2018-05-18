@@ -27,6 +27,10 @@ class BaseService {
       if (deps.hasOwnProperty('dispatcher') && deps.dispatcher instanceof Dispatcher) {
         this.dispatcher = deps.dispatcher
       }
+      
+      if (deps.hasOwnProperty('headers') && deps.headers !== null && Object.keys(deps.headers).length > 0) {
+        this.headers = deps.headers
+      }
 
       if (deps.hasOwnProperty('actions') && deps.actions !== null && Object.keys(deps.actions).length > 0) {
         this.actions = deps.actions
@@ -65,8 +69,6 @@ class BaseService {
       authNames, contentTypes, accepts, returnType, onSuccess, onError
     )
   }
-
-
 
   normalizePayload(data, from, to) {
     return ObjectHelper.recursiveFormatKeys(data, from, to)

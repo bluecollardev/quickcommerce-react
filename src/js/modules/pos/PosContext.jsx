@@ -45,7 +45,7 @@ export default (ComposedComponent) => {
     roles: deps.roles, // App level roles, general authenticated user (not customer!)
     userRoles: deps.userRoles, // Shortcut or implement via HoC?
     user: deps.user // Shortcut or implement via HoC?
-    })) @observer
+  })) @observer
   class PosContext extends Component {
     constructor(props) {
       super(props)
@@ -2420,9 +2420,9 @@ export default (ComposedComponent) => {
                     {this.state.paymentCode === 'credit' && (
                       <FormGroup>
                         <i className='fa fa-credit-card'/> <ControlLabel>Credit Card</ControlLabel>
-                      <FormControl type='text' name='card' placeholder='1234 5678 9012 3456'/>
-                      <input type='hidden' name='hid_card'/>
-                    </FormGroup>
+                        <FormControl type='text' name='card' placeholder='1234 5678 9012 3456'/>
+                        <input type='hidden' name='hid_card'/>
+                      </FormGroup>
                     )}
 
                     {this.state.paymentCode === 'debit' && (
@@ -2444,8 +2444,8 @@ export default (ComposedComponent) => {
                     {this.state.paymentCode === 'cheque' && this.customerPaymentAmount && (
                       <FormGroup>
                         <i className='fa fa-dollar'/> <ControlLabel>Amount</ControlLabel>
-                      <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount}/>
-                    </FormGroup>
+                        <FormControl type='text' name='cheque_amount' inputRef={(amount) => this.customPaymentAmount = amount}/>
+                      </FormGroup>
                     )}
 
                     {this.state.paymentCode === 'giftcard' && (

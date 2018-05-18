@@ -213,9 +213,9 @@ class BaseCollectionStore extends BaseStore {
         }
       }
 
-        if (!silent) {
-          this.emitChange()
-        }
+      if (!silent) {
+        this.emitChange()
+      }
     } catch (err) {
       if (typeof onError === 'function') {
         onError(err)

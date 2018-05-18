@@ -16,7 +16,7 @@ import CustomerProfile from './customer/AuthenticatedCustomerFullProfile.jsx'
   loginStore: deps.loginStore,
   userStore: deps.userStore,
   customerStore: deps.customerStore
-  })) @observer
+})) @observer
 class AccountComponent extends Component {
   constructor(props) {
     super(props)

@@ -30,7 +30,7 @@ import DragDropCartTable from './DragDropCartTable.jsx'
   roles: deps.roles, // App level roles, general authenticated user (not customer!)
   userRoles: deps.userRoles, // Shortcut or implement via HoC?
   user: deps.user // Shortcut or implement via HoC?
-  })) @observer
+})) @observer
 class CartComponent extends Component {
   static contextTypes = {
     cartContextManager: PropTypes.object,

@@ -149,7 +149,7 @@ const CASH_IN_DRAWER = [
   roles: deps.roles, // App level roles, general authenticated user (not customer!)
   userRoles: deps.userRoles, // Shortcut or implement via HoC?
   user: deps.user // Shortcut or implement via HoC?
-  })) @observer
+})) @observer
 class PosComponent extends Component {
   constructor(props) {
     super(props)

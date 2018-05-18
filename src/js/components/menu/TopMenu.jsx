@@ -8,7 +8,7 @@ import AuthenticatedComponent from '../AuthenticatedComponent.jsx'
 @inject(deps => ({
   actions: deps.actions,
   authService: deps.authService
-  })) @observer
+})) @observer
 class TopMenu extends Component {
   constructor(props) {
     super(props)

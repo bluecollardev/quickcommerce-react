@@ -12,7 +12,7 @@ import { Button, Col, ControlLabel, FormGroup } from 'react-bootstrap'
   customerListStore: deps.customerListStore,
   checkoutStore: deps.checkoutStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CustomerSearch extends Component {
   constructor(props) {
     super(props)

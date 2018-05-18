@@ -11,7 +11,7 @@ export default (ComposedComponent) => {
     customerService: deps.customerService,
     loginStore: deps.loginStore,
     userStore: deps.userStore
-    })) @observer
+  })) @observer
   // Wrapping this class is causing issues
   class AuthenticatedComponent extends Component {
     constructor(props) {

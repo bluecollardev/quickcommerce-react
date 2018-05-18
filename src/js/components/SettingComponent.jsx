@@ -15,7 +15,7 @@ import FormComponent from './FormComponent.jsx'
   actions: deps.actions,
   customerListStore: deps.customerListStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class SettingComponent extends Component {
   static defaultProps = {
     customers: [

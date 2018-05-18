@@ -30,7 +30,7 @@ function collect(connect, monitor) {
 @inject(deps => ({
   actions: deps.actions,
   cartStore: deps.cartStore
-  })) @observer
+})) @observer
 class Cart extends Component {
   static propTypes = {
     items: PropTypes.object,

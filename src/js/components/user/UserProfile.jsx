@@ -11,7 +11,7 @@ import CustomerInfo from '../customer/CustomerInfo.jsx'
 @inject(deps => ({
   actions: deps.actions,
   authService: deps.authService
-  })) @observer
+})) @observer
 class UserProfile extends Component {
   // TODO: Invalid default props here...
   static defaultProps = {

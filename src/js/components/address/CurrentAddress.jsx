@@ -332,7 +332,7 @@ const AddressForm = (props) => {
   customerService: deps.customerService, // Not used, just in case!
   customerAddressService: deps.customerAddressService,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CurrentAddress extends Component {
   constructor(props) {
     super(props)

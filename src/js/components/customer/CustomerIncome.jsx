@@ -19,7 +19,7 @@ import { Col, ControlLabel, Dropdown, FormControl, FormGroup } from 'react-boots
   customerStore: deps.customerStore,
   customerListStore: deps.customerListStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CustomerIncome extends Component {
   static defaultProps = {
     title: 'Income Details',

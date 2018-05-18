@@ -9,7 +9,7 @@ import StringHelper from '../../helpers/String.js'
   actions: deps.actions,
   checkoutStore: deps.checkoutStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class DragDropContainer extends Component {
   constructor(props) {
     super(props)

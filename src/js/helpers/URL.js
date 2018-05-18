@@ -136,7 +136,6 @@ class UrlHelper {
     return param.toString()
   }
 
-
   /**
    * Checks whether the given parameter value represents file-like content.
    *

@@ -12,7 +12,7 @@ import CurrentAddress from './CurrentAddress.jsx'
   customerAddressService: deps.customerAddressService,
   geoService: deps.geoService,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class Address extends Component {
   constructor(props) {
     super(props)

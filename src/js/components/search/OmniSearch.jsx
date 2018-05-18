@@ -15,7 +15,7 @@ import OmniSearchStore from '../../stores/OmniSearchStore.jsx'
   customerListStore: deps.customerListStore,
   checkoutStore: deps.checkoutStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class OmniSearch extends Component {
   constructor(props) {
     super(props)

@@ -96,8 +96,8 @@ export default class CategorySummary extends Component {
             </div>
             <div className="col-sm-12 col-md-4 purchase bottom_row" style={{ height: 114 }}>
               <button className="btn button" style={{ display: 'none' }}>ADD TO CART
-              <div className=""/>
-              <a className="" data-toggle="modal" data-target="#myModal" style={{ display: 'none' }}>Add to Cart</a></button>
+                <div className=""/>
+                <a className="" data-toggle="modal" data-target="#myModal" style={{ display: 'none' }}>Add to Cart</a></button>
               <button type="submit" name="add" id="AddToCart" className="button">
                 <span id="AddToCartText">Add to Cart</span>
               </button>

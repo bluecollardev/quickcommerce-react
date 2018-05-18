@@ -15,7 +15,7 @@ import { Button, ControlLabel, FormGroup, Row } from 'react-bootstrap'
   checkoutService: deps.checkoutService,
   checkoutStore: deps.checkoutStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CustomerPicker extends Component {
   constructor(props) {
     super(props)

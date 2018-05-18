@@ -22,7 +22,7 @@ import CustomerIdentity from './CustomerIdentity.jsx'
   customerAddressService: deps.customerAddressService,
   customerStore: deps.customerStore,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CustomerFullProfile extends Component {
   // TODO: Redo default props, there are a couple items like this flagged in my comments
   static defaultProps = {

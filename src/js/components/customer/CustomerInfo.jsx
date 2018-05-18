@@ -13,7 +13,7 @@ import FormComponent from '../FormComponent.jsx'
   actions: deps.actions,
   authService: deps.authService,
   customerService: deps.customerService
-  })) @observer
+})) @observer
 class CustomerInfo extends Component {
   static defaultProps = {}
 

@@ -26,7 +26,7 @@ export default (ComposedComponent) => {
     roles: deps.roles, // App level roles, general authenticated user (not customer!)
     userRoles: deps.userRoles, // Shortcut or implement via HoC?
     user: deps.user // Shortcut or implement via HoC?
-    })) @observer
+  })) @observer
   class StepContext extends Component {
   }
 

@@ -27,7 +27,7 @@ import React, { Component } from 'react'
   roles: deps.roles, // App level roles, general authenticated user (not customer!)
   userRoles: deps.userRoles, // Shortcut or implement via HoC?
   user: deps.user // Shortcut or implement via HoC?
-  }))
+}))
 class AuthenticatedApp extends Component {
   constructor(props) {
     super(props)

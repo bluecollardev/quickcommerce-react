@@ -18,7 +18,7 @@ import FormComponent from '../FormComponent.jsx'
   authService: deps.authService,
   customerService: deps.customerService,
   settingStore: deps.settingStore
-  })) @observer
+})) @observer
 class CustomerContact extends Component {
   static defaultProps = {
     id: null,

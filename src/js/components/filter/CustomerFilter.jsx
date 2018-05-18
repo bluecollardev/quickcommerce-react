@@ -11,7 +11,7 @@ import FormComponent from '../FormComponent.jsx'
   actions: deps.actions,
   authService: deps.authService,
   customerService: deps.customerService
-  })) @observer
+})) @observer
 class CustomerFilter extends Component {
   static defaultProps = {}
 

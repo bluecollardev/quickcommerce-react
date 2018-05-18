@@ -19,8 +19,8 @@
         "no-unused-vars": 0,
         "indent": ["error", 2, {"SwitchCase": 1}],
         "linebreak-style": [
-            "error",
-            "unix"
+          "error",
+          "unix"
         ],
         "quotes": [
             "error",
@@ -36,7 +36,6 @@
         "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 1}],
         "array-bracket-newline": ["error", "consistent"],
         "object-curly-newline": ["error", {"multiline": true}],
-        "object-property-newline": ["error", {"allowAllPropertiesOnSameLine": false}],
         "react/jsx-closing-bracket-location": [1, {"selfClosing": "tag-aligned", "nonEmpty": "after-props"}],
         "react/jsx-uses-vars": 1,
         "react/jsx-equals-spacing": [2, "never"],
