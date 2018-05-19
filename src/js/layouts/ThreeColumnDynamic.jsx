@@ -22,7 +22,9 @@ const ThreeColumnDynamicLayout = (props) => {
     if (displayLeftCol) {
       leftColWidth = props.columnConfiguration[0]
       centerColWidth = props.columnConfiguration[1]
+      rightColWidth = 0
     } else if (displayRightCol) {
+      leftColWidth = 0
       centerColWidth = props.columnConfiguration[0]
       rightColWidth = props.columnConfiguration[1]
     }
@@ -37,11 +39,11 @@ const ThreeColumnDynamicLayout = (props) => {
   } else if (displayLeftCol && !displayRightCol) {
     leftColClass = 'col-xs-12 col-md-' + leftColWidth
     rightColClass = ''
-    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
+    centerColClass = 'col-xs-12 col-md-' + centerColWidth
   } else if (!displayLeftCol && displayRightCol) {
     leftColClass = ''
-    rightColClass = 'col-xs-12 col-md-' + leftColWidth
-    centerColClass = 'col-xs-12 col-md-' + (leftColWidth + centerColWidth)
+    rightColClass = 'col-xs-12 col-md-' + rightColWidth
+    centerColClass = 'col-xs-12 col-md-' + centerColWidth
   } else if (!displayLeftCol && !displayRightCol) {
     leftColClass = ''
     rightColClass = ''
