@@ -10,11 +10,22 @@ const ThreeColumnDynamicLayout = (props) => {
   let rightColWidth = 3
   let centerColWidth = 6
 
-  if (props.columnConfiguration instanceof Array && props.columnConfiguration.length == 3) {
+  if (props.columnConfiguration instanceof Array && props.columnConfiguration.length === 3) {
     // eg. [4,5,3]
     leftColWidth = props.columnConfiguration[0]
     rightColWidth = props.columnConfiguration[2]
     centerColWidth = props.columnConfiguration[1]
+  }
+
+  if (props.columnConfiguration instanceof Array && props.columnConfiguration.length === 2) {
+    // eg. [4,5,3]
+    if (displayLeftCol) {
+      leftColWidth = props.columnConfiguration[0]
+      centerColWidth = props.columnConfiguration[1]
+    } else if (displayRightCol) {
+      centerColWidth = props.columnConfiguration[0]
+      rightColWidth = props.columnConfiguration[1]
+    }
   }
 
   let leftColClass = 'col-xs-12 col-md-' + leftColWidth

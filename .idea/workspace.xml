@@ -2,47 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a5da79e-0f1f-4acb-9dbb-9d2c0ffd3fc9" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/AccountComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/AccountComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/AuthenticatedApp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/AuthenticatedApp.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/AuthenticatedComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/AuthenticatedComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/PosComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/PosComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/SettingComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/SettingComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/account/SignInForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/account/SignInForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/address/Address.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/address/Address.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/address/CurrentAddress.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/address/CurrentAddress.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/cart/DragDropContainer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/cart/DragDropContainer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/catalog/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/catalog/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerContact.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerContact.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerFullInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerFullInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerFullProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerFullProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerIdentity.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerIdentity.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerIncome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerIncome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerInfo.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerPicker.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerPicker.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/customer/CustomerProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/customer/CustomerProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/filter/CustomerFilter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/filter/CustomerFilter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/menu/AccountMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/menu/AccountMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/menu/FlexIconMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/menu/FlexIconMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/menu/TopMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/menu/TopMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/search/CustomerSearch.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/search/CustomerSearch.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/search/OmniSearch.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/search/OmniSearch.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/summary/CategorySummary.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/summary/CategorySummary.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/components/user/UserProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/components/user/UserProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/helpers/URL.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/helpers/URL.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/cart/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/cart/Cart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/cart/CartCompareComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/cart/CartCompareComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/cart/CartComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/cart/CartComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/cart/CartContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/cart/CartContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/cart/DragDropCartTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/cart/DragDropCartTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/pos/PosContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/pos/PosContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/modules/stepper/StepContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/modules/stepper/StepContext.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/services/BaseService.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/services/BaseService.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/stores/BaseCollectionStore.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/stores/BaseCollectionStore.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/js/layouts/ThreeColumnDynamic.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/layouts/ThreeColumnDynamic.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -56,18 +16,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BaseService.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/js/services/BaseService.jsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="952">
-              <caret line="57" column="39" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="HashProxy.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/js/utils/HashProxy.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -101,7 +49,7 @@
       <file leaf-file-name="CustomerFullProfile.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/js/components/customer/CustomerFullProfile.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
+            <state relative-caret-position="1054">
               <caret line="75" column="54" selection-start-line="75" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
@@ -113,8 +61,8 @@
       <file leaf-file-name="webpack.config.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webpack.config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="11" selection-start-line="20" selection-start-column="30" selection-end-line="21" selection-end-column="11" />
+            <state relative-caret-position="221">
+              <caret line="25" column="39" lean-forward="true" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -137,11 +85,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
-              <caret line="83" column="28" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="28" />
+            <state relative-caret-position="162">
+              <caret line="42" column="32" lean-forward="true" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ThreeColumnDynamic.jsx" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/js/layouts/ThreeColumnDynamic.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -187,6 +147,7 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.eslintrc.json" />
         <option value="$PROJECT_DIR$/src/js/components/customer/CustomerFullProfile.jsx" />
+        <option value="$PROJECT_DIR$/src/js/layouts/ThreeColumnDynamic.jsx" />
       </list>
     </option>
   </component>
@@ -247,6 +208,20 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="indigo-quickcommerce-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="indigo-quickcommerce-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="indigo-quickcommerce-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="indigo-quickcommerce-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -302,11 +277,12 @@
       <workItem from="1526068329810" duration="1039000" />
       <workItem from="1526069418252" duration="1042000" />
       <workItem from="1526310240848" duration="5214000" />
+      <workItem from="1526710096261" duration="337000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38114000" />
+    <option name="totallyTimeSpent" value="38451000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -318,8 +294,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5005208" side_tool="true" weight="0.32943678" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947917" weight="0.32943678" />
       <window_info id="npm" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49947917" weight="0.32943678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49947917" weight="0.32943678" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -340,13 +316,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="32" lean-forward="true" selection-start-line="31" selection-start-column="32" selection-end-line="32" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/js/stores/CustomerListStore.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -642,7 +611,7 @@
     <entry file="file://$PROJECT_DIR$/src/js/services/BaseService.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="952">
-          <caret line="57" column="39" selection-start-line="57" selection-start-column="39" selection-end-line="57" selection-end-column="39" />
+          <caret line="64" column="39" selection-start-line="64" selection-start-column="39" selection-end-line="64" selection-end-column="39" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -660,13 +629,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="986">
           <caret line="58" column="15" selection-start-line="58" selection-start-column="15" selection-end-line="58" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webpack.config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="11" selection-start-line="20" selection-start-column="30" selection-end-line="21" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -703,7 +665,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/components/customer/CustomerFullProfile.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
+        <state relative-caret-position="1054">
           <caret line="75" column="54" selection-start-line="75" selection-start-column="54" selection-end-line="76" selection-end-column="54" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
@@ -713,8 +675,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="83" column="28" selection-start-line="83" selection-start-column="28" selection-end-line="83" selection-end-column="28" />
+        <state relative-caret-position="162">
+          <caret line="42" column="32" lean-forward="true" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webpack.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="25" column="39" lean-forward="true" selection-start-line="25" selection-start-column="39" selection-end-line="25" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/js/layouts/ThreeColumnDynamic.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
