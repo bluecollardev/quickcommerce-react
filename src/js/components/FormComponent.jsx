@@ -101,7 +101,21 @@ const history = (defaultState, action) => {
 
 }
 
-// TODO: This component needs to be unit tested
+/**
+ * This HoC is quickcommerce-react way of enriching React forms.
+ * - 2-way binds form data from inputs in a FormComponent wrapped form to their respective Dtos.
+ * - Provides helper methods for accessing using primitive or typed form data using mapped properties.
+ * - Provides a getField method which registers and adds a field and it's initial value to FormComponent's 'fields' registry.
+ *   getField returns a JSX string that can be used to bind any input, select, checkbox, radio or textarea field (etc.) to
+ *   FormComponent for simplified form manipulation. TODO: Detail what...
+ * - Provides a simple getForm method which returns the content of the wrapped form and any linked FormComponent sub-forms.
+ * - Provides a
+ *
+ *   This component needs to be unit tested like a mofo!
+ *
+ *
+ *
+ */
 export default (ComposedComponent) => {
   return class FormComponent extends Component {
     constructor(props) {
@@ -348,6 +362,26 @@ export default (ComposedComponent) => {
     }
 
     /**
+     * TODO: I belong in a to-be-implemented 'IFormComponentWrapper' (for lack of a better name right now) interface.
+     * TODO: Type check - we don't want to be calling getForm on a sub-form component that isn't a FormComponent.
+     * There's no guarantee that markup in an inheriting component will contain the same references / subs.
+     * @param subformComponent
+     * @returns {{}}
+     */
+    getSubform(subformComponent) {
+      // 1) Just call, getForm should NEVER accept any parameters!
+      // 2) Don't use call or apply, there's no need to override 'this'
+      // 3) Return an empty object, this method shouldn't try to break stuff
+      let subformData = {}
+
+      if (subformComponent instanceof FormComponent) {
+        subformData = subformComponent.component.wrappedInstance.getForm()
+      }
+
+      return subformData
+    }
+
+    /**
      *
      * @param callback
      * @returns {*}
@@ -493,6 +527,7 @@ export default (ComposedComponent) => {
           {...props}
           ref={(component) => this.component = component}
           getForm={this.getForm}
+          getSubform={this.getSubform}
           resetForm={this.resetForm}
           triggerAction={this.triggerAction}
           renderErrors={this.renderErrors}
