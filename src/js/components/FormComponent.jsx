@@ -69,7 +69,7 @@ function undoable(reducer) {
 
 const defaultState = {
   history: {
-    past: [
+    past: [webpack --
       0,
       1,
       2,
@@ -99,6 +99,45 @@ const history = (defaultState, action) => {
       return state
   }
 
+}
+
+/**
+ * Private.
+ * @param component
+ * @returns {boolean}
+ */
+function isMobxInjectorWrappedComponent(component) {
+  if (!(component.hasOwnProperty('displayName'))) return false
+
+  let displayTest = /^inject-/
+  if (!(displayTest.match(component.displayName))) return false
+
+  if (!(component.hasOwnProperty('wrappedComponent'))) return false
+
+  return true
+}
+
+/**
+ * Private.
+ * @param component
+ * @returns {boolean}
+ */
+function resolveComponent(componentInstance) {
+  if (isMobxInjectorWrappedComponent(componentInstance)) {
+    componentInstance = componentInstance.wrappedComponent
+  } else {
+    componentInstance = componentInstance
+  }
+
+  return componentInstance
+}
+
+function mapChildren(composedComponent, callback) {
+  composedComponent = resolveComponent(composedComponent)
+
+  React.Children.map(composedComponent.props.children, (child) => {
+    callback(child)
+  })
 }
 
 /**
@@ -140,10 +179,6 @@ export default (ComposedComponent) => {
       this.validateForm = this.validateForm.bind(this)
       this.setErrorsOnFields = this.setErrorsOnFields.bind(this)
       this.renderErrors = this.renderErrors.bind(this)
-
-      React.Children.map(ComposedComponent.children, (child) => {
-        console.log(child)
-      })
     }
 
     /**
@@ -353,6 +388,12 @@ export default (ComposedComponent) => {
     }
 
     getForm() {
+      console.log('map FormComponent children...')
+      mapChildren(ComposedComponent, (child) => {
+        console.log(child)
+      })
+
+
       // Normalize fields
       let formData = {}
 
