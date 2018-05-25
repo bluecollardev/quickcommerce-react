@@ -47,7 +47,7 @@ function undoable(reducer) {
 
         break
       default:
-      // Delegate handling the action to the passed reducer
+        // Delegate handling the action to the passed reducer
         const newPresent = reducer(present, action)
         if (present === newPresent) {
           return state
@@ -69,7 +69,7 @@ function undoable(reducer) {
 
 const defaultState = {
   history: {
-    past: [webpack --
+    past: [
       0,
       1,
       2,
@@ -99,45 +99,6 @@ const history = (defaultState, action) => {
       return state
   }
 
-}
-
-/**
- * Private.
- * @param component
- * @returns {boolean}
- */
-function isMobxInjectorWrappedComponent(component) {
-  if (!(component.hasOwnProperty('displayName'))) return false
-
-  let displayTest = /^inject-/
-  if (!(displayTest.match(component.displayName))) return false
-
-  if (!(component.hasOwnProperty('wrappedComponent'))) return false
-
-  return true
-}
-
-/**
- * Private.
- * @param component
- * @returns {boolean}
- */
-function resolveComponent(componentInstance) {
-  if (isMobxInjectorWrappedComponent(componentInstance)) {
-    componentInstance = componentInstance.wrappedComponent
-  } else {
-    componentInstance = componentInstance
-  }
-
-  return componentInstance
-}
-
-function mapChildren(composedComponent, callback) {
-  composedComponent = resolveComponent(composedComponent)
-
-  React.Children.map(composedComponent.props.children, (child) => {
-    callback(child)
-  })
 }
 
 /**
@@ -256,14 +217,17 @@ export default (ComposedComponent) => {
 
             // Grab wrapping formgroup and set success/error status
             let validationState = (isValid === true) ? 'has-success' : 'has-error'
-            let group = this.findInput(fieldName).closest('.form-group')
+
+            // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
+            // Sounds like it's deprecated going to have to find another solution
+            //let group = this.findInput(fieldName).closest('.form-group')
 
             // Clear any existing statuses
-            group.classList.remove('has-success')
-            group.classList.remove('has-error')
+            //group.classList.remove('has-success')
+            //group.classList.remove('has-error')
 
             // Set validation status
-            group.classList.add(validationState)
+            //group.classList.add(validationState)
           },
           validations: validations
         }
@@ -307,12 +271,15 @@ export default (ComposedComponent) => {
     }
 
     /**
-     *
+     * ReactDOM.findDOMNode isn't working in newer versions of React, and they're deprecating it ffs...
+     * This method was mostly used to bind and render validations for inputs. I'll have to figure out a new way to do it.
+     * @deprecated
      * @param fieldName
      * @returns {Element | any}
      */
     findInput(fieldName) {
-      const node = ReactDOM.findDOMNode(this) // Get wrapped component instanceof
+      const component = this.component.hasOwnProperty('wrappedInstance') ? this.component.wrappedInstance : this.component
+      const node = ReactDOM.findDOMNode(component)
       const input = node.querySelector('[name="' + fieldName + '"]')
 
       return input
@@ -347,14 +314,17 @@ export default (ComposedComponent) => {
 
             // Grab wrapping formgroup and set success/error status
             let validationState = (isValid === true) ? 'has-success' : 'has-error'
-            let group = this.findInput(fieldName).closest('.form-group')
+
+            // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
+            // Sounds like it's deprecated going to have to find another solution
+            //let group = this.findInput(fieldName).closest('.form-group')
 
             // Clear any existing statuses
-            group.classList.remove('has-success')
-            group.classList.remove('has-error')
+            //group.classList.remove('has-success')
+            //group.classList.remove('has-error')
 
             // Set validation status
-            group.classList.add(validationState)
+            //group.classList.add(validationState)
           },
           validations: validations
         }
@@ -367,7 +337,9 @@ export default (ComposedComponent) => {
 
       // Grab wrapping formgroup and set success/error status
       let validationState = (isValid === true) ? 'success' : 'error'
-      this.findInput(fieldName).closest('.form-group').setAttribute('validationState', validationState)
+      // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
+      // Sounds like it's deprecated going to have to find another solution
+      //this.findInput(fieldName).closest('.form-group').setAttribute('validationState', validationState)
 
       return {
         name: fieldName,
@@ -387,13 +359,7 @@ export default (ComposedComponent) => {
       this.forceUpdate() // TODO: Temporary hack to re-render
     }
 
-    getForm() {
-      console.log('map FormComponent children...')
-      mapChildren(ComposedComponent, (child) => {
-        console.log(child)
-      })
-
-
+    getForm(callback) {
       // Normalize fields
       let formData = {}
 
@@ -403,7 +369,7 @@ export default (ComposedComponent) => {
 
       if (!Object.keys(formData).length > 0) return null
 
-      return formData
+      return (typeof callback === 'function') ? callback(formData) : formData
     }
 
     /**
