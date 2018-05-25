@@ -140,6 +140,10 @@ export default (ComposedComponent) => {
       this.validateForm = this.validateForm.bind(this)
       this.setErrorsOnFields = this.setErrorsOnFields.bind(this)
       this.renderErrors = this.renderErrors.bind(this)
+
+      React.Children.map(ComposedComponent.children, (child) => {
+        console.log(child)
+      })
     }
 
     /**
