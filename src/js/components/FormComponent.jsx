@@ -131,8 +131,10 @@ export default (ComposedComponent) => {
       this.freezeState = this.freezeState.bind(this)
       this.thawState = this.thawState.bind(this)
       this.findInput = this.findInput.bind(this)
+      this.getFieldValue = this.getFieldValue.bind(this)
       this.getField = this.getField.bind(this)
       this.setField = this.setField.bind(this)
+      this.onFieldChange = this.onFieldChange.bind(this)
       this.resetForm = this.resetForm.bind(this)
       this.getForm = this.getForm.bind(this)
       this.triggerAction = this.triggerAction.bind(this)
@@ -148,8 +150,8 @@ export default (ComposedComponent) => {
      * @param data
      * @returns {*}
      */
-    static getMappedValue(path, data) {
-      return FormHelper.getMappedValue(path, data)
+    static getMappedValue(mapping, data, resolve) {
+      return FormHelper.getMappedValue(mapping, data, resolve)
     }
 
     /**
@@ -190,6 +192,50 @@ export default (ComposedComponent) => {
       this.setState({ fields: {} })
     }
 
+    getFieldValue(fieldName) {
+      if (!(typeof fieldName === 'string') || !(fieldName.length > 0)) {
+              return
+            }
+
+            if (typeof this.state.fields[fieldName] === 'undefined') {
+              return
+            }
+
+            // Auto-resolve
+            // TODO: This is incomplete, resolve using true types
+            const storedValue = this.state.fields[fieldName].value
+            let fieldValue = null
+
+            switch (typeof storedValue) {
+              case 'undefined':
+                break
+              case 'object':
+                // TODO: null check and type check
+                if (!(storedValue === null)) {
+                  // TODO: This is a stupid way now that we have DTOs
+                  // It'll do for a proof-of-concept though...
+                  // Is it a code type?
+                  if (storedValue.hasOwnProperty('code')) {
+                    // Just use the name for now
+                    fieldValue = storedValue.name
+                  }
+          }
+
+          break
+        case 'string':
+          fieldValue = storedValue
+          break
+        case 'number':
+          fieldValue = storedValue
+          break
+        case 'boolean':
+          fieldValue = storedValue
+          break
+      }
+
+      return fieldValue
+    }
+
     /**
      * Registers and adds a field and it's initial value to this component's 'fields' registry.
      * Returns a set of props used to initialize the input field that calls this method.
@@ -205,29 +251,7 @@ export default (ComposedComponent) => {
           name: fieldName,
           value: defaultValue,
           onChange: (event) => {
-            //console.log('setting FormComponent field value to "' + event.target.value + '"')
-            this.state.fields[fieldName].value = event.target.value
-            this.forceUpdate()
-
-            // Validate the input when we attach it to the form so the form maintains the correct state?
-            // I'm thinking maybe not...
-            //this.validate(fieldName, this.state.fields[fieldName].value)
-            isValid = this.validate(fieldName, this.state.fields[fieldName].value)
-            console.log(fieldName + ' is valid? ' + isValid)
-
-            // Grab wrapping formgroup and set success/error status
-            let validationState = (isValid === true) ? 'has-success' : 'has-error'
-
-            // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
-            // Sounds like it's deprecated going to have to find another solution
-            //let group = this.findInput(fieldName).closest('.form-group')
-
-            // Clear any existing statuses
-            //group.classList.remove('has-success')
-            //group.classList.remove('has-error')
-
-            // Set validation status
-            //group.classList.add(validationState)
+            this.onFieldChange(event, fieldName)
           },
           validations: validations
         }
@@ -238,34 +262,20 @@ export default (ComposedComponent) => {
           value: event.target.value,
           onChange: (event) => {
             //console.log('setting FormComponent field value to "' + event.target.value + '"')
-            this.state.fields[fieldName].value = event.target.value
-            this.forceUpdate()
-
-            // Validate the input when we attach it to the form so the form maintains the correct state?
-            // I'm thinking maybe not...
-            //this.validate(fieldName, this.state.fields[fieldName].value)
-            isValid = this.validate(fieldName, this.state.fields[fieldName].value)
-            console.log(fieldName + ' is valid? ' + isValid)
-
-            // Grab wrapping formgroup and set success/error status
-            let validationState = (isValid === true) ? 'has-success' : 'has-error'
-            let group = this.findInput(fieldName).closest('.form-group')
-
-            // Clear any existing statuses
-            group.classList.remove('has-success')
-            group.classList.remove('has-error')
-
-            // Set validation status
-            group.classList.add(validationState)
+            this.onFieldChange(event, fieldName)
           },
           validations: validations
         }
       }
 
+      // Auto-resolve
+      // TODO: This is incomplete, resolve using true types
+      let fieldValue = this.getFieldValue(fieldName)
+
       // These props are injected into the JSX element
       return {
         name: fieldName,
-        value: this.state.fields[fieldName].value,
+        value: fieldValue,
         onChange: this.state.fields[fieldName].onChange
       }
     }
@@ -303,28 +313,7 @@ export default (ComposedComponent) => {
           name: fieldName,
           value: value, //required: false,
           onChange: (event) => {
-            this.state.fields[fieldName].value = event.target.value
-            this.forceUpdate()
-
-            // Validate the input when we attach it to the form so the form maintains the correct state?
-            // I'm thinking maybe not...
-            //this.validate(fieldName, this.state.fields[fieldName].value)
-            isValid = this.validate(fieldName, this.state.fields[fieldName].value)
-            console.log(fieldName + ' is valid? ' + isValid)
-
-            // Grab wrapping formgroup and set success/error status
-            let validationState = (isValid === true) ? 'has-success' : 'has-error'
-
-            // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
-            // Sounds like it's deprecated going to have to find another solution
-            //let group = this.findInput(fieldName).closest('.form-group')
-
-            // Clear any existing statuses
-            //group.classList.remove('has-success')
-            //group.classList.remove('has-error')
-
-            // Set validation status
-            //group.classList.add(validationState)
+            this.onFieldChange(event, fieldName)
           },
           validations: validations
         }
@@ -341,10 +330,40 @@ export default (ComposedComponent) => {
       // Sounds like it's deprecated going to have to find another solution
       //this.findInput(fieldName).closest('.form-group').setAttribute('validationState', validationState)
 
+      // Auto-resolve
+      // TODO: This is incomplete, resolve using true types
+      let fieldValue = this.getFieldValue(fieldName)
+      
       return {
         name: fieldName,
-        value: this.state.fields[fieldName].value
+        value: fieldValue
       }
+    }
+
+    onFieldChange(event, fieldName) {
+      //console.log('setting FormComponent field value to "' + event.target.value + '"')
+      this.state.fields[fieldName].value = event.target.value
+      this.forceUpdate()
+
+      // Validate the input when we attach it to the form so the form maintains the correct state?
+      // I'm thinking maybe not...
+      //this.validate(fieldName, this.state.fields[fieldName].value)
+      isValid = this.validate(fieldName, this.state.fields[fieldName].value)
+      console.log(fieldName + ' is valid? ' + isValid)
+
+      // Grab wrapping formgroup and set success/error status
+      let validationState = (isValid === true) ? 'has-success' : 'has-error'
+
+      // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
+      // Sounds like it's deprecated going to have to find another solution
+      //let group = this.findInput(fieldName).closest('.form-group')
+
+      // Clear any existing statuses
+      //group.classList.remove('has-success')
+      //group.classList.remove('has-error')
+
+      // Set validation status
+      //group.classList.add(validationState)
     }
 
     /**
@@ -530,7 +549,8 @@ export default (ComposedComponent) => {
     render() {
       let props = Object.assign({}, this.props, {
         fields: this.getField.bind(this),
-        field: this.setField.bind(this)
+        field: this.setField.bind(this),
+        value: this.getFieldValue.bind(this)
       })
 
       return (

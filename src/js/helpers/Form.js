@@ -9,7 +9,29 @@ class FormHelper {
    * @param data An object to traverse
    * @returns {*}
    */
-  static getMappedValue(path, data) {
+  static getMappedValue(mapping, data, resolve) {
+    resolve = (typeof resolve === 'boolean') ? resolve : false
+
+    let pathMapping = null
+    // If the mapping provided is a simple string ie: MY_FIELD: 'myField'
+    if (typeof mapping === 'string' && mapping.length > 0) {
+      resolve = true // Simple mappings must be resolved
+      pathMapping = mapping
+    }
+
+    mapping = mapping || null
+    if (mapping !== null) {
+      if (mapping.hasOwnProperty('property') && mapping.hasOwnProperty('value')) {
+        pathMapping = (resolve === false) ? mapping.property : mapping.value
+      }
+    }
+
+    if (pathMapping !== null) {
+      return FormHelper.getPathMappedValue(pathMapping, data)
+    }
+  }
+
+  static getPathMappedValue(path, data) {
     if (typeof data === 'undefined' || data === null) {
       return null
     }
@@ -46,11 +68,11 @@ class FormHelper {
           return chunk.replace('.', '\\\\.')
         })
 
-        return FormHelper.getMappedValue(chunks.join('.'), data[prop][arrIdx])
+        return FormHelper.getPathMappedValue(chunks.join('.'), data[prop][arrIdx])
       }
 
       //console.log(JSON.stringify(data[prop]))
-      return FormHelper.getMappedValue(chunks.join('.'), data[prop])
+      return FormHelper.getPathMappedValue(chunks.join('.'), data[prop])
     } else {
       return data[currentChunk]
     }
