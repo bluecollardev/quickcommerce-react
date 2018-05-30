@@ -1,4 +1,75 @@
-import React from 'react'
+import assign from 'object-assign'
+import React, { Fragment } from 'react'
+import Autocomplete from 'react-autocomplete'
+
+import FormHelper from '../../helpers/Form.js'
+
+const getMappedValue = FormHelper.getMappedValue
+
+const AutocompleteFormControl = (props) => {
+  const { field, fields, value, mappings, selection, data, items } = props
+  // props must have the following defined:
+  // fields (function)
+
+  // mappings is not the normal mapping, just the ones required for the autocomplete
+  // structure: { field: ..., id: ..., code: ... }
+  // TODO: id and code should be optional
+
+  function onValueChanged(event, value) {
+    field(mappings.field.property, value)
+
+    if (typeof props.onChange === 'function') {
+      props.onChange(event, value)
+    }
+  }
+
+  function onItemSelected(value, item) {
+    field(mappings.field.property, item.data)
+    field(mappings.id.value, item.id)
+    field(mappings.code.value, item.data.code)
+
+    if (typeof props.onSelect === 'function') {
+      props.onSelect(value, item)
+    }
+  }
+
+  let mergedSelection = assign({}, selection, {
+    value: getMappedValue(mappings.field, data) || '',
+    id: getMappedValue(mappings.id, data, true) || null,
+    code: getMappedValue(mappings.code, data, true) || ''
+  })
+  
+  return (
+    <Fragment>
+      <Autocomplete
+        inputProps={assign(fields(mappings.field.property, mergedSelection.value), {
+          className: 'form-control',
+          //...readOnlyAttr
+        })}
+        name={mappings.field.property}
+        getItemValue={(item) => {
+          return item.value
+        }}
+        items={items}
+        renderItem={(item, isHighlighted) => {
+          return (
+            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+              {item.value}
+            </div>
+          )
+        }}
+        shouldItemRender={props.shouldItemRender}
+        autoHighlight={true}
+        wrapperStyle={{ display: 'block' }}
+        value={value(mappings.field.property)}
+        onChange={onValueChanged}
+        onSelect={onItemSelected}
+      />
+      <input type='hidden' name={mappings.field.value} {...fields(mappings.id.value, mergedSelection.id)} />
+      <input type='hidden' name={mappings.code.value} {...fields(mappings.code.value, mergedSelection.code)} />
+    </Fragment>
+  )
+}
 
 const OccupationAutocomplete = (props) => {
   return (<div/>)
@@ -260,4 +331,5 @@ const StoreAutocomplete = (props) => {
   )
 }
 
+export default AutocompleteFormControl
 export {OccupationAutocomplete, CountryAutocomplete, ZoneAutocomplete, OrderStatusAutocomplete, LanguageAutocomplete, StoreAutocomplete, CustomerAutocomplete, CustomerGroupAutocomplete}

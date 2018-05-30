@@ -76,7 +76,7 @@ class AbstractFormComponent extends Component {
     formComponent = unwrapComponent(formComponent)
 
     // Grab the form data
-    formData = formComponent.props.getForm()
+    formData = formComponent.props.getForm() || formData
     // Grab any subform data
     if (formComponent.subforms instanceof Array) {
       formComponent.subforms.map((refName) => {
