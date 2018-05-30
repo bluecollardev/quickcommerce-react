@@ -332,4 +332,4 @@ const StoreAutocomplete = (props) => {
 }
 
 export default AutocompleteFormControl
-export {OccupationAutocomplete, CountryAutocomplete, ZoneAutocomplete, OrderStatusAutocomplete, LanguageAutocomplete, StoreAutocomplete, CustomerAutocomplete, CustomerGroupAutocomplete}
+export {AutocompleteFormControl, OccupationAutocomplete, CountryAutocomplete, ZoneAutocomplete, OrderStatusAutocomplete, LanguageAutocomplete, StoreAutocomplete, CustomerAutocomplete, CustomerGroupAutocomplete}

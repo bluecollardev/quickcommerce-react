@@ -32,14 +32,37 @@ const InputFormControl = (props) => {
   )
 }
 
+const HiddenInput = (props) => {
+  // Render the InputFormControl
+  const { field, fields, mapping, data } = props
+
+  let name = (typeof props.name === 'string') ? props.name: mapping.property
+  // props must have the following defined:
+  // fields (function)
+
+  // mappings is not the normal mapping, just the ones required for the autocomplete
+  // structure: { field: ..., id: ..., code: ... }
+  // TODO: id and code should be optional
+
+  // Set resolve flag on getMappedValue to true or you'll get a error like:
+  // "Cannot convert object to primitive value"?
+  return (
+    <input
+      name={name}
+      type='hidden'
+      {...props.fields(mapping.property, getMappedValue(mapping, data))}>
+    </input>
+  )
+}
+
 const DatePicker = (props) => {
   //return <input type='date' />
-  return <FormControl type='date' {...props} />
+  return <InputFormControl type='date' {...props} />
 }
 
 const TimePicker = (props) => {
   //return <input type='time' />
-  return <FormControl type='time' {...props} />
+  return <InputFormControl type='time' {...props} />
 }
 
 const DateInput = (props) => {
@@ -103,4 +126,4 @@ const SsnInput = (props) => {
 }
 
 export default InputFormControl
-export { DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
+export { InputFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
