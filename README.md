@@ -161,8 +161,32 @@ UPDATE 20180601:
 Sample regex to convert FormComponent FormControls to new style declarations...
 I'm overhauling all library components.
 
+Note: This fix needs to be applied line by line on a per-case basis. Just an example for me to reference.
 Find: <(FormControl|DateInput).*(\{\.\.\.readOnlyAttr\}?).*mappings\.([A-Z-0-9_]+).*\/>
-Replace: <$1 $2 fields={fields} mapping={mapping.$3} data={data} />
+Replace: <$1 $2 fields={fields} mapping={mappings.$3} data={data} />
+Note: Conditionally prefix FormControl with Input ie: Input$1
+
+No way to regex replace autocomplete widgets, again, it's a manual effort.
+
+```javascript
+import { AutocompleteFormControl, matchItemToTerm } from quickcommerce-react/components/form/Autocomplete.jsx'
+```
+
+```javascript
+<AutocompleteFormControl
+  {...props}
+  data={data}
+  mappings={{
+    field: mappings.,
+    id: mappings.,
+    code: mappings.
+  }}
+  items={}
+  shouldItemRender={matchItemToTerm}
+  onChange={props.}
+  onSelect={props.}
+/>
+```
 
 ### Services
 

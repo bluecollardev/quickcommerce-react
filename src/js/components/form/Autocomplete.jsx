@@ -6,6 +6,48 @@ import FormHelper from '../../helpers/Form.js'
 
 const getMappedValue = FormHelper.getMappedValue
 
+function matchItemToTerm(item, key, value) {
+  if (typeof value === 'string' && typeof item[key] === 'string') {
+    return item[key].toLowerCase().indexOf(value.toLowerCase()) !== -1
+  }
+}
+
+function matchItemToStore(item, value) {
+  return matchItemToTerm(item, 'value', value)
+}
+
+function matchItemToName(item, value) {
+  return matchItemToTerm(item, 'name', value)
+}
+
+function matchItemToCountry(item, value) {
+  return matchItemToTerm(item, 'value', value)
+}
+
+function matchItemToZone(item, value) {
+  return matchItemToTerm(item, 'value', value)
+}
+
+// TODO: This is NOT generic yo...
+function matchItemToCustomer(item, value) {
+  if (typeof value === 'string') {
+    return [
+      item.firstname,
+      item.lastname
+    ].join(' ').toLowerCase().indexOf(value.toLowerCase()) !== -1 //|| zone.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
+  }
+}
+
+function matchItemToCustomerGroup(item, value) {
+  return matchItemToTerm(item, 'value', value)
+}
+
+function matchItemToStatus(item, value) {
+  return matchItemToTerm(item, 'value', value)
+}
+
+// TODO: This is good to go, but the specialized/pre-configured
+// autocompletes need to be revamped as of line, now...
 const AutocompleteFormControl = (props) => {
   const { field, fields, value, mappings, selection, data, items } = props
   // props must have the following defined:
@@ -44,7 +86,7 @@ const AutocompleteFormControl = (props) => {
       <Autocomplete
         inputProps={assign(fields(mappings.field.property, mergedSelection.value), {
           className: 'form-control',
-          //...readOnlyAttr
+          readOnly: props.readOnly
         })}
         name={mappings.field.property}
         getItemValue={(item) => {
@@ -78,6 +120,7 @@ const OccupationAutocomplete = (props) => {
 const CountryAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='default_country'
       getItemValue={(item) => {
         return item.value
@@ -122,6 +165,7 @@ const CountryAutocomplete = (props) => {
 const ZoneAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='default_zone'
       getItemValue={(item) => {
         return item.value
@@ -162,6 +206,7 @@ const ZoneAutocomplete = (props) => {
 const CustomerAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='customer'
       getItemValue={(item) => {
         return [
@@ -208,6 +253,7 @@ const CustomerAutocomplete = (props) => {
 const CustomerGroupAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='default_customer_group'
       getItemValue={(item) => {
         return item.value
@@ -248,6 +294,7 @@ const CustomerGroupAutocomplete = (props) => {
 const OrderStatusAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='order_status'
       getItemValue={(item) => {
         return item.value
@@ -292,6 +339,7 @@ const LanguageAutocomplete = (props) => {
 const StoreAutocomplete = (props) => {
   return (
     <Autocomplete
+      readOnly={props.readOnly}
       name='store'
       getItemValue={(item) => {
         return item.value
@@ -332,4 +380,22 @@ const StoreAutocomplete = (props) => {
 }
 
 export default AutocompleteFormControl
-export {AutocompleteFormControl, OccupationAutocomplete, CountryAutocomplete, ZoneAutocomplete, OrderStatusAutocomplete, LanguageAutocomplete, StoreAutocomplete, CustomerAutocomplete, CustomerGroupAutocomplete}
+export {
+  AutocompleteFormControl,
+  OccupationAutocomplete,
+  CountryAutocomplete,
+  ZoneAutocomplete,
+  OrderStatusAutocomplete,
+  LanguageAutocomplete,
+  StoreAutocomplete,
+  CustomerAutocomplete,
+  CustomerGroupAutocomplete,
+  matchItemToTerm,
+  matchItemToStore,
+  matchItemToName,
+  matchItemToCountry,
+  matchItemToZone,
+  matchItemToCustomer,
+  matchItemToCustomerGroup,
+  matchItemToStatus
+}

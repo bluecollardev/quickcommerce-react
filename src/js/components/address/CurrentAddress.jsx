@@ -1,24 +1,31 @@
-import { inject, observer } from 'mobx-react'
 import assign from 'object-assign'
-import PropTypes from 'prop-types'
-
-import FormHelper from '../../helpers/Form.js'
-
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { inject, observer } from 'mobx-react'
+
 import Autocomplete from 'react-autocomplete'
 
 import { Button, ControlLabel, FormControl, FormGroup, Modal } from 'react-bootstrap'
 
-import fieldNames from '../../forms/AddressFields.jsx'
+import FormHelper from '../../helpers/Form.js'
 
-import { DateInput } from '../form/Input.jsx'
+import { InputFormControl, HiddenInput, DateInput } from '../form/Input.jsx'
+import { AutocompleteFormControl, matchItemToTerm } from '../form/Autocomplete.jsx'
 
 import FormComponent from '../FormComponent.jsx'
+// TODO: Strip these fallback mappings out, replace with mappings using mobx-react injector deps
+import fieldNames from '../../forms/AddressFields.jsx'
 
 const AddressForm = (props) => {
   const mappings = props.mappings || fieldNames
 
-  const {mode, type, types, nameRequired, durationRequired, displayActions, data, countries, zones, cities, geoZones, getMappedValue} = props
+  const {
+    mode, type, types,
+    nameRequired, durationRequired,
+    displayActions,
+    data, countries, zones, cities, geoZones,
+    fields, getMappedValue
+  } = props
 
   let readOnlyAttr = ''
   switch (mode) {
@@ -27,53 +34,11 @@ const AddressForm = (props) => {
       break
   }
 
-  // Common fields
-  let addressId = getMappedValue(mappings.ADDRESS_ID, data) || null
-  let selectedCountry = getMappedValue(mappings.COUNTRY, data) || ''
-  let selectedCountryId = getMappedValue(mappings.COUNTRY_ID, data) || null
-  let selectedCountryCode = getMappedValue(mappings.COUNTRY_CODE, data) || ''
-  let selectedZone = getMappedValue(mappings.ZONE, data) || ''
-  let selectedZoneId = getMappedValue(mappings.ZONE_ID, data) || null
-  let selectedZoneCode = getMappedValue(mappings.ZONE_CODE, data) || ''
-  let selectedCity = getMappedValue(mappings.CITY, data) || ''
-  let selectedCityId = getMappedValue(mappings.CITY_ID, data) || null
-  let selectedCityCode = getMappedValue(mappings.CITY_CODE, data) || ''
-
-  // Name fields
-  let firstName = getMappedValue(mappings.FIRST_NAME, data)
-  let lastName = getMappedValue(mappings.LAST_NAME, data)
-
-  // Line fields
-  let line1 = getMappedValue(mappings.ADDRESS_1, data)
-  let line2 = getMappedValue(mappings.ADDRESS_2, data)
-
-  // Civic fields
-  let suite = getMappedValue(mappings.SUITE, data)
-  let streetName = getMappedValue(mappings.STREET_NAME, data)
-  let streetType = getMappedValue(mappings.STREET_TYPE, data)
-  let streetDir = getMappedValue(mappings.STREET_DIR, data)
-
-  // PO fields
-  let box = getMappedValue(mappings.BOX, data)
-  let stn = getMappedValue(mappings.STN, data)
-
-  // Rural fields
-  let rangeRd = getMappedValue(mappings.RANGE_ROAD, data)
-  let site = getMappedValue(mappings.SITE, data)
-  let comp = getMappedValue(mappings.COMP, data)
-  let lot = getMappedValue(mappings.LOT, data)
-  let concession = getMappedValue(mappings.CONCESSION, data)
-
-  // Date from / to
-  let dateFrom = getMappedValue(mappings.FROM, data)
-  let dateTo = getMappedValue(mappings.TO, data)
-  //let selectedGeoZone = getMappedValue(mappings.GEOZONE, data)
-
   return (
     <form>
       {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
       <div className='col-md-flex col-lg-flex'>
-        <input type='hidden' name={mappings.ADDRESS_ID} {...props.fields(mappings.ADDRESS_ID, addressId)} />
+        <HiddenInput {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_ID} data={data} />
 
         <FormGroup className='col-sm-3 form-element form-select'>
           <ControlLabel>Address Type</ControlLabel>
@@ -92,14 +57,14 @@ const AddressForm = (props) => {
         {nameRequired && (
           <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
             <ControlLabel>First Name*</ControlLabel>
-            <FormControl {...readOnlyAttr} name={mappings.FIRST_NAME} type='text' {...props.fields(mappings.FIRST_NAME, firstName)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.FIRST_NAME} data={data} />
           </FormGroup>
         )}
 
         {nameRequired && (
           <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
             <ControlLabel>Last Name*</ControlLabel>
-            <FormControl {...readOnlyAttr} name={mappings.LAST_NAME} type='text' {...props.fields(mappings.LAST_NAME, lastName)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.LAST_NAME} data={data} />
           </FormGroup>
         )}
 
@@ -107,13 +72,13 @@ const AddressForm = (props) => {
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 1*</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.ADDRESS_1} {...props.fields(mappings.ADDRESS_1, line1)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_1} data={data} />
           </FormGroup>
         )}
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 2</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.ADDRESS_2} {...props.fields(mappings.ADDRESS_2, line2)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_2} data={data} />
           </FormGroup>
         )}
 
@@ -121,25 +86,25 @@ const AddressForm = (props) => {
         {type === 'civic' && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
             <ControlLabel>Suite</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.SUITE} {...props.fields(mappings.SUITE, suite)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.SUITE} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
             <ControlLabel>Street Name</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.STREET_NAME} {...props.fields(mappings.SUITE, streetName)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.SUITE} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Street Type</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.STREET_TYPE} {...props.fields(mappings.STREET_TYPE, streetType)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STREET_TYPE} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
             <ControlLabel>Direction</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.STREET_DIR} {...props.fields(mappings.STREET_DIR, streetDir)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STREET_DIR} data={data} />
           </FormGroup>
         )}
 
@@ -147,13 +112,13 @@ const AddressForm = (props) => {
         {type === 'pobox' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Box</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.BOX} {...props.fields(mappings.BOX, box)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
         {type === 'pobox' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Station</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.STN} {...props.fields(mappings.STN, stn)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STN} data={data} />
           </FormGroup>
         )}
 
@@ -161,37 +126,37 @@ const AddressForm = (props) => {
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Range Rd.</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.RANGE_ROAD} {...props.fields(mappings.RANGE_ROAD, rangeRd)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.RANGE_ROAD} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Site</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.SITE} {...props.fields(mappings.SITE, site)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.SITE} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Comp</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.COMP} {...props.fields(mappings.COMP, comp)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.COMP} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Box</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.BOX} {...props.fields(mappings.BOX, box)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Lot #</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.LOT} {...props.fields(mappings.LOT, lot)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.LOT} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Concession #</ControlLabel>
-            <FormControl {...readOnlyAttr} type='text' name={mappings.CONCESSION} {...props.fields(mappings.CONCESSION, concession)} />
+            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.CONCESSION} data={data} />
           </FormGroup>
         )}
 
@@ -199,114 +164,74 @@ const AddressForm = (props) => {
         {durationRequired && (
           <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
             <ControlLabel>From</ControlLabel>
-            <DateInput {...readOnlyAttr} name='from' name={mappings.FROM} {...props.fields(mappings.FROM, dateFrom)} />
+            <DateInput {...readOnlyAttr} fields={fields} mapping={mappings.FROM} data={data} />
           </FormGroup>
         )}
         {durationRequired && (
           <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
             <ControlLabel>To</ControlLabel>
-            <DateInput {...readOnlyAttr} name='to' name={mappings.TO} {...props.fields(mappings.TO, dateTo)} />
+            <DateInput {...readOnlyAttr} fields={fields} mapping={mappings.TO} data={data} />
           </FormGroup>
         )}
       </div>
 
       {/* Common Address Fields */}
-
       <div className='col-md-flex col-lg-flex flex-md-25'>
         {/* City (If Applicable) */}
         <FormGroup className='form-element form-select autocomplete-control-group col-xs-12 col-sm-12 col-md-6 col-lg-6 flex-md-25'>
           <ControlLabel>City*</ControlLabel>
-          <Autocomplete
-            name={mappings.CITY}
-            getItemValue={(item) => {
-              return item.value
+          <AutocompleteFormControl
+            {...props}
+            data={data}
+            mappings={{
+              field: mappings.CITY,
+              id: mappings.CITY_ID,
+              code: mappings.CITY_CODE
             }}
             items={cities}
-            renderItem={(item, isHighlighted) => {
-              return (
-                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                  {item.value}
-                </div>
-              )
-            }}
-            shouldItemRender={props.matchItemToTerm}
-            autoHighlight={true}
-            wrapperStyle={{display: 'block'}}
-            value={selectedCity}
+            //shouldItemRender={matchItemToTerm}
             onChange={props.onCityValueChanged}
             onSelect={props.onCityItemSelected}
-            inputProps={assign(props.fields(mappings.CITY, selectedCity), {
-              className: 'form-control',
-              ...readOnlyAttr 
-            })}
           />
-          <input type='hidden' name={mappings.CITY_ID} {...props.fields(mappings.CITY_ID, selectedCityId, data)} />
-          <input type='hidden' name={mappings.CITY_CODE} {...props.fields(mappings.CITY_CODE, selectedCityCode, data)} />
         </FormGroup>
 
         <FormGroup className='form-element form-select autocomplete-control-group col-xs-12 col-sm-12 col-md-6 col-lg-6 flex-md-25'>
           <ControlLabel>Prov.*</ControlLabel>
-          <Autocomplete
-            name={mappings.ZONE}
-            getItemValue={(item) => {
-              return item.value
+          <AutocompleteFormControl
+            {...props}
+            data={data}
+            mappings={{
+              field: mappings.ZONE,
+              id: mappings.ZONE_ID,
+              code: mappings.ZONE_CODE
             }}
             items={zones}
-            renderItem={(item, isHighlighted) => {
-              return (
-                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                  {item.value}
-                </div>
-              )
-            }}
-            shouldItemRender={props.matchItemToTerm}
-            autoHighlight={true}
-            wrapperStyle={{display: 'block'}}
-            value={selectedZone}
+            //shouldItemRender={matchItemToTerm}
             onChange={props.onTerritoryValueChanged}
             onSelect={props.onTerritoryItemSelected}
-            inputProps={assign(props.fields(mappings.ZONE, selectedZone), {
-              className: 'form-control',
-              ...readOnlyAttr 
-            })}
           />
-          <input type='hidden' name={mappings.ZONE_ID} {...props.fields(mappings.ZONE_ID, selectedZoneId)} />
-          <input type='hidden' name={mappings.ZONE_CODE} {...props.fields(mappings.ZONE_CODE, selectedZoneCode)} />
         </FormGroup>
 
         <FormGroup className='form-element form-select autocomplete-control-group col-xs-12 col-sm-12 col-md-6 col-lg-6 flex-md-25'>
           <ControlLabel>Country*</ControlLabel>
-          <Autocomplete
-            name={mappings.COUNTRY}
-            getItemValue={(item) => {
-              return item.value
+          <AutocompleteFormControl
+            {...props}
+            data={data}
+            mappings={{
+              field: mappings.COUNTRY,
+              id: mappings.COUNTRY_ID,
+              code: mappings.COUNTRY_CODE
             }}
             items={countries}
-            renderItem={(item, isHighlighted) => {
-              return (
-                <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                  {item.value}
-                </div>
-              )
-            }}
-            shouldItemRender={props.matchItemToTerm}
-            autoHighlight={true}
-            wrapperStyle={{display: 'block'}}
-            value={selectedCountry}
+            //shouldItemRender={matchItemToTerm}
             onChange={props.onCountryValueChanged}
             onSelect={props.onCountryItemSelected}
-            inputProps={assign(props.fields(mappings.COUNTRY, selectedCountry), {
-              className: 'form-control',
-              ...readOnlyAttr 
-            })}
           />
-          <input type='hidden' name={mappings.COUNTRY_ID} {...props.fields(mappings.COUNTRY_ID, selectedCountryId, data)} />
-          <input type='hidden' name={mappings.COUNTRY_CODE} {...props.fields(mappings.COUNTRY_CODE, selectedCountryCode, data)} />
         </FormGroup>
 
         <FormGroup className='col-xs-12 col-sm-9 col-md-9 col-lg-5 flex-md-25'>
           <ControlLabel>Postal Code*</ControlLabel>
-          <FormControl {...readOnlyAttr} type='text' name={mappings.POSTCODE} {...props.fields(mappings.POSTCODE, getMappedValue(mappings.POSTCODE, data))} />
+          <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.POSTCODE} data={data} />
         </FormGroup>
       </div>
 

@@ -194,31 +194,31 @@ export default (ComposedComponent) => {
 
     getFieldValue(fieldName) {
       if (!(typeof fieldName === 'string') || !(fieldName.length > 0)) {
-              return
+        return
+      }
+
+      if (typeof this.state.fields[fieldName] === 'undefined') {
+        return
+      }
+
+      // Auto-resolve
+      // TODO: This is incomplete, resolve using true types
+      const storedValue = this.state.fields[fieldName].value
+      let fieldValue = null
+
+      switch (typeof storedValue) {
+        case 'undefined':
+          break
+        case 'object':
+          // TODO: null check and type check
+          if (!(storedValue === null)) {
+            // TODO: This is a stupid way now that we have DTOs
+            // It'll do for a proof-of-concept though...
+            // Is it a code type?
+            if (storedValue.hasOwnProperty('code')) {
+              // Just use the name for now
+              fieldValue = storedValue.name
             }
-
-            if (typeof this.state.fields[fieldName] === 'undefined') {
-              return
-            }
-
-            // Auto-resolve
-            // TODO: This is incomplete, resolve using true types
-            const storedValue = this.state.fields[fieldName].value
-            let fieldValue = null
-
-            switch (typeof storedValue) {
-              case 'undefined':
-                break
-              case 'object':
-                // TODO: null check and type check
-                if (!(storedValue === null)) {
-                  // TODO: This is a stupid way now that we have DTOs
-                  // It'll do for a proof-of-concept though...
-                  // Is it a code type?
-                  if (storedValue.hasOwnProperty('code')) {
-                    // Just use the name for now
-                    fieldValue = storedValue.name
-                  }
           }
 
           break
