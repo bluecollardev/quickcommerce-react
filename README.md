@@ -157,6 +157,13 @@ There are some FormComponent->wrappedComponent.fields calls that are declared in
 Fix regex: (fields\(mappings.[A-Z-0-9_]+\.[a-z0-9_]+,\s[A-Za-z0-9_-]+)(,\s[A-Za-z0-9_-]+)(\))
 Substitution: $1$3
 
+UPDATE 20180601:
+Sample regex to convert FormComponent FormControls to new style declarations...
+I'm overhauling all library components.
+
+Find: <(FormControl|DateInput).*(\{\.\.\.readOnlyAttr\}?).*mappings\.([A-Z-0-9_]+).*\/>
+Replace: <$1 $2 fields={fields} mapping={mapping.$3} data={data} />
+
 ### Services
 
 ### Actions
