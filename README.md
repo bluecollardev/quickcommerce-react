@@ -71,52 +71,91 @@ The following example shows how to bind a form input to a FormComponent instance
 @inject(deps => ({
   mappings: deps.mappings
 })) @observer
-class VehicleInfo extends AbstractFormComponent {
+class SampleForm extends AbstractFormComponent {
 }
 ```
 ```javascript
 render() {
-  const { data, makes } = this.state
+  const { data, brands } = this.state
   const mappings = this.props.mappings.inventoryItem
   return (
-    <InputFormControl type='number' fields={fields} mapping={mappings.CURRENT_MILEAGE} data={data} />
+    <InputFormControl type='number' fields={fields} mapping={mappings.PRICE} data={data} />
   )
 }
 ```
 ```javascript
 render() {
-  const { data, makes } = this.state
+  const { data, brands } = this.state
   const mappings = this.props.mappings.inventoryItem
   return (
-    <VehicleInfoForm
+    <SampleForm
       ref={(item) => this.item = item}
       {...this.props}
-      brandings={brandings}
-      makes={makes}
-      getMakes={this.getMakes}
+      brands={brands}
+      getBrands={this.getBrands}
       data={data}
     />
-    <InputFormControl type='number' fields={fields} mapping={mappings.CURRENT_MILEAGE} data={data} />
+    <InputFormControl type='number' fields={fields} mapping={mappings.PRICE} data={data} />
     <FormGroup className='col-sm-4 form-element form-select autocomplete-control-group'>
-      <ControlLabel>Make</ControlLabel>
+      <ControlLabel>Brand/Manufacturer</ControlLabel>
       <AutocompleteFormControl
         {...props}
         data={data}
         mappings={{
-          field: mappings.MAKE,
-          id: mappings.MAKE_ID,
-          code: mappings.MAKE_CODE
+          field: mappings.BRAND,
+          id: mappings.BRAND_ID,
+          code: mappings.BRAND_CODE
         }}
         items={makes}
         shouldItemRender={props.matchItemToTerm}
-        onChange={props.onMakeValueChanged}
-        onSelect={props.onMakeItemSelected}
+        onChange={props.onBrandValueChanged}
+        onSelect={props.onBrandItemSelected}
       />
     </FormGroup>
   )
 }
 ```
 
+### Update to Mappings!
+
+Ok, folks, it's time to overhaul quickcommerce mappings as I get this lib production ready.
+I need to refactor the mappings implementation to allow for reverse mapping of data types;
+I also now have the need to support both flattened and typed object data mappings.
+
+Sample:
+```javascript
+INVENTORY_MAKE: {
+  // The property on the DTO that you're mapping to, one level only
+  property: { property: 'make', value: 'make' },
+  // A JSONPath to the nested property you want to use as the mapping value;
+  // if not set the property value is assumed to be a primitive type.
+  // May not need to be a JSON path... quickcommerce helpers may do the trick.
+  value: { property: 'model', value: 'model' },
+  // The typed object
+  type: CodeTypeDto
+}
+```
+
+Conversion regex: ^(.*:\s)\'([A-Za-z0-9]+)([\.A-Za-z0-9\[\]]+)?\'
+Substitution: $1{ property: '$2', value: '$2$3' } // Don't bother with types just yet
+
+After regex replace, don't forget to reformat the mappings files.
+Now we need to update the mappings, which are all uppercased by design to make the (now happening) conversion easier.
+
+Mapping usage replacement regex: (mappings\.[A-Z0-9_]+)() // The final () denotes empty capture group, so we can append
+Substitution: $1.value
+
+All mappings are simply mapped to a string right now so it's an easy replace. There may be some things that break,
+but I don't expect they will be difficult to fix. Easy-peasy.
+
+Update: In some places I don't use '.mappings.XYZ'; instead I'm using 'xyzFieldNames.XYZ.value'
+Mapping usage replacement regex: (FieldNames\.[A-Z0-9_]+)() // The final () denotes empty capture group, so we can append
+Substitution: $1.value
+
+UPDATE 20180525:
+There are some FormComponent->wrappedComponent.fields calls that are declared incorrectly.
+Fix regex: (fields\(mappings.[A-Z-0-9_]+\.[a-z0-9_]+,\s[A-Za-z0-9_-]+)(,\s[A-Za-z0-9_-]+)(\))
+Substitution: $1$3
 
 ### Services
 
