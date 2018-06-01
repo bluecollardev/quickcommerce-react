@@ -65,6 +65,58 @@ At the core of QuickCommerce's form handling is the FormComponent HoC.
  + Provides a getField method which registers and adds a field and it's initial value to FormComponent's 'fields' registry.
  + getField returns a JSX string that can be used to bind any input, select, checkbox, radio or textarea field (etc.) to FormComponent for easy form manipulation.
  + Provides a simple getForm method which returns the content of the wrapped form and any linked FormComponent sub-forms.
+ 
+The following example shows how to bind a form input to a FormComponent instance
+```javascript
+@inject(deps => ({
+  mappings: deps.mappings
+})) @observer
+class VehicleInfo extends AbstractFormComponent {
+}
+```
+```javascript
+render() {
+  const { data, makes } = this.state
+  const mappings = this.props.mappings.inventoryItem
+  return (
+    <InputFormControl type='number' fields={fields} mapping={mappings.CURRENT_MILEAGE} data={data} />
+  )
+}
+```
+```javascript
+render() {
+  const { data, makes } = this.state
+  const mappings = this.props.mappings.inventoryItem
+  return (
+    <VehicleInfoForm
+      ref={(item) => this.item = item}
+      {...this.props}
+      brandings={brandings}
+      makes={makes}
+      getMakes={this.getMakes}
+      data={data}
+    />
+    <InputFormControl type='number' fields={fields} mapping={mappings.CURRENT_MILEAGE} data={data} />
+    <FormGroup className='col-sm-4 form-element form-select autocomplete-control-group'>
+      <ControlLabel>Make</ControlLabel>
+      <AutocompleteFormControl
+        {...props}
+        data={data}
+        mappings={{
+          field: mappings.MAKE,
+          id: mappings.MAKE_ID,
+          code: mappings.MAKE_CODE
+        }}
+        items={makes}
+        shouldItemRender={props.matchItemToTerm}
+        onChange={props.onMakeValueChanged}
+        onSelect={props.onMakeItemSelected}
+      />
+    </FormGroup>
+  )
+}
+```
+
 
 ### Services
 

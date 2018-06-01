@@ -13,7 +13,10 @@ const SelectList = (props) => {
 
   if (props.hasOwnProperty('optionValue')) {
     return (
-      <FormControl componentClass='select' {...elementProps}>
+      <FormControl
+        readOnly={props.readOnly}
+        componentClass='select'
+        {...elementProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) => (
           <option
@@ -30,7 +33,10 @@ const SelectList = (props) => {
 
   if (props.hasOwnProperty('codeValue')) {
     return (
-      <FormControl componentClass='select' {...elementProps}>
+      <FormControl
+        readOnly={props.readOnly}
+        componentClass='select'
+        {...elementProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) => (
           <option
@@ -45,7 +51,10 @@ const SelectList = (props) => {
   }
 
   return (
-    <FormControl componentClass='select' {...elementProps}>
+    <FormControl
+      readOnly={props.readOnly}
+      componentClass='select'
+      {...elementProps}>
       <option key={0} value=''></option>
       {items.map((item, idx) => (
         <option
@@ -67,14 +76,22 @@ const SelectButton = (props) => {
 
   if (props.mode === 'split') {
     return (
-      <SplitButton id={itemId} title='Split Button' {...props}>
-        {items.map((item, idx) => <MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>)}
+      <SplitButton
+        readOnly={props.readOnly}
+        id={itemId}
+        title='Split Button'
+        {...props}>
+        {items.map((item, idx) => (
+          <MenuItem key={idx} eventKey={item.id}>{item.value}</MenuItem>
+        ))}
       </SplitButton>
     )
   } else {
     return (
       <DropdownButton title='Normal Button' {...props}>
-        {items.map((item, idx) => <MenuItem id={itemId + '_' + idx} key={idx} eventKey={item.id}>{item.value}</MenuItem>)}
+        {items.map((item, idx) => (
+          <MenuItem id={itemId + '_' + idx} key={idx} eventKey={item.id}>{item.value}</MenuItem>
+        ))}
       </DropdownButton>
     )
   }

@@ -10,7 +10,7 @@ const InputFormControl = (props) => {
   // Render the InputFormControl
   const { field, fields, mapping, data } = props
 
-  let name = (typeof props.name === 'string') ? props.name: mapping.property
+  let name = ''
   // props must have the following defined:
   // fields (function)
 
@@ -20,16 +20,33 @@ const InputFormControl = (props) => {
 
   // Set resolve flag on getMappedValue to true or you'll get a error like:
   // "Cannot convert object to primitive value"?
-  return (
-    <FormControl
-      name={name}
-      type={props.type}
-      componentClass={props.componentClass}
-      defaultValue={props.defaultValue}
-      placeholder={props.placeholder}
-      {...props.fields(mapping.property, getMappedValue(mapping, data))}>
-    </FormControl>
-  )
+
+  if (typeof mapping !== 'undefined' && mapping.hasOwnProperty('property')) {
+    name = (typeof props.name === 'string') ? props.name: mapping.property
+    return (
+      <FormControl
+        readOnly={props.readOnly}
+        name={name}
+        type={props.type}
+        componentClass={props.componentClass}
+        defaultValue={props.defaultValue}
+        placeholder={props.placeholder}
+        {...props.fields(mapping.property, getMappedValue(mapping, data))}
+      />
+    )
+  } else {
+    name = (typeof props.name === 'string') ? props.name: name
+    return (
+      <FormControl
+        readOnly={props.readOnly}
+        name={name}
+        type={props.type}
+        componentClass={props.componentClass}
+        defaultValue={props.defaultValue}
+        placeholder={props.placeholder}
+      />
+    )
+  }
 }
 
 const HiddenInput = (props) => {
@@ -48,6 +65,7 @@ const HiddenInput = (props) => {
   // "Cannot convert object to primitive value"?
   return (
     <input
+      readOnly={props.readOnly}
       name={name}
       type='hidden'
       {...props.fields(mapping.property, getMappedValue(mapping, data))}>
