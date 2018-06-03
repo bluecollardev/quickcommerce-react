@@ -4,19 +4,55 @@ import React from 'react'
 
 import { DropdownButton, FormControl, MenuItem, SplitButton } from 'react-bootstrap'
 
+import FormHelper from '../../helpers/Form.js'
+import ObjectHelper from '../../helpers/Object.js'
+
+const getMappedValue = FormHelper.getMappedValue
+
 const SelectList = (props) => {
+  // Render the SelectList
+  const {
+    //field,
+    fields,
+    mapping,
+    data
+  } = props
+
   let items = props.items || []
-  let elementProps = assign({}, props) // Copy so we can delete, props are read-only
-  delete elementProps.items
-  delete elementProps.optionValue
-  delete elementProps.codeValue
+
+  let hasMapping = false
+  if (typeof mapping !== 'undefined' && mapping.hasOwnProperty('property')) {
+    hasMapping = true
+  }
+
+  let name = ''
+  if (hasMapping) {
+    name = (typeof props.name === 'string') ? props.name : mapping.property
+  } else {
+    name = (typeof props.name === 'string') ? props.name: name
+  }
+
+  let inputProps = undefined
+  if (hasMapping) {
+    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data)))
+
+    delete inputProps.items
+    delete inputProps.optionValue
+    delete inputProps.codeValue
+  }
+
+  // Just for debugging
+  if (!ObjectHelper.isEmpty(data)) {
+    //debugger
+  }
 
   if (props.hasOwnProperty('optionValue')) {
     return (
       <FormControl
         readOnly={props.readOnly}
+        name={name}
         componentClass='select'
-        {...elementProps}>
+        {...inputProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) => (
           <option
@@ -35,8 +71,9 @@ const SelectList = (props) => {
     return (
       <FormControl
         readOnly={props.readOnly}
+        name={name}
         componentClass='select'
-        {...elementProps}>
+        {...inputProps}>
         <option key={0} value=''></option>
         {items.map((item, idx) => (
           <option
@@ -53,8 +90,9 @@ const SelectList = (props) => {
   return (
     <FormControl
       readOnly={props.readOnly}
+      name={name}
       componentClass='select'
-      {...elementProps}>
+      {...inputProps}>
       <option key={0} value=''></option>
       {items.map((item, idx) => (
         <option

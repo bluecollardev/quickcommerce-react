@@ -94,6 +94,15 @@ class ObjectHelper {
       return o
     }, dest || {})
   }
+
+  /**
+   * Quick and dirty way to compare arrays or objects without getting into too much detail.
+   * This isn't the fastest solution by any means but it generally works.
+   * I don't recommend using this to compare complex structures (it'll be slow).
+   */
+  static jsonSameMembers = (obj1, obj2) => {
+    return JSON.stringify(obj1) === JSON.stringify(obj2)
+  }
 }
 
 export default ObjectHelper

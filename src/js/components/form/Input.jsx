@@ -10,7 +10,6 @@ const InputFormControl = (props) => {
   // Render the InputFormControl
   const { field, fields, mapping, data } = props
 
-  let name = ''
   // props must have the following defined:
   // fields (function)
 
@@ -21,32 +20,34 @@ const InputFormControl = (props) => {
   // Set resolve flag on getMappedValue to true or you'll get a error like:
   // "Cannot convert object to primitive value"?
 
+  let hasMapping = false
   if (typeof mapping !== 'undefined' && mapping.hasOwnProperty('property')) {
-    name = (typeof props.name === 'string') ? props.name: mapping.property
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        type={props.type}
-        componentClass={props.componentClass}
-        defaultValue={props.defaultValue}
-        placeholder={props.placeholder}
-        {...props.fields(mapping.property, getMappedValue(mapping, data))}
-      />
-    )
+    hasMapping = true
+  }
+
+  let name = ''
+  if (hasMapping) {
+    name = (typeof props.name === 'string') ? props.name : mapping.property
   } else {
     name = (typeof props.name === 'string') ? props.name: name
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        type={props.type}
-        componentClass={props.componentClass}
-        defaultValue={props.defaultValue}
-        placeholder={props.placeholder}
-      />
-    )
   }
+
+  let inputProps = undefined
+  if (hasMapping) {
+    inputProps = props.fields(mapping.property, getMappedValue(mapping, data))
+  }
+
+  return (
+    <FormControl
+      readOnly={props.readOnly}
+      name={name}
+      type={props.type}
+      componentClass={props.componentClass}
+      defaultValue={props.defaultValue}
+      placeholder={props.placeholder}
+      {...inputProps}
+    />
+  )
 }
 
 const HiddenInput = (props) => {
@@ -74,12 +75,10 @@ const HiddenInput = (props) => {
 }
 
 const DatePicker = (props) => {
-  //return <input type='date' />
   return <InputFormControl type='date' {...props} />
 }
 
 const TimePicker = (props) => {
-  //return <input type='time' />
   return <InputFormControl type='time' {...props} />
 }
 
@@ -96,51 +95,27 @@ const TimeInput = (props) => {
 }
 
 const NumericInput = (props) => {
-  /*return (
-   <input type='number' {...props} />
-   )*/
-
-  return (<FormControl type='number' {...props} />)
+  return (<InputFormControl type='number' {...props} />)
 }
 
 const TelephoneInput = (props) => {
-  /*return (
-   <input type='tel' {...props} />
-   )*/
-
-  return (<FormControl type='tel' {...props} />)
+  return (<InputFormControl type='tel' {...props} />)
 }
 
 const EmailInput = (props) => {
-  /*return (
-   <input type='email' {...props} />
-   )*/
-
-  return (<FormControl type='email' {...props} />)
+  return (<InputFormControl type='email' {...props} />)
 }
 
 const PostalCodeInput = (props) => {
-  /*return (
-   <input type='text' {...props} />
-   )*/
-
-  return (<FormControl type='text' {...props} />)
+  return (<InputFormControl type='text' {...props} />)
 }
 
 const SinInput = (props) => {
-  /*return (
-   <input type='text' {...props} />
-   )*/
-
-  return (<FormControl type='number' {...props} />)
+  return (<InputFormControl type='number' {...props} />)
 }
 
 const SsnInput = (props) => {
-  /*return (
-   <input type='text' {...props} />
-   )*/
-
-  return (<FormControl type='number' {...props} />)
+  return (<InputFormControl type='number' {...props} />)
 }
 
 export default InputFormControl

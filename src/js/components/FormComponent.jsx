@@ -219,6 +219,11 @@ export default (ComposedComponent) => {
               // Just use the name for now
               fieldValue = storedValue.name
             }
+
+            // TODO: Again, use the correct type
+            if (storedValue.hasOwnProperty('year')) {
+              fieldValue = storedValue.value
+            }
           }
 
           break

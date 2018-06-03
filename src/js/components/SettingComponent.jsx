@@ -184,8 +184,8 @@ class SettingComponent extends Component {
 
   // TODO: Move me to a utils class
   // Update 20180601: I am now implemented in components/form/Autocomplete
-  // TODO: Remove these helpers!
-  matchItemToTerm(item, key, value) {
+  // TODO: Remove these helpers when you have time!
+    matchItemToTerm(item, key, value) {
     if (typeof value === 'string' && typeof item[key] === 'string') {
       return item[key].toLowerCase().indexOf(value.toLowerCase()) !== -1
     }
