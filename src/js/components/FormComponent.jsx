@@ -383,7 +383,7 @@ export default (ComposedComponent) => {
       this.forceUpdate() // TODO: Temporary hack to re-render
     }
 
-    getForm(callback) {
+    getForm(convertToEntities) {
       // Normalize fields
       let formData = {}
 
@@ -393,7 +393,14 @@ export default (ComposedComponent) => {
 
       if (!Object.keys(formData).length > 0) return null
 
-      return (typeof callback === 'function') ? callback(formData) : formData
+      if (convertToEntities && this.props.hasOwnProperty('entityType')) {
+        // Duck-type
+        if (this.props.entityType.hasOwnProperty('constructFromObject')) {
+          formData = this.props.entityType.constructFromObject(formData)
+        }
+      }
+
+      return formData
     }
 
     /**
@@ -403,14 +410,15 @@ export default (ComposedComponent) => {
      * @param subformComponent
      * @returns {{}}
      */
-    getSubform(subformComponent) {
+    getSubform(subformComponent, convertToEntities) {
+      // TODO: Accept a callback!?
       // 1) Just call, getForm should NEVER accept any parameters!
       // 2) Don't use call or apply, there's no need to override 'this'
       // 3) Return an empty object, this method shouldn't try to break stuff
       let subformData = {}
 
       if (subformComponent instanceof FormComponent) {
-        subformData = subformComponent.component.wrappedInstance.getForm()
+        subformData = subformComponent.component.wrappedInstance.getForm(convertToEntities)
       }
 
       return subformData
@@ -421,8 +429,8 @@ export default (ComposedComponent) => {
      * @param callback
      * @returns {*}
      */
-    triggerAction(callback) {
-      return callback(this.getForm())
+    triggerAction(callback, convertToEntities) {
+      return callback(this.getForm(convertToEntities))
     }
 
     validateForm() {
