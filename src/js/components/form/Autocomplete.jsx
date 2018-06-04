@@ -86,7 +86,8 @@ const AutocompleteFormControl = (props) => {
       <Autocomplete
         inputProps={assign(fields(mappings.field.property, mergedSelection.value), {
           className: 'form-control',
-          readOnly: props.readOnly
+          readOnly: props.readOnly,
+          disabled: props.disabled
         })}
         name={mappings.field.property}
         getItemValue={(item) => {
