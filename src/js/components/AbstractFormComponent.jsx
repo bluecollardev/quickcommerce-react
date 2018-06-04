@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
 import assign from 'object-assign'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 function isWrappedWithInjector(component) {
   return component.hasOwnProperty('wrappedInstance')
@@ -33,8 +34,31 @@ function unwrapComponent(target) {
   return unwrapComponent(resolveComponent(target))
 }
 
-
 class AbstractFormComponent extends Component {
+  static propTypes = {
+    onCreate: PropTypes.func,
+    onCreateSuccess: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onUpdateSuccess: PropTypes.func,
+    onSaveSuccess: PropTypes.func,
+    onDelete: PropTypes.func,
+    onDeleteSuccess: PropTypes.func,
+    onCancel: PropTypes.func,
+    onError: PropTypes.func
+  }
+
+  static defaultProps = {
+    onCreate: () => {},
+    onCreateSuccess: () => {},
+    onUpdate: () => {},
+    onUpdateSuccess: () => {},
+    onSaveSuccess: () => {},
+    onDelete: () => {},
+    onDeleteSuccess: () => {},
+    onCancel: () => {},
+    onError: () => {}
+  }
+
   constructor(props) {
     super(props)
 
@@ -58,7 +82,16 @@ class AbstractFormComponent extends Component {
   }
 
   onCreate(e) {
-    throw new Error('onCreate is not implemented in the concrete class')
+    e.preventDefault()
+    e.stopPropagation()
+
+    this.triggerAction((formData) => {
+      if (typeof this.props.onCreate === 'function') {
+        console.log('execute handler')
+        let fn = this.props.onCreate
+        fn(formData)
+      }
+    })
   }
 
   onCreateSuccess(response) {
@@ -71,7 +104,16 @@ class AbstractFormComponent extends Component {
   }
 
   onUpdate(e) {
-    throw new Error('onUpdate is not implemented in the concrete class')
+    e.preventDefault()
+    e.stopPropagation()
+
+    this.triggerAction((formData) => {
+      if (typeof this.props.onUpdate === 'function') {
+        console.log('execute handler')
+        let fn = this.props.onUpdate
+        fn(formData)
+      }
+    })
   }
 
   onUpdateSuccess(response) {
