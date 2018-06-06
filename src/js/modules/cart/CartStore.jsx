@@ -5,6 +5,8 @@ import assign from 'object-assign'
 import ArrayHelper from '../../helpers/Array.js'
 import ObjectHelper from '../../helpers/Object.js'
 
+
+
 class CartStore extends EventEmitter {
   constructor(dispatcher) {
     super()
@@ -61,6 +63,11 @@ class CartStore extends EventEmitter {
       case 'cart-initialize':
         this.init(action.config)
         this.emit('ready')
+        // Ready isn't triggering update!
+        // We were previously using change;
+        // I plan on updating this behavior
+        // but not just yet...
+        this.emit('change')
         break
       case 'cart-revert':
         this.init(action.config)
