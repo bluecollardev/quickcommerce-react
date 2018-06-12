@@ -126,7 +126,7 @@ class ProductGalleryFullwidthWithGap extends Component {
 
   render() {
     // TODO: Set this up so we can choose to show a default "thumbnail" via props
-    let defaultImages = [
+    /*let defaultImages = [
       {
         datetime: null,
         description: 'Default image',
@@ -253,8 +253,9 @@ class ProductGalleryFullwidthWithGap extends Component {
 
     if (!(items.length > 0)) {
       items = defaultImages
-    }
+    }*/
 
+    const items = this.state.items || []
     console.log('dumping product gallery images')
     console.log(items)
 

@@ -11,6 +11,7 @@ const getMappedValue = FormHelper.getMappedValue
 
 const SelectList = (props) => {
   // Render the SelectList
+
   const {
     //field,
     fields,
@@ -34,7 +35,9 @@ const SelectList = (props) => {
 
   let inputProps = undefined
   if (hasMapping) {
-    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data)))
+    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data), {
+      onChange: props.onChange
+    }))
 
     delete inputProps.items
     delete inputProps.optionValue

@@ -221,6 +221,12 @@ export default (ComposedComponent) => {
             } else if (storedValue.hasOwnProperty('year')) {
               // TODO: Again, use the correct type
               fieldValue = storedValue.value
+            } else if (storedValue.hasOwnProperty('currency')) {
+              // TODO: Again, use the correct type
+              fieldValue = storedValue.value
+            } else if (storedValue.hasOwnProperty('rgbHex')) {
+              // TODO: Again, use the correct type
+              fieldValue = storedValue.name
             }
           }
 
@@ -243,18 +249,24 @@ export default (ComposedComponent) => {
      * Registers and adds a field and it's initial value to this component's 'fields' registry.
      * Returns a set of props used to initialize the input field that calls this method.
      */
-    getField(fieldName, defaultValue, validations) {
+    getField(fieldName, defaultValue, events, validations) {
+      events = events || {
+        onChange: null,
+        onSelect: null
+      }
+
       defaultValue = defaultValue || '' // TODO: Handle types other than string
+
       let field = this.state.fields[fieldName] || null
       let isValid = null
 
-      if (field === null || typeof event === 'undefined') {
+      if (field === null) {
         // If we're initializing a new field
         this.state.fields[fieldName] = {
           name: fieldName,
           value: defaultValue,
           onChange: (event) => {
-            this.onFieldChange(event, fieldName)
+            this.onFieldChange(event, fieldName, events.onChange)
           },
           validations: validations
         }
@@ -265,7 +277,7 @@ export default (ComposedComponent) => {
           value: event.target.value,
           onChange: (event) => {
             //console.log('setting FormComponent field value to "' + event.target.value + '"')
-            this.onFieldChange(event, fieldName)
+            this.onFieldChange(event, fieldName, events.onChange)
           },
           validations: validations
         }
@@ -305,7 +317,12 @@ export default (ComposedComponent) => {
      * @param validations
      * @returns {{name: *, value: *}}
      */
-    setField(fieldName, value, validations) {
+    setField(fieldName, value, events, validations) {
+      events = events || {
+        onChange: null,
+        onSelect: null
+      }
+
       value = (typeof value !== 'undefined') ? value : '' // TODO: Should I really default to an empty string?
       let field = this.state.fields[fieldName] || null
       let isValid = false
@@ -316,7 +333,7 @@ export default (ComposedComponent) => {
           name: fieldName,
           value: value, //required: false,
           onChange: (event) => {
-            this.onFieldChange(event, fieldName)
+            this.onFieldChange(event, fieldName, events.onChange)
           },
           validations: validations
         }
@@ -343,9 +360,14 @@ export default (ComposedComponent) => {
       }
     }
 
-    onFieldChange(event, fieldName) {
+    onFieldChange(event, fieldName, callback) {
       //console.log('setting FormComponent field value to "' + event.target.value + '"')
       this.state.fields[fieldName].value = event.target.value
+
+      if (typeof callback === 'function') {
+        callback(event, this.state.fields[fieldName].value)
+      }
+
       this.forceUpdate()
 
       // Validate the input when we attach it to the form so the form maintains the correct state?
