@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 class PropsHelper {
   static pick = (props, fields) => {
     const has = (p) => props.hasOwnProperty(p)
@@ -38,6 +40,16 @@ class PropsHelper {
     }
 
     return Object.assign({}, a, b)
+  }
+
+  static compare(currentProps, newProps) {
+    const changedProps = _.reduce(currentProps, function (result, value, key) {
+      return _.isEqual(value, newProps[key])
+        ? result
+        : result.concat(key)
+    }, [])
+
+    console.log('changedProps: ', changedProps)
   }
 }
 

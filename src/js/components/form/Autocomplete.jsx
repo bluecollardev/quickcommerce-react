@@ -75,6 +75,10 @@ const AutocompleteFormControl = (props) => {
     }
   }
 
+  if (mappings.field.property === 'country') {
+    console.log('CURRENT DEBUG BREAKPOINT')
+  }
+
   let mergedSelection = assign({}, selection, {
     value: getMappedValue(mappings.field, data) || '',
     id: getMappedValue(mappings.id, data, true) || null,

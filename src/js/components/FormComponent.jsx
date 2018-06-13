@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import validator from 'validator'
 
 import FormHelper from '../helpers/Form.js'
+import PropsHelper from '../helpers/Props.js'
 
 function undoable(reducer) {
   // Call the reducer with an empty action to populate the initial state
@@ -109,12 +110,8 @@ const history = (defaultState, action) => {
  *   getField returns a JSX string that can be used to bind any input, select, checkbox, radio or textarea field (etc.) to
  *   FormComponent for simplified form manipulation. TODO: Detail what...
  * - Provides a simple getForm method which returns the content of the wrapped form and any linked FormComponent sub-forms.
- * - Provides a
  *
- *   This component needs to be unit tested like a mofo!
- *
- *
- *
+ * More documentation to come...
  */
 export default (ComposedComponent) => {
   return class FormComponent extends Component {
@@ -186,10 +183,15 @@ export default (ComposedComponent) => {
     }
 
     /**
-     * Forcefully flushes out any stale state artifacts when the form receives new props.
+     * Forcefully flushes out any stale state artifacts
+     * when the form receives new props.
      */
-    componentWillReceiveProps() {
-      this.setState({ fields: {} })
+    componentWillReceiveProps(newProps) {
+      PropsHelper.compare(this.props, newProps)
+      console.log('data: ', this.props.data)
+
+      // TODO: I am verifying this, but don't reset!
+      //this.setState({ fields: {} })
     }
 
     getFieldValue(fieldName) {
@@ -249,44 +251,45 @@ export default (ComposedComponent) => {
      * Registers and adds a field and it's initial value to this component's 'fields' registry.
      * Returns a set of props used to initialize the input field that calls this method.
      */
-    getField(fieldName, defaultValue, events, validations) {
+    getField(fieldName, fieldValue, events, validations) {
       events = events || {
         onChange: null,
         onSelect: null
       }
 
-      defaultValue = defaultValue || '' // TODO: Handle types other than string
-
       let field = this.state.fields[fieldName] || null
       let isValid = null
 
-      if (field === null) {
-        // If we're initializing a new field
-        this.state.fields[fieldName] = {
-          name: fieldName,
-          value: defaultValue,
-          onChange: (event) => {
-            this.onFieldChange(event, fieldName, events.onChange)
-          },
-          validations: validations
-        }
-      } else if (field !== null && fieldName === event.target.name) {
-        // If we're udpating or clearing a field
-        this.state.fields[fieldName] = {
-          name: fieldName,
-          value: event.target.value,
-          onChange: (event) => {
-            //console.log('setting FormComponent field value to "' + event.target.value + '"')
-            this.onFieldChange(event, fieldName, events.onChange)
-          },
-          validations: validations
+      let storeValue = fieldValue || ''
+      // Note: event doesn't need to be declared as it will exist
+      // due to event bubbling from the onChange event passed to the
+      // input element or component via props
+      if (field !== null && typeof event !== 'undefined') {
+        // If we have just udpated or cleared a field
+        if (fieldName === event.target.name) {
+          storeValue = event.target.value
         }
       }
 
-      // Auto-resolve
-      // TODO: This is incomplete, resolve using true types
-      let fieldValue = this.getFieldValue(fieldName)
+      if (field === null) {
+        let msg = '' +
+          'initializing [' + fieldName + '] ' +
+          'with default value of [' + JSON.stringify(fieldValue) + ']'
 
+        console.log(msg)
+      }
+
+      this.state.fields[fieldName] = {
+        name: fieldName,
+        value: storeValue,
+        onChange: (event) => {
+          this.onFieldChange(event, fieldName, events.onChange)
+        },
+        validations: validations
+      }
+
+      // Be safe grab the value using our getter
+      fieldValue = this.getFieldValue(fieldName)
       // These props are injected into the JSX element
       return {
         name: fieldName,
@@ -296,8 +299,9 @@ export default (ComposedComponent) => {
     }
 
     /**
-     * ReactDOM.findDOMNode isn't working in newer versions of React, and they're deprecating it ffs...
-     * This method was mostly used to bind and render validations for inputs. I'll have to figure out a new way to do it.
+     * ReactDOM.findDOMNode isn't working in newer versions of React (for our use caes).
+     * This method was mostly used to bind and render validations for inputs.
+     * I'll have to figure out a new way to do it.
      * @deprecated
      * @param fieldName
      * @returns {Element | any}
@@ -343,23 +347,22 @@ export default (ComposedComponent) => {
       }
 
       isValid = this.validate(fieldName, this.state.fields[fieldName].value)
-
       // Grab wrapping formgroup and set success/error status
       let validationState = (isValid === true) ? 'success' : 'error'
       // TODO: This type of validation no longer seems to work with newer versions (16.2+) of React
       // Sounds like it's deprecated going to have to find another solution
       //this.findInput(fieldName).closest('.form-group').setAttribute('validationState', validationState)
 
-      // Auto-resolve
       // TODO: This is incomplete, resolve using true types
+      // Be safe grab the value using our getter
       let fieldValue = this.getFieldValue(fieldName)
-      
+      // These props are injected into the JSX element
       return {
         name: fieldName,
         value: fieldValue
       }
-    }
 
+    }
     onFieldChange(event, fieldName, callback) {
       //console.log('setting FormComponent field value to "' + event.target.value + '"')
       this.state.fields[fieldName].value = event.target.value

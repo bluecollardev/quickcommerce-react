@@ -1,5 +1,6 @@
+import _ from 'lodash'
 import assign from 'object-assign'
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 
@@ -34,11 +35,19 @@ const AddressForm = (props) => {
       break
   }
 
+  // Pass FormComponent props down to inputs
+  const inputProps = {
+    //data: props.data,
+    field: props.field,
+    fields: props.fields,
+    value: props.value
+  }
+
   return (
     <form>
       {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
       <div className='col-md-flex col-lg-flex'>
-        <HiddenInput {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_ID} data={data} />
+        <HiddenInput {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_ID} data={data} />
 
         <FormGroup className='col-sm-3 form-element form-select'>
           <ControlLabel>Address Type</ControlLabel>
@@ -57,14 +66,14 @@ const AddressForm = (props) => {
         {nameRequired && (
           <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
             <ControlLabel>First Name*</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.FIRST_NAME} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.FIRST_NAME} data={data} />
           </FormGroup>
         )}
 
         {nameRequired && (
           <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
             <ControlLabel>Last Name*</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.LAST_NAME} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.LAST_NAME} data={data} />
           </FormGroup>
         )}
 
@@ -72,13 +81,13 @@ const AddressForm = (props) => {
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 1*</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_1} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_1} data={data} />
           </FormGroup>
         )}
         {type === 'simple' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 2</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.ADDRESS_2} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_2} data={data} />
           </FormGroup>
         )}
 
@@ -86,25 +95,25 @@ const AddressForm = (props) => {
         {type === 'civic' && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
             <ControlLabel>Suite</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.SUITE} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SUITE} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
             <ControlLabel>Street Name</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STREET_NAME} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_NAME} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Street Type</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STREET_TYPE} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_TYPE} data={data} />
           </FormGroup>
         )}
         {type === 'civic' && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Direction</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STREET_DIR} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_DIR} data={data} />
           </FormGroup>
         )}
 
@@ -112,13 +121,13 @@ const AddressForm = (props) => {
         {type === 'pobox' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Box</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.BOX} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
         {type === 'pobox' && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Station</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.STN} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STN} data={data} />
           </FormGroup>
         )}
 
@@ -126,37 +135,37 @@ const AddressForm = (props) => {
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Range Rd.</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.RANGE_ROAD} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.RANGE_ROAD} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Site</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.SITE} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SITE} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Comp</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.COMP} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.COMP} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Box</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.BOX} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Lot #</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.LOT} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.LOT} data={data} />
           </FormGroup>
         )}
         {type === 'rural' && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Concession #</ControlLabel>
-            <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.CONCESSION} data={data} />
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.CONCESSION} data={data} />
           </FormGroup>
         )}
 
@@ -164,13 +173,13 @@ const AddressForm = (props) => {
         {durationRequired && (
           <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
             <ControlLabel>From</ControlLabel>
-            <DateInput {...readOnlyAttr} fields={fields} mapping={mappings.FROM} data={data} />
+            <DateInput {...readOnlyAttr} {...inputProps} mapping={mappings.FROM} data={data} />
           </FormGroup>
         )}
         {durationRequired && (
           <FormGroup className='col-xs-12 col-lg-2 flex-md-12'>
             <ControlLabel>To</ControlLabel>
-            <DateInput {...readOnlyAttr} fields={fields} mapping={mappings.TO} data={data} />
+            <DateInput {...readOnlyAttr} {...inputProps} mapping={mappings.TO} data={data} />
           </FormGroup>
         )}
       </div>
@@ -182,9 +191,7 @@ const AddressForm = (props) => {
           <ControlLabel>City*</ControlLabel>
           <AutocompleteFormControl
             {...readOnlyAttr}
-            field={field}
-            fields={fields}
-            value={value}
+            {...inputProps}
             data={data}
             mappings={{
               field: mappings.CITY,
@@ -202,9 +209,7 @@ const AddressForm = (props) => {
           <ControlLabel>Prov.*</ControlLabel>
           <AutocompleteFormControl
             {...readOnlyAttr}
-            field={field}
-            fields={fields}
-            value={value}
+            {...inputProps}
             data={data}
             mappings={{
               field: mappings.ZONE,
@@ -222,9 +227,7 @@ const AddressForm = (props) => {
           <ControlLabel>Country*</ControlLabel>
           <AutocompleteFormControl
             {...readOnlyAttr}
-            field={field}
-            fields={fields}
-            value={value}
+            {...inputProps}
             data={data}
             mappings={{
               field: mappings.COUNTRY,
@@ -240,7 +243,7 @@ const AddressForm = (props) => {
 
         <FormGroup className='col-xs-12 col-sm-9 col-md-9 col-lg-5 flex-md-25'>
           <ControlLabel>Postal Code*</ControlLabel>
-          <InputFormControl {...readOnlyAttr} fields={fields} mapping={mappings.POSTCODE} data={data} />
+          <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.POSTCODE} data={data} />
         </FormGroup>
       </div>
 
@@ -267,7 +270,7 @@ const AddressForm = (props) => {
   customerAddressService: deps.customerAddressService,
   settingStore: deps.settingStore
 })) @observer
-class CurrentAddress extends Component {
+class CurrentAddress extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -414,28 +417,29 @@ class CurrentAddress extends Component {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.CITY, value)
+    //this.props.field(mappings.CITY, value)
 
-    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.CITY]: value})}))
+    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.CITY.property]: value }) }))
   }
 
   onCityItemSelected(value, item) {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.CITY_ID, item.id)
-    this.props.field(mappings.CITY_CODE, item.data.code)
+    //this.props.field(mappings.CITY, value)
+    //this.props.field(mappings.CITY_ID, item.id)
+    //this.props.field(mappings.CITY_CODE, item.data.code)
     console.log('selected city')
     console.log(item)
     console.log(value)
     console.log('selected city code: ' + item.data.code)
-    this.props.field(mappings.CITY, value)
+
 
     this.setState(assign({}, this.state, {
       data: assign({}, data, {
-        [mappings.CITY_CODE]: item.data.code,
-        [mappings.CITY_ID]: item.id,
-        [mappings.CITY]: value
+        [mappings.CITY.property]: item,
+        [mappings.CITY_ID.value]: item.id,
+        [mappings.CITY_CODE.value]: item.data.code
       })
     }))
   }
@@ -444,30 +448,30 @@ class CurrentAddress extends Component {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.ZONE, value)
+    //this.props.field(mappings.ZONE, value)
 
-    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.ZONE]: value})}))
+    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.ZONE.property]: value }) }))
   }
 
   onTerritoryItemSelected(value, item) {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.ZONE_ID, item.id)
-    this.props.field(mappings.ZONE_CODE, item.data.code)
-    //console.log('selected territory')
-    //console.log(item)
-    //console.log(value)
-    //console.log('selected territory code: ' + item.data.code)
-    this.props.field(mappings.ZONE, value)
+    //this.props.field(mappings.ZONE, value)
+    //this.props.field(mappings.ZONE_ID, item.id)
+    //this.props.field(mappings.ZONE_CODE, item.data.code)
+    console.log('selected territory')
+    console.log(item)
+    console.log(value)
+    console.log('selected territory code: ' + item.data.code)
 
     this.getTerritoryCities(item.data.code)
 
     this.setState(assign({}, this.state, {
       data: assign({}, data, {
-        [mappings.ZONE_CODE]: item.data.code,
-        [mappings.ZONE_ID]: item.id,
-        [mappings.ZONE]: value
+        [mappings.ZONE.property]: value,
+        [mappings.ZONE_ID.value]: item.id,
+        [mappings.ZONE_CODE.value]: item.data.code
       })
     }))
   }
@@ -476,37 +480,39 @@ class CurrentAddress extends Component {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.COUNTRY, value)
+    //this.props.field(mappings.COUNTRY, value)
 
-    this.setState(assign({}, this.state, {data: assign({}, data, {[mappings.COUNTRY]: value})}))
+    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.COUNTRY.property]: value }) }))
   }
 
   onCountryItemSelected(value, item) {
     const mappings = this.props.mappings || fieldNames
     const data = this.state.data
 
-    this.props.field(mappings.COUNTRY_ID, item.id)
-    this.props.field(mappings.COUNTRY_CODE, item.data.code)
-    //console.log('selected country')
-    //console.log(item)
-    //console.log(value)
-    //console.log('selected country code: ' + item.data.code)
-    this.props.field(mappings.COUNTRY, value)
+    //this.props.field(mappings.COUNTRY, value)
+    //this.props.field(mappings.COUNTRY_ID, item.id)
+    //this.props.field(mappings.COUNTRY_CODE, item.data.code)
+    console.log('selected country')
+    console.log(item)
+    console.log(value)
+    console.log('selected country code: ' + item.data.code)
+
 
     this.getCountryTerritories(item.data.code)
 
-    this.setState(assign({}, this.state, {
+    let newState = assign({}, this.state, {
       data: assign({}, data, {
-        [mappings.COUNTRY_ID]: item.id,
-        [mappings.COUNTRY_CODE]: item.data.code,
-        [mappings.COUNTRY]: value
+        [mappings.COUNTRY.property]: value,
+        [mappings.COUNTRY_ID.value]: item.id,
+        [mappings.COUNTRY_CODE.value]: item.data.code
       })
-    }))
+    })
 
+    this.setState(newState)
     // TODO: I have a feeling this line is no longer necessary
     // GeoService has made it redundant or obsolete
     // We don't use it anywhere above...
-    this.props.settingStore.getZones(item.id)
+    //this.props.settingStore.getZones(item.id)
   }
 
   getCountryTerritories(countryCode) {
@@ -541,9 +547,18 @@ class CurrentAddress extends Component {
 
   render() {
     // CurrentAddress.render
-    const { data, countries, zones, cities, geoZones, type, types } = this.state
+    const { countries, zones, cities, geoZones, type, types } = this.state
+
+    let { data } = this.state
 
     this.mergeFormData(data)
+
+    const inputProps = {
+      //data: props.data,
+      field: this.props.field,
+      fields: this.props.fields,
+      value: this.props.value
+    }
 
     return (
       <div>
@@ -574,6 +589,8 @@ class CurrentAddress extends Component {
              </div>*/}
             <AddressForm
               {...this.props}
+              type={this.props.type}
+              types={this.props.types}
               matchItemToTerm={this.matchItemToTerm}
               onAddressTypeSelected={this.onAddressTypeSelected}
               onCityValueChanged={this.onCityValueChanged}
@@ -615,6 +632,8 @@ class CurrentAddress extends Component {
             <Modal.Body>
               <AddressForm
                 {...this.props}
+                type={this.props.type}
+                types={this.props.types}
                 matchItemToTerm={this.matchItemToTerm}
                 onAddressTypeSelected={this.onAddressTypeSelected}
                 onCityValueChanged={this.onCityValueChanged}
