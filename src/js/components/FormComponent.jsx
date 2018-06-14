@@ -188,8 +188,8 @@ export default (ComposedComponent) => {
      */
     componentWillReceiveProps(newProps) {
       //console.log('FormComponent debug mode disabled')
-      PropsHelper.compare(this.props, newProps)
-      console.log('data: ', this.props.data)
+      //PropsHelper.compare(this.props, newProps)
+      //console.log('data: ', this.props.data)
 
       // TODO: I am verifying this, but don't reset!
       //this.setState({ fields: {} })
@@ -230,6 +230,9 @@ export default (ComposedComponent) => {
             } else if (storedValue.hasOwnProperty('rgbHex')) {
               // TODO: Again, use the correct type
               fieldValue = storedValue.name
+            } else if (storedValue.hasOwnProperty('e164')) {
+              // TODO: Again, use the correct type
+              fieldValue = storedValue.e164
             }
           }
 
@@ -265,19 +268,26 @@ export default (ComposedComponent) => {
       // Note: event doesn't need to be declared as it will exist
       // due to event bubbling from the onChange event passed to the
       // input element or component via props
-      if (field !== null && typeof event !== 'undefined') {
-        // If we have just udpated or cleared a field
-        if (fieldName === event.target.name) {
-          storeValue = event.target.value
+      if (field !== null) {
+        if (typeof event !== 'undefined') {
+          // If we have just udpated or cleared a field, its event
+          // will bubble up and we can grab the form input's value
+          if (fieldName === event.target.name) {
+            storeValue = event.target.value
+          }
+        } else {
+          // No event to grab input data from, this is likely a props update
+          // Use the stored field value
+          storeValue = this.getFieldValue(fieldName)
         }
       }
 
       if (field === null) {
-        let msg = '' +
+        /*let msg = '' +
           'initializing [' + fieldName + '] ' +
           'with default value of [' + JSON.stringify(fieldValue) + ']'
 
-        console.log(msg)
+        console.log(msg)*/
       }
 
       this.state.fields[fieldName] = {

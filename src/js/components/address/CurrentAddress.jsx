@@ -14,11 +14,9 @@ import { InputFormControl, HiddenInput, DateInput } from '../form/Input.jsx'
 import { AutocompleteFormControl, matchItemToTerm } from '../form/Autocomplete.jsx'
 
 import FormComponent from '../FormComponent.jsx'
-// TODO: Strip these fallback mappings out, replace with mappings using mobx-react injector deps
-import fieldNames from '../../forms/AddressFields.jsx'
 
 const AddressForm = (props) => {
-  const mappings = props.mappings || fieldNames
+  const mappings = props.mappings.address
 
   const {
     mode, type, types,
@@ -266,6 +264,7 @@ const AddressForm = (props) => {
 
 @inject(deps => ({
   actions: deps.actions,
+  mappings: deps.mappings,
   customerService: deps.customerService, // Not used, just in case!
   customerAddressService: deps.customerAddressService,
   settingStore: deps.settingStore
