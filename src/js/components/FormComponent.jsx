@@ -188,9 +188,9 @@ export default (ComposedComponent) => {
      */
     componentWillReceiveProps(newProps) {
       //console.log('FormComponent debug mode disabled')
-      //PropsHelper.compare(this.props, newProps)
-      //console.log('data: ', this.props.data)
-      
+      PropsHelper.compare(this.props, newProps)
+      console.log('data: ', this.props.data)
+
       // TODO: I am verifying this, but don't reset!
       //this.setState({ fields: {} })
     }

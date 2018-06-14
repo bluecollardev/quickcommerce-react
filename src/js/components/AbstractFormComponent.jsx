@@ -2,7 +2,11 @@ import assign from 'object-assign'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-function isWrappedWithInjector(component) {
+function componentIsWrappedWithInjector(component) {
+  return component.hasOwnProperty('wrappedComponent')
+}
+
+function instanceIsWrappedWithInjector(component) {
   return component.hasOwnProperty('wrappedInstance')
 }
 
@@ -11,7 +15,9 @@ function isFormComponent(component) {
 }
 
 function resolveComponent(component) {
-  if (isWrappedWithInjector(component)) {
+  if (componentIsWrappedWithInjector(component)) {
+    return component.wrappedComponent
+  } else if (instanceIsWrappedWithInjector(component)) {
     return component.wrappedInstance
   } else if (isFormComponent(component)) {
     return component.component
@@ -26,7 +32,9 @@ function unwrapComponent(target) {
   }
 
   // If the target isn't wrapped, just return it, it's all good
-  if (!isWrappedWithInjector(target) && !isFormComponent(target)) {
+  if (!isFormComponent(target) &&
+    !instanceIsWrappedWithInjector(target) &&
+    !componentIsWrappedWithInjector(target)) {
     return target
   }
 
@@ -270,6 +278,7 @@ class AbstractFormComponent extends Component {
 }
 
 export default AbstractFormComponent
+export { unwrapComponent, resolveComponent, AbstractFormComponent }
 
 
 

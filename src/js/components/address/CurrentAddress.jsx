@@ -270,7 +270,7 @@ const AddressForm = (props) => {
   customerAddressService: deps.customerAddressService,
   settingStore: deps.settingStore
 })) @observer
-class CurrentAddress extends PureComponent {
+class CurrentAddress extends Component {
   constructor(props) {
     super(props)
 
