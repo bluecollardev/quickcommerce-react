@@ -42,6 +42,7 @@ const InputFormControl = (props) => {
       readOnly={props.readOnly}
       name={name}
       type={props.type}
+      onClick={props.onClick}
       componentClass={props.componentClass}
       defaultValue={props.defaultValue}
       placeholder={props.placeholder}
