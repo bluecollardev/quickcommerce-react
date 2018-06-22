@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import validator from 'validator'
 
 import FormHelper from '../helpers/Form.js'
+import DateHelper from '../helpers/Date.js'
 import PropsHelper from '../helpers/Props.js'
 
 function undoable(reducer) {
@@ -195,7 +196,16 @@ export default (ComposedComponent) => {
       //this.setState({ fields: {} })
     }
 
-    getFieldValue(fieldName) {
+    /**
+     * If a Swagger model is provided as the type argument,
+     * we can leverage its constructFromObject method
+     * @param fieldName
+     * @param type Swagger model
+     * @returns {*}
+     */
+    getFieldValue(fieldName, type) {
+      type = type || null
+
       if (!(typeof fieldName === 'string') || !(fieldName.length > 0)) {
         return
       }
@@ -215,9 +225,9 @@ export default (ComposedComponent) => {
         case 'object':
           // TODO: null check and type check
           if (!(storedValue === null)) {
-            // TODO: This is a stupid way now that we have DTOs
-            // It'll do for a proof-of-concept though...
-            // Is it a code type?
+            // TODO: Use command pattern to create field type parsers
+            // That way we can keep this implementation generic
+
             if (storedValue.hasOwnProperty('code')) {
               // Just use the name for now
               fieldValue = storedValue.name
@@ -234,6 +244,23 @@ export default (ComposedComponent) => {
               // TODO: Again, use the correct type
               fieldValue = storedValue.e164
             }
+
+            // TODO: Use command pattern to create field type parsers
+            // That way we can keep this implementation generic
+            /*let model = null
+            // TODO: Use flow interfaces
+            if (type !== null && type.hasOwnProperty('constructFromObject')) {
+              model = type.constructFromObject(storedValue)
+              if (model.hasOwnProperty('year') && model.hasOwnProperty('zone')) {
+                let dateTimeString = model.value.substring(0, model.value.indexOf('.'))
+                let zonedDateTime = DateHelper.createDateFromString(dateTimeString)
+                console.log('getting field value for zoned datetime:')
+                //console.log(storedValue)
+                //console.log(model)
+                //console.log(zonedDateTime.toISOString())
+                fieldValue = zonedDateTime.toISOString()
+              }
+            }*/
           }
 
           break
@@ -255,7 +282,7 @@ export default (ComposedComponent) => {
      * Registers and adds a field and it's initial value to this component's 'fields' registry.
      * Returns a set of props used to initialize the input field that calls this method.
      */
-    getField(fieldName, fieldValue, events, validations) {
+    getField(fieldName, fieldValue, type, events, validations) {
       events = events || {
         onChange: null,
         onSelect: null
@@ -278,7 +305,7 @@ export default (ComposedComponent) => {
         } else {
           // No event to grab input data from, this is likely a props update
           // Use the stored field value
-          storeValue = this.getFieldValue(fieldName)
+          storeValue = this.getFieldValue(fieldName, type)
         }
       }
 
@@ -300,7 +327,7 @@ export default (ComposedComponent) => {
       }
 
       // Be safe grab the value using our getter
-      fieldValue = this.getFieldValue(fieldName)
+      fieldValue = this.getFieldValue(fieldName, type)
       // These props are injected into the JSX element
       return {
         name: fieldName,

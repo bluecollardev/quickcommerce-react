@@ -83,6 +83,10 @@ class ImageHelper {
     return thumbnail
   }
 
+  static primaryImageOrPlaceholderFromProperty = (data) => {
+    return ImageHelper.primaryImageOrPlaceholderFromObject(data, 'image')
+  }
+
   static isBase64Encoded = (string) => {
     return (/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/.test(string))
   }

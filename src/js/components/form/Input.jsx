@@ -3,6 +3,7 @@ import React from 'react'
 import { FormControl } from 'react-bootstrap'
 
 import FormHelper from '../../helpers/Form.js'
+import DateHelper from '../../helpers/Date.js'
 
 const getMappedValue = FormHelper.getMappedValue
 
@@ -20,9 +21,15 @@ const InputFormControl = (props) => {
   // Set resolve flag on getMappedValue to true or you'll get a error like:
   // "Cannot convert object to primitive value"?
 
+  let type = null
   let hasMapping = false
+
   if (typeof mapping !== 'undefined' && mapping.hasOwnProperty('property')) {
     hasMapping = true
+
+    if (mapping.hasOwnProperty('type')) {
+      type = mapping.type
+    }
   }
 
   let name = ''
@@ -34,7 +41,18 @@ const InputFormControl = (props) => {
 
   let inputProps = undefined
   if (hasMapping) {
-    inputProps = props.fields(mapping.property, getMappedValue(mapping, data))
+    if (type !== null) {
+      inputProps = props.fields(
+        mapping.property,
+        getMappedValue(mapping, data),
+        type
+      )
+    } else {
+      inputProps = props.fields(
+        mapping.property,
+        getMappedValue(mapping, data)
+      )
+    }
   }
 
   return (
@@ -83,12 +101,16 @@ const TimePicker = (props) => {
   return <InputFormControl type='time' {...props} />
 }
 
+const DateTimePicker = (props) => {
+  return <InputFormControl type='datetime-local' {...props} />
+}
+
 const DateInput = (props) => {
   return (<DatePicker {...props} />)
 }
 
 const DateTimeInput = (props) => {
-  return (<DatePicker {...props} />)
+  return (<DateTimePicker {...props} />)
 }
 
 const TimeInput = (props) => {

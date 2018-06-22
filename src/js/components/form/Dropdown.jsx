@@ -35,7 +35,7 @@ const SelectList = (props) => {
 
   let inputProps = undefined
   if (hasMapping) {
-    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data), {
+    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data), null, {
       onChange: props.onChange
     }))
 

@@ -9,7 +9,6 @@ class DateHelper {
   static createDateFromString = (string, format) => moment(string, format).toDate()
 
   static formatDateString = (string, format) => {
-
     let m = moment(string, format)
     return m._d.toISOString()
   }

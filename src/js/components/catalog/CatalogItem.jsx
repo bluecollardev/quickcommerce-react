@@ -159,9 +159,9 @@ const CatalogItem = (props) => {
       {displayTools && !overlayTools && (
         <div className='shop-item-tools block'>
           <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
-            {isSelected && (<i className='fa fa-check-square-o'/>)}
+            {isSelected && (<i className='fa fa-check-square' />)}
 
-            {!isSelected && (<i className='fa fa-square-o'/>)}
+            {!isSelected && (<i className='fa fa-square' />)}
             &nbsp;
             <em>Select Item</em>
             <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
