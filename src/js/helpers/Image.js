@@ -68,6 +68,21 @@ class ImageHelper {
     return thumbnail
   }
 
+  static primaryImageOrPlaceholderFromObjectTemp = (data, propertyName, relative = false) => {
+    // Load default thumbnail
+    let base = relative ? APP_IMAGES_PATH : APP_IMAGES_URI
+    let thumbnail = base + 'no-photo/inv-no-photo-01.png'
+
+    data = data || null
+
+    // TODO: Duck-type object properties properly
+    if (data !== null && typeof data['image'] === 'string' && data['image'] !== '') {
+      thumbnail = 'data:' + data['mimeType'] + ';base64,' + data['image']
+    }
+
+    return thumbnail
+  }
+
   static isBase64Encoded = (string) => {
     return (/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/.test(string))
   }
