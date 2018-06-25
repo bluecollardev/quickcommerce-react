@@ -10,7 +10,7 @@ class ImageHelper {
       }
     } else {
       // Load default thumbnail
-      thumbnail = APP_IMAGES_URI + 'no-photo/inv-no-photo-01.png'
+      thumbnail = APP_IMAGES_URI + NO_PRODUCT_IMAGE
     }
 
     return thumbnail
@@ -31,7 +31,7 @@ class ImageHelper {
       thumbnail = 'data:' + data[mimeTypeProperty] + ';base64,' + data[imageProperty]
     } else {
       // Load default thumbnail
-      thumbnail = APP_IMAGES_URI + 'no-photo/inv-no-photo-01.png'
+      thumbnail = APP_IMAGES_URI + NO_PRODUCT_IMAGE
     }
 
     return thumbnail
@@ -56,7 +56,7 @@ class ImageHelper {
   static primaryImageOrPlaceholderFromObject = (data, propertyName, relative = false) => {
     // Load default thumbnail
     let base = relative ? APP_IMAGES_PATH : APP_IMAGES_URI
-    let thumbnail = base + 'no-photo/inv-no-photo-01.png'
+    let thumbnail = base + NO_PRODUCT_IMAGE
 
     data = data || null
 
@@ -71,7 +71,7 @@ class ImageHelper {
   static primaryImageOrPlaceholderFromObjectTemp = (data, propertyName, relative = false) => {
     // Load default thumbnail
     let base = relative ? APP_IMAGES_PATH : APP_IMAGES_URI
-    let thumbnail = base + 'no-photo/inv-no-photo-01.png'
+    let thumbnail = base + NO_PRODUCT_IMAGE
 
     data = data || null
 
