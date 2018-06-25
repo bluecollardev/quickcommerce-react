@@ -84,7 +84,7 @@ class ImageHelper {
   }
 
   static primaryImageOrPlaceholderFromProperty = (data) => {
-    return ImageHelper.primaryImageOrPlaceholderFromObject(data, 'image')
+    return ImageHelper.primaryImageOrPlaceholderFromObjectTemp(data, 'image')
   }
 
   static isBase64Encoded = (string) => {
