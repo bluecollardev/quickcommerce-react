@@ -26,8 +26,8 @@ class Money extends BaseModel {
 }
 
 Object.defineProperties(Money, {
-  currency: undefined,
-  value: undefined
+  currency: { value: undefined },
+  value: { value: undefined }
 })
 
 export default Money
