@@ -3,7 +3,9 @@
 import BaseModel from './BaseModel.js'
 
 class Money extends BaseModel {
-  constructor() {}
+  constructor() {
+    super()
+  }
 
   static constructFromObject(data, obj) {
     if (data) {
@@ -19,8 +21,13 @@ class Money extends BaseModel {
     return obj
   }
 
-  currency: String = undefined
-  value: Number = undefined
+  /*currency: String = undefined
+  value: Number = undefined*/
 }
+
+Object.defineProperties(Money, {
+  currency: undefined,
+  value: undefined
+})
 
 export default Money

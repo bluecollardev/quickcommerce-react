@@ -1,4 +1,4 @@
-import DateHelper from '../helpers/Date.js'
+import DateHelper from '../../../helpers/Date.js'
 
 class BaseModel {
   /**

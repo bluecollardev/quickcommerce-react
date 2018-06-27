@@ -6,10 +6,12 @@ import BaseModel from './BaseModel.js'
 import CartItemLineItemDetail from './CartItemLineItemDetail.js'
 import Money from './Money.js'
 
-import mappings from '../mappings/CartLineItem.js'
+import mappings from '../mappings/CartLineItemMappings.js'
 
 class CartLineItem extends BaseModel {
   constructor(item, itemUnitAmount) {
+    super()
+
     this[mappings.ITEM] = item
     this[mappings.ITEM_AMOUNT] = itemUnitAmount
   }
@@ -17,7 +19,6 @@ class CartLineItem extends BaseModel {
   static constructFromObject(data, obj) {
     if (data) {
       obj = obj || new CartLineItem()
-
 
       if (data.hasOwnProperty(mappings.ITEM)) {
         obj[mappings.ITEM] = CartItemLineItemDetail.constructFromObject(data[mappings.ITEM])
@@ -31,7 +32,7 @@ class CartLineItem extends BaseModel {
       if (data.hasOwnProperty(mappings.TAX_DETAIL)) {
         obj[mappings.TAX_DETAIL] = Money.constructFromObject(data[mappings.TAX_DETAIL])
       }
-      if (data.hasOwnProperty(mappings.QUANTITY) {
+      if (data.hasOwnProperty(mappings.QUANTITY)) {
         obj[mappings.QUANTITY] = BaseModel.convertToType(data[mappings.QUANTITY], 'Number')
       }
       if (data.hasOwnProperty(mappings.ITEM_AMOUNT)) {
@@ -47,14 +48,25 @@ class CartLineItem extends BaseModel {
     return obj
   }
 
-  [mappings.ITEM]: CartItemLineItemDetail = undefined
+  /*[mappings.ITEM]: CartItemLineItemDetail = undefined
   [mappings.ITEM_TYPE]: String = undefined
   [mappings.TAX_DETAIL]: Money = undefined
   [mappings.QUANTITY]: Number = undefined
   //[mappings.TAX_DETAIL]: TaxDetail = undefined
   [mappings.TAX_DUE_AMOUNT]: Money = undefined
-  [mappings.TOTAL_AMOUNT]: Money = undefined
+  [mappings.TOTAL_AMOUNT]: Money = undefined*/
+  // Can't use flow typings in this project yet
 }
+
+Object.defineProperties(CartLineItem.prototype, {
+  [mappings.ITEM]: { value: undefined },
+  [mappings.ITEM_TYPE]: { value: undefined },
+  [mappings.TAX_DETAIL]: { value: undefined },
+  [mappings.QUANTITY]: { value: undefined },
+  //[mappings.TAX_DETAIL]: { value: undefined },
+  [mappings.TAX_DUE_AMOUNT]: { value: undefined },
+  [mappings.TOTAL_AMOUNT]: { value: undefined }
+})
 
 export default CartLineItem
 

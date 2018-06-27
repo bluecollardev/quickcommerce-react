@@ -4,10 +4,12 @@ import BaseModel from './BaseModel.js'
 
 import Money from './Money.js'
 
-import mappings from '../mappings/CartItemLineItemDetail.js'
+import mappings from '../mappings/CartItemLineItemDetailMappings.js'
 
 class CartItemLineItemDetail extends BaseModel {
   constructor(name, targetAmount) {
+    super()
+
     this[mappings.NAME] = name
     this[mappings.TARGET_AMOUNT] = targetAmount
   }
@@ -30,7 +32,7 @@ class CartItemLineItemDetail extends BaseModel {
         obj[mappings.NOMINAL_FLAT] = Money.constructFromObject(data[mappings.NOMINAL_FLAT])
       }
       if (data.hasOwnProperty(mappings.NAME)) {
-        obj[mappings.NAME] = BaseModel.convertToType(data[mappings.NAME, 'String')
+        obj[mappings.NAME] = BaseModel.convertToType(data[mappings.NAME], 'String')
       }
       if (data.hasOwnProperty(mappings.READ_ONLY)) {
         obj[mappings.READ_ONLY] = BaseModel.convertToType(data[mappings.READ_ONLY], 'Boolean')
@@ -42,14 +44,25 @@ class CartItemLineItemDetail extends BaseModel {
     return obj
   }
 
-  id: Number = undefined
+  /*id: Number = undefined
   maxFlat: Money = undefined
   minFlat: Money = undefined
   name: String = undefined
   nominalFlat: Money = undefined
   readOnly: Boolean = undefined
-  targetAmount: Money = undefined
+  targetAmount: Money = undefined*/
 }
+
+Object.defineProperties(CartItemLineItemDetail.prototype, {
+  [mappings.ID]: { value: undefined },
+  [mappings.MAX_FLAT]: { value: undefined },
+  [mappings.MIN_FLAT]: { value: undefined },
+  [mappings.NOMINAL_FLAT]: { value: undefined },
+  [mappings.NAME]: { value: undefined },
+  [mappings.NAME]: { value: undefined },
+  [mappings.READ_ONLY]: { value: undefined },
+  [mappings.TARGET_AMOUNT]: { value: undefined }
+})
 
 export default CartItemLineItemDetail
 

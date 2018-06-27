@@ -31,8 +31,8 @@ function enhancer(WrappedComponent) {
         headerLines.push('Edmonton, Alberta T6E 1T4')
         headerLines.push('Tel. 780.244.0ACE')
         headerLines.push('info@acecoffeeroasters.com')
-
         let local = new Date().toISOString()
+
         let date = local.slice(0, 10)
         let time = local.slice(11).split('.')[0]
 
