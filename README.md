@@ -192,6 +192,12 @@ import { AutocompleteFormControl, matchItemToTerm } from quickcommerce-react/com
 
 ### Actions
 
+### Component Types
+
+#### Tiles
+
+#### Cards
+
 ### Third-Party Libraries
 
 #### quickcommerce-react

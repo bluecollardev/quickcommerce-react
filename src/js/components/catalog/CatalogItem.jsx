@@ -81,7 +81,7 @@ const CatalogItem = (props) => {
                     backgroundColor: 'transparent',
                     color: 'white'
                   }}>
-                  <i className='fa fa-caret-down'
+                  <i className='fa fa-ellipsis-v'
                     style={{color: 'white'}}
                   />
                 </Button>

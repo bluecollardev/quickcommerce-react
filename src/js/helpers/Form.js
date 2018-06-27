@@ -68,7 +68,9 @@ class FormHelper {
           return chunk.replace('.', '\\\\.')
         })
 
-        return FormHelper.getPathMappedValue(chunks.join('.'), data[prop][arrIdx])
+        if (data[prop] instanceof Array && data[prop].length > 0) {
+          return FormHelper.getPathMappedValue(chunks.join('.'), data[prop][arrIdx])
+        }
       }
 
       //console.log(JSON.stringify(data[prop]))
