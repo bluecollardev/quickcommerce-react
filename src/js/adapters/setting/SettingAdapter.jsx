@@ -8,7 +8,6 @@ function settingFactory(settingStore, adapter) {
 
   switch (QC_SETTING_ADAPTER) {
     case 'custom':
-      adapter = adapter
       break
     default:
       adapter = QcSettingAdapter

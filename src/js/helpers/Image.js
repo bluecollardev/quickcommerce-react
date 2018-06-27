@@ -25,6 +25,7 @@ class ImageHelper {
    */
   static base64ImageOrPlaceholder = (data, imageProperty, mimeTypeProperty) => {
     let thumbnail = ''
+    mimeTypeProperty = mimeTypeProperty || 'mimeType'
 
     // TODO: Detect base64 encoding?
     if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
