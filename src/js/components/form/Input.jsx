@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FormControl } from 'react-bootstrap'
+import { FormControl, InputGroup } from 'react-bootstrap'
 
 import FormHelper from '../../helpers/Form.js'
 import DateHelper from '../../helpers/Date.js'
@@ -121,6 +121,25 @@ const NumericInput = (props) => {
   return (<InputFormControl type='number' {...props} />)
 }
 
+const CurrencyInput = (props) => {
+  return (
+    <InputGroup>
+      <InputGroup.Addon>$</InputGroup.Addon>
+      <InputFormControl type='text' {...props} />
+      {/*<InputGroup.Addon>.00</InputGroup.Addon>*/}
+    </InputGroup>
+  )
+}
+
+const PercentageInput = (props) => {
+  return (
+    <InputGroup>
+      <InputFormControl type='text' {...props} />
+      <InputGroup.Addon>%</InputGroup.Addon>
+    </InputGroup>
+  )
+}
+
 const TelephoneInput = (props) => {
   return (<InputFormControl type='tel' {...props} />)
 }
@@ -142,4 +161,4 @@ const SsnInput = (props) => {
 }
 
 export default InputFormControl
-export { InputFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
+export { InputFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, CurrencyInput, PercentageInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }

@@ -1,22 +1,22 @@
 import { Dispatcher } from 'flux'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import Griddle from 'griddle-react'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 
 import { Col, ControlLabel, FormGroup, Grid, Row, TabPanes, Well } from 'react-bootstrap'
-//import Stepper from '../stepper/BrowserStepper.jsx'
-import BrowserActions from '../../actions/BrowserActions.jsx'
 
-import itemFieldNames from '../../forms/ItemFields.jsx'
+import { unwrapComponent, resolveComponent } from '../../helpers/Component.js'
+
+import BrowserActions from '../../actions/BrowserActions.jsx'
 import { BrowserStore } from '../../stores/BrowserStore.jsx'
-import CategoryFilterBar from '../common/CategoryFilterBar.jsx'
-import FilterBar from '../common/FilterBar.jsx'
-import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
 import BrowserMenu from './BrowserMenu.jsx'
+import FilterBar from '../common/FilterBar.jsx'
+import CategoryFilterBar from '../common/CategoryFilterBar.jsx'
+import BootstrapPager from '../common/GriddleBootstrapPager.jsx'
 
-//import StarRating from 'react-star-rating'
+import itemFieldNames from '../../forms/ItemFields.jsx'
 
 class ProductBrowser extends Component {
   static propTypes = {
@@ -155,10 +155,14 @@ class ProductBrowser extends Component {
       fn = this.props.onItemClicked
     }
 
+    // The rowComponent may be wrapped in a mobx injector
+    // Unwrap it - we need to add these properties to the row itself
+    let row = unwrapComponent(rowComponent)
+
     // Override default component props and decorate them with our passed in props
-    rowComponent.defaultProps.onItemClicked = fn
-    rowComponent.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
-    rowComponent.defaultProps.stepper = this.props.stepper
+    row.defaultProps.onItemClicked = fn
+    row.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
+    row.defaultProps.stepper = this.props.stepper
 
     return rowComponent
   }
