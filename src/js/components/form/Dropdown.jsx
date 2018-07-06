@@ -1,8 +1,9 @@
 import assign from 'object-assign'
 
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import { DropdownButton, FormControl, MenuItem, SplitButton } from 'react-bootstrap'
+import { DropdownButton, FormControl, MenuItem, SplitButton, InputGroup } from 'react-bootstrap'
 
 import FormHelper from '../../helpers/Form.js'
 import ObjectHelper from '../../helpers/Object.js'
@@ -16,7 +17,9 @@ const SelectList = (props) => {
     //field,
     fields,
     mapping,
-    data
+    data,
+    mapItems,
+    displayText,
   } = props
 
   let items = props.items || []
@@ -57,15 +60,52 @@ const SelectList = (props) => {
         componentClass='select'
         {...inputProps}>
         <option key={0} value=''></option>
-        {items.map((item, idx) => (
-          <option
-            key={idx + 1}
-            code={item.code}
-            value={item.value}
-            selected={item.selected}>
-            {item.value}
-          </option>
-        ))}
+        {items.map((item, idx) => {
+          // Use the mapItems callback to perform
+          // any last second tweaks to the data
+          item = mapItems(item)
+          return(
+            <option
+              key={idx + 1}
+              code={item.code}
+              value={item.value}
+              selected={item.selected}>
+              {item.value}
+            </option>
+          )
+        })}
+      </FormControl>
+    )
+  }
+
+  if (props.hasOwnProperty('displayTextValue')) {
+    return (
+      <FormControl
+        readOnly={props.readOnly}
+        name={name}
+        componentClass='select'
+        {...inputProps}>
+        <option key={0} value=''></option>
+        {items.map((item, idx) => {
+          // Use the mapItems callback to perform
+          // any last second tweaks to the data
+          item = mapItems(item)
+
+          let displayValue = item.value
+
+          if (typeof props.displayText === 'function') {
+            displayValue = displayText(item.value)
+          }
+
+          return(
+            <option
+              key={idx + 1}
+              value={item.value}
+              selected={item.selected}>
+              {displayValue}
+            </option>
+          )
+        })}
       </FormControl>
     )
   }
@@ -78,14 +118,19 @@ const SelectList = (props) => {
         componentClass='select'
         {...inputProps}>
         <option key={0} value=''></option>
-        {items.map((item, idx) => (
-          <option
-            key={idx + 1}
-            value={item.code}
-            selected={item.selected}>
-            {item.value}
-          </option>
-        ))}
+        {items.map((item, idx) => {
+          // Use the mapItems callback to perform
+          // any last second tweaks to the data
+          item = mapItems(item)
+          return (
+            <option
+              key={idx + 1}
+              value={item.code}
+              selected={item.selected}>
+              {item.value}
+            </option>
+          )
+        })}
       </FormControl>
     )
   }
@@ -97,16 +142,29 @@ const SelectList = (props) => {
       componentClass='select'
       {...inputProps}>
       <option key={0} value=''></option>
-      {items.map((item, idx) => (
-        <option
-          key={idx + 1}
-          value={item.id}
-          selected={item.selected}>
-          {item.value}
-        </option>
-      ))}
+      {items.map((item, idx) => {
+        // Use the mapItems callback to perform
+        // any last second tweaks to the data
+        item = mapItems(item)
+        return(
+          <option
+            key={idx + 1}
+            value={item.id}
+            selected={item.selected}>
+            {item.value}
+          </option>
+        )
+      })}
     </FormControl>
   )
+}
+
+SelectList.propTypes = {
+  mapItems: PropTypes.func
+}
+
+SelectList.defaultProps = {
+  mapItems: (items) => { return items }
 }
 
 const SelectButton = (props) => {
@@ -136,6 +194,24 @@ const SelectButton = (props) => {
       </DropdownButton>
     )
   }
+}
+
+const PercentageRateDropdown = (props) => {
+  return (
+    <InputGroup>
+      <SelectList {...props} />
+      <InputGroup.Addon>%</InputGroup.Addon>
+    </InputGroup>
+  )
+}
+
+const MonthsDropdown = (props) => {
+  return (
+    <InputGroup>
+      <SelectList {...props} />
+      <InputGroup.Addon>Months</InputGroup.Addon>
+    </InputGroup>
+  )
 }
 
 // Dropdown lists
@@ -377,6 +453,8 @@ export {
   EmploymentStatusDropdown,
   IncomeTypeDropdown,
   FrequencyDropdown,
+  MonthsDropdown,
+  PercentageRateDropdown,
   AssetTypeDropdown,
   LiabilityTypeDropdown,
   StreetTypeDropdown,
