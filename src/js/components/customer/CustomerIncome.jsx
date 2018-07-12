@@ -39,8 +39,8 @@ class CustomerIncome extends Component {
     this.onSaveSuccess = this.onSaveSuccess.bind(this)
     this.onError = this.onError.bind(this)
 
-    console.log('identity')
-    console.log(props.data)
+    //console.log('identity')
+    //console.log(props.data)
 
     this.state = {data: assign({}, props.data)}
   }

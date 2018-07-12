@@ -216,8 +216,8 @@ const MonthsDropdown = (props) => {
 
 // Dropdown lists
 const ContactTypeDropdown = (props) => {
-  console.log('dumping ContactTypeDropdown props')
-  console.log(props)
+  //console.log('dumping ContactTypeDropdown props')
+  //console.log(props)
   return (<SelectList {...props} />)
 }
 

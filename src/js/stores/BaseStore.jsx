@@ -99,12 +99,18 @@ class BaseStore extends EventEmitter {
    * @returns {*}
    */
   static resolveDomainObjects = (data, returnProp, ignoreValues) => {
-    // Resolve code types
-    data = BaseStore.resolveCodeTypes(data, returnProp, ignoreValues)
-    // Resolve dates
-    data = BaseStore.resolveDateObjects(data)
-    // Resolve currency
-    data = BaseStore.resolveCurrencyObjects(data)
+    try {
+      // Resolve code types
+      data = BaseStore.resolveCodeTypes(data, returnProp, ignoreValues)
+      // Resolve dates
+      data = BaseStore.resolveDateObjects(data)
+      // Resolve currency
+      data = BaseStore.resolveCurrencyObjects(data)
+    } catch (err) {
+      console.log('Error attempting to resolve domain object')
+      console.log(data)
+      console.log(err)
+    }
 
     return data
   }
