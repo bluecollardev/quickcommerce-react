@@ -67,7 +67,6 @@ const SelectList = (props) => {
           return(
             <option
               key={idx + 1}
-              raw={JSON.stringify(item)}
               code={item.code}
               value={item.value}
               selected={item.selected}>
@@ -101,7 +100,6 @@ const SelectList = (props) => {
           return(
             <option
               key={idx + 1}
-              raw={JSON.stringify(item)}
               value={item.value}
               selected={item.selected}>
               {displayValue}
@@ -112,7 +110,6 @@ const SelectList = (props) => {
     )
   }
 
-  // TODO: This isn't used anywhere
   if (props.hasOwnProperty('codeValue')) {
     return (
       <FormControl
@@ -128,7 +125,6 @@ const SelectList = (props) => {
           return (
             <option
               key={idx + 1}
-              raw={JSON.stringify(item)}
               value={item.code}
               selected={item.selected}>
               {item.value}
@@ -153,7 +149,6 @@ const SelectList = (props) => {
         return(
           <option
             key={idx + 1}
-            raw={JSON.stringify(item)}
             value={item.id}
             selected={item.selected}>
             {item.value}
@@ -221,8 +216,8 @@ const MonthsDropdown = (props) => {
 
 // Dropdown lists
 const ContactTypeDropdown = (props) => {
-  //console.log('dumping ContactTypeDropdown props')
-  //console.log(props)
+  console.log('dumping ContactTypeDropdown props')
+  console.log(props)
   return (<SelectList {...props} />)
 }
 

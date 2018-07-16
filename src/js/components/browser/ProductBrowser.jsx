@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { Dispatcher } from 'flux'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Griddle from 'griddle-react'
