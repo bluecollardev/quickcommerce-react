@@ -19,10 +19,11 @@ export function sequence(steps, reject = () => null) {
 
 class Stepper extends BaseStore {
   /**
+   * TODO: Reorder signature args
    * @param {Function[]} steps - array of steps, which will be treated
    * @param {Function} [onReject] - callback, which will be executing on some step
    * */
-  constructor(steps, onReject = () => null) {
+  constructor(steps, onReject = () => null, type = StepDescriptor) {
     super()
 
     this.items = {}
@@ -30,6 +31,7 @@ class Stepper extends BaseStore {
     this.nextKey = 0
     this.steps = []
     this.reject = null
+    this.type = type
     this.currentStep = -1
 
     // TODO: Type check?
@@ -61,12 +63,11 @@ class Stepper extends BaseStore {
       this.currentStep = this.getIndex(stepDescriptor)
     }
 
-    if (this.currentStep++ < this.steps.length - 1) {
-      let isEnded = this.currentStep === this.steps.length - 1
+    if (this.currentStep < this.steps.length - 1) {
+      let isEnd = this.currentStep === this.steps.length - 1
+      if (!isEnd) this.currentStep++
 
-      this.steps[this.currentStep].execute(data, isEnded)
-    } else {
-      throw new Error('Steps executing are ended. You cannot call "next" method.')
+      this.steps[this.currentStep].execute(data, isEnd)
     }
   }
 
@@ -75,17 +76,23 @@ class Stepper extends BaseStore {
    * @param {StepDescriptor} stepDescriptor
    * @return {StepDescriptor}
    * */
-  prev(stepsCount = 1, stepDescriptor = null) {
-    stepDescriptor = stepDescriptor || false
-    if (stepDescriptor === false) return // Fail silently
+  prev(data = null, stepDescriptor = null, stepsCount = 1) {
+    if (stepDescriptor) {
+      this.currentStep = this.getIndex(stepDescriptor)
+    }
 
-    return this.steps[this.getIndex(stepDescriptor) - stepsCount]
+    if (this.currentStep > -1) {
+      let isStart = this.currentStep === 0
+      if (!isStart) this.currentStep--
+
+      this.steps[this.currentStep].execute(data, false)
+    }
   }
 
   /**
    * TODO: Refine this
    */
-  load(stepDescriptor = null, data, isEnded = false, onSuccess) {
+  load(stepDescriptor = null, data, isEnd = false, onSuccess) {
     stepDescriptor = stepDescriptor || false
     if (stepDescriptor === false) return
     if (!this.before(stepDescriptor.config.stepId, stepDescriptor, data)) return
@@ -93,7 +100,7 @@ class Stepper extends BaseStore {
     let prev = this.getStep(this.getIndex(stepDescriptor) - 1) || null
     if (prev !== null) {
       if (this.validate(prev.config.stepId, prev, data)) {
-        stepDescriptor.execute(data, isEnded)
+        stepDescriptor.execute(data, isEnd)
         this.currentStep = this.getIndex(stepDescriptor)
 
         if (typeof onSuccess === 'function') {
@@ -105,7 +112,7 @@ class Stepper extends BaseStore {
         return false
       }
     } else {
-      stepDescriptor.execute(data, isEnded)
+      stepDescriptor.execute(data, isEnd)
       this.currentStep = this.getIndex(stepDescriptor)
 
       if (typeof onSuccess === 'function') {
@@ -182,9 +189,9 @@ class Stepper extends BaseStore {
   }
 
   getStepById(stepId) {
-    // Get the BrowserStepDescriptor stepDescriptor by stepId (shop|cart|checkout|etc).
+    // Get the StepDescriptor stepDescriptor by stepId (shop|cart|checkout|etc).
     // We can't get it by index because the Step argument for this method is the config prop 
-    // provided to the Step component, not an stepDescriptor of BrowserStepDescriptor.
+    // provided to the Step component, not an stepDescriptor of StepDescriptor.
     // Maybe I'll change this later...
     let stepDescriptor = null
 
@@ -221,7 +228,8 @@ class Stepper extends BaseStore {
    * @return {StepDescriptor}
    * */
   add(step, index = null) {
-    const stepDescriptor = new StepDescriptor(step, this)
+    const StepDescriptorType = this.type
+    const stepDescriptor = new StepDescriptorType(step, this)
 
     if (index == null) {
       this.steps.push(stepDescriptor)
