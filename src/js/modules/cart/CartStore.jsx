@@ -5,11 +5,15 @@ import assign from 'object-assign'
 import ArrayHelper from '../../helpers/Array.js'
 import ObjectHelper from '../../helpers/Object.js'
 
-
+let INSTANCE_COUNTER = 0
 
 class CartStore extends EventEmitter {
   constructor(dispatcher) {
     super()
+
+    this.INSTANCE_ID = INSTANCE_COUNTER++
+
+    console.log('INITIALIZING CARTSTORE ' + this.INSTANCE_ID)
 
     /*dispatcher = dispatcher || null
      if (dispatcher instanceof Dispatcher) {
@@ -129,6 +133,7 @@ class CartStore extends EventEmitter {
   }
 
   addItem(key, quantity, item, silent) {
+    console.log('ATTEMPTING TO ADD ITEM TO CARTSTORE ' + this.INSTANCE_ID)
     // Cart store addItem
     silent = silent || false
     let data = null

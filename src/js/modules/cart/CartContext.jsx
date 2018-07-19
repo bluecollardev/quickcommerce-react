@@ -1,24 +1,25 @@
+import assign from 'object-assign'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Dispatcher } from 'flux'
 import { inject, observer } from 'mobx-react'
-import assign from 'object-assign'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 
 import FormHelper from '../../helpers/Form.js'
 
 import createCartActions from './CartActions.jsx'
 import { CartStore } from './CartStore.jsx'
 
-let createCartContextManager = () => {
+let createCartContextManager = (componentClass, exposedMethods) => {
   let dispatcher = new Dispatcher()
   let actions = createCartActions(dispatcher)
   let store = new CartStore(dispatcher)
 
-  let cartContextValue = {
+  let cartContextValue = assign({
+    component: componentClass,
     dispatcher: dispatcher,
     actions: actions,
     store: store
-  }
+  }, exposedMethods)
 
   let subscribers = []
 
@@ -56,6 +57,8 @@ let createCartContextManager = () => {
     subscribe: subscribe
   }
 }
+
+let INSTANCE_COUNTER = 0
 
 /**
  * This higher-order component wraps an existing component, decorating it with methods needed to interact
@@ -100,7 +103,9 @@ export default (ComposedComponent) => {
     constructor(props, context) {
       super(props)
 
-      this.cartContextManager = createCartContextManager()
+      this.INSTANCE_ID = INSTANCE_COUNTER++
+
+      console.log('INITIALIZING CARTCONTEXT ' + this.INSTANCE_ID)
 
       this.getDecoratedComponentInstance = this.getDecoratedComponentInstance.bind(this)
       this.getContextManager = this.getContextManager.bind(this)
@@ -128,10 +133,24 @@ export default (ComposedComponent) => {
         settings: {}
       }
 
+      let classMethods = {
+        getContextManager: this.getContextManager,
+        getContextValue: this.getContextValue,
+        getSelection: this.getSelection,
+        addToCart: this.addToCart,
+        quickAddToCart: this.quickAddToCart,
+        addToCartClicked: this.addToCartClicked,
+        getTotal: this.getTotal,
+        doCheckout: this.doCheckout
+      }
+
+      this.cartContextManager = createCartContextManager(this, classMethods)
+
       const cartContextValue = this.cartContextManager.getCartContextValue()
       const store = cartContextValue.store
 
       store.addListener('change', () => {
+        console.log('CartContext CHANGE event emitted in instance ' + this.INSTANCE_ID)
         let payload = this.cartContextManager.getCartContextValue()
         this.cartContextManager.notifySubscribers(payload)
       })
