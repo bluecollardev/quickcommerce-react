@@ -42,45 +42,45 @@ class AbstractFormStore extends BaseCollectionStore {
   }
 
   /*removeSubformInstance(subformKey, propId, key) {
-    let collection = []
+   let collection = []
 
-    let subform = this.retrieveItem(subformKey)
+   let subform = this.retrieveItem(subformKey)
 
-    if (subform !== null) {
-      collection = (subform instanceof Array) ? subform : collection
-    }
+   if (subform !== null) {
+   collection = (subform instanceof Array) ? subform : collection
+   }
 
-    let matchIdx = collection.findIndex((item) => {
-      return propId === item[key]
-    })
+   let matchIdx = collection.findIndex((item) => {
+   return propId === item[key]
+   })
 
-    let removed = undefined
-    if (matchIdx > -1) {
-      // Entry exists, overwrite it
-      removed = this.items[subformKey].splice(matchIdx, 1)
-    }
+   let removed = undefined
+   if (matchIdx > -1) {
+   // Entry exists, overwrite it
+   removed = this.items[subformKey].splice(matchIdx, 1)
+   }
 
-    this.emitChange(removed)
-  }
+   this.emitChange(removed)
+   }
 
-  removeSubformInstanceAtIndex(subformKey, index) {
-    let collection = []
+   removeSubformInstanceAtIndex(subformKey, index) {
+   let collection = []
 
-    let subform = this.retrieveItem(subformKey)
+   let subform = this.retrieveItem(subformKey)
 
-    if (subform !== null) {
-      collection = (subform instanceof Array) ? subform : collection
-    }
+   if (subform !== null) {
+   collection = (subform instanceof Array) ? subform : collection
+   }
 
-    let removed = null
+   let removed = null
 
-    if (Number.isNaN(index)) return false // TODO: Also needs to check if number is an integer...
+   if (Number.isNaN(index)) return false // TODO: Also needs to check if number is an integer...
 
-    if (this.items[subformKey] instanceof Array && collection.length > 0) {
-      this.items[subformKey].splice(index, 1)
-      this.emitChange(removed)
-    }
-  }*/
+   if (this.items[subformKey] instanceof Array && collection.length > 0) {
+   this.items[subformKey].splice(index, 1)
+   this.emitChange(removed)
+   }
+   }*/
 }
 
 export default AbstractFormStore

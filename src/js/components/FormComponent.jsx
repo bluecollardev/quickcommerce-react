@@ -130,6 +130,7 @@ export default (ComposedComponent) => {
       this.dispatch = this.dispatch.bind(this)
       this.freezeState = this.freezeState.bind(this)
       this.thawState = this.thawState.bind(this)
+      // findInput is/was only used for legacy validation
       this.findInput = this.findInput.bind(this)
       this.getFieldValue = this.getFieldValue.bind(this)
       this.getField = this.getField.bind(this)
@@ -220,6 +221,22 @@ export default (ComposedComponent) => {
     }
 
     /**
+     * ReactDOM.findDOMNode isn't working in newer versions of React (for our use caes).
+     * This method was mostly used to bind and render validations for inputs.
+     * I'll have to figure out a new way to do it.
+     * @deprecated
+     * @param fieldName
+     * @returns {Element | any}
+     */
+    findInput(fieldName) {
+      const component = this.component.hasOwnProperty('wrappedInstance') ? this.component.wrappedInstance : this.component
+      const node = ReactDOM.findDOMNode(component)
+      const input = node.querySelector('[name="' + fieldName + '"]')
+
+      return input
+    }
+
+    /**
      * If a Swagger model is provided as the type argument,
      * we can leverage its constructFromObject method
      * @param fieldName
@@ -271,19 +288,19 @@ export default (ComposedComponent) => {
             // TODO: Use command pattern to create field type parsers
             // That way we can keep this implementation generic
             /*let model = null
-            // TODO: Use flow interfaces
-            if (type !== null && type.hasOwnProperty('constructFromObject')) {
-              model = type.constructFromObject(storedValue)
-              if (model.hasOwnProperty('year') && model.hasOwnProperty('zone')) {
-                let dateTimeString = model.value.substring(0, model.value.indexOf('.'))
-                let zonedDateTime = DateHelper.createDateFromString(dateTimeString)
-                console.log('getting field value for zoned datetime:')
-                //console.log(storedValue)
-                //console.log(model)
-                //console.log(zonedDateTime.toISOString())
-                fieldValue = zonedDateTime.toISOString()
-              }
-            }*/
+             // TODO: Use flow interfaces
+             if (type !== null && type.hasOwnProperty('constructFromObject')) {
+             model = type.constructFromObject(storedValue)
+             if (model.hasOwnProperty('year') && model.hasOwnProperty('zone')) {
+             let dateTimeString = model.value.substring(0, model.value.indexOf('.'))
+             let zonedDateTime = DateHelper.createDateFromString(dateTimeString)
+             console.log('getting field value for zoned datetime:')
+             //console.log(storedValue)
+             //console.log(model)
+             //console.log(zonedDateTime.toISOString())
+             fieldValue = zonedDateTime.toISOString()
+             }
+             }*/
           }
 
           break
@@ -323,7 +340,37 @@ export default (ComposedComponent) => {
           // If we have just udpated or cleared a field, its event
           // will bubble up and we can grab the form input's value
           if (fieldName === event.target.name) {
-            storeValue = event.target.value
+            //storeValue = event.target.value
+            // NOTE: This chunk of code is duplicated on purpose - we need to save the input value & trigger the callback
+            let targetElement = event.target
+            // Detect the type of input that triggered the event
+            switch (targetElement.tagName) {
+              // TODO: use constants!
+              case 'SELECT':
+                if (targetElement.selectedOptions instanceof HTMLCollection &&
+                  targetElement.selectedOptions.length > 0) {
+                  // TODO: No way to handle multiple selects yet!
+                  for (let idx = 0; idx < targetElement.selectedOptions.length; idx++) {
+                    // TODO: Use an adapter!
+                    let selectedOption = targetElement.selectedOptions[idx]
+                    let optionAttributes = selectedOption.attributes
+                    let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
+
+                    if (rawDataAttribute !== null) {
+                      // Custom attribute for code-types
+                      storeValue = JSON.parse(rawDataAttribute.value)
+                    } else {
+                      // Just use the value
+                      storeValue = targetElement.value
+                    }
+                  }
+                }
+
+                break
+              default:
+                storeValue = targetElement.value
+                break
+            }
           }
         } else {
           // No event to grab input data from, this is likely a props update
@@ -334,10 +381,10 @@ export default (ComposedComponent) => {
 
       if (field === null) {
         /*let msg = '' +
-          'initializing [' + fieldName + '] ' +
-          'with default value of [' + JSON.stringify(fieldValue) + ']'
+         'initializing [' + fieldName + '] ' +
+         'with default value of [' + JSON.stringify(fieldValue) + ']'
 
-        console.log(msg)*/
+         console.log(msg)*/
       }
 
       this.state.fields[fieldName] = {
@@ -435,7 +482,37 @@ export default (ComposedComponent) => {
     }
     onFieldChange(event, fieldName, callback) {
       //console.log('setting FormComponent field value to "' + event.target.value + '"')
-      this.state.fields[fieldName].value = event.target.value
+      // NOTE: This chunk of code is duplicated on purpose - we need to save the input value & trigger the callback
+      // TODO: If it's possible, kill the value-setting here... I may be able to set it above, in setField
+      let targetElement = event.target
+      // Detect the type of input that triggered the event
+      switch (targetElement.tagName) {
+        // TODO: use constants!
+        case 'SELECT':
+          if (targetElement.selectedOptions instanceof HTMLCollection &&
+            targetElement.selectedOptions.length > 0) {
+            // TODO: No way to handle multiple selects yet!
+            for (let idx = 0; idx < targetElement.selectedOptions.length; idx++) {
+              // TODO: Use an adapter!
+              let selectedOption = targetElement.selectedOptions[idx]
+              let optionAttributes = selectedOption.attributes
+              let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
+
+              if (rawDataAttribute !== null) {
+                // Custom attribute for code-types
+                this.state.fields[fieldName].value = JSON.parse(rawDataAttribute.value)
+              } else {
+                // Just use the value
+                this.state.fields[fieldName].value = targetElement.value
+              }
+            }
+          }
+
+          break
+        default:
+          this.state.fields[fieldName].value = targetElement.value
+          break
+      }
 
       if (typeof callback === 'function') {
         callback(event, this.state.fields[fieldName].value)

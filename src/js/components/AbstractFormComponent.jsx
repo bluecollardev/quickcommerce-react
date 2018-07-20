@@ -1,6 +1,8 @@
 import assign from 'object-assign'
 import React, { Component } from 'react'
+import { Dispatcher } from 'flux'
 import PropTypes from 'prop-types'
+import AbstractFormStore from 'quickcommerce-react/stores/AbstractFormStore.jsx'
 
 function componentIsWrappedWithInjector(component) {
   return component.hasOwnProperty('wrappedComponent')
@@ -84,9 +86,19 @@ class AbstractFormComponent extends Component {
     this.getFormData = this.getFormData.bind(this)
     this.registerSubform = this.registerSubform.bind(this)
     this.triggerAction = this.triggerAction.bind(this)
+    // Initialize or set AbstractFormComponent dispatcher
+    if (!props.hasOwnProperty('dispatcher')) {
+      this.dispatcher = new Dispatcher()
+    } else {
+      this.dispatcher = props.dispatcher
+    }
 
-    // Ref names for subforms, required in inheriting classes
-    this.subforms = []
+    // This property stores ref names for subforms
+    if (!props.hasOwnProperty('store')) {
+      this.subforms = new AbstractFormStore(this.dispatcher)
+    } else {
+      this.subforms = props.store
+    }
   }
 
   onCreate(e) {
@@ -199,17 +211,23 @@ class AbstractFormComponent extends Component {
     return errors
   }
 
-
   /**
    * Grab all subforms and assemble their data into a single object.
    */
   getForm(convertToEntities) {
     console.log('grabbing form data from all registered child components')
-    let forms = this.subforms
     let formData = {}
 
-    this.subforms.map((refName, idx) => {
-      formData[refName] = this.getFormData(refName, convertToEntities)
+    this.subforms.each((refName) => {
+      let refs = this.subforms.getItem(refName)
+      if (refs instanceof Array) {
+        formData[refName] = []
+        for (let idx = 0; idx < refs.length; idx++) {
+          formData[refName][idx] = this.getFormData(refs[idx], convertToEntities)
+        }
+      } else {
+        formData[refName] = this.getFormData(refs, convertToEntities)
+      }
     })
 
     console.log('dumping form data')
@@ -237,8 +255,8 @@ class AbstractFormComponent extends Component {
       typeof formComponent.props.getForm === 'function') {
       formData = formComponent.props.getForm(convertToEntities) || formData
       // Grab any subform data
-      if (formComponent.subforms instanceof Array) {
-        formComponent.subforms.map((refName) => {
+      if (formComponent.subforms) {
+        formComponent.subforms.each((refName) => {
           let subform = formComponent[refName] // Get the ref
           // Get its form data
           formData = assign(formData, subform.getForm(convertToEntities))
@@ -254,16 +272,12 @@ class AbstractFormComponent extends Component {
    * @param refName
    * @returns {Function}
    */
-  registerSubform(refName) {
-    let that = this
+  registerSubform(refName, refIdx) {
+    // TODO: Use an action, don't directly modify the store!
+    let subformRef = this.subforms.registerSubformInstance(refName, refIdx)
 
     return (subform) => {
-      // Only register if the ref doesn't exist
-      if (that.subforms.indexOf(refName) === -1 &&
-        typeof that[refName] === 'undefined') {
-        that.subforms.push(refName)
-        that[refName] = subform
-      }
+      this[subformRef] = subform
     }
   }
 
@@ -279,7 +293,3 @@ class AbstractFormComponent extends Component {
 
 export default AbstractFormComponent
 export { unwrapComponent, resolveComponent, AbstractFormComponent }
-
-
-
-
