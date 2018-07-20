@@ -125,6 +125,8 @@ export default (ComposedComponent) => {
         isValid: true
       }
 
+      this.subscribers = []
+
       this.dispatch = this.dispatch.bind(this)
       this.freezeState = this.freezeState.bind(this)
       this.thawState = this.thawState.bind(this)
@@ -140,6 +142,27 @@ export default (ComposedComponent) => {
       this.validateForm = this.validateForm.bind(this)
       this.setErrorsOnFields = this.setErrorsOnFields.bind(this)
       this.renderErrors = this.renderErrors.bind(this)
+    }
+
+    subscribe(subscriber) {
+      this.subscribers.push(subscriber)
+
+      return () => {
+        this.subscribers = this.subscribers.filter((s) => {
+          return s !== subscriber
+        })
+      }
+    }
+
+    getSubscribers() {
+      return this.subscribers
+    }
+
+    notifySubscribers() {
+      console.log('Warning! FormComponent.notifySubscribers is a temporary update mechanism for parent components!')
+      this.subscribers.forEach((callback) => {
+        return callback(this.state.fields)
+      })
     }
 
     /**
@@ -326,6 +349,13 @@ export default (ComposedComponent) => {
         validations: validations
       }
 
+      if (typeof event !== 'undefined') {
+        if (fieldName === event.target.name) {
+          // TODO: This is a temporary mechanism to notify subscribers (parent components) of changes
+          this.notifySubscribers()
+        }
+      }
+
       // Be safe grab the value using our getter
       fieldValue = this.getFieldValue(fieldName, type)
       // These props are injected into the JSX element
@@ -379,6 +409,8 @@ export default (ComposedComponent) => {
           },
           validations: validations
         }
+
+        this.notifySubscribers()
       } else {
         // If the field doesn't exist create it
         this.getField(fieldName, value)
@@ -409,12 +441,10 @@ export default (ComposedComponent) => {
         callback(event, this.state.fields[fieldName].value)
       }
 
-      this.forceUpdate()
-
       // Validate the input when we attach it to the form so the form maintains the correct state?
       // I'm thinking maybe not...
       //this.validate(fieldName, this.state.fields[fieldName].value)
-      isValid = this.validate(fieldName, this.state.fields[fieldName].value)
+      let isValid = this.validate(fieldName, this.state.fields[fieldName].value)
       console.log(fieldName + ' is valid? ' + isValid)
 
       // Grab wrapping formgroup and set success/error status
@@ -430,6 +460,8 @@ export default (ComposedComponent) => {
 
       // Set validation status
       //group.classList.add(validationState)
+
+      this.forceUpdate()
     }
 
     /**

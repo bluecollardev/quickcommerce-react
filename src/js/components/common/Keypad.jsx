@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import { Col, ControlLabel, FormGroup } from 'react-bootstrap'
 
+import { NumericInput } from '../form/Input.jsx'
+
 import FormComponent from '../FormComponent.jsx'
 
 export default FormComponent(class Keypad extends Component {
@@ -42,7 +44,7 @@ export default FormComponent(class Keypad extends Component {
       <Col className='keypad'>
         <FormGroup>
           {this.props.displayLabel && (<ControlLabel>Enter Item Quantity</ControlLabel>)}
-          <NumberInput
+          <NumericInput
             {...this.props.fields('value', this.state.value)}
           />
         </FormGroup>

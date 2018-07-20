@@ -43,7 +43,6 @@ let createCartContextManager = (componentClass, exposedMethods) => {
 
   let notifySubscribers = (state) => {
     console.log('NOTIFY SUBSCRIBERS')
-    // CartContext.notify
     cartContextValue = state
     subscribers.forEach((callback) => {
       return callback(cartContextValue)
