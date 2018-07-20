@@ -358,7 +358,8 @@ export default (ComposedComponent) => {
 
                     if (rawDataAttribute !== null) {
                       // Custom attribute for code-types
-                      storeValue = JSON.parse(rawDataAttribute.value)
+                      // Actual code-type DTO is stored under the data property
+                      storeValue = JSON.parse(rawDataAttribute.value).data
                     } else {
                       // Just use the value
                       storeValue = targetElement.value
@@ -367,8 +368,27 @@ export default (ComposedComponent) => {
                 }
 
                 break
+              case 'INPUT':
+                if (targetElement.type.toLowerCase() === 'number') {
+                  if (typeof targetElement.step === 'string' &&
+                    targetElement.step === '0.01') {
+                    // We're most likely dealing with a currency object
+                    // TODO: Multiple currency support
+                    storeValue = {
+                      value: Number(targetElement.value),
+                      currency: 'CAD' // Pass in as special attribute
+                    }
+                  } else {
+                    // Standard numeric input
+                    storeValue = Number(targetElement.value)
+                  }
+                }
+
+                break
+
               default:
                 storeValue = targetElement.value
+
                 break
             }
           }
@@ -411,22 +431,6 @@ export default (ComposedComponent) => {
         value: fieldValue,
         onChange: this.state.fields[fieldName].onChange
       }
-    }
-
-    /**
-     * ReactDOM.findDOMNode isn't working in newer versions of React (for our use caes).
-     * This method was mostly used to bind and render validations for inputs.
-     * I'll have to figure out a new way to do it.
-     * @deprecated
-     * @param fieldName
-     * @returns {Element | any}
-     */
-    findInput(fieldName) {
-      const component = this.component.hasOwnProperty('wrappedInstance') ? this.component.wrappedInstance : this.component
-      const node = ReactDOM.findDOMNode(component)
-      const input = node.querySelector('[name="' + fieldName + '"]')
-
-      return input
     }
 
     /**
@@ -500,7 +504,7 @@ export default (ComposedComponent) => {
 
               if (rawDataAttribute !== null) {
                 // Custom attribute for code-types
-                this.state.fields[fieldName].value = JSON.parse(rawDataAttribute.value)
+                this.state.fields[fieldName].value = JSON.parse(rawDataAttribute.value).data
               } else {
                 // Just use the value
                 this.state.fields[fieldName].value = targetElement.value
@@ -509,8 +513,26 @@ export default (ComposedComponent) => {
           }
 
           break
+        case 'INPUT':
+          if (targetElement.type.toLowerCase() === 'number') {
+            if (typeof targetElement.step === 'string' &&
+              targetElement.step === '0.01') {
+              // We're most likely dealing with a currency object
+              // TODO: Multiple currency support
+              this.state.fields[fieldName].value = {
+                value: Number(targetElement.value),
+                currency: 'CAD' // Pass in as special attribute
+              }
+            } else {
+              // Standard numeric input
+              this.state.fields[fieldName].value = Number(targetElement.value)
+            }
+          }
+
+          break
         default:
           this.state.fields[fieldName].value = targetElement.value
+
           break
       }
 

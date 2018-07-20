@@ -19,7 +19,7 @@ const InputFormControl = (props) => {
   // TODO: id and code should be optional
 
   // Set resolve flag on getMappedValue to true or you'll get a error like:
-  // "Cannot convert object to primitive value"?
+  // 'Cannot convert object to primitive value'?
 
   let type = null
   let hasMapping = false
@@ -69,6 +69,72 @@ const InputFormControl = (props) => {
   )
 }
 
+const CurrencyFormControl = (props) => {
+  // Render the InputFormControl
+  const { field, fields, mapping, data } = props
+
+  // props must have the following defined:
+  // fields (function)
+
+  // mappings is not the normal mapping, just the ones required for the autocomplete
+  // structure: { field: ..., id: ..., code: ... }
+  // TODO: id and code should be optional
+
+  // Set resolve flag on getMappedValue to true or you'll get a error like:
+  // 'Cannot convert object to primitive value'?
+
+  let type = null
+  let hasMapping = false
+
+  if (typeof mapping !== 'undefined' && mapping.hasOwnProperty('property')) {
+    hasMapping = true
+
+    if (mapping.hasOwnProperty('type')) {
+      type = mapping.type
+    }
+  }
+
+  let name = ''
+  if (hasMapping) {
+    name = (typeof props.name === 'string') ? props.name : mapping.property
+  } else {
+    name = (typeof props.name === 'string') ? props.name: name
+  }
+
+  let inputProps = undefined
+  if (hasMapping) {
+    if (type !== null) {
+      inputProps = props.fields(
+        mapping.property,
+        getMappedValue(mapping, data),
+        type
+      )
+    } else {
+      inputProps = props.fields(
+        mapping.property,
+        getMappedValue(mapping, data)
+      )
+    }
+  }
+
+  return (
+    <FormControl
+      readOnly={props.readOnly}
+      name={name}
+      type={props.type}
+      min={props.min}
+      step={props.step}
+      data-number-to-fixed='2'
+      data-number-stepfactor='100'
+      onClick={props.onClick}
+      componentClass={props.componentClass}
+      defaultValue={props.defaultValue}
+      placeholder={props.placeholder}
+      {...inputProps}
+    />
+  )
+}
+
 const HiddenInput = (props) => {
   // Render the InputFormControl
   const { field, fields, mapping, data } = props
@@ -82,7 +148,7 @@ const HiddenInput = (props) => {
   // TODO: id and code should be optional
 
   // Set resolve flag on getMappedValue to true or you'll get a error like:
-  // "Cannot convert object to primitive value"?
+  // 'Cannot convert object to primitive value'?
   return (
     <input
       readOnly={props.readOnly}
@@ -125,7 +191,14 @@ const CurrencyInput = (props) => {
   return (
     <InputGroup>
       <InputGroup.Addon>$</InputGroup.Addon>
-      <InputFormControl type='text' {...props} />
+      <CurrencyFormControl
+        type='number'
+        min='0.01'
+        step='0.01'
+        data-number-to-fixed='2'
+        data-number-stepfactor='100'
+        {...props}
+      />
       {/*<InputGroup.Addon>.00</InputGroup.Addon>*/}
     </InputGroup>
   )
