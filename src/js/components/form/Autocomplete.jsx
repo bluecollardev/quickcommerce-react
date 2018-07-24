@@ -53,9 +53,9 @@ class AutocompleteFormControl extends Component {
    * Set an error boundary so a rendering failure in the component doesn't cascade.
    */
   componentDidCatch(error, info) {
-    console.log('AutocompleteFormControl rendering error')
-    console.log(error)
-    console.log(info)
+    //console.log('AutocompleteFormControl rendering error')
+    //console.log(error)
+    //console.log(info)
   }
 
   onItemSelected = (value, item) => {

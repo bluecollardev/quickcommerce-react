@@ -14,6 +14,7 @@ import { InputFormControl, HiddenInput, DateInput } from '../form/Input.jsx'
 import { AutocompleteFormControl, matchItemToTerm } from '../form/Autocomplete.jsx'
 
 import FormComponent from '../FormComponent.jsx'
+import AddressAutocompleteDecorator from '../form/decorators/AddressAutocompleteDecorator.jsx'
 
 const AddressForm = (props) => {
   const mappings = props.mappings.address
@@ -267,9 +268,61 @@ const AddressForm = (props) => {
   mappings: deps.mappings,
   customerService: deps.customerService, // Not used, just in case!
   customerAddressService: deps.customerAddressService,
+  geoService: deps.geoService,
   settingStore: deps.settingStore
 })) @observer
 class CurrentAddress extends Component {
+  static propTypes = {
+    isSubForm: PropTypes.bool,
+    nameRequired: PropTypes.bool,
+    displayAddress: PropTypes.bool,
+    displaySummary: PropTypes.bool, //type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
+    //types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
+    data: PropTypes.object,
+    addressString: PropTypes.string,
+    address: PropTypes.object
+  }
+
+  static defaultProps = {
+    // Is the component embedded in another component or form?
+    // If this is true, the component will handle its own updating
+    isSubForm: false,
+    nameRequired: true, // Stupid OpenCart
+    displayAddress: false,
+    displaySummary: false,
+    type: 'simple', // [simple|civic|rural|pobox] // TODO: Wrong syntax!
+    types: [
+      'simple',
+      'civic',
+      'rural',
+      'pobox'
+    ], // TODO: Wrong syntax!
+    //title: 'Current Address',
+    /*data: {
+     id: null,
+     line1: '',
+     line2: '',
+     city: {
+     id: null,
+     value: '',
+     name: ''
+     },
+     territory: {
+     id: null,
+     value: '',
+     name: ''
+     },
+     country: {
+     id: null,
+     value: '',
+     name: ''
+     },
+     postalCode: ''
+     },*/
+    addressString: '',
+    address: null
+  }
+
   constructor(props) {
     super(props)
 
@@ -278,19 +331,6 @@ class CurrentAddress extends Component {
     this.showAddressModal = this.showAddressModal.bind(this)
     this.hideAddressModal = this.hideAddressModal.bind(this)
     this.toggleAddress = this.toggleAddress.bind(this)
-
-    this.onAddressTypeSelected = this.onAddressTypeSelected.bind(this)
-    this.onCityValueChanged = this.onCityValueChanged.bind(this)
-    this.onCityItemSelected = this.onCityItemSelected.bind(this)
-    this.onTerritoryValueChanged = this.onTerritoryValueChanged.bind(this)
-    this.onTerritoryItemSelected = this.onTerritoryItemSelected.bind(this)
-    this.onCountryValueChanged = this.onCountryValueChanged.bind(this)
-    this.onCountryItemSelected = this.onCountryItemSelected.bind(this)
-    this.getCountryTerritories = this.getCountryTerritories.bind(this)
-    this.getCountryCities = this.getCountryCities.bind(this)
-    this.getTerritoryCities = this.getTerritoryCities.bind(this)
-    this.getCityTerritory = this.getCityTerritory.bind(this)
-    this.getCityCountry = this.getCityCountry.bind(this)
 
     this.mergeFormData = this.mergeFormData.bind(this)
     //this.matchItemToTerm = this.matchItemToTerm.bind(this)
@@ -339,6 +379,52 @@ class CurrentAddress extends Component {
     }
 
     return formatted
+  }
+
+  componentWillMount() {
+    const { geoService } = this.props
+
+    let processOps = []
+
+    let cities = []
+    let zones = []
+    let countries = []
+
+    processOps.push(new Promise((resolve, reject) => {
+      geoService.getCities((data) => {
+        //console.log('cities')
+        //console.log(data)
+        cities = data
+        resolve()
+      })
+    }))
+
+    processOps.push(new Promise((resolve, reject) => {
+      geoService.getZones((data) => {
+        //console.log('zones')
+        //console.log(data)
+        zones = data
+        resolve()
+      })
+    }))
+
+    processOps.push(new Promise((resolve, reject) => {
+      geoService.getCountries((data) => {
+        //console.log('countries')
+        //console.log(data)
+        countries = data
+        resolve()
+      })
+    }))
+
+    Promise.all(processOps)
+      .then(() => {
+        this.setState({
+          cities: cities,
+          zones: zones,
+          countries: countries
+        })
+      })
   }
 
   componentWillReceiveProps(newProps) {
@@ -399,156 +485,13 @@ class CurrentAddress extends Component {
     }
   }
 
-  // TODO: Move me to a utils class
-  matchItemToTerm(item, value) {
-    if (typeof value === 'string') {
-      return item.value.toLowerCase().indexOf(value.toLowerCase()) !== -1 //|| zone.abbr.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    }
-  }
-
-  onAddressTypeSelected(e) {
-    console.log('address type changed')
-    // TODO: Enumerate options
-    this.setState({type: e.target.value})
-  }
-
-  onCityValueChanged(event, value) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.CITY, value)
-
-    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.CITY.property]: value }) }))
-  }
-
-  onCityItemSelected(value, item) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.CITY, value)
-    //this.props.field(mappings.CITY_ID, item.id)
-    //this.props.field(mappings.CITY_CODE, item.data.code)
-    console.log('selected city')
-    console.log(item)
-    console.log(value)
-    console.log('selected city code: ' + item.data.code)
-
-
-    this.setState(assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.CITY.property]: item,
-        [mappings.CITY_ID.value]: item.id,
-        [mappings.CITY_CODE.value]: item.data.code
-      })
-    }))
-  }
-
-  onTerritoryValueChanged(event, value) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.ZONE, value)
-
-    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.ZONE.property]: value }) }))
-  }
-
-  onTerritoryItemSelected(value, item) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.ZONE, value)
-    //this.props.field(mappings.ZONE_ID, item.id)
-    //this.props.field(mappings.ZONE_CODE, item.data.code)
-    console.log('selected territory')
-    console.log(item)
-    console.log(value)
-    console.log('selected territory code: ' + item.data.code)
-
-    this.getTerritoryCities(item.data.code)
-
-    this.setState(assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.ZONE.property]: value,
-        [mappings.ZONE_ID.value]: item.id,
-        [mappings.ZONE_CODE.value]: item.data.code
-      })
-    }))
-  }
-
-  onCountryValueChanged(event, value) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.COUNTRY, value)
-
-    this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.COUNTRY.property]: value }) }))
-  }
-
-  onCountryItemSelected(value, item) {
-    const mappings = this.props.mappings || fieldNames
-    const data = this.state.data
-
-    //this.props.field(mappings.COUNTRY, value)
-    //this.props.field(mappings.COUNTRY_ID, item.id)
-    //this.props.field(mappings.COUNTRY_CODE, item.data.code)
-    console.log('selected country')
-    console.log(item)
-    console.log(value)
-    console.log('selected country code: ' + item.data.code)
-
-
-    this.getCountryTerritories(item.data.code)
-
-    let newState = assign({}, this.state, {
-      data: assign({}, data, {
-        [mappings.COUNTRY.property]: value,
-        [mappings.COUNTRY_ID.value]: item.id,
-        [mappings.COUNTRY_CODE.value]: item.data.code
-      })
-    })
-
-    this.setState(newState)
-    // TODO: I have a feeling this line is no longer necessary
-    // GeoService has made it redundant or obsolete
-    // We don't use it anywhere above...
-    //this.props.settingStore.getZones(item.id)
-  }
-
-  getCountryTerritories(countryCode) {
-    if (typeof this.props.getCountryTerritories === 'function') {
-      this.props.getCountryTerritories(countryCode)
-    }
-  }
-
-  getCountryCities(countryCode) {
-    if (typeof this.props.getCountryCities === 'function') {
-      this.props.getCountryCities(countryCode)
-    }
-  }
-
-  getTerritoryCities(territoryCode) {
-    if (typeof this.props.getTerritoryCities === 'function') {
-      this.props.getTerritoryCities(territoryCode)
-    }
-  }
-
-  getCityTerritory() {
-    if (typeof this.props.getCityTerritory === 'function') {
-      this.props.getCityTerritory()
-    }
-  }
-
-  getCityCountry() {
-    if (typeof this.props.getCityCountry === 'function') {
-      this.props.getCityCountry()
-    }
-  }
-
   render() {
     // CurrentAddress.render
-    const { countries, zones, cities, geoZones, type, types } = this.state
-
+    let { countries, zones, cities, geoZones, type, types } = this.state
     let { data } = this.state
+
+    console.log('DUMPING CURRENT ADDRESS STATE')
+    console.log(this.state)
 
     this.mergeFormData(data)
 
@@ -558,6 +501,18 @@ class CurrentAddress extends Component {
       fields: this.props.fields,
       value: this.props.value
     }
+
+    /*this.onCityValueChanged = this.onCityValueChanged.bind(this)
+    this.onCityItemSelected = this.onCityItemSelected.bind(this)
+    this.onTerritoryValueChanged = this.onTerritoryValueChanged.bind(this)
+    this.onTerritoryItemSelected = this.onTerritoryItemSelected.bind(this)
+    this.onCountryValueChanged = this.onCountryValueChanged.bind(this)
+    this.onCountryItemSelected = this.onCountryItemSelected.bind(this)
+    this.getCountryTerritories = this.getCountryTerritories.bind(this)
+    this.getCountryCities = this.getCountryCities.bind(this)
+    this.getTerritoryCities = this.getTerritoryCities.bind(this)
+    this.getCityTerritory = this.getCityTerritory.bind(this)
+    this.getCityCountry = this.getCityCountry.bind(this)*/
 
     return (
       <div>
@@ -590,24 +545,25 @@ class CurrentAddress extends Component {
               {...this.props}
               type={this.props.type}
               types={this.props.types}
-              matchItemToTerm={this.matchItemToTerm}
-              onAddressTypeSelected={this.onAddressTypeSelected}
-              onCityValueChanged={this.onCityValueChanged}
-              onCityItemSelected={this.onCityItemSelected}
-              onTerritoryValueChanged={this.onTerritoryValueChanged}
-              onTerritoryItemSelected={this.onTerritoryItemSelected}
-              onCountryValueChanged={this.onCountryValueChanged}
-              onCountryItemSelected={this.onCountryItemSelected}
-              getCountryTerritories={this.getCountryTerritories}
-              getCountryCities={this.getCountryCities}
-              getTerritoryCities={this.getTerritoryCities}
-              getCityTerritory={this.getCityTerritory}
-              getCityCountry={this.getCityCountry}
+              matchItemToTerm={this.matchItemToTerm.bind(this)}
+              onAddressTypeSelected={this.onAddressTypeSelected.bind(this)}
+              onCityValueChanged={this.onCityValueChanged.bind(this)}
+              onCityItemSelected={this.onCityItemSelected.bind(this)}
+              onTerritoryValueChanged={this.onTerritoryValueChanged.bind(this)}
+              onTerritoryItemSelected={this.onTerritoryItemSelected.bind(this)}
+              onCountryValueChanged={this.onCountryValueChanged.bind(this)}
+              onCountryItemSelected={this.onCountryItemSelected.bind(this)}
+              getCountryTerritories={this.getCountryTerritories.bind(this)}
+              getCountryCities={this.getCountryCities.bind(this)}
+              getTerritoryCities={this.getTerritoryCities.bind(this)}
+              getCityTerritory={this.getCityTerritory.bind(this)}
+              getCityCountry={this.getCityCountry.bind(this)}
               geoZones={geoZones}
               countries={countries}
               zones={zones}
               cities={cities}
               type={type}
+              types={types}
               data={data}
             />
           </div>
@@ -633,19 +589,19 @@ class CurrentAddress extends Component {
                 {...this.props}
                 type={this.props.type}
                 types={this.props.types}
-                matchItemToTerm={this.matchItemToTerm}
-                onAddressTypeSelected={this.onAddressTypeSelected}
-                onCityValueChanged={this.onCityValueChanged}
-                onCityItemSelected={this.onCityItemSelected}
-                onTerritoryValueChanged={this.onTerritoryValueChanged}
-                onTerritoryItemSelected={this.onTerritoryItemSelected}
-                onCountryValueChanged={this.onCountryValueChanged}
-                onCountryItemSelected={this.onCountryItemSelected}
-                getCountryTerritories={this.getCountryTerritories}
-                getCountryCities={this.getCountryCities}
-                getTerritoryCities={this.getTerritoryCities}
-                getCityTerritory={this.getCityTerritory}
-                getCityCountry={this.getCityCountry}
+                matchItemToTerm={this.matchItemToTerm.bind(this)}
+                onAddressTypeSelected={this.onAddressTypeSelected.bind(this)}
+                onCityValueChanged={this.onCityValueChanged.bind(this)}
+                onCityItemSelected={this.onCityItemSelected.bind(this)}
+                onTerritoryValueChanged={this.onTerritoryValueChanged.bind(this)}
+                onTerritoryItemSelected={this.onTerritoryItemSelected.bind(this)}
+                onCountryValueChanged={this.onCountryValueChanged.bind(this)}
+                onCountryItemSelected={this.onCountryItemSelected.bind(this)}
+                getCountryTerritories={this.getCountryTerritories.bind(this)}
+                getCountryCities={this.getCountryCities.bind(this)}
+                getTerritoryCities={this.getTerritoryCities.bind(this)}
+                getCityTerritory={this.getCityTerritory.bind(this)}
+                getCityCountry={this.getCityCountry.bind(this)}
                 geoZones={geoZones}
                 countries={countries}
                 zones={zones}
@@ -662,83 +618,11 @@ class CurrentAddress extends Component {
   }
 }
 
-CurrentAddress.propTypes = {
-  isSubForm: PropTypes.bool,
-  nameRequired: PropTypes.bool,
-  displayAddress: PropTypes.bool,
-  displaySummary: PropTypes.bool, //type: PropTypes.oneOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
-  //types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
-  data: PropTypes.object,
-  addressString: PropTypes.string,
-  address: PropTypes.object,
-  countries: PropTypes.array,
-  zones: PropTypes.array,
-  geoZones: PropTypes.array
-}
+export default FormComponent(
+  // Decorate...
+  AddressAutocompleteDecorator(
+    // ...the component
+    CurrentAddress
+  ))
 
-CurrentAddress.defaultProps = {
-  // Is the component embedded in another component or form?
-  // If this is true, the component will handle its own updating
-  isSubForm: false,
-  nameRequired: true, // Stupid OpenCart
-  displayAddress: false,
-  displaySummary: false,
-  type: 'simple', // [simple|civic|rural|pobox] // TODO: Wrong syntax!
-  types: [
-    'simple',
-    'civic',
-    'rural',
-    'pobox'
-  ], // TODO: Wrong syntax!
-  //title: 'Current Address',
-  data: {
-    id: null,
-    line1: '',
-    line2: '',
-    city: {
-      id: null,
-      value: '',
-      name: ''
-    },
-    territory: {
-      id: null,
-      value: '',
-      name: ''
-    },
-    country: {
-      id: null,
-      value: '',
-      name: ''
-    },
-    postalCode: ''
-  },
-  addressString: '',
-  address: null,
-  geoZones: [
-    {
-      id: null,
-      value: ''
-    }
-  ],
-  countries: [
-    {
-      id: null,
-      value: ''
-    }
-  ],
-  zones: [
-    {
-      id: null,
-      value: ''
-    }
-  ],
-  cities: [
-    {
-      id: null,
-      value: ''
-    }
-  ]
-}
-
-export default FormComponent(CurrentAddress)
 export { CurrentAddress }

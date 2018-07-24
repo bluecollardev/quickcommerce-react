@@ -382,6 +382,9 @@ export default (ComposedComponent) => {
                     // Standard numeric input
                     storeValue = Number(targetElement.value)
                   }
+                } else {
+                  // Treat as text input
+                  storeValue = targetElement.value
                 }
 
                 break
@@ -527,6 +530,9 @@ export default (ComposedComponent) => {
               // Standard numeric input
               this.state.fields[fieldName].value = Number(targetElement.value)
             }
+          } else {
+            // Treat as text input
+            this.state.fields[fieldName].value = targetElement.value
           }
 
           break

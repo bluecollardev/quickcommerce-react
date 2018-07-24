@@ -65,7 +65,7 @@ export default (ComposedComponent) => {
       return (
         <ComposedComponent
           {...this.props}
-          user={this.state.user}
+          //user={this.state.user}
           userToken={this.state.userToken}
           loggedIn={this.state.loggedIn}
         />

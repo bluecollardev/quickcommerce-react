@@ -185,6 +185,36 @@ class BaseStore extends EventEmitter {
     this.removeListener('CHANGE', cb)
   }
 
+  findInCollection(collection, key, keyValue, onMatch, onNoMatch) {
+    collection = (collection instanceof Array) ? collection : []
+
+    let matchIdx = collection.findIndex((item) => {
+      let primaryKeyValue = item[key] || null
+
+      let keyType = typeof primaryKeyValue
+
+      switch (keyType) {
+        case 'number':
+          return ((keyValue === primaryKeyValue) && primaryKeyValue > 0)
+        case 'string':
+          return ((keyValue === primaryKeyValue) && primaryKeyValue !== null && primaryKeyValue !== '')
+        default:
+          break
+      }
+    })
+
+    if (matchIdx > -1) {
+      if (typeof onMatch === 'function') onMatch(matchIdx)
+    } else {
+      if (typeof onNoMatch === 'function') onNoMatch()
+    }
+  }
+
+  forEachInCollection(collection, callback) {
+    collection = (collection instanceof Array) ? collection : []
+    if (typeof callback === 'function') collection.forEach(callback)
+  }
+
   _isset(array, value) {
     return BaseStore.isset(array, value)
   }
