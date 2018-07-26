@@ -270,7 +270,7 @@ const AddressForm = (props) => {
   customerAddressService: deps.customerAddressService,
   geoService: deps.geoService,
   settingStore: deps.settingStore
-})) @observer
+  })) @observer
 class CurrentAddress extends Component {
   static propTypes = {
     isSubForm: PropTypes.bool,
@@ -298,27 +298,27 @@ class CurrentAddress extends Component {
       'pobox'
     ], // TODO: Wrong syntax!
     //title: 'Current Address',
-    /*data: {
-     id: null,
-     line1: '',
-     line2: '',
-     city: {
-     id: null,
-     value: '',
-     name: ''
-     },
-     territory: {
-     id: null,
-     value: '',
-     name: ''
-     },
-     country: {
-     id: null,
-     value: '',
-     name: ''
-     },
-     postalCode: ''
-     },*/
+    data: {
+      id: null,
+      line1: '',
+      line2: '',
+      city: {
+        id: null,
+        value: '',
+        name: ''
+      },
+      territory: {
+        id: null,
+        value: '',
+        name: ''
+      },
+      country: {
+        id: null,
+        value: '',
+        name: ''
+      },
+      postalCode: ''
+    },
     addressString: '',
     address: null
   }
@@ -335,7 +335,16 @@ class CurrentAddress extends Component {
     this.mergeFormData = this.mergeFormData.bind(this)
     //this.matchItemToTerm = this.matchItemToTerm.bind(this)
 
-    this.state = assign({}, props)
+    //this.state = assign({}, props)
+
+    this.state = {
+      cities: [],
+      zones: [],
+      countries: [],
+      geoZones: [],
+      types: props.types,
+      type: props.type
+    }
   }
 
   static getAddressString(data) {
@@ -442,7 +451,7 @@ class CurrentAddress extends Component {
 
   mergeFormData(data) {
     let formData = this.props.getForm()
-    // Iterate and set
+    // Iterate and setmergeFormData
     for (let path in formData) {
       FormHelper.setMappedValue(path, data, formData[path])
     }
@@ -488,7 +497,7 @@ class CurrentAddress extends Component {
   render() {
     // CurrentAddress.render
     let { countries, zones, cities, geoZones, type, types } = this.state
-    let { data } = this.state
+    let { data } = this.props
 
     console.log('DUMPING CURRENT ADDRESS STATE')
     console.log(this.state)
