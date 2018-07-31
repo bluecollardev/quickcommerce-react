@@ -3,6 +3,21 @@
  * Namespace: QC.Helpers.JSON
  **********************************************************/
 const JSONHelper = {
+  isJSON: function (str){
+    try {
+      let o = JSON.parse(str)
+
+      if (o && typeof o === 'object') {
+        return true
+      }
+    }
+    catch (e) {
+      // Do something
+      //console.log(e)
+    }
+
+    return false
+  },
   /**
    * Method: App.helpers.JSON.find
    *

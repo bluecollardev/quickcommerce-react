@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 import validator from 'validator'
 
+import JSONHelper from '../helpers/JSON.js'
 import FormHelper from '../helpers/Form.js'
 import DateHelper from '../helpers/Date.js'
 import PropsHelper from '../helpers/Props.js'
@@ -351,6 +352,7 @@ export default (ComposedComponent) => {
             // Detect the type of input that triggered the event
             switch (targetElement.tagName) {
               // TODO: use constants!
+
               case 'SELECT':
                 if (targetElement.selectedOptions instanceof HTMLCollection &&
                   targetElement.selectedOptions.length > 0) {
@@ -362,9 +364,18 @@ export default (ComposedComponent) => {
                     let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
 
                     if (rawDataAttribute !== null) {
-                      // Custom attribute for code-types
-                      // Actual code-type DTO is stored under the data property
-                      storeValue = JSON.parse(rawDataAttribute.value).data
+                      let value = null
+                      if (JSONHelper.isJSON(rawDataAttribute).value) {
+                        value = JSON.parse(rawDataAttribute.value)
+                      }
+
+                      if (value !== null && value.hasOwnProperty('data')) {
+                        // Custom attribute for code-types
+                        storeValue = value.data
+                      } else {
+                        // Just use the value
+                        storeValue = value
+                      }
                     } else {
                       // Just use the value
                       storeValue = targetElement.value
@@ -511,8 +522,18 @@ export default (ComposedComponent) => {
               let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
 
               if (rawDataAttribute !== null) {
-                // Custom attribute for code-types
-                this.state.fields[fieldName].value = JSON.parse(rawDataAttribute.value).data
+                let value = null
+                if (JSONHelper.isJSON(rawDataAttribute.value)) {
+                  value = JSON.parse(rawDataAttribute.value)
+                }
+
+                if (value !== null && value.hasOwnProperty('data')) {
+                  // Custom attribute for code-types
+                  this.state.fields[fieldName].value = value.data
+                } else {
+                  // Custom attribute for code-types
+                  this.state.fields[fieldName].value = value
+                }
               } else {
                 // Just use the value
                 this.state.fields[fieldName].value = targetElement.value
