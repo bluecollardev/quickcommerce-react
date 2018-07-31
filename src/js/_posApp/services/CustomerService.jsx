@@ -113,7 +113,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -138,7 +139,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -168,7 +170,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -193,7 +196,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -231,7 +235,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -297,7 +302,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -316,7 +322,8 @@ class CustomerService extends BaseService {
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
@@ -336,7 +343,8 @@ class CustomerService extends BaseService {
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
@@ -360,7 +368,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -386,7 +395,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -412,7 +422,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -438,7 +449,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -464,7 +476,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -497,7 +510,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 

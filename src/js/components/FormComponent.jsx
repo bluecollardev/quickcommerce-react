@@ -120,6 +120,7 @@ export default (ComposedComponent) => {
       super(props)
 
       this.state = {
+        initialized: false,
         fields: {},
         isSubmitting: false,
         isValid: true
@@ -218,6 +219,10 @@ export default (ComposedComponent) => {
 
       // TODO: I am verifying this, but don't reset!
       //this.setState({ fields: {} })
+    }
+
+    componentDidMount() {
+      console.log('WHOO! FormComponent rendered')
     }
 
     /**
@@ -772,7 +777,6 @@ export default (ComposedComponent) => {
           getSubform={this.getSubform}
           resetForm={this.resetForm}
           triggerAction={this.triggerAction}
-          renderErrors={this.renderErrors}
           validate={this.validate}
           getMappedValue={FormComponent.getMappedValue}
           getObjectPath={FormComponent.getObjectPath}

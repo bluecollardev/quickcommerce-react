@@ -27,8 +27,8 @@ export default class CheckoutService extends BaseService {
 
         //this.emit('unblock-ui')
       }).catch(err => {
-        let msg = 'error patching item to order'
-        this.handleError(msg, onError, err)
+        let customMessage = 'Error patching item to order'
+        this.handleError(err, onError, customMessage)
 
       //this.emit('unblock-ui')
       })
@@ -54,8 +54,8 @@ export default class CheckoutService extends BaseService {
           onSuccess(payload)
         }
       }).catch(err => {
-        let msg = 'error patching item to order'
-        this.handleError(msg, onError, err)
+        let customMessage = 'Error patching item to order'
+        this.handleError(err, onError, customMessage)
       })
   }
 
@@ -123,8 +123,8 @@ export default class CheckoutService extends BaseService {
             onSuccess(payload)
           }
         }).catch(err => {
-          let msg = 'error patching item to order'
-          this.handleError(msg, onError, err)
+          let customMsg = 'Error patching item to order'
+          this.handleError(err, onError, customMsg)
         })
     } else {
       let after = orderAction.quantityAfter
@@ -181,13 +181,13 @@ export default class CheckoutService extends BaseService {
         })
           .then(response => {
             if (typeof onSuccess === 'function') {
-              onSuccess(payload)
+              onSuccess(response)
             }
 
             this.createOrder()
           }).catch(err => {
-            let msg = 'error patching item to order'
-            this.handleError(msg, onError, err)
+            let customMessage = 'Error patching item to order'
+            this.handleError(err, onError, customMessage)
 
             this.createOrder()
           })
@@ -214,8 +214,8 @@ export default class CheckoutService extends BaseService {
           onSuccess(payload)
         }
       }).catch(err => {
-        let msg = 'error patching item to order'
-        this.handleError(msg, onError, err)
+        let customMessage = 'Error patching item to order'
+        this.handleError(err, onError, customMessage)
       })
   }
 
@@ -258,7 +258,8 @@ export default class CheckoutService extends BaseService {
             }
             //this.createOrder()
           }).catch(err => {
-            this.handleError(err.message, onError, err.stack)
+            let customMessage = err.message
+            this.handleError(err, onError, customMessage)
           })
       })
     })

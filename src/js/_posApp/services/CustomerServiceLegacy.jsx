@@ -82,7 +82,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -127,7 +128,8 @@ class CustomerService extends BaseService {
     }).then(response => {
       this.handleResponse(response, onSuccess, onError)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -157,7 +159,8 @@ class CustomerService extends BaseService {
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
@@ -190,7 +193,8 @@ class CustomerService extends BaseService {
       }).then(response => {
         this.handleResponse(response, onSuccess, onError)
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
@@ -226,7 +230,8 @@ class CustomerService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
 
   }
@@ -263,7 +268,8 @@ class CustomerService extends BaseService {
       //passwordModel.set('password', '')
       //passwordModel.set('confirm', '')
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -298,7 +304,8 @@ class CustomerService extends BaseService {
         }, // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -322,11 +329,13 @@ class CustomerService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         (err) => {
-          this.handleError(err.message, onError, err.stack)
+          let customMessage = err.message
+          this.handleError(err, onError, customMessage)
         }, // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
     //}
 
@@ -404,11 +413,13 @@ class CustomerService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         ((err) => {
-          this.handleError(err.message, onError, err.stack)
+          let customMessage = err.message
+          this.handleError(err, onError, customMessage)
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -458,11 +469,13 @@ class CustomerService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         ((err) => {
-          this.handleError(err.message, onError, err.stack)
+          let customMessage = err.message
+          this.handleError(err, onError, customMessage)
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 }

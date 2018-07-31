@@ -28,7 +28,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -53,7 +54,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -77,7 +79,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -102,7 +105,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -126,7 +130,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -151,7 +156,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -176,7 +182,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -227,7 +234,8 @@ class GeoService extends BaseService {
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 

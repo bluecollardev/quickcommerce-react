@@ -36,7 +36,8 @@ export class SampleService extends BaseService {
         }
       }
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -64,7 +65,8 @@ export class SampleService extends BaseService {
         }
       }
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -100,7 +102,8 @@ export class SampleService extends BaseService {
         }
       }
     }).catch(err => {
-      this.handleError(err.message, onError, err.stack)
+      let customMessage = err.message
+      this.handleError(err, onError, customMessage)
     })
   }
 
@@ -137,7 +140,8 @@ export class SampleService extends BaseService {
           }
         }
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
@@ -175,7 +179,8 @@ export class SampleService extends BaseService {
           }
         }
       }).catch(err => {
-        this.handleError(err.message, onError, err.stack)
+        let customMessage = err.message
+        this.handleError(err, onError, customMessage)
       })
     }
   }
