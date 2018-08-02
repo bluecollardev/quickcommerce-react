@@ -12,7 +12,6 @@ const getMappedValue = FormHelper.getMappedValue
 
 const SelectList = (props) => {
   // Render the SelectList
-
   const {
     //field,
     fields,
@@ -54,6 +53,30 @@ const SelectList = (props) => {
   // Just for debugging
   if (!ObjectHelper.isEmpty(data)) {
     //debugger
+  }
+
+  if (props.hasOwnProperty('normal')) {
+    return (
+      <FormControl
+        readOnly={props.readOnly}
+        name={name}
+        componentClass='select'
+        {...inputProps}>
+        <option key={0} value=''></option>
+        {items.map((item, idx) => {
+          // Use the mapItems callback to perform
+          // any last second tweaks to the data
+          item = mapItems(item)
+          return(
+            <option
+              key={idx + 1}
+              value={item}>
+              {item}
+            </option>
+          )
+        })}
+      </FormControl>
+    )
   }
 
   if (props.hasOwnProperty('optionValue')) {

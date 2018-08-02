@@ -52,7 +52,7 @@ const ThreeColumnDynamicLayout = (props) => {
 
   return (
     <div className='summary entry-summary vehicle-summary'>
-      <div className='container-fluid product-details padding-top padding-bottom'>
+      <div className='container-fluid padding-top padding-bottom'>
         <div className='row'>
           {displayLeftCol && (
             <div className={leftColClass}>

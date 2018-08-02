@@ -3,14 +3,29 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import ImageHelper from '../../helpers/Image.js'
 
+// TODO: Need to support a configurable key
 const GalleryItem = (props) => {
   // TODO: Some kind of adapter...
   let { data, embeddedThumb } = props
 
+  const handleClick = (e, data) => {
+    if (typeof e !== 'undefined') {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    if (typeof props.onItemClicked === 'function') {
+      props.onItemClicked(e, props.data)
+    }
+  }
+
   return (
     <div className='grid-item thumbnail devices'>
       {embeddedThumb !== true && (
-        <a href={data['image']} className='gallery-item'>
+        <a
+          className='gallery-item'
+          href={data['image']}
+          onClick={handleClick}>
           <img src={data['image']} alt='Gallery'/>
           {/* No caption prop available */}
           {/*<span className='gallery-caption'>
@@ -20,7 +35,10 @@ const GalleryItem = (props) => {
       )}
 
       {embeddedThumb === true && (
-        <a className='gallery-item'>
+        <a
+          className='gallery-item'
+          //href={data['image']}
+          onClick={handleClick}>
           <img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery'/>
           {/* No caption prop available */}
           {/*<span className='gallery-caption'>
@@ -125,131 +143,7 @@ class ProductGalleryFullwidthWithGap extends Component {
   }
 
   render() {
-    // TODO: Set this up so we can choose to show a default "thumbnail" via props
-    /*let defaultImages = [
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      },
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      },
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      },
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      },
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      },
-      {
-        datetime: null,
-        description: 'Default image',
-        height: 240,
-        id: null,
-        image: ImageHelper.primaryImageOrPlaceholderFromObject(null, null, true),
-        mileage: false,
-        mimeType: 'image/png',
-        perspective: {
-          id: null,
-          version: 0,
-          effectiveDate: null,
-          expiryDate: null,
-          effective: true
-        },
-        primary: true,
-        size: 10366, //tags: ['hot', 'new', 'fast'],
-        vin: false,
-        width: 240
-      }
-    ]
-
-    let items = this.state.items
+    /*let items = this.state.items
 
     if (!(items.length > 0)) {
       items = defaultImages
@@ -289,6 +183,7 @@ class ProductGalleryFullwidthWithGap extends Component {
                   <GalleryItem
                     key={idx}
                     data={image}
+                    onItemClicked={this.props.onItemClicked}
                     embeddedThumb={this.props.isEmbedded}
                   />
                 )
