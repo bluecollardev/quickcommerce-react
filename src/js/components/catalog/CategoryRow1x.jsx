@@ -18,7 +18,7 @@ export default class CategoryRow extends Component {
       <Col xs={6} sm={12}>
         <CategoryDragItem
           displayLabel={true}
-          displayThumbnail={true}
+          displayPrimaryImage={true}
           id={this.props.data.id}
           item={this.props.data}
           onItemClicked={this.props.onItemClicked}

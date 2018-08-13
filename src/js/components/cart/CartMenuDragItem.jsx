@@ -43,7 +43,7 @@ const CartMenuDragItem = createReactClass({
       <div className='shop-item'
         onClick={this.onClick}>
         {this.props.displayLabel && (<span className="shop-label text-danger">Sale</span>)}
-        {this.props.displayThumbnail && (
+        {this.props.displayPrimaryImage && (
           <Thumbnail
             className='shop-thumbnail'
             src={this.props.item.image}>

@@ -1,19 +1,15 @@
+const VARIANTS = {
+  ORIGINAL: 'ORIGINAL',
+  THUMBNAIL: 'THUMBNAIL',
+  POSTER: 'POSTER',
+  ALL: 'ALL'
+}
+
+const DEFAULT_TYPE_KEY = 'variantTypeCode'
+
 class ImageHelper {
-  static primaryImageOrPlaceholder = (data, imageProperty) => {
-    let thumbnail = ''
-
-    if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
-      if (ImageHelper.isBase64Encoded(data[imageProperty])) {
-        thumbnail = ImageHelper.base64ImageOrPlaceholder(data, imageProperty)
-      } else {
-        thumbnail = data[imageProperty]
-      }
-    } else {
-      // Load default thumbnail
-      thumbnail = APP_IMAGES_URI + NO_PRODUCT_IMAGE
-    }
-
-    return thumbnail
+  static isBase64Encoded = (string) => {
+    return (/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/.test(string))
   }
 
   /**
@@ -24,18 +20,35 @@ class ImageHelper {
    * @returns {string}
    */
   static base64ImageOrPlaceholder = (data, imageProperty, mimeTypeProperty) => {
-    let thumbnail = ''
+    let image = ''
     mimeTypeProperty = mimeTypeProperty || 'mimeType'
 
     // TODO: Detect base64 encoding?
     if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
-      thumbnail = 'data:' + data[mimeTypeProperty] + ';base64,' + data[imageProperty]
+      image = 'data:' + data[mimeTypeProperty] + ';base64,' + data[imageProperty]
     } else {
-      // Load default thumbnail
-      thumbnail = APP_IMAGES_URI + NO_PRODUCT_IMAGE
+      // Load default image
+      image = APP_IMAGES_URI + NO_PRODUCT_IMAGE
     }
 
-    return thumbnail
+    return image
+  }
+
+  static primaryImageOrPlaceholder = (data, imageProperty) => {
+    let image = ''
+
+    if (data.hasOwnProperty(imageProperty) && typeof data[imageProperty] === 'string' && data[imageProperty] !== '') {
+      if (ImageHelper.isBase64Encoded(data[imageProperty])) {
+        image = ImageHelper.base64ImageOrPlaceholder(data, imageProperty)
+      } else {
+        image = data[imageProperty]
+      }
+    } else {
+      // Load default image
+      image = APP_IMAGES_URI + NO_PRODUCT_IMAGE
+    }
+
+    return image
   }
 
   /*
@@ -55,42 +68,78 @@ class ImageHelper {
    width: 240
    */
   static primaryImageOrPlaceholderFromObject = (data, propertyName, relative = false) => {
-    // Load default thumbnail
+    // Load default image
     let base = relative ? APP_IMAGES_PATH : APP_IMAGES_URI
-    let thumbnail = base + NO_PRODUCT_IMAGE
+    let image = base + NO_PRODUCT_IMAGE
 
     data = data || null
 
     // TODO: Duck-type object properties properly
     if (data !== null && data.hasOwnProperty(propertyName) && data[propertyName] !== null && typeof data[propertyName]['image'] === 'string' && data[propertyName]['image'] !== '') {
-      thumbnail = 'data:' + data[propertyName]['mimeType'] + ';base64,' + data[propertyName]['image']
+      image = 'data:' + data[propertyName]['mimeType'] + ';base64,' + data[propertyName]['image']
     }
 
-    return thumbnail
+    return image
   }
 
   static primaryImageOrPlaceholderFromObjectTemp = (data, propertyName, relative = false) => {
-    // Load default thumbnail
+    // Load default image
     let base = relative ? APP_IMAGES_PATH : APP_IMAGES_URI
-    let thumbnail = base + NO_PRODUCT_IMAGE
+    let image = base + NO_PRODUCT_IMAGE
 
     data = data || null
 
     // TODO: Duck-type object properties properly
     if (data !== null && typeof data['image'] === 'string' && data['image'] !== '') {
-      thumbnail = 'data:' + data['mimeType'] + ';base64,' + data['image']
+      image = 'data:' + data['mimeType'] + ';base64,' + data['image']
     }
 
-    return thumbnail
+    return image
   }
 
   static primaryImageOrPlaceholderFromProperty = (data) => {
     return ImageHelper.primaryImageOrPlaceholderFromObjectTemp(data, 'image')
   }
 
-  static isBase64Encoded = (string) => {
-    return (/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/.test(string))
+  static getImagesByVariantFromCollection = (collection, type, typeKey) => {
+    type = type || VARIANTS.POSTER
+
+    typeKey = (typeof typeKey === 'string') ? typeKey : DEFAULT_TYPE_KEY
+
+    let results = []
+
+    if (collection instanceof Array && collection.length > 0) {
+      results = collection
+
+      // TODO: Use mappings?
+      switch (type) {
+        case VARIANTS.ORIGINAL:
+          results = results.filter((item) => {
+            return (item && item[typeKey] === type)
+          })
+
+          break
+        case VARIANTS.THUMBNAIL:
+          results = results.filter((item) => {
+            return (item && item[typeKey] === type)
+          })
+
+          break
+        case VARIANTS.POSTER:
+          collection = collection.filter((item) => {
+            return (item && item[typeKey] === type)
+          })
+
+          break
+        case VARIANTS.ALL:
+          break
+      }
+    }
+
+    return results
   }
 }
 
 export default ImageHelper
+
+export { VARIANTS as variants }

@@ -21,7 +21,7 @@ export default class ProductRow1x extends Component {
         <CartDragItem
           onItemClicked={this.props.onItemClicked}
           displayLabel={true}
-          displayThumbnail={true}
+          displayPrimaryImage={true}
           displayDetails={true}
           item={this.props.data}
           id={this.props.data.id}>

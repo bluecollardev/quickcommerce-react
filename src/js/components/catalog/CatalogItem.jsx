@@ -13,7 +13,7 @@ import CatalogItemListItem from '../catalog/CatalogItemListItem.jsx'
 
 const CatalogItem = (props) => {
   let {
-    className, displayLabel, displayIcon, displayActions, displayTitle, displayThumbnail, //displayThumbs,
+    className, displayLabel, displayIcon, displayActions, displayTitle, displayPrimaryImage, //displayThumbs,
     displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools, overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data
   } = props
 
@@ -23,7 +23,7 @@ const CatalogItem = (props) => {
     <div className={className} onClick={onClick}>
       {displayLabel && (<span className='shop-label'>{data.label}</span>)}
 
-      {displayThumbnail && (
+      {displayPrimaryImage && (
         <Thumbnail
           className='shop-thumbnail'
           src={data.thumbnail}>

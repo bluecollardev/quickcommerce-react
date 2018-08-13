@@ -21,7 +21,7 @@ export default class TextMenuRow extends Component {
         <CartDragItem
           onItemClicked={this.props.onItemClicked}
           displayLabel={false}
-          displayThumbnail={false}
+          displayPrimaryImage={false}
           displayDetails={true}
           item={this.props.data}
           id={this.props.data.id}>

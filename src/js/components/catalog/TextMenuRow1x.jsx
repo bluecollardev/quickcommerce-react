@@ -21,7 +21,7 @@ export default class TextMenuRow1x extends Component {
         <CartDragItem
           onItemClicked={this.props.onItemClicked}
           displayLabel={false}
-          displayThumbnail={false}
+          displayPrimaryImage={false}
           item={this.props.data}
           id={this.props.data.id}>
           <Button block onClick={this.props.onAddToCartClicked}><i className='fa fa-shopping-cart'/> Quick Add</Button>
