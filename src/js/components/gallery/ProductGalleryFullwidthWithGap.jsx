@@ -1,12 +1,14 @@
-import Isotope from 'isotope-layout'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
+
+import Isotope from 'isotope-layout'
 import ImageHelper from '../../helpers/Image.js'
 
 // TODO: Need to support a configurable key
 const GalleryItem = (props) => {
   // TODO: Some kind of adapter...
-  let { data, embeddedThumb } = props
+  let { data, dataKey, mimetypeKey, fullsizeKey, onItemClicked, embeddedThumb } = props
 
   const handleClick = (e, data) => {
     if (typeof e !== 'undefined') {
@@ -14,8 +16,8 @@ const GalleryItem = (props) => {
       e.stopPropagation()
     }
 
-    if (typeof props.onItemClicked === 'function') {
-      props.onItemClicked(e, props.data)
+    if (typeof onItemClicked === 'function') {
+      onItemClicked(e, data)
     }
   }
 
@@ -24,10 +26,10 @@ const GalleryItem = (props) => {
       {embeddedThumb !== true && (
         <a
           className='gallery-item'
-          href={data['image']}
+          href={data[fullsizeKey]}
           onClick={handleClick}>
-          <img src={data['image']} alt='Gallery'/>
           {/* No caption prop available */}
+          <img src={data[dataKey]} alt='Gallery'/>
           {/*<span className='gallery-caption'>
            <p>{data['caption']}</p>
            </span>*/}
@@ -39,7 +41,7 @@ const GalleryItem = (props) => {
           className='gallery-item'
           //href={data['image']}
           onClick={handleClick}>
-          <img src={'data:' + data['mimeType'] + ';base64,' + data['image']} alt='Gallery'/>
+          <img src={'data:' + data[mimetypeKey] + ';base64,' + data[dataKey]} alt='Gallery'/>
           {/* No caption prop available */}
           {/*<span className='gallery-caption'>
            <p>{data['caption']}</p>
@@ -48,6 +50,24 @@ const GalleryItem = (props) => {
       )}
     </div>
   )
+}
+
+GalleryItem.propTypes = {
+  data: PropTypes.object,
+  dataKey: PropTypes.string,
+  mimetypeKey: PropTypes.string,
+  fullsizeKey: PropTypes.string,
+  onItemClicked: PropTypes.func,
+  embeddedThumb: PropTypes.bool,
+}
+
+GalleryItem.defaultProps = {
+  data: {},
+  dataKey: 'image',
+  mimetypeKey: 'mimeType',
+  fullsizeKey: '',
+  onItemClicked: () => {},
+  embeddedThumb: false
 }
 
 class ProductGalleryFullwidthWithGap extends Component {
@@ -143,6 +163,7 @@ class ProductGalleryFullwidthWithGap extends Component {
   }
 
   render() {
+    let { onItemClicked, isEmbedded } = this.props
     /*let items = this.state.items
 
     if (!(items.length > 0)) {
@@ -183,8 +204,8 @@ class ProductGalleryFullwidthWithGap extends Component {
                   <GalleryItem
                     key={idx}
                     data={image}
-                    onItemClicked={this.props.onItemClicked}
-                    embeddedThumb={this.props.isEmbedded}
+                    onItemClicked={onItemClicked}
+                    embeddedThumb={isEmbedded}
                   />
                 )
               })}

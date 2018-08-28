@@ -101,8 +101,8 @@ class ImageHelper {
     return ImageHelper.primaryImageOrPlaceholderFromObjectTemp(data, 'image')
   }
 
-  static getImagesByVariantFromCollection = (collection, type, typeKey) => {
-    type = type || VARIANTS.POSTER
+  static getImagesByVariantFromCollection = (variantMappings, collection, type, typeKey) => {
+    type = type || variantMappings.POSTER
 
     typeKey = (typeof typeKey === 'string') ? typeKey : DEFAULT_TYPE_KEY
 
@@ -113,25 +113,25 @@ class ImageHelper {
 
       // TODO: Use mappings?
       switch (type) {
-        case VARIANTS.ORIGINAL:
+        case variantMappings.ORIGINAL:
           results = results.filter((item) => {
             return (item && item[typeKey] === type)
           })
 
           break
-        case VARIANTS.THUMBNAIL:
+        case variantMappings.THUMBNAIL:
           results = results.filter((item) => {
             return (item && item[typeKey] === type)
           })
 
           break
-        case VARIANTS.POSTER:
+        case variantMappings.POSTER:
           collection = collection.filter((item) => {
             return (item && item[typeKey] === type)
           })
 
           break
-        case VARIANTS.ALL:
+        case variantMappings.ALL:
           break
       }
     }
