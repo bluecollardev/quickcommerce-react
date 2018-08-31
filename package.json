@@ -63,7 +63,6 @@
     "grommet": "^1.2.1",
     "json-stringify-pretty-compact": "latest",
     "jsx-loader": "latest",
-    "jsx-to-string": "latest",
     "keymirror": "latest",
     "lodash-node": "^3.10.0",
     "normalizr": "latest",
@@ -71,28 +70,26 @@
     "object-merge": "latest",
     "payment": "^2.2.1",
     "promise": "latest",
-    "react": "^15.6.1",
+    "react": "^16.2",
     "react-autocomplete": "^1.5.9",
     "react-block-ui": "^0.2.6",
-    "react-bootstrap": "^0.30.7",
-    "react-burger-menu": "^1.10.14",
+    "react-bootstrap": "0.32.1",
+    "react-burger-menu": "^2.5.2",
     "react-credit-cards": "^0.5.1",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.2",
     "react-fetch": "^0.0.9",
     "react-flux": "^0.0.13",
-    "react-native": "^0.42.3",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
     "react-springy-parallax": "^1.0.11",
-    "react-star-rating": "^1.4.2",
     "react-toggle-display": "^2.1.1",
     "mobx-react": "^4.3.3",
     "sequence-stepper": "^0.5.0"
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0",
-    "react-dom": "^15.3.0 || ^16.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   }
 }
