@@ -3,7 +3,6 @@ import React from 'react'
 
 import { Col, ControlLabel, FormGroup, Grid, Row, TabPanes, Well } from 'react-bootstrap'
 
-import StarRating from 'react-star-rating'
 //import Stepper from '../stepper/BrowserStepper.jsx'
 
 import ProductBrowser from '../browser/ProductBrowser.jsx'
@@ -69,14 +68,6 @@ export default class Menu extends ProductBrowser {
                               <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
                             </Paragraph>
                           </Box>
-                          <Box pad={{ vertical: 'small' }}
-                            direction='row'
-                            align='center'
-                            justify='between'
-                            separator='top'>
-                            <label>Rating</label>
-                            <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating}/>
-                          </Box>
                         </Box>
                       </Col>
                       <Col sm={6}>
@@ -128,14 +119,6 @@ export default class Menu extends ProductBrowser {
                                 <strong style={{ fontSize: '1.5rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
                               </Paragraph>
                             </Box>
-                            <Box pad={{ vertical: 'small' }}
-                              direction='row'
-                              align='center'
-                              justify='between'
-                              separator='top'>
-                              <label>Rating</label>
-                              <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating}/>
-                            </Box>
                           </Box>
                           <Box pad={{ vertical: 'small' }}
                             direction='row'
@@ -176,57 +159,6 @@ export default class Menu extends ProductBrowser {
                {this.props.children}
                </Col>*/}
               <Col sm={12}>
-                {/*item !== null && (
-                 <FormGroup>
-                 <ControlLabel>Product Details</ControlLabel>
-                 <Well>
-                 <Box margin={{top: 'none'}}>
-                 <Paragraph size='large' margin='none'>
-                 <h3>{this.props.title}</h3>
-                 </Paragraph>
-
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Retail Price</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.7rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Status</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.3rem' }}>{item.stock_status}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Qty Available</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.3rem' }}>{item.quantity}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Average Review</label>
-                 <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
-                 </Box>
-                 </Box>
-                 </Well>
-                 </FormGroup>
-                 )*/}
                 <Grid fluid={true}>
                   <Griddle
                     showFilter={this.props.displayTextFilter}

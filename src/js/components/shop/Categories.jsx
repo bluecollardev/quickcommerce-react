@@ -56,57 +56,6 @@ export default class Categories extends ProductBrowser {
           {this.props.children && (Object.keys(this.state.categories).length > 0) && (
             <div className='browser-content row'>
               <Col sm={6}>
-                {/*item !== null && (
-                 <FormGroup>
-                 <ControlLabel>Product Details</ControlLabel>
-                 <Well>
-                 <Box margin={{top: 'none'}}>
-                 <Paragraph size='large' margin='none'>
-                 <h3>{this.props.title}</h3>
-                 </Paragraph>
-
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Retail Price</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.7rem' }}>${parseFloat(item.price).toFixed(2)}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Status</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.3rem' }}>{item.stock_status}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Qty Available</label>
-                 <Paragraph size='large' margin='none'>
-                 <strong style={{ fontSize: '1.3rem' }}>{item.quantity}</strong>
-                 </Paragraph>
-                 </Box>
-                 <Box pad={{vertical: 'small'}}
-                 direction='row'
-                 align='center'
-                 justify='between'
-                 separator='top'>
-                 <label>Average Review</label>
-                 <StarRating name='react-star-rating' size={20} totalStars={5} rating={item.rating} />
-                 </Box>
-                 </Box>
-                 </Well>
-                 </FormGroup>
-                 )*/}
                 <Grid fluid={true}>
                   <Griddle
                     showFilter={this.props.displayTextFilter}
