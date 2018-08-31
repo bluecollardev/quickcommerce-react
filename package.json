@@ -59,7 +59,7 @@
     "axios": "latest",
     "es6-promise-polyfill": "latest",
     "flux": "^3.1.2",
-    "griddle-react": "^0.7.1",
+    "griddle-react": "0.8.2",
     "grommet": "^1.2.1",
     "json-stringify-pretty-compact": "latest",
     "jsx-loader": "latest",
