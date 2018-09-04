@@ -1,0 +1,99 @@
+import assign from 'object-assign'
+
+import SettingConstants from '../constants/SettingConstants.jsx'
+// In this special instance (because Settings will eventually become a quickcommerce-react module)
+// it's okay to directly import mappings. At a future time, maybe we'll inject the mappings...
+import SettingMappings from '../mappings/SettingMappings.jsx'
+
+import BaseStore from '../../../stores/BaseStore.jsx'
+import HashProxy from '../../../utils/HashProxy.js'
+
+class AbstractSettingStore extends BaseStore {
+  constructor(dispatcher, adapter) {
+    super(dispatcher)
+
+    adapter = adapter || undefined
+    if (adapter === undefined) {
+      throw new Error('Error constructing AbstractSettingStore - no adapter supplied')
+    }
+
+    this.adapter = adapter
+    this.settings = {}
+
+    this.adapter.initializeSettings(this.settings)
+
+    this.subscribe(() => this.registerToActions.bind(this))
+  }
+
+  registerToActions(action) {
+    switch (action.actionType) {
+      case SettingConstants.FETCH_SETTINGS:
+        this.fetchSettings()
+        break
+      case SettingConstants.SET_SETTINGS:
+        this.setSettings(action.settings)
+        break
+      case SettingConstants.FETCH_STORES:
+        //this.fetchStores()
+        break
+      case SettingConstants.FETCH_STORE:
+        //this.fetchStore(action.storeId)
+        break
+      default:
+        break
+    }
+  }
+
+  getSettings() {
+    return this.settings
+  }
+
+  fetchSettings() {
+    try {
+      this.adapter.fetchSettings((settings) => {
+        // On success
+        this.emit('settings-loaded', settings)
+      }, () => {
+        // On error
+        this.emit('settings-loaded-error')
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  /**
+   * Saves default app (POS) settings to localStorage
+   */
+  freezeSettings(settings) {
+    //localStorage.setItem('settings', JSON.stringify(settings))
+  }
+
+  /**
+   * Retreives default app (POS) settings from localStorage
+   */
+  unfreezeSettings() {
+    //if (typeof localStorage.getItem('settings') === 'string') {
+    //this.settings = JSON.parse(localStorage.getItem('settings'))
+    //}
+  }
+}
+
+function SettingStore(dispatcher, adapter) {
+  return new Proxy(new AbstractSettingStore(dispatcher, adapter), {
+    get: (instance, prop) => {
+      if (typeof instance.settings[prop] !== 'undefined') {
+        return instance.settings[prop]
+      }
+
+      return instance[prop]
+    },
+    apply: (instance, context, argumentsList) => {
+      return instance.apply(context, argumentsList)
+    }
+  })
+}
+
+export { SettingStore }
+
+

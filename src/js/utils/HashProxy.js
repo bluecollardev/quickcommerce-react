@@ -8,7 +8,7 @@ import HashTable from './HashTable.js'
  * Uses ES6 Proxy to auto-magically map getters / setters.
  */
 
-export default function HashProxy(obj, obj2) {
+function HashProxy(obj, obj2) {
   const obj1 = {
     get: (hashTable, key) => {
       // Ignore non-strings
@@ -29,3 +29,5 @@ export default function HashProxy(obj, obj2) {
 
   return new Proxy(new HashTable(obj), obj1, obj2)
 }
+
+export default HashProxy
