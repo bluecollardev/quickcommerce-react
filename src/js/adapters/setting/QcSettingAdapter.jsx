@@ -1,6 +1,9 @@
 import AbstractSettingAdapter from './abstract/AbstractSettingAdapter.jsx'
 import QcUriDriver from './drivers/QcUriDriver.jsx'
 
+/**
+ * @deprecated Use the settings module!
+ */
 export default class QcSettingAdapter extends AbstractSettingAdapter {
   constructor(fluxStore) {
     // Parent sets the store to use

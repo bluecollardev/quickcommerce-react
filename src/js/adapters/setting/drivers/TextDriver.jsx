@@ -1,5 +1,8 @@
 import FileDriver from './FileDriver.jsx'
 
+/**
+ * @deprecated Use the settings module!
+ */
 export default class TextDriver extends FileDriver {
   /**
    * Everything below has been pulled from legacy QuickCommerce POS app and needs to be refactored

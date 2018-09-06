@@ -1,5 +1,8 @@
 import AbstractSettingDriver from './AbstractSettingDriver.jsx'
 
+/**
+ * @deprecated Use the settings module!
+ */
 export default class AbstractUriDriver extends AbstractSettingDriver {
   fetchSettings(onSuccess, onError) {
     throw new Error('Not implemented') // TODO: Make a real exception class

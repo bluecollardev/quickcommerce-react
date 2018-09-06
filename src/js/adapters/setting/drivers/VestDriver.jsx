@@ -1,5 +1,8 @@
 import TextDriver from './TextDriver.jsx'
 
+/**
+ * @deprecated Use the settings module!
+ */
 export default class VestDriver extends TextDriver {
   /**
    * Legacy

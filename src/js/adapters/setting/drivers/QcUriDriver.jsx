@@ -2,6 +2,9 @@ import axios from 'axios'
 
 import AbstractUriDriver from './abstract/AbstractUriDriver.jsx'
 
+/**
+ * @deprecated Use the settings module!
+ */
 export default class QcUriDriver extends AbstractUriDriver {
   constructor(adapter) {
     super(adapter)

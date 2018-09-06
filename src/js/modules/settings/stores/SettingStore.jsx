@@ -8,7 +8,16 @@ import SettingMappings from '../mappings/SettingMappings.jsx'
 import BaseStore from '../../../stores/BaseStore.jsx'
 import HashProxy from '../../../utils/HashProxy.js'
 
+/**
+ * Initialize this store in the following manner:
+ * const settingAdapter = new MySettingAdapter(settingMappings)
+ * const settingStore = new SettingStore(dispatcher, settingAdapter)
+ */
 class AbstractSettingStore extends BaseStore {
+  /**
+   * @param dispatcher The flux dispatcher instance used by the application
+   * @param adapter A setting adapter
+   */
   constructor(dispatcher, adapter) {
     super(dispatcher)
 
@@ -94,6 +103,7 @@ function SettingStore(dispatcher, adapter) {
   })
 }
 
-export { SettingStore }
+export default SettingStore
+export { SettingStore, AbstractSettingStore }
 
 

@@ -3,6 +3,16 @@
 // I'm going to have to refactor a bunch of stuff before I can do that though...
 import QcSettingAdapter from './QcSettingAdapter.jsx'
 
+/**
+ * This has become obsolete; initialize at application root in the following manner:
+ * const settingAdapter = new MySettingAdapter(settingMappings)
+ * const settingStore = new SettingStore(dispatcher, settingAdapter)
+ *
+ * @deprecated Use the settings module!
+ * @param settingStore
+ * @param adapter
+ * @returns {*}
+ */
 function settingFactory(settingStore, adapter) {
   adapter = adapter || null
 

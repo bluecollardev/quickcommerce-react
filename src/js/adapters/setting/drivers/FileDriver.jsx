@@ -1,3 +1,6 @@
+/**
+ * @deprecated Use the settings module!
+ */
 export default class FileDriver extends SettingDriver {
   getConfigFileName() {
     if (!(localStorage.hasOwnProperty('configFileName'))) {
