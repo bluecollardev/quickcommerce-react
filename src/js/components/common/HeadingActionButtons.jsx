@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import { Button, FormGroup } from 'react-bootstrap'
 
-const ActionButtons = (props) => {
+const HeadingActionButtons = (props) => {
   const {
     actions,
+    style,
     className,
     formGroupClassName,
     defaultIcon,
@@ -30,7 +31,9 @@ const ActionButtons = (props) => {
   }
 
   return (
-    <div className={wrapperClassName}>
+    <div
+      className={wrapperClassName}
+      style={style}>
       {actions.map(action => {
         let buttonText = (typeof action.buttonText === 'string') ? action.buttonText : props.buttonText
         // TODO: Instead of onClick, maybe 'execute' (if command pattern)?
@@ -43,11 +46,9 @@ const ActionButtons = (props) => {
         }
 
         return (
-          <FormGroup className={groupClassName}>
-            <Button className='btn action-button' onClick={onButtonClicked}>
-              <h5>{iconElement} {buttonText}</h5>
-            </Button>
-          </FormGroup>
+          <Button className='heading-action-button' onClick={onButtonClicked}>
+            <h5>{iconElement} {buttonText}</h5>
+          </Button>
         )
       })}
 
@@ -58,9 +59,10 @@ const ActionButtons = (props) => {
   )
 }
 
-ActionButtons.propTypes = {
+HeadingActionButtons.propTypes = {
   defaultIcon: PropTypes.string,
   actions: PropTypes.array,
+  style: PropTypes.object,
   className: PropTypes.string,
   formGroupClassName: PropTypes.string,
   buttonText: PropTypes.string,
@@ -68,14 +70,15 @@ ActionButtons.propTypes = {
   onCancelClicked: PropTypes.func
 }
 
-ActionButtons.defaultProps = {
+HeadingActionButtons.defaultProps = {
   defaultIcon: '',
   actions: [],
-  className: 'actions float-right',
+  style: {},
+  className: 'heading-actions',
   formGroupClassName: '',
   buttonText: '',
   onButtonClicked: () => {},
   onCancelClicked: () => {}
 }
 
-export default ActionButtons
+export default HeadingActionButtons
