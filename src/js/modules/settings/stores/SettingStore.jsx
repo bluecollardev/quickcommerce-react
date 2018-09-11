@@ -27,9 +27,6 @@ class AbstractSettingStore extends BaseStore {
     }
 
     this.adapter = adapter
-    this.settings = {}
-
-    this.adapter.initializeSettings(this.settings)
 
     this.subscribe(() => this.registerToActions.bind(this))
   }
@@ -40,7 +37,7 @@ class AbstractSettingStore extends BaseStore {
         this.fetchSettings()
         break
       case SettingConstants.SET_SETTINGS:
-        this.setSettings(action.settings)
+        //this.setSettings(action.settings)
         break
       case SettingConstants.FETCH_STORES:
         //this.fetchStores()
@@ -54,7 +51,7 @@ class AbstractSettingStore extends BaseStore {
   }
 
   getSettings() {
-    return this.settings
+    return this.adapter.settings
   }
 
   fetchSettings() {
@@ -72,14 +69,16 @@ class AbstractSettingStore extends BaseStore {
   }
 
   /**
-   * Saves default app (POS) settings to localStorage
+   * Saves default app (POS) settings to localStorage.
+   * TODO: localForage is probably a better long term solution...
    */
   freezeSettings(settings) {
     //localStorage.setItem('settings', JSON.stringify(settings))
   }
 
   /**
-   * Retreives default app (POS) settings from localStorage
+   * Retreives default app (POS) settings from localStorage.
+   * TODO: localForage is probably a better long term solution...
    */
   unfreezeSettings() {
     //if (typeof localStorage.getItem('settings') === 'string') {
@@ -88,11 +87,20 @@ class AbstractSettingStore extends BaseStore {
   }
 }
 
+/**
+ * Wrap SettingStore in a Proxy in order to facilitate what feels like 'direct'
+ * access to the settings property on the adapter.
+ *
+ * @param dispatcher
+ * @param adapter
+ * @returns {AbstractSettingStore}
+ * @constructor
+ */
 function SettingStore(dispatcher, adapter) {
   return new Proxy(new AbstractSettingStore(dispatcher, adapter), {
     get: (instance, prop) => {
-      if (typeof instance.settings[prop] !== 'undefined') {
-        return instance.settings[prop]
+      if (typeof instance.adapter.settings[prop] !== 'undefined') {
+        return instance.adapter.settings[prop]
       }
 
       return instance[prop]
