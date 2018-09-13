@@ -1,12 +1,10 @@
-import assign from 'object-assign'
-
 import SettingConstants from '../constants/SettingConstants.jsx'
 // In this special instance (because Settings will eventually become a quickcommerce-react module)
 // it's okay to directly import mappings. At a future time, maybe we'll inject the mappings...
-import SettingMappings from '../mappings/SettingMappings.jsx'
+//import SettingMappings from '../mappings/SettingMappings.jsx'
 
 import BaseStore from '../../../stores/BaseStore.jsx'
-import HashProxy from '../../../utils/HashProxy.js'
+//import HashProxy from '../../../utils/HashProxy.js'
 
 /**
  * Initialize this store in the following manner:

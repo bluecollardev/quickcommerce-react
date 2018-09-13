@@ -164,11 +164,11 @@ export default (ComposedComponent) => {
     }
 
     getChildContext() {
-      console.log('CartContext.getChildContext')
-      console.log('cartContextManager')
-      console.log(this.cartContextManager)
-      console.log('cartContextValue')
-      console.log(this.cartContextManager.getCartContextValue())
+      //console.log('CartContext.getChildContext')
+      //console.log('cartContextManager')
+      //console.log(this.cartContextManager)
+      //console.log('cartContextValue')
+      //console.log(this.cartContextManager.getCartContextValue())
       //console.log('CartContext subscribers')
       //console.log(this.cartContextManager.getSubscribers())
       return {
@@ -365,13 +365,14 @@ export default (ComposedComponent) => {
           this.wrappedInstance.stepper.start()
         }
 
-        let settings = this.props.settingStore.getSettings().posSettings
+        // TODO: This is old school use of SettingStore settings, for previous quickcommerce-react apps only
+        /*let settings = this.props.settingStore.getSettings().posSettings
         if (settings.hasOwnProperty('pinned_category_id') && !isNaN(settings['pinned_category_id'])) {
           console.log('pinned category, auto select category : ' + settings['pinned_category'])
           this.categoryClicked(null, {category_id: settings['pinned_category_id']})
         } else {
           //this.setStep('shop') // TODO: Uncomment
-        }
+        }*/
       } else {
         alert('Please enter the desired quantity.')
       }

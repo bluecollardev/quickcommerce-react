@@ -114,12 +114,6 @@ class BaseStore extends EventEmitter {
 
     return data
   }
-  /**
-   * TODO: I am a utility method move me out of here?
-   */
-  static isset = (array, value) => {
-    return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
-  }
 
   /**
    *
@@ -185,6 +179,14 @@ class BaseStore extends EventEmitter {
     this.removeListener('CHANGE', cb)
   }
 
+  /**
+   *
+   * @param collection
+   * @param key
+   * @param keyValue
+   * @param onMatch
+   * @param onNoMatch
+   */
   findInCollection(collection, key, keyValue, onMatch, onNoMatch) {
     collection = (collection instanceof Array) ? collection : []
 
@@ -210,13 +212,32 @@ class BaseStore extends EventEmitter {
     }
   }
 
+  /**
+   *
+   * @param collection
+   * @param callback
+   */
   forEachInCollection(collection, callback) {
     collection = (collection instanceof Array) ? collection : []
     if (typeof callback === 'function') collection.forEach(callback)
   }
 
+  /**
+   *
+   * @param array
+   * @param value
+   * @returns {*}
+   * @private
+   */
   _isset(array, value) {
     return BaseStore.isset(array, value)
+  }
+
+  /**
+   * TODO: I am a utility method move me out of here?
+   */
+  static isset = (array, value) => {
+    return (typeof array[value] !== 'undefined' && array[value] !== null) ? true : false
   }
 }
 

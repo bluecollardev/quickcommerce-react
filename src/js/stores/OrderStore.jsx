@@ -3,6 +3,8 @@ import OrderConstants from '../constants/OrderConstants.jsx'
 import HashTable from '../utils/HashTable.js'
 
 import BaseStore from './BaseStore.jsx'
+import CustomersDecorator from './decorators/CustomersDecorator.jsx'
+import AssociationsHashTableDecorator from './decorators/AssociationsHashTableDecorator.jsx'
 
 // Not a singleton store, this is an abstract class to inherit from
 class OrderStore extends BaseStore {
@@ -103,71 +105,9 @@ class OrderStore extends BaseStore {
     this.emit('set-order')
   }
 
-  /**
-   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
-   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
-   * arbitrary data associated with the order.
-   *
-   * This method returns a single variant's data object from store given its key.
-   * @param key
-   * @returns {*}
-   */
-  getVariant(key) {
-    if (this.variants.has(key)) {
-      return this.variants.get(key)
-    }
-
-    return null
-  }
-
-  /**
-   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
-   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
-   * arbitrary data associated with the order.
-   *
-   * This method returns a single variant's data object from store given its index.
-   * Warning, for this to work, the keys need to be sorted, which we aren't currently doing.
-   * This method is currently being used as a temporary development hack for an application
-   * that uses this library. Just a heads up!
-   * @param key
-   * @returns {*}
-   */
-  getVariantAtIndex(idx) {
-    let keys = this.variants.keys()
-    let variant = this.variants.get(keys[idx]) || null
-
-    return variant
-  }
-
-  /**
-   * Variants are intended to allow for the storage of a custom order 'preset' using a hash mechanism
-   * (think pre-populated orders, a specific order configuration or an order template). Use it how you want to store
-   * arbitrary data associated with the order.
-   *
-   * @param key The unique key used to identify the particular configuration. Can be a string or an integer value.
-   * @param variant
-   */
-  setVariant(key, variant) {
-    // OrderStore.setVariant
-    this.variants.set(key, variant)
-    this.emit('set-variant', key, variant)
-  }
-
-  /**
-   * See above. Iterates over an array of input data and maps it by
-   * key to the variants in store, setting any keys that don't already exist.
-   * @param keyProperty
-   * @param variants
-   */
-  setVariants(keyProperty, variants) {
-    // OrderStore.setVariant
-    if (variants instanceof Array) {
-      variants.map((variant) => {
-        this.variants.set(variant[keyProperty], variant)
-      })
-
-      this.emit('set-variants', variants)
-    }
+  setOrderStatus(status) {
+    this.orderStatus = status
+    this.emit('set-order-status')
   }
 
   clearOrder(onSuccess, onError) {
@@ -180,148 +120,11 @@ class OrderStore extends BaseStore {
   }
 
   /**
-   * This abstract method may be implemented in classes inheriting from OrderStore.
-   *
-   * @param CustomerDto customer A customer DTO object
-   * @return void
-   *
+   * TODO: There are no references to this in this project.
+   * If there are no projects using this, deprecate and delete.
+   * @param item
+   * @param callback
    */
-  setBuiltInCustomer(customer) {
-    //throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  /**
-   * This abstract method may be implemented in classes inheriting from OrderStore.
-   *
-   * @param CustomerDto customer A customer DTO object
-   */
-  setCustomCustomer(customer) {
-    //throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  /**
-   * This abstract method must be implemented in classes inheriting from OrderStore.
-   * If not defined, a Not Implemented exception will be thrown.
-   *
-   * @param CustomerDto customer A customer DTO object
-   * @return void
-   *
-   */
-  setExistingCustomer(customer) {
-    throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  /**
-   * This abstract method may be implemented in classes inheriting from OrderStore.
-   *
-   * @param CustomerDto customer A customer DTO object
-   */
-  setAdditionalCustomers(customers, key) {
-    //throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  /**
-   * This abstract method may be implemented in classes inheriting from OrderStore.
-   *
-   * @return void
-   */
-  setBillingAddress(address) {
-    throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  /**
-   * This abstract method may be implemented in classes inheriting from OrderStore.
-   *
-   * @return void
-   */
-  setShippingAddress(address) {
-    throw new Error('Not implemented') // TODO: Make a real exception class
-  }
-
-  setPaymentMethod(code, method) {
-    this.paymentMethod = {
-      code: code,
-      method: method
-    }
-    this.payload.order.paymentMethod = method
-    this.payload.order.paymentCode = code
-    this.emit('set-payment-method')
-  }
-
-  setShippingMethod(code, method) {
-    this.shippingMethod = {
-      code: code,
-      method: method
-    }
-    this.payload.order.shippingMethod = method
-    this.payload.order.shippingCode = code
-    this.emit('set-shipping-method')
-  }
-
-  setOrderStatus(status) {
-    this.orderStatus = status
-    this.emit('set-order-status')
-  }
-
-  setNotes(notes) {
-    this.payload.order.comment = notes // TODO: Clean and sanitize!
-    this.emit('set-notes', notes)
-  }
-
-  getTotals() {
-    let totals = this.payload.orderTotals
-    let data = []
-
-    // If there's no total, output zero
-    if (typeof totals !== 'undefined' && totals !== null) {
-
-      if (!(totals instanceof Array || totals.length > 0)) return data //0.00
-
-      // Sort the totals
-      for (let idx = 0; idx < totals.length; idx++) {
-        //data[parseInt(totals[idx].sortOrder)] = totals[idx] // No sort order right now
-        data[idx] = totals[idx]
-
-        /* Format:
-         orderTotalId": 49,
-         "orderId": 13,
-         "code": "tax",
-         "title": "VAT",
-         "value": "73.3900",
-         "sortOrder": 5
-         */
-      }
-
-      data = data.filter(val => val) // Re-index array
-    }
-
-    return data
-  }
-
-  getTotal() {
-    let totals = this.getTotals() || null
-    let total = {
-      title: 'Total',
-      value: 0.00
-    }
-
-    total = totals.pop() || total
-
-    return total
-  }
-
-  getSubTotal() {
-    let totals = this.getTotals() || null
-    let total = {
-      title: 'Sub-Total',
-      value: 0.00
-    }
-
-    total = totals.shift() || total
-
-    return total
-  }
-
   processSelectionOptions(item, callback) {
     // Process selected item options
     if (item.options instanceof Array) {
@@ -336,10 +139,22 @@ class OrderStore extends BaseStore {
     }
   }
 
+  /**
+   * TODO: There are no references to this in this project.
+   * If there are no projects using this, deprecate and delete.
+   * @param selection
+   * @param data
+   */
   createPayloadOption(selection, data) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
+  /**
+   * TODO: There are no references to this in this project.
+   * If there are no projects using this, deprecate and delete.
+   * @param selectionOption
+   * @param payloadOption
+   */
   updatePayloadOption(selectionOption, payloadOption) {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
@@ -353,136 +168,11 @@ class OrderStore extends BaseStore {
     throw new Error('Not implemented') // TODO: Make a real exception class
   }
 
-  /**
-   * Builds an array of tax rates and tax amounts (pct. or fixed) which we will send to the server later.
-   */
-  getOrderTaxRates() {
-    //throw new Error('This method is broken, it relies on the old Cart which I am replacing because it doesn\'t work the same way as the rest of the components.')
-    let data = {}
-
-    for (let idx = 0; idx < this.getDependentStore('cart').selection.length; idx++) {
-      let item = this.getDependentStore('cart').selection[idx]
-
-      let taxRates = this.getTaxRates(parseFloat(item.data['price']))
-
-      // Have we previously set this rate?
-      for (let rate in taxRates) { // TODO: Throw exception if not exists!
-        if (typeof data[rate] === 'undefined' || data[rate] === null || !this._isset(taxRates[rate], 'rate_id')) {
-          data[rate] = (parseFloat(taxRates[rate]['amount']) * item.quantity)
-        } else {
-          data[rate] += (parseFloat(taxRates[rate]['amount']) * item.quantity)
-        }
-      }
-    }
-
-    return data
-  }
-
-  /**
-   * Mirrors the getTaxes method in in quickcommerce-php/system/library/cart.
-   */
-  getOrderTaxes() {
-    let data = {}
-
-    for (let idx = 0; idx < this.getDependentStore('cart').selection.length; idx++) {
-      let item = this.getDependentStore('cart').selection[idx]
-
-      let taxRates = this.getTaxRates(parseFloat(item.data['price']))
-
-      // Have we previously set this rate?
-      for (let rate in taxRates) { // TODO: Throw exception if not exists!
-        if (typeof data[rate] === 'undefined' || data[rate] === null || !this._isset(data[rate], 'rate_id')) {
-          data[rate] = (parseFloat(taxRates[rate]['amount']) * item.quantity)
-        } else {
-          data[rate] += (parseFloat(taxRates[rate]['amount']) * item.quantity)
-        }
-      }
-    }
-
-    return data
-  }
-
-  /**
-   * Mirrors the calculateTaxes method in quickcommerce-php/system/library/tax.
-   */
-  calculateWithTaxes(value, taxClassId, calculate) {
-    calculate = calculate || true
-    taxClassId = taxClassId || false
-    // TODO: Check for boolean?
-
-    if (taxClassId && calculate) {
-      let amount = 0
-      let taxRates = this.getTaxRates(value, taxClassId)
-
-      for (let rate in taxRates) {
-        if (calculate !== 'P' && calculate !== 'F') {
-          amount += taxRates[rate]['amount'] // Why are these the same? See system/library/tax...
-        } else if (taxRates[rate]['type'] === calculate) {
-          amount += taxRates[rate]['amount'] // Why are these the same? See system/library/tax...
-        }
-      }
-
-      return value + amount
-    } else {
-      return value
-    }
-  }
-
-  /**
-   * Mirrors the getTax method in quickcommerce-php/system/library/tax.
-   */
-  calculateTaxes(value, taxClassId) {
-    let amount = 0
-    let taxRates = this.getTaxRates(value, taxClassId)
-
-    for (let rate in taxRates) {
-      amount += taxRates[rate]['amount']
-    }
-
-    return amount
-  }
-
-  /**
-   * Mirrors the getRates method in system\library\tax.
-   * Called by the calculateTaxes (orig. Tax) and getOrderTaxes
-   * (orig. (Cart) methods, and is generally only for 'private use'.
-   */
-  getTaxRates(value, taxClassId) {
-    let rateData = {}, rates = this.settings.cartConfig.taxRates['1_1_5_store']
-
-    // TODO: Need to grab store dynamically!!!! 1_1_5 Correlates to languageId = 1, storeId = 1, taxClassId = 5?
-
-    // Pretty sure returned data is already filtered by tax class
-    //if (this._isset(rates, taxClassId)) { // As per our note above, disable this conditional
-    //for (let rate in rates[taxClassId]) {
-    let rateCount = rates.length
-    let idx = 0
-    for (idx; idx < rateCount; idx++) {
-      let rate = rates[idx]
-      let amount = 0
-
-      if (rateData.hasOwnProperty(rate['taxRateId']) && this._isset(rateData[rate], 'taxRateId')) {
-        amount = rateData[rate['taxRateId']]['amount']
-      }
-
-      if (rate['type'] === 'F') {
-        amount += rates[idx]['rate']
-      } else if (rate['type'] === 'P') {
-        amount += (value / 100 * rate['rate'])
-      }
-
-      rateData[rate['taxRateId']] = {
-        'rate_id': rate['taxRateId'],
-        'name': rate['name'],
-        'rate': rate['rate'],
-        'type': rate['type'],
-        'amount': amount
-      }
-    }
-    //}
-
-    return rateData
+  setNotes(notes) {
+    this.payload.order.comment = notes // TODO: Clean and sanitize!
+    this.emit('set-notes', notes)
   }
 }
 
-export default OrderStore
+export default AssociationsHashTableDecorator(CustomersDecorator(OrderStore))
+export { OrderStore }

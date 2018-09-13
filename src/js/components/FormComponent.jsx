@@ -223,7 +223,7 @@ export default (ComposedComponent) => {
     }
 
     componentDidMount() {
-      console.log('WHOO! FormComponent rendered')
+      //console.log('WHOO! FormComponent rendered')
     }
 
     /**

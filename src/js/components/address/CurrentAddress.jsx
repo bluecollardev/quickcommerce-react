@@ -499,8 +499,8 @@ class CurrentAddress extends Component {
     let { countries, zones, cities, geoZones, type, types } = this.state
     let { data } = this.props
 
-    console.log('DUMPING CURRENT ADDRESS STATE')
-    console.log(this.state)
+    //console.log('DUMPING CURRENT ADDRESS STATE')
+    //console.log(this.state)
 
     this.mergeFormData(data)
 
