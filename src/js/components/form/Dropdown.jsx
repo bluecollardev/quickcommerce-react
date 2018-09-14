@@ -48,6 +48,9 @@ const SelectList = (props) => {
     delete inputProps.codeValue
     delete inputProps.data
     delete inputProps.mapping
+    delete inputProps.mapItems
+    delete inputProps.field
+    delete inputProps.fields
   }
 
   // Just for debugging

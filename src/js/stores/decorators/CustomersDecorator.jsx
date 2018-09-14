@@ -24,7 +24,9 @@ function enhancer(WrappedStore) {
     setBuiltInCustomer: {
       value: function(customer) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * This abstract method may be implemented in classes inheriting from OrderStore.
@@ -34,7 +36,9 @@ function enhancer(WrappedStore) {
     setCustomCustomer: {
       value: function(customer) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * This abstract method must be implemented in classes inheriting from OrderStore.
@@ -52,7 +56,9 @@ function enhancer(WrappedStore) {
         // TODO: This is being used to trigger updates, but updates are also triggered by OrderStore in registerToActions
         this.emitChange() // OrderStore.registerToActions -> this.emit('set-customer', 'custom')
         // Ideally I'd like to just trigger a single event to help ensure that I don't waste any render cycles
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * @param CustomerDto customer
@@ -99,7 +105,9 @@ function enhancer(WrappedStore) {
           this.emitChange() // OrderStore.registerToActions -> this.emit('set-customer', 'custom')
           // Ideally I'd like to just trigger a single event to help ensure that I don't waste any render cycles
         }
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * @returns {*}
@@ -107,19 +115,23 @@ function enhancer(WrappedStore) {
     getCustomer: {
       value: function() {
         return this.payload.customer
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * @returns {null}
      */
     getCustomerId: {
       value: function () {
-        if (this.payload.hasOwnProperty('customer') && typeof this.payload.customer === 'object' && this.payload.customer !== null && this.payload.customer.hasOwnProperty('id')) {
+        /*if (this.payload.hasOwnProperty('customer') && typeof this.payload.customer === 'object' && this.payload.customer !== null && this.payload.customer.hasOwnProperty('id')) {
           return this.payload.customer['id']
-        }
+        }*/
 
-        return null
-      }
+        return this.payload.customerId || null
+      },
+      configurable: true,
+      writable: true
     },
     // TODO: Does this need to be in here for ANY reason?
     // Needed in other quickcommerce apps but not here...
@@ -165,7 +177,9 @@ function enhancer(WrappedStore) {
         }
 
         return formatted
-      }
+      },
+      configurable: true,
+      writable: true
     }
   })
 

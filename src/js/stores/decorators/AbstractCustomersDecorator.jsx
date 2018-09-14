@@ -22,7 +22,9 @@ function enhancer(WrappedStore) {
     setBuiltInCustomer: {
       value: function(customer) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * This abstract method may be implemented in classes inheriting from OrderStore.
@@ -32,7 +34,9 @@ function enhancer(WrappedStore) {
     setCustomCustomer: {
       value: function(customer) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * This abstract method must be implemented in classes inheriting from OrderStore.
@@ -45,7 +49,9 @@ function enhancer(WrappedStore) {
     setExistingCustomer: {
       value: function(customer) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     },
     /**
      * This abstract method may be implemented in classes inheriting from OrderStore.
@@ -55,7 +61,9 @@ function enhancer(WrappedStore) {
     setAdditionalCustomers: {
       value: function(customers, key) {
         //throw new Error('Not implemented') // TODO: Make a real exception class?
-      }
+      },
+      configurable: true,
+      writable: true
     }
   })
 
