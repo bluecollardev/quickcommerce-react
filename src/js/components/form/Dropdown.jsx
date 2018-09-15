@@ -269,72 +269,7 @@ const SalutationDropdown = (props) => {
 }
 
 const SuffixDropdown = (props) => {
-  let newProps = assign({}, props, {
-    items: [
-      {
-        id: 1,
-        code: 'JR',
-        value: 'Jr.'
-      },
-      {
-        id: 2,
-        code: 'SR',
-        value: 'Sr.'
-      },
-      {
-        id: 3,
-        code: '1',
-        value: 'I'
-      },
-      {
-        id: 4,
-        code: '2',
-        value: 'II'
-      },
-      {
-        id: 5,
-        code: '3',
-        value: 'III'
-      },
-      {
-        id: 6,
-        code: '4',
-        value: 'IV'
-      },
-      {
-        id: 7,
-        code: '5',
-        value: 'V'
-      },
-      {
-        id: 8,
-        code: '6',
-        value: 'VI'
-      },
-      {
-        id: 9,
-        code: '7',
-        value: 'VII'
-      },
-      {
-        id: 10,
-        code: '8',
-        value: 'VIII'
-      },
-      {
-        id: 11,
-        code: '9',
-        value: 'IX'
-      },
-      {
-        id: 12,
-        code: '10',
-        value: 'X'
-      }
-    ]
-  })
-
-  return (<SelectList {...newProps} />)
+  return (<SelectList {...props} />)
 }
 
 const GenderDropdown = (props) => {
@@ -342,37 +277,7 @@ const GenderDropdown = (props) => {
 }
 
 const MaritalDropdown = (props) => {
-  let newProps = assign({}, props, {
-    items: [
-      {
-        id: 1,
-        code: 'SINGLE',
-        value: 'Single'
-      },
-      {
-        id: 2,
-        code: 'MARRIED',
-        value: 'Married'
-      },
-      {
-        id: 3,
-        code: 'COMMONLAW',
-        value: 'Common Law'
-      },
-      {
-        id: 4,
-        code: 'SEPARATED',
-        value: 'Separated'
-      },
-      {
-        id: 5,
-        code: 'DIVORCED',
-        value: 'Divorced'
-      }
-    ]
-  })
-
-  return (<SelectList {...newProps} />)
+  return (<SelectList {...props} />)
 }
 
 const ResidenceTypeDropdown = (props) => {

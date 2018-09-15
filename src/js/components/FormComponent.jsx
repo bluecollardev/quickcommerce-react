@@ -303,7 +303,7 @@ export default (ComposedComponent) => {
              console.log('getting field value for zoned datetime:')
              //console.log(storedValue)
              //console.log(model)
-             //console.log(zonedDateTime.toISOString())
+             //console.log(zonedDateTime.toISOString())onSelectFieldChange
              fieldValue = zonedDateTime.toISOString()
              }
              }*/
@@ -354,34 +354,10 @@ export default (ComposedComponent) => {
               // TODO: use constants!
 
               case 'SELECT':
-                if (targetElement.selectedOptions instanceof HTMLCollection &&
-                  targetElement.selectedOptions.length > 0) {
-                  // TODO: No way to handle multiple selects yet!
-                  for (let idx = 0; idx < targetElement.selectedOptions.length; idx++) {
-                    // TODO: Use an adapter!
-                    let selectedOption = targetElement.selectedOptions[idx]
-                    let optionAttributes = selectedOption.attributes
-                    let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
-
-                    if (rawDataAttribute !== null) {
-                      let value = null
-                      if (JSONHelper.isJSON(rawDataAttribute).value) {
-                        value = JSON.parse(rawDataAttribute.value)
-                      }
-
-                      if (value !== null && value.hasOwnProperty('data')) {
-                        // Custom attribute for code-types
-                        storeValue = value.data
-                      } else {
-                        // Just use the value
-                        storeValue = value
-                      }
-                    } else {
-                      // Just use the value
-                      storeValue = targetElement.value
-                    }
-                  }
-                }
+                // TODO: Doesn't support multiple selections yet
+                this.forEachSelectedOption(targetElement, (element, option, attributes, value) => {
+                  storeValue = value
+                })
 
                 break
               case 'INPUT':
@@ -426,14 +402,7 @@ export default (ComposedComponent) => {
          console.log(msg)*/
       }
 
-      this.state.fields[fieldName] = {
-        name: fieldName,
-        value: storeValue,
-        onChange: (event) => {
-          this.onFieldChange(event, fieldName, events.onChange)
-        },
-        validations: validations
-      }
+      this.createOrUpdateFieldState(fieldName, storeValue, events, validations)
 
       if (typeof event !== 'undefined') {
         if (fieldName === event.target.name) {
@@ -471,14 +440,7 @@ export default (ComposedComponent) => {
 
       // TODO: Sanitize string value!
       if (field !== null) {
-        this.state.fields[fieldName] = {
-          name: fieldName,
-          value: value, //required: false,
-          onChange: (event) => {
-            this.onFieldChange(event, fieldName, events.onChange)
-          },
-          validations: validations
-        }
+        this.createOrUpdateFieldState(fieldName, value, events, validations)
 
         this.notifySubscribers()
       } else {
@@ -503,6 +465,19 @@ export default (ComposedComponent) => {
       }
 
     }
+
+    createOrUpdateFieldState(fieldName, value, events, validations) {
+      this.state.fields[fieldName] = {
+        name: fieldName,
+        value: value,
+        //required: false,
+        onChange: (event) => {
+          this.onFieldChange(event, fieldName, events.onChange)
+        },
+        validations: validations
+      }
+    }
+
     onFieldChange(event, fieldName, callback) {
       //console.log('setting FormComponent field value to "' + event.target.value + '"')
       // NOTE: This chunk of code is duplicated on purpose - we need to save the input value & trigger the callback
@@ -512,59 +487,13 @@ export default (ComposedComponent) => {
       switch (targetElement.tagName) {
         // TODO: use constants!
         case 'SELECT':
-          if (targetElement.selectedOptions instanceof HTMLCollection &&
-            targetElement.selectedOptions.length > 0) {
-            // TODO: No way to handle multiple selects yet!
-            for (let idx = 0; idx < targetElement.selectedOptions.length; idx++) {
-              // TODO: Use an adapter!
-              let selectedOption = targetElement.selectedOptions[idx]
-              let optionAttributes = selectedOption.attributes
-              let rawDataAttribute = optionAttributes.getNamedItem('raw') || null // This won't work on IE 8 or lower
-
-              if (rawDataAttribute !== null) {
-                let value = null
-                if (JSONHelper.isJSON(rawDataAttribute.value)) {
-                  value = JSON.parse(rawDataAttribute.value)
-                }
-
-                if (value !== null && value.hasOwnProperty('data')) {
-                  // Custom attribute for code-types
-                  this.state.fields[fieldName].value = value.data
-                } else {
-                  // Custom attribute for code-types
-                  this.state.fields[fieldName].value = value
-                }
-              } else {
-                // Just use the value
-                this.state.fields[fieldName].value = targetElement.value
-              }
-            }
-          }
-
+          this.onSelectFieldChange(targetElement, fieldName)
           break
         case 'INPUT':
-          if (targetElement.type.toLowerCase() === 'number') {
-            if (typeof targetElement.step === 'string' &&
-              targetElement.step === '0.01') {
-              // We're most likely dealing with a currency object
-              // TODO: Multiple currency support
-              this.state.fields[fieldName].value = {
-                value: Number(targetElement.value),
-                currency: 'CAD' // Pass in as special attribute
-              }
-            } else {
-              // Standard numeric input
-              this.state.fields[fieldName].value = Number(targetElement.value)
-            }
-          } else {
-            // Treat as text input
-            this.state.fields[fieldName].value = targetElement.value
-          }
-
+          this.onInputFieldChange(targetElement, fieldName)
           break
         default:
           this.state.fields[fieldName].value = targetElement.value
-
           break
       }
 
@@ -572,6 +501,88 @@ export default (ComposedComponent) => {
         callback(event, this.state.fields[fieldName].value)
       }
 
+      this.validateState(fieldName)
+
+      this.forceUpdate()
+    }
+
+    forEachSelectedOption(targetElement, callback) {
+      if (targetElement.selectedOptions instanceof HTMLCollection &&
+        targetElement.selectedOptions.length > 0) {
+        // TODO: No way to handle multiple selects yet!
+        for (let idx = 0; idx < targetElement.selectedOptions.length; idx++) {
+          // TODO: Use an adapter!
+          let selectedOption = targetElement.selectedOptions[idx]
+          let optionAttributes = selectedOption.attributes
+
+          let optionValue = this.getRawAttributeValue(optionAttributes) || targetElement.value
+
+          callback(targetElement, selectedOption, optionAttributes, optionValue)
+        }
+      }
+    }
+
+    getRawAttributeValue(attributes) {
+      let rawDataAttribute = attributes.getNamedItem('raw') || undefined // This won't work on IE 8 or lower
+      let rawAttributeValue = undefined
+
+      if (rawDataAttribute !== undefined) {
+        if (JSONHelper.isJSON(rawDataAttribute.value)) {
+          rawAttributeValue = JSON.parse(rawDataAttribute.value)
+        }
+      }
+
+      if (rawAttributeValue !== undefined &&
+        rawAttributeValue.hasOwnProperty('data')) {
+        // Custom attribute for code-types
+        return rawAttributeValue.data
+      }
+
+      return undefined
+    }
+
+    /**
+     * Select adapter, we can move this out later...
+     */
+    onSelectFieldChange(targetElement, fieldName, callback) {
+      this.forEachSelectedOption(targetElement, (element, option, attributes, value) => {
+        this.state.fields[fieldName].value = value
+      })
+    }
+
+    onInputFieldChange(targetElement, fieldName) {
+      if (targetElement.type.toLowerCase() === 'number') {
+        if (typeof targetElement.step === 'string' &&
+          targetElement.step === '0.01') {
+          // We're most likely dealing with a currency object
+          // TODO: Multiple currency support
+          this.state.fields[fieldName].value = {
+            value: Number(targetElement.value),
+            currency: 'CAD' // Pass in as special attribute
+          }
+        } else {
+          // Standard numeric input
+          this.state.fields[fieldName].value = Number(targetElement.value)
+        }
+      } else if (targetElement.type.toLowerCase() === 'date') {
+        // Treat as date input
+        // TODO: Accept some sort of formatting argument?
+        let dateString = targetElement.value
+        let dateObj = new Date(dateString) // TODO: Moment or something? Dunno...
+        // TODO: Do I not have something generic for this anyway?
+        this.state.fields[fieldName].value = {
+          day: dateObj.getUTCDate(),
+          month: dateObj.getUTCMonth() + 1,
+          year: dateObj.getUTCFullYear(),
+          value: dateString
+        }
+      } else {
+        // Treat as text input
+        this.state.fields[fieldName].value = targetElement.value
+      }
+    }
+
+    validateState(fieldName) {
       // Validate the input when we attach it to the form so the form maintains the correct state?
       // I'm thinking maybe not...
       //this.validate(fieldName, this.state.fields[fieldName].value)
@@ -591,8 +602,6 @@ export default (ComposedComponent) => {
 
       // Set validation status
       //group.classList.add(validationState)
-
-      this.forceUpdate()
     }
 
     /**
