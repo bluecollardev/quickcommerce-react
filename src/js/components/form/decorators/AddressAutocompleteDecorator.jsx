@@ -11,26 +11,66 @@ const AddressAutocompleteDecorator = {
       }
     }
   },
-  onAddressTypeSelected: {
-    value: function(e) {
-      console.log('address type changed')
-      // TODO: Enumerate options
-      this.setState({ type: e.target.value })
+  // TODO: This is actually a dropdown isn't it? If so it doesn't belong here...
+  onAddressStyleChanged: {
+    value: function(event, value) {
+      const mappings = this.props.mappings.address
+      const data = this.state.data
+
+      console.log('address style changed')
+      console.log(value)
+      console.log(event.target.value)
+      // TODO: Enumerate options?
+
+      let newState = assign({}, this.state, {
+        //type: event.target.value, //value,
+        data: assign({}, data, {
+          [mappings.ADDRESS_STYLE.property]: event.target.value //value
+        })
+      })
+
+      this.setState(newState, () => {
+        console.log('address style updated, logging state')
+        console.log(this.constructor.name)
+
+        console.log(this.state)
+      })
+    }
+  },
+  // TODO: This is actually a dropdown isn't it? If so it doesn't belong here...
+  onAddressStyleSelected: {
+    value: function(value, item) {
+      const mappings = this.props.mappings.address
+      const data = this.state.data
+
+      console.log('address style selected')
+      console.log(value)
+      // TODO: Enumerate options?
+      this.setState(assign({}, this.state, {
+        type: value,
+        data: assign({}, data, { [mappings.ADDRESS_STYLE.property]: value })
+      }), () => {
+        console.log('address style updated, logging state')
+        console.log(this.constructor.name)
+        console.log(this.state)
+      })
     }
   },
   onCityValueChanged: {
     value: function(event, value) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.CITY, value)
 
-      this.setState(assign({}, this.state, { data: assign({}, data, { [mappings.CITY.property]: value }) }))
+      this.setState(assign({}, this.state, {
+        data: assign({}, data, { [mappings.CITY.property]: value })
+      }))
     }
   },
   onCityItemSelected: {
     value: function(value, item) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.CITY, value)
@@ -52,7 +92,7 @@ const AddressAutocompleteDecorator = {
   },
   onTerritoryValueChanged: {
     value: function(event, value) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.ZONE, value)
@@ -62,7 +102,7 @@ const AddressAutocompleteDecorator = {
   },
   onTerritoryItemSelected: {
     value: function(value, item) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.ZONE, value)
@@ -86,7 +126,7 @@ const AddressAutocompleteDecorator = {
   },
   onCountryValueChanged: {
     value: function(event, value) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.COUNTRY, value)
@@ -96,7 +136,7 @@ const AddressAutocompleteDecorator = {
   },
   onCountryItemSelected: {
     value: function(value, item) {
-      const mappings = this.props.mappings.address || fieldNames
+      const mappings = this.props.mappings.address
       const data = this.state.data
 
       //this.props.field(mappings.COUNTRY, value)

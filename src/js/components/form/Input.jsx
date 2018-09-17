@@ -9,7 +9,7 @@ const getMappedValue = FormHelper.getMappedValue
 
 const InputFormControl = (props) => {
   // Render the InputFormControl
-  const { field, fields, mapping, data } = props
+  const { field, fields, mapping, valueMapping, data } = props
 
   // props must have the following defined:
   // fields (function)
@@ -32,9 +32,17 @@ const InputFormControl = (props) => {
     }
   }
 
+  let useValueMapping = false
+
+  if (typeof valueMapping !== 'undefined' && valueMapping !== false) {
+    useValueMapping = true
+  }
+
   let name = ''
-  if (hasMapping) {
+  if (hasMapping && useValueMapping === false) {
     name = (typeof props.name === 'string') ? props.name : mapping.property
+  } else if (hasMapping && useValueMapping === true) {
+    name = (typeof props.name === 'string') ? props.name : mapping.value
   } else {
     name = (typeof props.name === 'string') ? props.name: name
   }
@@ -43,14 +51,14 @@ const InputFormControl = (props) => {
   if (hasMapping) {
     if (type !== null) {
       inputProps = props.fields(
-        mapping.property,
-        getMappedValue(mapping, data),
+        (useValueMapping ? mapping.value : mapping.property),
+        getMappedValue(mapping, data, useValueMapping),
         type
       )
     } else {
       inputProps = props.fields(
-        mapping.property,
-        getMappedValue(mapping, data)
+        (useValueMapping ? mapping.value : mapping.property),
+        getMappedValue(mapping, data, useValueMapping)
       )
     }
   }

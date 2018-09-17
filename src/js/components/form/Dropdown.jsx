@@ -58,7 +58,7 @@ const SelectList = (props) => {
     //debugger
   }
 
-  if (props.hasOwnProperty('normal')) {
+  if (props.hasOwnProperty('normalValue')) {
     return (
       <FormControl
         readOnly={props.readOnly}
@@ -109,6 +109,33 @@ const SelectList = (props) => {
     )
   }
 
+  // TODO: This isn't used anywhere
+  if (props.hasOwnProperty('codeValue')) {
+    return (
+      <FormControl
+        readOnly={props.readOnly}
+        name={name}
+        componentClass='select'
+        {...inputProps}>
+        <option key={0} value=''></option>
+        {items.map((item, idx) => {
+          // Use the mapItems callback to perform
+          // any last second tweaks to the data
+          item = mapItems(item)
+          return (
+            <option
+              key={idx + 1}
+              raw={JSON.stringify(item)}
+              value={item.code}
+              selected={item.selected}>
+              {item.value}
+            </option>
+          )
+        })}
+      </FormControl>
+    )
+  }
+
   if (props.hasOwnProperty('displayTextValue')) {
     return (
       <FormControl
@@ -135,33 +162,6 @@ const SelectList = (props) => {
               value={item.value}
               selected={item.selected}>
               {displayValue}
-            </option>
-          )
-        })}
-      </FormControl>
-    )
-  }
-
-  // TODO: This isn't used anywhere
-  if (props.hasOwnProperty('codeValue')) {
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        componentClass='select'
-        {...inputProps}>
-        <option key={0} value=''></option>
-        {items.map((item, idx) => {
-          // Use the mapItems callback to perform
-          // any last second tweaks to the data
-          item = mapItems(item)
-          return (
-            <option
-              key={idx + 1}
-              raw={JSON.stringify(item)}
-              value={item.code}
-              selected={item.selected}>
-              {item.value}
             </option>
           )
         })}
@@ -250,6 +250,12 @@ const MonthsDropdown = (props) => {
 }
 
 // Dropdown lists
+const AddressStyleDropdown = (props) => {
+  //console.log('dumping AddressStyleDropdown props')
+  //console.log(props)
+  return (<SelectList {...props} />)
+}
+
 const ContactTypeDropdown = (props) => {
   //console.log('dumping ContactTypeDropdown props')
   //console.log(props)
@@ -381,6 +387,7 @@ const StreetDirButton = (props) => {
 export {
   SelectList,
   SelectButton,
+  AddressStyleDropdown,
   ContactTypeDropdown,
   IdTypeDropdown,
   CustomerRelationDropdown,

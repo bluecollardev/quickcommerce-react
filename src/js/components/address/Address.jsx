@@ -1,9 +1,7 @@
 import { inject, observer } from 'mobx-react'
-import assign from 'object-assign'
 
 import React, { Component } from 'react'
 
-import fieldNames from '../../forms/AddressFields.jsx'
 import CurrentAddress from './CurrentAddress.jsx'
 
 @inject(deps => ({

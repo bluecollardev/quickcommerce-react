@@ -1,31 +1,47 @@
-import _ from 'lodash'
 import assign from 'object-assign'
 import React, { Component, PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { inject, observer } from 'mobx-react'
 
-import Autocomplete from 'react-autocomplete'
-
 import { Button, ControlLabel, FormControl, FormGroup, Modal } from 'react-bootstrap'
 
 import FormHelper from '../../helpers/Form.js'
+import StringHelper from '../../helpers/String.js'
 
 import { InputFormControl, HiddenInput, DateInput } from '../form/Input.jsx'
+import { AddressStyleDropdown } from '../form/Dropdown.jsx'
 import { AutocompleteFormControl, matchItemToTerm } from '../form/Autocomplete.jsx'
 
 import FormComponent from '../FormComponent.jsx'
 import AddressAutocompleteDecorator from '../form/decorators/AddressAutocompleteDecorator.jsx'
 
 const AddressForm = (props) => {
-  const mappings = props.mappings.address
-
   const {
-    mode, type, types,
+    settingStore,
+    mode, //type, types,
     nameRequired, durationRequired,
     displayActions,
-    data, countries, zones, cities, geoZones,
-    field, fields, value, getMappedValue
+    data, countries, zones, cities, //geoZones,
+    //field, fields, value, getMappedValue
+    getMappedValue
   } = props
+
+  const mappings = props.mappings.address
+  const addressStyleMappings = props.mappings.address.ADDRESS_STYLE_MAP
+
+  let addressStyleTypes = []
+  if (settingStore.addressStyles instanceof Array) {
+    addressStyleTypes = settingStore.addressStyles.filter((style) => {
+      return true // TODO: Make this configurable, as code types may change!
+    })
+
+    // Add extra options for other quickcommerce address configurations
+    //let addressStyles = Object.keys(addressStyleMappings)
+    // TODO: Automatically append extra address styles that exist in mappings...
+    //addressStyleTypes.unshift({ data: addressStyles})
+    // TODO: This is a quick workaround to add SIMPLE address type
+    addressStyleTypes.unshift({ data: 'SIMPLE' })
+  }
 
   let readOnlyAttr = ''
   switch (mode) {
@@ -33,6 +49,9 @@ const AddressForm = (props) => {
       readOnlyAttr = { readOnly: true }
       break
   }
+
+  let type = getMappedValue(mappings.ADDRESS_STYLE, data, true)
+  // TODO: Check type against an array of valid types
 
   // Pass FormComponent props down to inputs
   const inputProps = {
@@ -42,23 +61,62 @@ const AddressForm = (props) => {
     value: props.value
   }
 
+  // TODO: Remove me, just temporarily hardcoding this while I fix an issue
+  //let type = addressStyleMappings.CIVIC.property
+
   return (
     <form>
       {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
       <div className='col-md-flex col-lg-flex'>
         <HiddenInput {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_ID} data={data} />
 
-        <FormGroup className='col-sm-3 form-element form-select'>
+        {/*<FormGroup className='col-sm-3 form-element form-select'>
           <ControlLabel>Address Type</ControlLabel>
           <FormControl
             {...readOnlyAttr}
             componentClass='select'
-            onChange={props.onAddressTypeSelected}>
+            onChange={props.onAddressStyleSelected}>
             {types.indexOf('simple') > -1 && (<option key={0} value='simple'>Simple</option>)}
             {types.indexOf('civic') > -1 && (<option key={1} value='civic'>Civic</option>)}
             {types.indexOf('rural') > -1 && (<option key={2} value='rural'>Rural</option>)}
             {types.indexOf('pobox') > -1 && (<option key={3} value='pobox'>Postal Box</option>)}
           </FormControl>
+        </FormGroup>*/}
+
+        <FormGroup className='col-sm-3 form-element form-select'>
+          <ControlLabel>Address Type</ControlLabel>
+          <AddressStyleDropdown
+            {...readOnlyAttr}
+            codeValue
+            {...inputProps}
+            items={addressStyleTypes}
+            mapping={mappings.ADDRESS_STYLE}
+            data={data}
+            onChange={props.onAddressStyleChanged}
+            onSelect={props.onAddressStyleSelected}
+            mapItems={(item) => {
+              let mappedItem = {}
+
+              if (typeof item.data === 'string') {
+                for (let addressStyleType in mappings.ADDRESS_STYLE_MAP) {
+                  let addressStyleMapping = mappings.ADDRESS_STYLE_MAP[addressStyleType]
+                  let addressStyleCode = (typeof item.data === 'string') ? item.data : ''
+                  if (addressStyleCode === addressStyleType) {
+                    mappedItem = {
+                      data: addressStyleMapping.property,
+                      code: addressStyleMapping.property,
+                      value: addressStyleMapping.value,
+                      //selected: item.selected
+                    }
+
+                    break
+                  }
+                }
+              }
+
+              return mappedItem
+            }}
+          />
         </FormGroup>
 
         {/* First Name / Last Name */}
@@ -77,13 +135,13 @@ const AddressForm = (props) => {
         )}
 
         {/* Simple Addresses (Line 1, 2, 3?) */}
-        {type === 'simple' && (
+        {type === addressStyleMappings.SIMPLE.property && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 1*</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_1} data={data} />
           </FormGroup>
         )}
-        {type === 'simple' && (
+        {type === addressStyleMappings.SIMPLE.property && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
             <ControlLabel>Address Line 2</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_2} data={data} />
@@ -91,25 +149,25 @@ const AddressForm = (props) => {
         )}
 
         {/* Civic Addresses */}
-        {type === 'civic' && (
+        {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
             <ControlLabel>Suite</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SUITE} data={data} />
           </FormGroup>
         )}
-        {type === 'civic' && (
+        {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-3 col-md-3 col-lg-3'>
             <ControlLabel>Street Name</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_NAME} data={data} />
           </FormGroup>
         )}
-        {type === 'civic' && (
+        {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Street Type</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_TYPE} data={data} />
           </FormGroup>
         )}
-        {type === 'civic' && (
+        {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Direction</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_DIR} data={data} />
@@ -117,13 +175,13 @@ const AddressForm = (props) => {
         )}
 
         {/* Postal Installation Addresses */}
-        {type === 'pobox' && (
+        {type === addressStyleMappings.POBOX.property && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Box</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
-        {type === 'pobox' && (
+        {type === addressStyleMappings.POBOX.property && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-1'>
             <ControlLabel>Station</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STN} data={data} />
@@ -131,37 +189,37 @@ const AddressForm = (props) => {
         )}
 
         {/* Rural Addresses */}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Range Rd.</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.RANGE_ROAD} data={data} />
           </FormGroup>
         )}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Site</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SITE} data={data} />
           </FormGroup>
         )}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Comp</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.COMP} data={data} />
           </FormGroup>
         )}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Box</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.BOX} data={data} />
           </FormGroup>
         )}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Lot #</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.LOT} data={data} />
           </FormGroup>
         )}
-        {type === 'rural' && (
+        {type === addressStyleMappings.RURAL.property && (
           <FormGroup className='col-sm-3'>
             <ControlLabel>Concession #</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.CONCESSION} data={data} />
@@ -280,7 +338,8 @@ class CurrentAddress extends Component {
     //types: PropTypes.arrayOf('simple', 'civic', 'rural', 'pobox'), // TODO: Wrong syntax!
     data: PropTypes.object,
     addressString: PropTypes.string,
-    address: PropTypes.object
+    address: PropTypes.object,
+    debug: PropTypes.bool
   }
 
   static defaultProps = {
@@ -290,14 +349,9 @@ class CurrentAddress extends Component {
     nameRequired: true, // Stupid OpenCart
     displayAddress: false,
     displaySummary: false,
-    type: 'simple', // [simple|civic|rural|pobox] // TODO: Wrong syntax!
-    types: [
-      'simple',
-      'civic',
-      'rural',
-      'pobox'
-    ], // TODO: Wrong syntax!
-    //title: 'Current Address',
+    //type: '',
+    //types: [],
+    //title: '',
     data: {
       id: null,
       line1: '',
@@ -320,7 +374,8 @@ class CurrentAddress extends Component {
       postalCode: ''
     },
     addressString: '',
-    address: null
+    address: null,
+    debug: false
   }
 
   constructor(props) {
@@ -342,8 +397,8 @@ class CurrentAddress extends Component {
       zones: [],
       countries: [],
       geoZones: [],
-      types: props.types,
-      type: props.type
+      //types: [],
+      //type: props.type
     }
   }
 
@@ -436,9 +491,14 @@ class CurrentAddress extends Component {
       })
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setState(assign({}, newProps))
-  }
+  // TODO: I don't think this is required, and it prevents updating state internally, as it's wrapped in a FormComponent
+  /*componentWillReceiveProps(newProps) {
+    // TODO: This is too general...
+    if (this.props !== newProps) {
+      let newState = assign({}, this.state, newProps)
+      this.setState(newState)
+    }
+  }*/
 
   /**
    * Set an error boundary so a rendering failure in the component doesn't cascade.
@@ -496,7 +556,7 @@ class CurrentAddress extends Component {
 
   render() {
     // CurrentAddress.render
-    let { countries, zones, cities, geoZones, type, types } = this.state
+    let { addressStyles, countries, zones, cities, geoZones } = this.state
     let { data } = this.props
 
     //console.log('DUMPING CURRENT ADDRESS STATE')
@@ -552,10 +612,9 @@ class CurrentAddress extends Component {
              </div>*/}
             <AddressForm
               {...this.props}
-              type={this.props.type}
-              types={this.props.types}
               matchItemToTerm={this.matchItemToTerm.bind(this)}
-              onAddressTypeSelected={this.onAddressTypeSelected.bind(this)}
+              onAddressStyleChanged={this.onAddressStyleChanged.bind(this)}
+              onAddressStyleSelected={this.onAddressStyleSelected.bind(this)}
               onCityValueChanged={this.onCityValueChanged.bind(this)}
               onCityItemSelected={this.onCityItemSelected.bind(this)}
               onTerritoryValueChanged={this.onTerritoryValueChanged.bind(this)}
@@ -571,10 +630,21 @@ class CurrentAddress extends Component {
               countries={countries}
               zones={zones}
               cities={cities}
-              type={type}
-              types={types}
+              //type={type}
+              //types={types}
               data={data}
             />
+            {/* TODO: This is just for testing */}
+            {this.props.debug === true && (
+              <div className='col-md-flex col-lg-flex'>
+                <div className='col-xs-12'>
+                  <Button onClick={() => {
+                    console.log('getForm')
+                    console.log(this.props.getForm())
+                  }}>Get Form</Button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -596,10 +666,9 @@ class CurrentAddress extends Component {
             <Modal.Body>
               <AddressForm
                 {...this.props}
-                type={this.props.type}
-                types={this.props.types}
                 matchItemToTerm={this.matchItemToTerm.bind(this)}
-                onAddressTypeSelected={this.onAddressTypeSelected.bind(this)}
+                onAddressStyleChanged={this.onAddressStyleChanged.bind(this)}
+                onAddressStyleSelected={this.onAddressStyleSelected.bind(this)}
                 onCityValueChanged={this.onCityValueChanged.bind(this)}
                 onCityItemSelected={this.onCityItemSelected.bind(this)}
                 onTerritoryValueChanged={this.onTerritoryValueChanged.bind(this)}
@@ -615,8 +684,8 @@ class CurrentAddress extends Component {
                 countries={countries}
                 zones={zones}
                 cities={cities}
-                type={type}
-                types={types}
+                //type={type}
+                //types={types}
                 data={data}
               />
             </Modal.Body>
