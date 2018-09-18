@@ -18,6 +18,7 @@ import AddressAutocompleteDecorator from '../form/decorators/AddressAutocomplete
 const AddressForm = (props) => {
   const {
     settingStore,
+
     mode, //type, types,
     nameRequired, durationRequired,
     displayActions,
@@ -168,9 +169,15 @@ const AddressForm = (props) => {
           </FormGroup>
         )}
         {type === addressStyleMappings.CIVIC.property && (
-          <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
-            <ControlLabel>Direction</ControlLabel>
+          <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
+            <ControlLabel>Dir.</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_DIR} data={data} />
+          </FormGroup>
+        )}
+        {type === addressStyleMappings.CIVIC.property && (
+          <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
+            <ControlLabel>Quad.</ControlLabel>
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.QUADRANT} data={data} />
           </FormGroup>
         )}
 

@@ -19,6 +19,7 @@ const AddressAutocompleteDecorator = {
 
       console.log('address style changed')
       console.log(value)
+      console.log('event.target.value')
       console.log(event.target.value)
       // TODO: Enumerate options?
 
