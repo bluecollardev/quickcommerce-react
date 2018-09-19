@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * optionValue
@@ -33,6 +34,16 @@ const OptionValueSelectListOptions = (props) => {
       })}
     </Fragment>
   )
+}
+
+OptionValueSelectListOptions.propTypes = {
+  items: PropTypes.array,
+  mapItems: PropTypes.func
+}
+
+OptionValueSelectListOptions.defaultProps = {
+  items: [],
+  mapItems: () => {}
 }
 
 export default OptionValueSelectListOptions

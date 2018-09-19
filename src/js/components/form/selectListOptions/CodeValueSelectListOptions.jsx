@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * codeValue
@@ -32,6 +33,16 @@ const CodeValueSelectListOptions = (props) => {
       })}
     </Fragment>
   )
+}
+
+CodeValueSelectListOptions.propTypes = {
+  items: PropTypes.array,
+  mapItems: PropTypes.func
+}
+
+CodeValueSelectListOptions.defaultProps = {
+  items: [],
+  mapItems: () => {}
 }
 
 export default CodeValueSelectListOptions

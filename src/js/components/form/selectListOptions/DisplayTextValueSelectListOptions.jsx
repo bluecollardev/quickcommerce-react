@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * displayTextValue
@@ -39,6 +40,16 @@ const DisplayTextValueSelectListOptions = (props) => {
       })}
     </Fragment>
   )
+}
+
+DisplayTextValueSelectListOptions.propTypes = {
+  items: PropTypes.array,
+  mapItems: PropTypes.func
+}
+
+DisplayTextValueSelectListOptions.defaultProps = {
+  items: [],
+  mapItems: () => {}
 }
 
 export default DisplayTextValueSelectListOptions

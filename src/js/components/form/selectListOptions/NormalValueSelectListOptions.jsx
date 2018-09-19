@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * normalValue
@@ -30,6 +31,16 @@ const NormalValueSelectListOptions = (props) => {
       })}
     </Fragment>
   )
+}
+
+NormalValueSelectListOptions.propTypes = {
+  items: PropTypes.array,
+  mapItems: PropTypes.func
+}
+
+NormalValueSelectListOptions.defaultProps = {
+  items: [],
+  mapItems: () => {}
 }
 
 export default NormalValueSelectListOptions

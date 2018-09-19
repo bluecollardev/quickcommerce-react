@@ -149,7 +149,7 @@ const CountryAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToCountry}
+      shouldItemRender={matchItemToCountry}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.default_country}
@@ -194,7 +194,7 @@ const ZoneAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToZone}
+      shouldItemRender={matchItemToZone}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.default_zone}
@@ -241,7 +241,7 @@ const CustomerAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToCustomer}
+      shouldItemRender={matchItemToCustomer}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.default_customer}
@@ -282,7 +282,7 @@ const CustomerGroupAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToCustomerGroup}
+      shouldItemRender={matchItemToCustomerGroup}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.default_customer_group}
@@ -323,7 +323,7 @@ const OrderStatusAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToStatus}
+      shouldItemRender={matchItemToStatus}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.POS_complete_status}
@@ -368,7 +368,7 @@ const StoreAutocomplete = (props) => {
           </div>
         )
       }}
-      shouldItemRender={this.matchItemToStore}
+      shouldItemRender={matchItemToStore}
       autoHighlight={true}
       wrapperStyle={{display: 'block'}}
       value={data.store}

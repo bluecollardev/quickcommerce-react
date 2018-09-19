@@ -166,10 +166,6 @@ const AddressAutocompleteDecorator = {
   },
   getCountryTerritories: {
     value: function(countryCode) {
-      if (typeof this.props.getCountryTerritories === 'function') {
-        this.props.getCountryTerritories()
-      }
-
       const { geoService } = this.props
 
       geoService.getCountryZones(countryCode, (data) => {
@@ -182,10 +178,6 @@ const AddressAutocompleteDecorator = {
   },
   getCountryCities: {
     value: function(countryCode) {
-      if (typeof this.props.getCountryCities === 'function') {
-        this.props.getCountryCities()
-      }
-
       const { geoService } = this.props
 
       geoService.getCountryCities(countryCode, (data) => {
@@ -198,10 +190,6 @@ const AddressAutocompleteDecorator = {
   },
   getTerritoryCities: {
     value: function(territoryCode) {
-      if (typeof this.props.getTerritoryCities === 'function') {
-        this.props.getTerritoryCities()
-      }
-
       const { geoService } = this.props
 
       geoService.getZoneCities(territoryCode, (data) => {
@@ -214,16 +202,10 @@ const AddressAutocompleteDecorator = {
   },
   getCityTerritory: {
     value: function(cityCode) {
-      if (typeof this.props.getCityTerritory === 'function') {
-        this.props.getCityTerritory()
-      }
     }
   },
   getCityCountry: {
     value: function(cityCode) {
-      if (typeof this.props.getCityCountry === 'function') {
-        this.props.getCityCountry()
-      }
     }
   }
 }

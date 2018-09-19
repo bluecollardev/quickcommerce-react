@@ -24,7 +24,7 @@ const AddressForm = (props) => {
     data,
     // TODO: Remove any references to the following props
     // We don't need them anymore now that SettingStore has been properly implemented
-    //countries, zones, cities, //geoZones,
+    countries, zones, cities, //geoZones,
     //streetTypes, directions, quadrants,
     //field, fields, value, getMappedValue
     getMappedValue
@@ -362,7 +362,7 @@ const AddressForm = (props) => {
               id: mappings.CITY_ID,
               code: mappings.CITY_CODE
             }}
-            items={settingStore.cities}
+            items={cities}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onCityValueChanged}
             onSelect={props.onCityItemSelected}
@@ -380,7 +380,7 @@ const AddressForm = (props) => {
               id: mappings.ZONE_ID,
               code: mappings.ZONE_CODE
             }}
-            items={settingStore.zones}
+            items={zones}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onTerritoryValueChanged}
             onSelect={props.onTerritoryItemSelected}
@@ -398,7 +398,7 @@ const AddressForm = (props) => {
               id: mappings.COUNTRY_ID,
               code: mappings.COUNTRY_CODE
             }}
-            items={settingStore.countries}
+            items={countries}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onCountryValueChanged}
             onSelect={props.onCountryItemSelected}
@@ -556,19 +556,19 @@ class CurrentAddress extends Component {
   }
 
   componentWillMount() {
-    const { geoService } = this.props
+    const { mappings, data, geoService, settingStore, getMappedValue } = this.props
 
     let processOps = []
 
-    let cities = []
-    let zones = []
-    let countries = []
+    let countries = settingStore.countries
+    let zones = settingStore.zones
+    let cities = settingStore.cities
 
     processOps.push(new Promise((resolve, reject) => {
-      geoService.getCities((data) => {
-        //console.log('cities')
+      geoService.getCountries((data) => {
+        //console.log('countries')
         //console.log(data)
-        cities = data
+        countries = data
         resolve()
       })
     }))
@@ -583,10 +583,10 @@ class CurrentAddress extends Component {
     }))
 
     processOps.push(new Promise((resolve, reject) => {
-      geoService.getCountries((data) => {
-        //console.log('countries')
+      geoService.getCities((data) => {
+        //console.log('cities')
         //console.log(data)
-        countries = data
+        cities = data
         resolve()
       })
     }))
@@ -601,7 +601,6 @@ class CurrentAddress extends Component {
       })
   }
 
-  // TODO: I don't think this is required, and it prevents updating state internally, as it's wrapped in a FormComponent
   /*componentWillReceiveProps(newProps) {
     // TODO: This is too general...
     if (this.props !== newProps) {
