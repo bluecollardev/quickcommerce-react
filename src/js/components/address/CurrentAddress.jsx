@@ -9,7 +9,7 @@ import FormHelper from '../../helpers/Form.js'
 import StringHelper from '../../helpers/String.js'
 
 import { InputFormControl, HiddenInput, DateInput } from '../form/Input.jsx'
-import { AddressStyleDropdown } from '../form/Dropdown.jsx'
+import { AddressStyleDropdown, StreetTypeDropdown, StreetDirDropdown, QuadrantDropdown } from '../form/Dropdown.jsx'
 import { AutocompleteFormControl, matchItemToTerm } from '../form/Autocomplete.jsx'
 
 import FormComponent from '../FormComponent.jsx'
@@ -18,11 +18,14 @@ import AddressAutocompleteDecorator from '../form/decorators/AddressAutocomplete
 const AddressForm = (props) => {
   const {
     settingStore,
-
     mode, //type, types,
     nameRequired, durationRequired,
     displayActions,
-    data, countries, zones, cities, //geoZones,
+    data,
+    // TODO: Remove any references to the following props
+    // We don't need them anymore now that SettingStore has been properly implemented
+    //countries, zones, cities, //geoZones,
+    //streetTypes, directions, quadrants,
     //field, fields, value, getMappedValue
     getMappedValue
   } = props
@@ -84,8 +87,9 @@ const AddressForm = (props) => {
           </FormControl>
         </FormGroup>*/}
 
-        <FormGroup className='col-sm-3 form-element form-select'>
-          <ControlLabel>Address Type</ControlLabel>
+        {/* TODO: To accommodate smaller screen sizes we may have to conditionally display this block */}
+        {/*<FormGroup className='col-sm-2 form-element form-select'>
+          <ControlLabel>Type</ControlLabel>
           <AddressStyleDropdown
             {...readOnlyAttr}
             codeValue
@@ -95,6 +99,62 @@ const AddressForm = (props) => {
             data={data}
             onChange={props.onAddressStyleChanged}
             onSelect={props.onAddressStyleSelected}
+            // TODO: Turn me into an example!
+            mapItems={(item) => {
+              let mappedItem = {}
+
+              if (typeof item.data === 'string') {
+                for (let addressStyleType in mappings.ADDRESS_STYLE_MAP) {
+                  let addressStyleMapping = mappings.ADDRESS_STYLE_MAP[addressStyleType]
+                  let addressStyleCode = (typeof item.data === 'string') ? item.data : ''
+                  if (addressStyleCode === addressStyleType) {
+                    mappedItem = {
+                      data: addressStyleMapping.property,
+                      code: addressStyleMapping.property,
+                      value: addressStyleMapping.value,
+                      //selected: item.selected
+                    }
+
+                    break
+                  }
+                }
+              }
+
+              return mappedItem
+            }}
+          />
+        </FormGroup>*/}
+      </div>
+
+      <div className='col-md-flex col-lg-flex'>
+        {/* First Name / Last Name */}
+        {nameRequired && (
+          <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
+            <ControlLabel>First Name*</ControlLabel>
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.FIRST_NAME} data={data} />
+          </FormGroup>
+        )}
+
+        {nameRequired && (
+          <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
+            <ControlLabel>Last Name*</ControlLabel>
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.LAST_NAME} data={data} />
+          </FormGroup>
+        )}
+
+        {/* TODO: To accommodate smaller screen sizes we may have to conditionally display this block */}
+        <FormGroup className='col-sm-2 form-element form-select'>
+          <ControlLabel>Type</ControlLabel>
+          <AddressStyleDropdown
+            {...readOnlyAttr}
+            codeValue
+            {...inputProps}
+            items={addressStyleTypes}
+            mapping={mappings.ADDRESS_STYLE}
+            data={data}
+            onChange={props.onAddressStyleChanged}
+            onSelect={props.onAddressStyleSelected}
+            // TODO: Turn me into an example!
             mapItems={(item) => {
               let mappedItem = {}
 
@@ -120,21 +180,6 @@ const AddressForm = (props) => {
           />
         </FormGroup>
 
-        {/* First Name / Last Name */}
-        {nameRequired && (
-          <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
-            <ControlLabel>First Name*</ControlLabel>
-            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.FIRST_NAME} data={data} />
-          </FormGroup>
-        )}
-
-        {nameRequired && (
-          <FormGroup className='col-xs-12 col-lg-6 flex-md-50 flex-md-37'>
-            <ControlLabel>Last Name*</ControlLabel>
-            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.LAST_NAME} data={data} />
-          </FormGroup>
-        )}
-
         {/* Simple Addresses (Line 1, 2, 3?) */}
         {type === addressStyleMappings.SIMPLE.property && (
           <FormGroup className='col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 flex-md-37'>
@@ -151,9 +196,15 @@ const AddressForm = (props) => {
 
         {/* Civic Addresses */}
         {type === addressStyleMappings.CIVIC.property && (
-          <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
+          <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
             <ControlLabel>Suite</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SUITE} data={data} />
+          </FormGroup>
+        )}
+        {type === addressStyleMappings.CIVIC.property && (
+          <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
+            <ControlLabel>Street No.</ControlLabel>
+            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.CIVIC_NUMBER} data={data} />
           </FormGroup>
         )}
         {type === addressStyleMappings.CIVIC.property && (
@@ -165,19 +216,68 @@ const AddressForm = (props) => {
         {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Street Type</ControlLabel>
-            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_TYPE} data={data} />
+            <StreetTypeDropdown
+              {...readOnlyAttr}
+              optionValue
+              {...inputProps}
+              items={settingStore.streetTypes}
+              mapping={mappings.STREET_TYPE}
+              data={data}
+              //onChange={props.onAddressStyleChanged}
+              //onSelect={props.onAddressStyleSelected}
+            />
           </FormGroup>
         )}
         {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
             <ControlLabel>Dir.</ControlLabel>
-            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.STREET_DIR} data={data} />
+            <StreetDirDropdown
+              {...readOnlyAttr}
+              codeValue
+              {...inputProps}
+              items={settingStore.directions}
+              mapping={mappings.STREET_DIR}
+              data={data}
+              //onChange={props.onAddressStyleChanged}
+              //onSelect={props.onAddressStyleSelected}
+              // TODO: Turn me into an example!
+              mapItems={(item) => {
+                let mappedItem = {
+                  data: item.code,
+                  code: item.code,
+                  value: item.code,
+                  //selected: item.selected
+                }
+
+                return mappedItem
+              }}
+            />
           </FormGroup>
         )}
         {type === addressStyleMappings.CIVIC.property && (
           <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
             <ControlLabel>Quad.</ControlLabel>
-            <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.QUADRANT} data={data} />
+            <QuadrantDropdown
+              {...readOnlyAttr}
+              codeValue
+              {...inputProps}
+              items={settingStore.quadrants}
+              mapping={mappings.QUADRANT}
+              data={data}
+              //onChange={props.onAddressStyleChanged}
+              //onSelect={props.onAddressStyleSelected}
+              // TODO: Turn me into an example!
+              mapItems={(item) => {
+                let mappedItem = {
+                  data: item.code,
+                  code: item.code,
+                  value: item.code,
+                  //selected: item.selected
+                }
+
+                return mappedItem
+              }}
+            />
           </FormGroup>
         )}
 
@@ -262,7 +362,7 @@ const AddressForm = (props) => {
               id: mappings.CITY_ID,
               code: mappings.CITY_CODE
             }}
-            items={cities}
+            items={settingStore.cities}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onCityValueChanged}
             onSelect={props.onCityItemSelected}
@@ -280,7 +380,7 @@ const AddressForm = (props) => {
               id: mappings.ZONE_ID,
               code: mappings.ZONE_CODE
             }}
-            items={zones}
+            items={settingStore.zones}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onTerritoryValueChanged}
             onSelect={props.onTerritoryItemSelected}
@@ -298,7 +398,7 @@ const AddressForm = (props) => {
               id: mappings.COUNTRY_ID,
               code: mappings.COUNTRY_CODE
             }}
-            items={countries}
+            items={settingStore.countries}
             //shouldItemRender={matchItemToTerm}
             onChange={props.onCountryValueChanged}
             onSelect={props.onCountryItemSelected}
@@ -404,6 +504,9 @@ class CurrentAddress extends Component {
       zones: [],
       countries: [],
       geoZones: [],
+      streetTypes: [],
+      directions: [],
+      quadrants: []
       //types: [],
       //type: props.type
     }
@@ -563,7 +666,11 @@ class CurrentAddress extends Component {
 
   render() {
     // CurrentAddress.render
-    let { addressStyles, countries, zones, cities, geoZones } = this.state
+    let { addressStyles,
+      geoZones, countries, zones, cities,
+      streetTypes, directions, quadrants
+    } = this.state
+
     let { data } = this.props
 
     //console.log('DUMPING CURRENT ADDRESS STATE')
@@ -691,6 +798,9 @@ class CurrentAddress extends Component {
                 countries={countries}
                 zones={zones}
                 cities={cities}
+                streetTypes={streetTypes}
+                directions={directions}
+                quadrants={quadrants}
                 //type={type}
                 //types={types}
                 data={data}

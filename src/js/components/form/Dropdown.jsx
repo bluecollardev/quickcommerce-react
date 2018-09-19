@@ -8,7 +8,59 @@ import { DropdownButton, FormControl, MenuItem, SplitButton, InputGroup } from '
 import FormHelper from '../../helpers/Form.js'
 import ObjectHelper from '../../helpers/Object.js'
 
+import DefaultSelectListOptions from './selectListOptions/DefaultSelectListOptions.jsx'
+import NormalValueSelectListOptions from './selectListOptions/NormalValueSelectListOptions.jsx'
+import OptionValueSelectListOptions from './selectListOptions/OptionValueSelectListOptions.jsx'
+import CodeValueSelectListOptions from './selectListOptions/CodeValueSelectListOptions.jsx'
+import DisplayTextValueSelectListOptions from './selectListOptions/DisplayTextValueSelectListOptions.jsx'
+
 const getMappedValue = FormHelper.getMappedValue
+
+const renderSelectListOptions = (props) => {
+  if (props.hasOwnProperty('normalValue')) {
+    return (
+      <NormalValueSelectListOptions
+        items={props.items}
+        mapItems={props.mapItems}
+      />
+    )
+}
+
+  if (props.hasOwnProperty('optionValue')) {
+    return (
+      <OptionValueSelectListOptions
+        items={props.items}
+        mapItems={props.mapItems}
+      />
+    )
+  }
+
+  if (props.hasOwnProperty('codeValue')) {
+    return (
+      <CodeValueSelectListOptions
+        items={props.items}
+        mapItems={props.mapItems}
+      />
+    )
+  }
+
+  if (props.hasOwnProperty('displayTextValue')) {
+    return (
+      <DisplayTextValueSelectListOptions
+        items={props.items}
+        mapItems={props.mapItems}
+        displayText={props.displayText}
+      />
+    )
+  }
+
+  return (
+    <DefaultSelectListOptions
+      items={props.items}
+      mapItems={props.mapItems}
+    />
+  )
+}
 
 const SelectList = (props) => {
   // Render the SelectList
@@ -44,8 +96,10 @@ const SelectList = (props) => {
     // Make sure we delete props before we spread the input props onto
     // the JSX element or you'll end up with attributes like mapping="[Object object]"
     delete inputProps.items
+    delete inputProps.normalValue
     delete inputProps.optionValue
     delete inputProps.codeValue
+    delete inputProps.displayTextValue
     delete inputProps.data
     delete inputProps.mapping
     delete inputProps.mapItems
@@ -58,138 +112,13 @@ const SelectList = (props) => {
     //debugger
   }
 
-  if (props.hasOwnProperty('normalValue')) {
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        componentClass='select'
-        {...inputProps}>
-        <option key={0} value=''></option>
-        {items.map((item, idx) => {
-          // Use the mapItems callback to perform
-          // any last second tweaks to the data
-          item = mapItems(item)
-          return(
-            <option
-              key={idx + 1}
-              value={item}>
-              {item}
-            </option>
-          )
-        })}
-      </FormControl>
-    )
-  }
-
-  if (props.hasOwnProperty('optionValue')) {
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        componentClass='select'
-        {...inputProps}>
-        <option key={0} value=''></option>
-        {items.map((item, idx) => {
-          // Use the mapItems callback to perform
-          // any last second tweaks to the data
-          item = mapItems(item)
-          return(
-            <option
-              key={idx + 1}
-              raw={JSON.stringify(item)}
-              code={item.code}
-              value={item.value}
-              selected={item.selected}>
-              {item.value}
-            </option>
-          )
-        })}
-      </FormControl>
-    )
-  }
-
-  // TODO: This isn't used anywhere
-  if (props.hasOwnProperty('codeValue')) {
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        componentClass='select'
-        {...inputProps}>
-        <option key={0} value=''></option>
-        {items.map((item, idx) => {
-          // Use the mapItems callback to perform
-          // any last second tweaks to the data
-          item = mapItems(item)
-          return (
-            <option
-              key={idx + 1}
-              raw={JSON.stringify(item)}
-              value={item.code}
-              selected={item.selected}>
-              {item.value}
-            </option>
-          )
-        })}
-      </FormControl>
-    )
-  }
-
-  if (props.hasOwnProperty('displayTextValue')) {
-    return (
-      <FormControl
-        readOnly={props.readOnly}
-        name={name}
-        componentClass='select'
-        {...inputProps}>
-        <option key={0} value=''></option>
-        {items.map((item, idx) => {
-          // Use the mapItems callback to perform
-          // any last second tweaks to the data
-          item = mapItems(item)
-
-          let displayValue = item.value
-
-          if (typeof props.displayText === 'function') {
-            displayValue = displayText(item.value)
-          }
-
-          return(
-            <option
-              key={idx + 1}
-              raw={JSON.stringify(item)}
-              value={item.value}
-              selected={item.selected}>
-              {displayValue}
-            </option>
-          )
-        })}
-      </FormControl>
-    )
-  }
-
   return (
     <FormControl
       readOnly={props.readOnly}
       name={name}
       componentClass='select'
       {...inputProps}>
-      <option key={0} value=''></option>
-      {items.map((item, idx) => {
-        // Use the mapItems callback to perform
-        // any last second tweaks to the data
-        item = mapItems(item)
-        return(
-          <option
-            key={idx + 1}
-            raw={JSON.stringify(item)}
-            value={item.id}
-            selected={item.selected}>
-            {item.value}
-          </option>
-        )
-      })}
+      {renderSelectListOptions(props)}
     </FormControl>
   )
 }
@@ -322,6 +251,10 @@ const StreetDirDropdown = (props) => {
   return (<SelectList {...props} />)
 }
 
+const QuadrantDropdown = (props) => {
+  return (<SelectList {...props} />)
+}
+
 // Dropdown buttons
 
 const ContactTypeButton = (props) => {
@@ -406,6 +339,7 @@ export {
   LiabilityTypeDropdown,
   StreetTypeDropdown,
   StreetDirDropdown,
+  QuadrantDropdown,
   ContactTypeButton,
   IdTypeButton,
   CustomerRelationButton,
