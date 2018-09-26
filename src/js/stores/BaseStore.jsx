@@ -181,6 +181,20 @@ class BaseStore extends EventEmitter {
 
   /**
    *
+   * @param collectionKey
+   * @param key
+   * @param keyValue
+   * @returns {boolean}
+   */
+  hasInCollection(collectionKey, key, keyValue) {
+    let exists = false
+    this.findInCollection(collectionKey, key, keyValue, () => exists = true)
+
+    return exists
+  }
+
+  /**
+   *
    * @param collection
    * @param key
    * @param keyValue

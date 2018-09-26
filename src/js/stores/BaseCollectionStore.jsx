@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events'
 
 import BaseStore from './BaseStore.jsx'
+import ObjectHelper from '../helpers/Object.js'
 
 class BaseCollectionStore extends BaseStore {
   /**
@@ -224,14 +225,24 @@ class BaseCollectionStore extends BaseStore {
   }
 
   /**
-   * Alias for hasItem.
+   * Similar to hasItem, except with an optional check to determine if the item entry is empty.
+   *
    * @param key
+   * @param trueIfEmpty
    * @returns {boolean}
    */
-  has(key) {
+  has(key, trueIfEmpty) {
+    trueIfEmpty = false
     let exists = false
+
     if (this.items.hasOwnProperty(key) && typeof this.items[key] !== 'undefined') {
       exists = true
+    }
+
+    if (exists && !(trueIfEmpty)) {
+      if (this.items[key] === null || ObjectHelper.isEmpty(this.items[key])) {
+        exists = false
+      }
     }
 
     return exists
