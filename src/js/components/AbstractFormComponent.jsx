@@ -2,7 +2,7 @@ import assign from 'object-assign'
 import React, { Component } from 'react'
 import { Dispatcher } from 'flux'
 import PropTypes from 'prop-types'
-import AbstractFormStore from 'quickcommerce-react/stores/AbstractFormStore.jsx'
+import AbstractFormStore from '../stores/AbstractFormStore.jsx'
 
 function componentIsWrappedWithInjector(component) {
   return component.hasOwnProperty('wrappedComponent')

@@ -1,23 +1,14 @@
-import DragDropCartRow from '../cart/DragDropCartRow.jsx'
-/* Copied from PosCompoent */
-import DragDropContainer from '../cart/DragDropContainer.jsx'
-/* Site specific imports */
-/* Generic imports */
-
-import Stepper from '../stepper/BrowserStepper.jsx'
-import Factory from '../../factory/Factory.jsx'
-
-import QcCart from '../../modules/Cart.jsx' // Import as alias
-// Pre-configured step types
-//import BrowserActions from 'quickcommerce-react/actions/BrowserActions.jsx'
-
 import React, { Component } from 'react'
 
 import { Button, Col, Row } from 'react-bootstrap'
-/* Override */
-//import MainContent from '../../js/components/Product.jsx'
 
-let fluxFactory = new Factory()
+import DragDropCartRow from '../cart/DragDropCartRow.jsx'
+import DragDropContainer from '../cart/DragDropContainer.jsx'
+
+import Stepper from '../stepper/BrowserStepper.jsx'
+//import Factory from '../../factory/Factory.jsx'
+
+import QcCart from '../../modules/Cart.jsx' // Import as alias
 
 let categories = [] // Empty init containers
 let products = [] // Empty init containers
