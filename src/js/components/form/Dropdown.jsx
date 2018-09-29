@@ -100,6 +100,7 @@ const SelectList = (props) => {
     delete inputProps.optionValue
     delete inputProps.codeValue
     delete inputProps.displayTextValue
+    delete inputProps.displayText
     delete inputProps.data
     delete inputProps.mapping
     delete inputProps.mapItems
