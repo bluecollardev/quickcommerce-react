@@ -44,13 +44,25 @@ class BrowserStep extends AbstractBrowserStep {
     }
 
     this.state = {
-      items: [{}, {}, {}, {}, {}, {}]
+      items: []
     }
   }
 
   componentWillMount() {
     if (typeof this.registerDecorators === 'function') {
       this.registerDecorators()
+    }
+  }
+
+  componentWillReceiveProps() {
+    if (typeof this.fetchData === 'function') {
+      //setTimeout(() => {
+      this.fetchData((payload) => {
+        this.setState({
+          items: payload.content
+        })
+      })
+      //}, 1000)
     }
   }
 
