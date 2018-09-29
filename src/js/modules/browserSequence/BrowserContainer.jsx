@@ -19,39 +19,27 @@ class BrowserContainer extends Component {
     //let categories = this.props.catalogStore.getCategories()
 
     return (
-      <main>
-        {/* Main Content Wrapper */}
-        {/*<CatalogFilterBar
-          //items={categories}
-          onFilterSelected={this.props.onFilterSelected}
-        />*/}
-
-        {/* Shop Catalog */}
-        <section className="container main-content padding-bottom-3x">
-          <div className="row padding-top">
-            {this.props.children}
+      <section className="container-fluid padding-bottom-3x">
+        <div className="row padding-top-half">
+          {this.props.children}
+        </div>
+        <hr/>
+        <div className="pagination padding-bottom">
+          <div className="page-numbers">
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <span className="active">3</span>
+            <a href="#">4</a>
+            <span>...</span>
+            <a href="#">10</a>
           </div>
-          <hr/>
-          {/* Pagination */}
-          <div className="pagination padding-bottom">
-            <div className="page-numbers">
-              <a href="#">1</a>
-              <a href="#">2</a>
-              <span className="active">3</span>
-              <a href="#">4</a>
-              <span>...</span>
-              <a href="#">10</a>
-            </div>
-            <div className="pager">
-              <a href="#">Prev</a>
-              <span>|</span>
-              <a href="#">Next</a>
-            </div>
+          <div className="pager">
+            <a href="#">Prev</a>
+            <span>|</span>
+            <a href="#">Next</a>
           </div>
-          {/* .pagination */}
-        </section>
-        {/* .container */}
-      </main>
+        </div>
+      </section>
     )
   }
 }
