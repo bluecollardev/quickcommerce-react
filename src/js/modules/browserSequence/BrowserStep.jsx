@@ -39,8 +39,18 @@ class BrowserStep extends AbstractBrowserStep {
   constructor(props) {
     super(props)
 
+    if (typeof this.registerDecorators === 'function') {
+      this.registerDecorators = this.registerDecorators.bind(this)
+    }
+
     this.state = {
       items: [{}, {}, {}, {}, {}, {}]
+    }
+  }
+
+  componentWillMount() {
+    if (typeof this.registerDecorators === 'function') {
+      this.registerDecorators()
     }
   }
 

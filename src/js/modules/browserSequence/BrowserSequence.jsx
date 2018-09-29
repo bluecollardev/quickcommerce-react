@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, Children } from 'react'
 
 import Stepper from 'qc-react/modules/stepper/Stepper.jsx'
 
-//import BrowserStep from './BrowserStep.jsx'
+import BrowserStep from './BrowserStep.jsx'
 
 import BrowserContainer from './BrowserContainer'
 
@@ -22,7 +22,13 @@ class BrowserSequence extends Component {
 
     return (
       <BrowserContainer>
-        {this.props.children}
+        {Children.map(this.props.children, (child) => {
+          if (child.type === BrowserStep) {
+            return React.cloneElement(child, {
+              stepper: this.stepper
+            })
+          }
+        })}
       </BrowserContainer>
     )
   }
