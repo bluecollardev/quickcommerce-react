@@ -31,7 +31,7 @@ const ActionButtons = (props) => {
 
   return (
     <div className={wrapperClassName}>
-      {actions.map(action => {
+      {actions.map((action, idx) => {
         let buttonText = (typeof action.buttonText === 'string') ? action.buttonText : props.buttonText
         // TODO: Instead of onClick, maybe 'execute' (if command pattern)?
         let onButtonClicked = (typeof action.onClick === 'function') ? action.onClick : onButtonClicked
@@ -43,7 +43,7 @@ const ActionButtons = (props) => {
         }
 
         return (
-          <FormGroup className={groupClassName}>
+          <FormGroup key={idx} className={groupClassName}>
             <Button className='btn action-button' onClick={onButtonClicked}>
               <h5>{iconElement} {buttonText}</h5>
             </Button>

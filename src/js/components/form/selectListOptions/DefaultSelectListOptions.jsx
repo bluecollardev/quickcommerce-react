@@ -25,8 +25,8 @@ const DefaultSelectListOptions = (props) => {
           <option
             key={idx + 1}
             raw={JSON.stringify(item)}
-            value={item.id}
-            selected={item.selected}>
+            //selected={item.selected}
+            value={item.id}>
             {item.value}
           </option>
         )

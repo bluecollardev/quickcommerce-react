@@ -81,7 +81,8 @@ class AutocompleteFormControl extends Component {
   }
 
   render() {
-    const { field, fields, value, mappings, selection, data, items } = this.props
+    let { data, items } = this.props
+    const { field, fields, value, mappings, selection } = this.props
     // props must have the following defined:
     // fields (function)
 
@@ -94,6 +95,10 @@ class AutocompleteFormControl extends Component {
       id: getMappedValue(mappings.id, data, true) || null,
       code: getMappedValue(mappings.code, data, true) || ''
     })
+
+    // Autocomplete (pkg) component will throw an error if items is undefined or null
+    // eg. Cannot read property 'filter' of undefined
+    items = (items instanceof Array) ? items : []
 
     return (
       <Fragment>

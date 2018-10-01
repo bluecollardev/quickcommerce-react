@@ -124,6 +124,7 @@ class AbstractBrowserStep extends Component {
     row.defaultProps.onItemClicked = fn
     row.defaultProps.onAddToCartClicked = this.props.onAddToCartClicked // Shortcut - quick add to cart
     row.defaultProps.stepper = this.props.stepper
+    row.defaultProps.items = this.state.items
 
     return rowComponent
   }

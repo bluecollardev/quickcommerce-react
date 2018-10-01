@@ -26,8 +26,8 @@ const OptionValueSelectListOptions = (props) => {
             key={idx + 1}
             raw={JSON.stringify(item)}
             code={item.code}
-            value={item.value}
-            selected={item.selected}>
+            //selected={item.selected}
+            value={item.value}>
             {item.value}
           </option>
         )

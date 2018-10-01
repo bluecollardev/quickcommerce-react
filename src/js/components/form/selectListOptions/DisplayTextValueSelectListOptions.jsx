@@ -32,8 +32,8 @@ const DisplayTextValueSelectListOptions = (props) => {
           <option
             key={idx + 1}
             raw={JSON.stringify(item)}
-            value={item.value}
-            selected={item.selected}>
+            //selected={item.selected}
+            value={item.value}>
             {displayValue}
           </option>
         )
