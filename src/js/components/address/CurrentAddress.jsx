@@ -71,60 +71,62 @@ const AddressForm = (props) => {
   return (
     <form>
       {/* Don't worry about other sizes, we use flexbox to render on large devices and full width layouts */}
-      <div className='col-md-flex col-lg-flex'>
-        <HiddenInput {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_ID} data={data} />
+      {mode !== 'view' && (
+        <div className='col-md-flex col-lg-flex'>
+          <HiddenInput {...readOnlyAttr} {...inputProps} mapping={mappings.ADDRESS_ID} data={data} />
 
-        {/*<FormGroup className='col-sm-3 form-element form-select'>
-          <ControlLabel>Address Type</ControlLabel>
-          <FormControl
-            {...readOnlyAttr}
-            componentClass='select'
-            onChange={props.onAddressStyleSelected}>
-            {types.indexOf('simple') > -1 && (<option key={0} value='simple'>Simple</option>)}
-            {types.indexOf('civic') > -1 && (<option key={1} value='civic'>Civic</option>)}
-            {types.indexOf('rural') > -1 && (<option key={2} value='rural'>Rural</option>)}
-            {types.indexOf('pobox') > -1 && (<option key={3} value='pobox'>Postal Box</option>)}
-          </FormControl>
-        </FormGroup>*/}
+          {/*<FormGroup className='col-sm-3 form-element form-select'>
+            <ControlLabel>Address Type</ControlLabel>
+            <FormControl
+              {...readOnlyAttr}
+              componentClass='select'
+              onChange={props.onAddressStyleSelected}>
+              {types.indexOf('simple') > -1 && (<option key={0} value='simple'>Simple</option>)}
+              {types.indexOf('civic') > -1 && (<option key={1} value='civic'>Civic</option>)}
+              {types.indexOf('rural') > -1 && (<option key={2} value='rural'>Rural</option>)}
+              {types.indexOf('pobox') > -1 && (<option key={3} value='pobox'>Postal Box</option>)}
+            </FormControl>
+          </FormGroup>*/}
 
-        {/* TODO: To accommodate smaller screen sizes we may have to conditionally display this block */}
-        {/*<FormGroup className='col-sm-2 form-element form-select'>
-          <ControlLabel>Type</ControlLabel>
-          <AddressStyleDropdown
-            {...readOnlyAttr}
-            codeValue
-            {...inputProps}
-            items={addressStyleTypes}
-            mapping={mappings.ADDRESS_STYLE}
-            data={data}
-            onChange={props.onAddressStyleChanged}
-            onSelect={props.onAddressStyleSelected}
-            // TODO: Turn me into an example!
-            mapItems={(item) => {
-              let mappedItem = {}
+          {/* TODO: To accommodate smaller screen sizes we may have to conditionally display this block */}
+          <FormGroup className='col-sm-2 form-element form-select'>
+            <ControlLabel>Type</ControlLabel>
+            <AddressStyleDropdown
+              {...readOnlyAttr}
+              codeValue
+              {...inputProps}
+              items={addressStyleTypes}
+              mapping={mappings.ADDRESS_STYLE}
+              data={data}
+              onChange={props.onAddressStyleChanged}
+              onSelect={props.onAddressStyleSelected}
+              // TODO: Turn me into an example!
+              mapItems={(item) => {
+                let mappedItem = {}
 
-              if (typeof item.data === 'string') {
-                for (let addressStyleType in mappings.ADDRESS_STYLE_MAP) {
-                  let addressStyleMapping = mappings.ADDRESS_STYLE_MAP[addressStyleType]
-                  let addressStyleCode = (typeof item.data === 'string') ? item.data : ''
-                  if (addressStyleCode === addressStyleType) {
-                    mappedItem = {
-                      data: addressStyleMapping.property,
-                      code: addressStyleMapping.property,
-                      value: addressStyleMapping.value,
-                      //selected: item.selected
+                if (typeof item.data === 'string') {
+                  for (let addressStyleType in mappings.ADDRESS_STYLE_MAP) {
+                    let addressStyleMapping = mappings.ADDRESS_STYLE_MAP[addressStyleType]
+                    let addressStyleCode = (typeof item.data === 'string') ? item.data : ''
+                    if (addressStyleCode === addressStyleType) {
+                      mappedItem = {
+                        data: addressStyleMapping.property,
+                        code: addressStyleMapping.property,
+                        value: addressStyleMapping.value,
+                        //selected: item.selected
+                      }
+
+                      break
                     }
-
-                    break
                   }
                 }
-              }
 
-              return mappedItem
-            }}
-          />
-        </FormGroup>*/}
-      </div>
+                return mappedItem
+              }}
+            />
+          </FormGroup>
+        </div>
+      )}
 
       <div className='col-md-flex col-lg-flex'>
         {/* First Name / Last Name */}
@@ -143,7 +145,7 @@ const AddressForm = (props) => {
         )}
 
         {/* TODO: To accommodate smaller screen sizes we may have to conditionally display this block */}
-        <FormGroup className='col-sm-2 form-element form-select'>
+        {/*<FormGroup className='col-sm-1 form-element form-select'>
           <ControlLabel>Type</ControlLabel>
           <AddressStyleDropdown
             {...readOnlyAttr}
@@ -178,7 +180,7 @@ const AddressForm = (props) => {
               return mappedItem
             }}
           />
-        </FormGroup>
+        </FormGroup>*/}
 
         {/* Simple Addresses (Line 1, 2, 3?) */}
         {type === addressStyleMappings.SIMPLE.property && (
@@ -196,7 +198,7 @@ const AddressForm = (props) => {
 
         {/* Civic Addresses */}
         {type === addressStyleMappings.CIVIC.property && (
-          <FormGroup className='col-sm-1 col-md-1 col-lg-1'>
+          <FormGroup className='col-sm-2 col-md-2 col-lg-2'>
             <ControlLabel>Suite</ControlLabel>
             <InputFormControl {...readOnlyAttr} {...inputProps} mapping={mappings.SUITE} data={data} />
           </FormGroup>
@@ -229,7 +231,7 @@ const AddressForm = (props) => {
           </FormGroup>
         )}
         {type === addressStyleMappings.CIVIC.property && (
-          <FormGroup className='col-sm-1 col-md-1 col-lg-1 form-element form-select'>
+          <FormGroup className='col-sm-2 col-md-2 col-lg-2 form-element form-select'>
             <ControlLabel>Dir.</ControlLabel>
             <StreetDirDropdown
               {...readOnlyAttr}

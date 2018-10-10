@@ -1,6 +1,10 @@
-import assign from 'object-assign'
+//import assign from 'object-assign'
 
 //import { unwrapComponent, resolveComponent } from 'qc-react/components/form/AbstractFormComponent.jsx'
+
+// If you want to extend an existing decorator use the commented out code
+// Import the decorator 'definition' without the 'enhancer' wrapper
+import { SampleComponentDecorator as SampleBaseComponentDecorator } from 'SampleComponentDecorator.jsx'
 
 const SampleComponentDecorator = {
   sampleMethod: {
@@ -22,6 +26,8 @@ function enhancer(WrappedComponent) {
    */
   let wrappedComponent = WrappedComponent.wrappedComponent
 
+  // If you want to extend an existing decorator use the commented out code
+  //Object.defineProperties(wrappedComponent.prototype, SampleComponentDecorator, SampleBaseComponentDecorator)
   Object.defineProperties(wrappedComponent.prototype, SampleComponentDecorator)
 
   WrappedComponent.wrappedComponent = wrappedComponent

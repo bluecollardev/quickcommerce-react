@@ -1,6 +1,6 @@
 import assign from 'object-assign'
 
-import AbstractBrowserStore from 'qc-react/stores/AbstractBrowserStore.jsx'
+import AbstractBrowserStore from './AbstractBrowserStore.jsx'
 
 class BrowserStore extends AbstractBrowserStore {
   // BrowserStore constructor
