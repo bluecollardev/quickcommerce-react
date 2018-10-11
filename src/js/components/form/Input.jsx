@@ -53,12 +53,15 @@ const InputFormControl = (props) => {
       inputProps = props.fields(
         (useValueMapping ? mapping.value : mapping.property),
         getMappedValue(mapping, data, useValueMapping),
-        type
+        type,
+        { onChange: props.onChange }
       )
     } else {
       inputProps = props.fields(
         (useValueMapping ? mapping.value : mapping.property),
-        getMappedValue(mapping, data, useValueMapping)
+        getMappedValue(mapping, data, useValueMapping),
+        null,
+        { onChange: props.onChange }
       )
     }
   }
