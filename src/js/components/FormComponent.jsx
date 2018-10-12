@@ -243,6 +243,8 @@ export default (ComposedComponent) => {
     }
 
     /**
+     * TODO: Make me f***ing configurable with custom types already!!!
+     * TODO: Custom f***ing types need custom configurable resolvers!
      * If a Swagger model is provided as the type argument,
      * we can leverage its constructFromObject method
      * @param fieldName
@@ -289,6 +291,8 @@ export default (ComposedComponent) => {
             } else if (storedValue.hasOwnProperty('e164')) {
               // TODO: Again, use the correct type
               fieldValue = storedValue.e164
+            } else if (storedValue.hasOwnProperty('name')) {
+              fieldValue = storedValue.name
             }
 
             // TODO: Use command pattern to create field type parsers

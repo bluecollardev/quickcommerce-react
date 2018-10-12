@@ -1,3 +1,5 @@
+// TODO: Document this, half the time I have no f***ing idea how to configure dropdowns
+
 import assign from 'object-assign'
 
 import React from 'react'
@@ -89,9 +91,12 @@ const SelectList = (props) => {
 
   let inputProps = undefined
   if (hasMapping) {
-    inputProps = assign({}, props, props.fields(mapping.property, getMappedValue(mapping, data), null, {
+    let mappedValue = getMappedValue(mapping, data)
+    let formComponentProps = props.fields(mapping.property, mappedValue, null, {
       onChange: props.onChange
-    }))
+    })
+
+    inputProps = assign({}, props, formComponentProps)
 
     // Make sure we delete props before we spread the input props onto
     // the JSX element or you'll end up with attributes like mapping="[Object object]"
