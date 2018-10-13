@@ -245,4 +245,4 @@ const SsnInput = (props) => {
 }
 
 export default InputFormControl
-export { InputFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, CurrencyInput, PercentageInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
+export { InputFormControl, CurrencyFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, CurrencyInput, PercentageInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
