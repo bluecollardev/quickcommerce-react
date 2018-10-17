@@ -27,6 +27,8 @@ class BrowserSequence extends Component {
             return React.cloneElement(child, {
               stepper: this.stepper
             })
+          } else {
+            return React.cloneElement(child)
           }
         })}
       </BrowserContainer>

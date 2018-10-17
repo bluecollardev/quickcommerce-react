@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 
 import { TabPanes } from 'react-bootstrap'
 
+/**
+ * Use modules/browserSequence/BrowserMenu.jsx.
+ * @deprecated
+ */
 class Step extends Component {
   constructor(props) {
     super(props)

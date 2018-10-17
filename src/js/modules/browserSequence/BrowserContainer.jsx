@@ -7,26 +7,11 @@ import BrowserStep from './BrowserStep.jsx'
 class BrowserContainer extends Component {
   constructor(props) {
     super(props)
-
-    // Store our stepper instance
-    // Stepper maintains its own state and store
-    //this.stepper = new Stepper()
-    //this.stepper.setSteps(this.configureSteps())
   }
 
   render() {
-    //let steps = this.stepper.getSteps() // Stepper extends store, we're good
-    //let categories = this.props.catalogStore.getCategories()
-
     return (
       <main>
-        {/* Main Content Wrapper */}
-        {/*<CatalogFilterBar
-          //items={categories}
-          onFilterSelected={this.props.onFilterSelected}
-        />*/}
-
-        {/* Shop Catalog */}
         <section className="container-fluid padding-bottom-3x">
           <div className="row padding-top">
             {this.props.children}
