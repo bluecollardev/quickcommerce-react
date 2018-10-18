@@ -293,7 +293,7 @@ class SignInForm extends Component {
               display: 'flex',
               alignItems: 'center'
             }}>
-              <FormControl onClick={this.toggleRemember} style={{
+              <input onClick={this.toggleRemember} style={{
                 display: 'inline-block',
                 width: '24px',
                 marginRight: '1rem'
