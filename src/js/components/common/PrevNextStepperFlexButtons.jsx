@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import { Button } from 'react-bootstrap'
@@ -7,19 +7,21 @@ const PrevNextStepperFlexButtons = (props) => {
   const { prevButtonText, nextButtonText, onPrevClicked, onNextClicked } = props
 
   return (
-    <div className='col-xs-12 flex-button-group'>
-      <Button onClick={onPrevClicked}>
-        <h4 className='text-center'><i className='fa fa-arrow-circle-left'/>
-          <small>{prevButtonText}</small>
-        </h4>
-      </Button>
-      &nbsp;&nbsp;
-      <Button bsStyle='success' onClick={onNextClicked}>
-        <h4 className='text-center'><i className='fa fa-arrow-circle-right'/>
-          <small>{nextButtonText}</small>
-        </h4>
-      </Button>
-    </div>
+    <Fragment>
+      {/* TODO: Allow for a custom className */}
+      <div className='flex-button-group'>
+        <Button onClick={onPrevClicked}>
+          <h4 className='text-center'><i className='fa fa-arrow-circle-left'/>
+            <small>{prevButtonText}</small>
+          </h4>
+        </Button>
+        <Button bsStyle='success' onClick={onNextClicked}>
+          <h4 className='text-center'><i className='fa fa-arrow-circle-right'/>
+            <small>{nextButtonText}</small>
+          </h4>
+        </Button>
+      </div>
+    </Fragment>
   )
 }
 
