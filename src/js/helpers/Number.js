@@ -19,10 +19,10 @@ class NumberHelper {
     inclusive = (typeof inclusive === 'boolean') ? inclusive : true
 
     if (inclusive) {
-      return (Math.min(rangeMin, number, rangeMax) <= number && Math.max(rangeMin, number, rangeMax) >= number)
+      return (Math.min(rangeMin, rangeMax) <= number && Math.max(rangeMin, rangeMax) >= number)
     }
 
-    return (Math.min(rangeMin, number, rangeMax) < number && Math.max(rangeMin, number, rangeMax) > number)
+    return (Math.min(rangeMin, rangeMax) < number && Math.max(rangeMin, rangeMax) > number)
   }
 }
 
