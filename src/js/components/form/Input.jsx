@@ -134,9 +134,12 @@ const CurrencyFormControl = (props) => {
       name={name}
       type={props.type}
       min={props.min}
+      max={props.max}
       step={props.step}
       data-number-to-fixed='2'
       data-number-stepfactor='100'
+      onKeyUp={props.onKeyUp}
+      onBlur={props.onBlur}
       onClick={props.onClick}
       componentClass={props.componentClass}
       defaultValue={props.defaultValue}
