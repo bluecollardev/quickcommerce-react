@@ -180,16 +180,16 @@ export default (ComposedComponent) => {
     componentDidMount() {// CartContext.componentDidMount
       //this.context.actions.init(this.props.items, this.context.store.getSelection())
       this.cartContextManager.subscribe((data) => {
-        console.log('update CART with data')
-        console.log(data)
+        //console.log('update CART with data')
+        //console.log(data)
         this.forceUpdate()
       })
     }
 
     componentWillReceiveProps() {
       let payload = this.cartContextManager.getCartContextValue()
-      console.log('component received new props dump context val')
-      console.log(payload)
+      //console.log('component received new props dump context val')
+      //console.log(payload)
       this.cartContextManager.notifySubscribers(payload)
     }
 

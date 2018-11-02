@@ -269,7 +269,7 @@ class SignInForm extends Component {
           <form>
             <FormGroup className='display-block'>
               <ControlLabel>Username (E-mail Address)</ControlLabel>
-              <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} />
+              <FormControl name='account' type='text' {...this.props.fields('account', this.state.account)} placeholder='example@example.com' />
             </FormGroup>
 
             <FormGroup className='display-block'>
@@ -277,18 +277,6 @@ class SignInForm extends Component {
               <FormControl type='password' {...this.props.fields('password', this.state.password)} />
             </FormGroup>
 
-            <FormGroup className='display-block'>
-              {this.props.displayActions && (
-                <Button block onClick={this.onCreate} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
-                  {/*<h4><i className='fa fa-user-plus' /> Create Account</h4>*/}
-                  <span><i className='fa fa-user-plus'/> Create Account</span>
-                </Button>
-              )}
-              <Button block bsStyle='success' onClick={this.onSubmit} className='btn btn-primary btn-block waves-effect waves-light space-top-none'>
-                {/*<h4><i className='fa fa-sign-in' /> Sign In</h4>*/}
-                <span><i className='fa fa-sign-in'/> Sign In</span>
-              </Button>
-            </FormGroup>
             <FormGroup style={{
               display: 'flex',
               alignItems: 'center'
@@ -303,6 +291,19 @@ class SignInForm extends Component {
                 display: 'inline-block',
                 paddingTop: '0.35rem'
               }}>Remember Me</ControlLabel>
+            </FormGroup>
+
+            <FormGroup className='display-block'>
+              {this.props.displayActions && (
+                <Button block onClick={this.onCreate} className='btn btn-primary btn-block space-top-none'>
+                  {/*<h4><i className='fa fa-user-plus' /> Create Account</h4>*/}
+                  <span><i className='fa fa-user-plus'/> Create Account</span>
+                </Button>
+              )}
+              <Button block bsStyle='success' onClick={this.onSubmit} className='btn btn-primary btn-block space-top-none'>
+                {/*<h4><i className='fa fa-sign-in' /> Sign In</h4>*/}
+                <span><i className='fa fa-sign-in'/> Sign In</span>
+              </Button>
             </FormGroup>
           </form>
         </div>
