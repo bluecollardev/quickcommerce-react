@@ -81,7 +81,7 @@ class AutocompleteFormControl extends Component {
   }
 
   render() {
-    let { data, items, open } = this.props
+    let { data, items } = this.props
     const { field, fields, value, mappings, selection } = this.props
     // props must have the following defined:
     // fields (function)
@@ -103,7 +103,6 @@ class AutocompleteFormControl extends Component {
     return (
       <Fragment>
         <Autocomplete
-          //open={open}
           inputProps={assign(fields(mappings.field.property, mergedSelection.value), {
             className: 'form-control',
             readOnly: this.props.readOnly,

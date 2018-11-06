@@ -179,7 +179,7 @@ const MonthsDropdown = (props) => {
   return (
     <InputGroup>
       <SelectList {...props} />
-      <InputGroup.Addon>Months</InputGroup.Addon>
+      <InputGroup.Addon>Mo.</InputGroup.Addon>
     </InputGroup>
   )
 }

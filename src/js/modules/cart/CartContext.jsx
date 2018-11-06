@@ -9,6 +9,14 @@ import FormHelper from '../../helpers/Form.js'
 import createCartActions from './CartActions.jsx'
 import { CartStore } from './CartStore.jsx'
 
+/**
+ * Creats a cartContextManager context object, this is passed around to any components
+ * that are wrapped with the CartContext HoC using React's context mechanism.
+ *
+ * @param componentClass
+ * @param exposedMethods
+ * @returns {{getCartContextValue: (function()), getSubscribers: (function(): Array), notifySubscribers: notifySubscribers, subscribe: (function(*=): Function)}}
+ */
 let createCartContextManager = (componentClass, exposedMethods) => {
   let dispatcher = new Dispatcher()
   let actions = createCartActions(dispatcher)
@@ -41,6 +49,10 @@ let createCartContextManager = (componentClass, exposedMethods) => {
     return subscribers
   }
 
+  /**
+   * Notifies subscribers of any changes that occur in CartStore.
+   * @param state
+   */
   let notifySubscribers = (state) => {
     console.log('NOTIFY SUBSCRIBERS')
     cartContextValue = state
@@ -180,16 +192,16 @@ export default (ComposedComponent) => {
     componentDidMount() {// CartContext.componentDidMount
       //this.context.actions.init(this.props.items, this.context.store.getSelection())
       this.cartContextManager.subscribe((data) => {
-        //console.log('update CART with data')
-        //console.log(data)
+        console.log('update CART with data')
+        console.log(data)
         this.forceUpdate()
       })
     }
 
     componentWillReceiveProps() {
       let payload = this.cartContextManager.getCartContextValue()
-      //console.log('component received new props dump context val')
-      //console.log(payload)
+      console.log('component received new props dump context val')
+      console.log(payload)
       this.cartContextManager.notifySubscribers(payload)
     }
 

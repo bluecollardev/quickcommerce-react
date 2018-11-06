@@ -68,9 +68,21 @@ const CatalogItem = (props) => {
                   background: 'transparent',
                   border: 'none'
                 }}>
-                <h5 className='shop-item-title text-center'>
-                  {data.name}
-                </h5>
+                {typeof data.name === 'string' && (
+                  <h5 className='shop-item-title text-center'>
+                    {data.name}
+                  </h5>
+                )}
+                {typeof data.detailLine1 === 'string' && (
+                  <h6 className='shop-item-title-small text-center'>
+                    {data.detailLine1}
+                  </h6>
+                )}
+                {typeof data.detailLine2 === 'string' && (
+                  <h6 className='shop-item-title-small text-center'>
+                    {data.detailLine2}
+                  </h6>
+                )}
               </Button>
             </div>
             {displayActions && (
