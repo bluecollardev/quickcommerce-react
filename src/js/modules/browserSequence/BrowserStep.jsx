@@ -52,37 +52,23 @@ class BrowserStep extends AbstractBrowserStep {
     if (typeof this.registerDecorators === 'function') {
       this.registerDecorators()
     }
-
-    if (typeof this.fetchData === 'function') {
-      //setTimeout(() => {
-      this.fetchData((payload) => {
-        this.setState({
-          items: payload.content
-        })
-      })
-      //}, 1000)
-    }
   }
 
   componentWillReceiveProps() {
+    const { filterItems } = this.props
+
     if (typeof this.fetchData === 'function') {
-      //setTimeout(() => {
       this.fetchData((payload) => {
+        let items = payload.content || []
+        if (typeof filterItems === 'function') {
+          items = filterItems(items)
+        }
+
         this.setState({
-          items: payload.content
+          items: items
         })
       })
-      //}, 1000)
     }
-  }
-
-  /**
-   * Set an error boundary so a rendering failure in the component doesn't cascade.
-   */
-  componentDidCatch(error, info) {
-    console.log('BrowserStep rendering error')
-    console.log(error)
-    console.log(info)
   }
 
   render() {

@@ -29,8 +29,8 @@ class AbstractBrowserStep extends Component {
   constructor(props) {
     super(props)
 
-    this.registerDecorators = this.registerDecorators.bind(this)
     this.configureRow = this.configureRow.bind(this)
+    //this.getInitialState = this.getInitialState.bind(this)
     this.loadBrowserData = this.loadBrowserData.bind(this)
 
     // Initialize or set BrowserStep dispatcher
@@ -75,11 +75,6 @@ class AbstractBrowserStep extends Component {
       this.store.removeChangeListener(this.loadBrowserData)
     }
   }
-
-  registerDecorators() {
-    //throw new Error('registerDecorators has not been implemented')
-  }
-
 
   // Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working
   // in any manner other than with Quick Commerce endpoints
