@@ -218,6 +218,15 @@ const CurrencyInput = (props) => {
   )
 }
 
+const MonthsInput = (props) => {
+  return (
+    <InputGroup>
+      <InputFormControl type='number' {...props} />
+      <InputGroup.Addon>Months</InputGroup.Addon>
+    </InputGroup>
+  )
+}
+
 const PercentageInput = (props) => {
   return (
     <InputGroup>
@@ -248,4 +257,4 @@ const SsnInput = (props) => {
 }
 
 export default InputFormControl
-export { InputFormControl, CurrencyFormControl, HiddenInput, DateInput, DateTimeInput, TimeInput, NumericInput, CurrencyInput, PercentageInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
+export { InputFormControl, CurrencyFormControl, HiddenInput, MonthsInput, DateInput, DateTimeInput, TimeInput, NumericInput, CurrencyInput, PercentageInput, TelephoneInput, EmailInput, PostalCodeInput, SinInput, SsnInput }
