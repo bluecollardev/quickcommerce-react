@@ -208,7 +208,7 @@ function enhancer(WrappedComponent) {
         // Here is your change, ma'am.
         return change_arr
       }
-    }
+    },
     calculateChange: {
       value: function(e) {
         console.log(e)

@@ -31,13 +31,13 @@ export default (dispatcher) => {
         quantity: quantity
       })
     },
-    addOption(key, quantity, item, product) {
+    addOption(key, quantity, option, item) {
       dispatcher.dispatch({
         actionType: 'cart-add-option',
         key: key,
         quantity: quantity,
-        item: item,
-        product: product
+        option: option,
+        item: item
       })
     },
     emptyCart() {
