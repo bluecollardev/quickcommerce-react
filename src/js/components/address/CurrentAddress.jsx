@@ -25,9 +25,10 @@ const AddressForm = (props) => {
     // TODO: Remove any references to the following props
     // We don't need them anymore now that SettingStore has been properly implemented
     countries, zones, cities, //geoZones,
-    //streetTypes, directions, quadrants,
+    streetTypes, //directions, quadrants,
     //field, fields, value, getMappedValue
-    getMappedValue
+    getMappedValue,
+    matchItemToTerm
   } = props
 
   const mappings = props.mappings.address
@@ -222,7 +223,7 @@ const AddressForm = (props) => {
               {...readOnlyAttr}
               optionValue
               {...inputProps}
-              items={settingStore.streetTypes}
+              items={streetTypes}
               mapping={mappings.STREET_TYPE}
               data={data}
               //onChange={props.onAddressStyleChanged}
@@ -365,7 +366,7 @@ const AddressForm = (props) => {
               code: mappings.CITY_CODE
             }}
             items={cities}
-            //shouldItemRender={matchItemToTerm}
+            shouldItemRender={matchItemToTerm}
             onChange={props.onCityValueChanged}
             onSelect={props.onCityItemSelected}
           />
@@ -383,7 +384,7 @@ const AddressForm = (props) => {
               code: mappings.ZONE_CODE
             }}
             items={zones}
-            //shouldItemRender={matchItemToTerm}
+            shouldItemRender={matchItemToTerm}
             onChange={props.onTerritoryValueChanged}
             onSelect={props.onTerritoryItemSelected}
           />
@@ -401,7 +402,7 @@ const AddressForm = (props) => {
               code: mappings.COUNTRY_CODE
             }}
             items={countries}
-            //shouldItemRender={matchItemToTerm}
+            shouldItemRender={matchItemToTerm}
             onChange={props.onCountryValueChanged}
             onSelect={props.onCountryItemSelected}
           />
@@ -550,7 +551,7 @@ class CurrentAddress extends Component {
       formatted = formatted.filter(function (value, idx) {
         return filterValue(value)
       })
-
+s
       formatted = formatted.join('\n')
     }
 
@@ -745,6 +746,9 @@ class CurrentAddress extends Component {
               countries={countries}
               zones={zones}
               cities={cities}
+              streetTypes={streetTypes}
+              directions={directions}
+              quadrants={quadrants}
               //type={type}
               //types={types}
               data={data}

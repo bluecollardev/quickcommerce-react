@@ -148,6 +148,7 @@ const AddressAutocompleteDecorator = {
       console.log('selected country code: ' + item.data.code)
 
       this.getCountryTerritories(item.data.code)
+      this.getCountryStreetTypes(item.data.code)
 
       let newState = assign({}, this.state, {
         data: assign({}, data, {
@@ -185,6 +186,18 @@ const AddressAutocompleteDecorator = {
         //console.log(data)
 
         this.setState({ cities: data })
+      })
+    }
+  },
+  getCountryStreetTypes: {
+    value: function(countryCode) {
+      const { geoService } = this.props
+
+      geoService.getCountryStreetTypes(countryCode, (data) => {
+        //console.log('street types')
+        //console.log(data)
+
+        this.setState({ streetTypes: data })
       })
     }
   },

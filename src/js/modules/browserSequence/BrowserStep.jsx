@@ -76,8 +76,8 @@ class BrowserStep extends AbstractBrowserStep {
     let rowComponent = this.configureRow(this.props.customRowComponent)
     let item = this.props.item || null
 
-    console.log('product browser render triggered')
-    console.log(this.state)
+    //console.log('product browser render triggered')
+    //console.log(this.state)
 
     return (
       <div className='browser-container'>

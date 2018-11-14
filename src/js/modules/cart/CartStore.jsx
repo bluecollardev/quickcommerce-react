@@ -148,6 +148,7 @@ class CartStore extends EventEmitter {
 
   addItem(key, quantity, item, silent) {
     console.log('ATTEMPTING TO ADD ITEM TO CARTSTORE ' + this.INSTANCE_ID)
+
     // Cart store addItem
     silent = silent || false
     let data = null
@@ -156,7 +157,7 @@ class CartStore extends EventEmitter {
     if (this.items.hasOwnProperty(key)) {
       data = this.items[key]
     } else {
-      data = item //(item.hasOwnProperty('data')) ? item.data : item
+      data = item
 
       this.items[key] = data
     }
@@ -179,12 +180,12 @@ class CartStore extends EventEmitter {
       }
 
       if (exists) {
-        const oldQty = this.selection[selectionKey][quantityKey]
+        const oldQuantity = this.selection[selectionKey][quantityKey]
         this.selection[selectionKey][quantityKey] += Number(quantity)
 
         if (!silent) {
           this.emit(CHANGE_EVENT_NAME)
-          this.emit(ITEM_CHANGED_EVENT_NAME, item, this.selection[selectionKey][quantityKey], oldQty)
+          this.emit(ITEM_CHANGED_EVENT_NAME, item, this.selection[selectionKey][quantityKey], oldQuantity)
         }
 
         return // Break out
@@ -333,7 +334,7 @@ class CartStore extends EventEmitter {
       this.addItem(item[idKey], 1, item, true) // Silent add, don't trigger events
     }
 
-    // Loop over active items in cart (the current selection)
+    // Loop over active selections in cart
     for (let idx = 0; idx < this.selection.length; idx++) {
       if (!(this.selection[idx][optionsKey] instanceof Array)) {
         this.selection[idx][optionsKey] = []
@@ -346,55 +347,33 @@ class CartStore extends EventEmitter {
 
       let selection = this.selection[idx]
 
-      // If the item being added is already in the cart
+      // If we've found the correct item in the cart
       if (item[idKey] === selection[idKey]) {
-        // Add the order product option value to the cart
+        // Grab the item's options
         let selectedOptions = selection[optionsKey]
-        for (let optionIdx in selectedOptions) {
-          // If the order product option value being added already exists for the item
+
+        // Loop over the item's options
+        for (let optionIdx = 0; optionIdx < selectedOptions.length; optionIdx++) {
+          // If the option already has been added, increment its quantity and exit
           if (key === selectedOptions[optionIdx][optionIdKey]) {
-            // Update item quantity, if it changed
-            //const oldQty = selection[quantityKey]
+            const oldQuantity = selection[quantityKey]
             this.selection[idx][optionsKey][optionIdx][quantityKey] += Number(quantity)
+
+            console.log('option ' + selection[idKey] + ' has already been added')
 
             if (createItem) {
               this.emit(CHANGE_EVENT_NAME)
               this.emit(ITEM_ADDED_EVENT_NAME, selection[idKey], selection[quantityKey], selection[dataKey])
             } else {
               this.emit(CHANGE_EVENT_NAME)
+              this.emit(ITEM_OPTIONS_CHANGED_EVENT_NAME, option, Number(quantity), item, oldQuantity)
             }
 
             return
-            // What we do depends on the type
-          } else {
-            switch (option.option['type']) {
-              case 'select':
-              // If the order product option value being added is part of the same option [group] as an existing selection
-                let selectedOptionId = Number(selectedOptions[optionIdx][dataKey].option['option_id'])
-                if (Number(option.option['option_id']) === selectedOptionId) {
-                // Go ahead and mutate the object, we don't need a new key or index
-                  this.selection[idx][optionsKey][optionIdx] = assign(this.selection[idx][optionsKey][optionIdx], {
-                    [optionIdKey]: option[optionIdKey],
-                    [quantityKey]: Number(quantity),
-                    [dataKey]: option
-                  })
-
-                  if (createItem) {
-                    this.emit(CHANGE_EVENT_NAME)
-                    this.emit(ITEM_ADDED_EVENT_NAME, selection[idKey], selection[quantityKey], selection[dataKey])
-                  } else {
-                    this.emit(CHANGE_EVENT_NAME)
-                    this.emit(ITEM_OPTIONS_CHANGED_EVENT_NAME, option, Number(quantity), item)
-                  }
-
-                  return
-                }
-
-                break
-            }
           }
         }
 
+        // If we didn't find the option (if we had found it, this function would have returned), add it...
         if (option) {
           let selectionItemOption = {
             [optionIdKey]: option[optionIdKey],
@@ -409,7 +388,7 @@ class CartStore extends EventEmitter {
             this.emit(ITEM_ADDED_EVENT_NAME, selection[idKey], selection[quantityKey], selection[dataKey])
           } else {
             this.emit(CHANGE_EVENT_NAME)
-            this.emit(ITEM_OPTIONS_CHANGED_EVENT_NAME, option, Number(quantity), item) // TODO: Provide OLD quantity as last emit param
+            this.emit(ITEM_OPTIONS_CHANGED_EVENT_NAME, option, Number(quantity), item)
           }
         }
       }
