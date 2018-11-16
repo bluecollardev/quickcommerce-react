@@ -11,7 +11,6 @@ import itemFieldNames from '../../forms/ItemFields.jsx'
 
 class AbstractBrowserStep extends Component {
   static propTypes = {
-    itemMappings: PropTypes.object, // TODO: object.isRequired
     onAddToCartClicked: PropTypes.func,
     onItemClicked: PropTypes.func,
     onFilterSelected: PropTypes.func,
@@ -19,7 +18,6 @@ class AbstractBrowserStep extends Component {
   }
 
   static defaultProps = {
-    itemMappings: itemFieldNames, // Defaults from ItemFields
     onItemClicked: () => {},
     onAddToCartClicked: () => {},
     onFilterSelected: () => {},

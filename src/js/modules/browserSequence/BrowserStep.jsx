@@ -54,7 +54,7 @@ class BrowserStep extends AbstractBrowserStep {
     }
   }
 
-  componentWillReceiveProps() {
+  componentDidMount() {
     const { filterItems } = this.props
 
     if (typeof this.fetchData === 'function') {
