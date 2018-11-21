@@ -64,9 +64,7 @@ class BrowserStep extends AbstractBrowserStep {
           items = filterItems(items)
         }
 
-        this.setState({
-          items: items
-        })
+        this.setState({ items: items })
       })
     }
   }
