@@ -53,9 +53,9 @@ class AutocompleteFormControl extends Component {
    * Set an error boundary so a rendering failure in the component doesn't cascade.
    */
   componentDidCatch(error, info) {
-    //console.log('AutocompleteFormControl rendering error')
-    //console.log(error)
-    //console.log(info)
+    console.log('AutocompleteFormControl rendering error')
+    console.log(error)
+    console.log(info)
   }
 
   onItemSelected = (value, item) => {
@@ -103,6 +103,7 @@ class AutocompleteFormControl extends Component {
     return (
       <Fragment>
         <Autocomplete
+          //debug={true}
           inputProps={assign(fields(mappings.field.property, mergedSelection.value), {
             className: 'form-control',
             readOnly: this.props.readOnly,
@@ -121,6 +122,11 @@ class AutocompleteFormControl extends Component {
             )
           }}
           shouldItemRender={this.props.shouldItemRender}
+          //shouldItemRender={(item, value) => {
+          //  if (typeof this.props.shouldItemRender === 'function') {
+          //    this.props.shouldItemRender(item, value)
+          //  }
+          //}}
           autoHighlight={true}
           wrapperStyle={{ display: 'block' }}
           value={value(mappings.field.property)}

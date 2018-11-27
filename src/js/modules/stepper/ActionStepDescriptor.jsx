@@ -20,11 +20,13 @@ class ActionStepDescriptor extends StepDescriptor {
     ActionStepDescriptor.ID_COUNTER++
 
     this.stepper = stepper
-    this.action = step.action
     this.config = step.config
     this.before = step.before // Executes before we grab the store instance
     this.validate = step.validate // Executes before we fire the action
+    this.action = step.action
     this.after = step.after
+    this.stepForward = step.stepForward,
+    this.stepBackward = step.stepBackward,
     this.execute = (data, done) => {
       this.action(this, data, done)
     }

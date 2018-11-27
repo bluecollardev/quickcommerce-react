@@ -259,7 +259,8 @@ class AbstractFormComponent extends Component {
         formComponent.subforms.each((refName) => {
           let subform = formComponent[refName] // Get the ref
           // Get its form data
-          formData = assign(formData, subform.getForm(convertToEntities))
+          let subformData = subform.getForm(convertToEntities)
+          formData = assign(formData, subformData)
         })
       }
     }
@@ -287,7 +288,8 @@ class AbstractFormComponent extends Component {
    * @returns {*}
    */
   triggerAction(callback, convertToEntities) {
-    return callback(this.getForm(convertToEntities))
+    let formData = this.getForm(convertToEntities)
+    return callback(formData)
   }
 }
 
