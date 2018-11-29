@@ -17,23 +17,6 @@ class BrowserContainer extends Component {
             {this.props.children}
           </div>
           <hr/>
-          {/* Pagination */}
-          <div className="pagination padding-bottom">
-            <div className="page-numbers">
-              <a href="#">1</a>
-              <a href="#">2</a>
-              <span className="active">3</span>
-              <a href="#">4</a>
-              <span>...</span>
-              <a href="#">10</a>
-            </div>
-            <div className="pager">
-              <a href="#">Prev</a>
-              <span>|</span>
-              <a href="#">Next</a>
-            </div>
-          </div>
-          {/* .pagination */}
         </section>
         {/* .container */}
       </main>
