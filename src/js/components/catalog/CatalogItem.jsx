@@ -14,13 +14,17 @@ import CatalogItemListItem from '../catalog/CatalogItemListItem.jsx'
 const CatalogItem = (props) => {
   let {
     className, displayLabel, displayIcon, displayActions, displayTitle, displayPrimaryImage, //displayThumbs,
-    displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools, overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data
+    displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools,
+    overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data,
+    ribbonColor, style
   } = props
 
   let attributes = data['attributes'] || []
 
+  let headingRibbonColor = ribbonColor || 'blue'
+
   return (
-    <div className={className} onClick={onClick}>
+    <div className={className} onClick={onClick} style={style}>
       {displayLabel && (<span className='shop-label'>{data.label}</span>)}
 
       {displayPrimaryImage && (
@@ -47,7 +51,7 @@ const CatalogItem = (props) => {
       )}
 
       {displayTitle && (
-        <div className='shop-item-details flush ribbon-blue'>
+        <div className={'shop-item-details flush ribbon-' + headingRibbonColor}>
           <div className='lender-buttons'>
             {displayIcon && (
               <div className='lender-button-group fixed-width lender-icon'>

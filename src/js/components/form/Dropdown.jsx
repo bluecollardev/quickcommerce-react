@@ -177,9 +177,9 @@ const PercentageRateDropdown = (props) => {
 
 const MonthsDropdown = (props) => {
   return (
-    <InputGroup>
+    <InputGroup className='months-input-group'>
       <SelectList {...props} />
-      <InputGroup.Addon>Months</InputGroup.Addon>
+      <InputGroup.Addon>Mo.</InputGroup.Addon>
     </InputGroup>
   )
 }
