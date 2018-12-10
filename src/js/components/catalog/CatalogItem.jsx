@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 //import { Grid, Col, Row } from 'react-bootstrap'
 //import { Modal, Accordion, Panel } from 'react-bootstrap'
 //import { Tabs, Tab, TabContent, TabContainer } from 'react-bootstrap'
@@ -24,7 +25,32 @@ const options = [
 
 const ITEM_HEIGHT = 48
 
+const CatalogItemTitleIcon = (data) => {
+  return (
+    <div className='catalog-item-button-group fixed-width lender-icon'>
+      <Button
+        onClick={() => {}}
+        style={{
+          backgroundColor: 'lightgrey',
+          backgroundImage: 'url("data:' + 'image/png' + ';base64,' + data['thumbnail'] + '")',
+          color: 'black'
+        }}
+      />
+    </div>
+  )
+}
+
 class CatalogItem extends Component  {
+  static propTypes = {
+    displayIcon: PropTypes.bool,
+    titleIcon: PropTypes.func
+  }
+
+  static defaultProps = {
+    displayIcon: true,
+    titleIcon: <CatalogItemTitleIcon />
+  }
+
   constructor(props) {
     super(props)
 
@@ -90,20 +116,13 @@ class CatalogItem extends Component  {
           <div className={'shop-item-details flush ribbon-' + headingRibbonColor}>
             <div className='catalog-item-buttons'>
               {displayIcon && (
-                <div className='catalog-item-button-group fixed-width lender-icon'>
-                  <Button
-                    onClick={onAddToCartClicked}
-                    style={{
-                      backgroundColor: 'lightgrey',
-                      backgroundImage: 'url("data:' + 'image/png' + ';base64,' + data['thumbnail'] + '")',
-                      color: 'black'
-                    }}
-                  />
-                </div>
+                <Fragment>
+                  {React.cloneElement(this.props.titleIcon, { data: data })}
+                </Fragment>
               )}
               <div className='catalog-item-button-group placeholder'>
                 <Button
-                  onClick={onAddToCartClicked}
+                  onClick={() => {}}
                   style={{
                     background: 'transparent',
                     border: 'none'
