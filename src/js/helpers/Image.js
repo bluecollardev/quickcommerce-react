@@ -12,6 +12,10 @@ class ImageHelper {
     return (/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/.test(string))
   }
 
+  static base64BgImage(url, mimeType) {
+    return 'url("data:' + mimeType + ';base64,' + url + '")'
+  }
+
   /**
    * TODO: This method sucks right now
    * @param data
