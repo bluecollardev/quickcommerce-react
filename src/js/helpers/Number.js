@@ -24,6 +24,21 @@ class NumberHelper {
 
     return (Math.min(rangeMin, rangeMax) < number && Math.max(rangeMin, rangeMax) > number)
   }
+
+  static numberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
+  static roundToDecimalPlace(number, places) {
+    let multiplier = Math.pow(10, places)
+    return Math.round(number * multiplier) / multiplier
+  }
+
+  static roundCurrency(number, places) {
+    places = (NumberHelper.isInteger(places)) ? places : 2
+    let multiplier = Math.pow(10, places)
+    return Math.ceil(number * multiplier) / multiplier
+  }
 }
 
 export default NumberHelper
