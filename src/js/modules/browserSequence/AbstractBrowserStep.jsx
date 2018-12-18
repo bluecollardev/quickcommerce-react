@@ -94,17 +94,18 @@ class AbstractBrowserStep extends Component {
 
     // Configure product browser row
     if (this.props.hasOwnProperty('onItemClicked') && typeof this.props.onItemClicked === 'function') {
-
       // Wrap the function in a generic handler so we can pass in custom args
       let callback = fn = this.props.onItemClicked
       fn = function () {
-        // What's the current step?
-        let step = that.store.getConfig()
+        if (typeof that.props.stepper !== 'undefined' && that.props.stepper !== null) {
+          // What's the current step?
+          //let step = that.store.getConfig()
 
-        // Make sure there's a next step before calling it into action
-        // Also, subtract a step to account for zero index
-        if (that.props.stepper.currentStep < (that.props.stepper.steps.length - 1)) {
-          that.props.stepper.next()
+          // Make sure there's a next step before calling it into action
+          // Also, subtract a step to account for zero index
+          if (that.props.stepper.currentStep < (that.props.stepper.steps.length - 1)) {
+            that.props.stepper.next()
+          }
         }
 
         // Execute our handler
