@@ -50,9 +50,11 @@ const ThreeColumnDynamicLayout = (props) => {
     centerColClass = 'col-xs-12'
   }
 
+  let className = (typeof props.className === 'string') ? props.className : 'summary entry-summary'
+
   return (
-    <div className='summary entry-summary vehicle-summary'>
-      <div className='container-fluid padding-top padding-bottom'>
+    <div className={className}>
+      <div className='container-fluid'>
         <div className='row'>
           {displayLeftCol && (
             <div className={leftColClass}>

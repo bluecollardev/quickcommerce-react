@@ -80,6 +80,7 @@ class HtmlHelper {
         elements[idx].style.height = 'auto'
       }
     }
+
     for (idx = 0; idx < elements.length; idx++) {
       let elementHeight = elements[idx].clientHeight
       heights.push(elementHeight)
