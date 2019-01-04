@@ -43,12 +43,14 @@ const CatalogItemTitleIcon = (data) => {
 class CatalogItem extends Component  {
   static propTypes = {
     displayIcon: PropTypes.bool,
-    titleIcon: PropTypes.func
+    titleIcon: PropTypes.func,
+    featureCols: PropTypes.number
   }
 
   static defaultProps = {
     displayIcon: true,
-    titleIcon: <CatalogItemTitleIcon />
+    titleIcon: <CatalogItemTitleIcon />,
+    featureCols: 3
   }
 
   constructor(props) {
@@ -78,7 +80,7 @@ class CatalogItem extends Component  {
       className, displayLabel, displayIcon, displayActions, displayTitle, displayPrimaryImage, //displayThumbs,
       displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools,
       overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data,
-      ribbonColor, style
+      ribbonColor, style, featureCols
     } = this.props
 
     let attributes = data['attributes'] || []
@@ -234,7 +236,7 @@ class CatalogItem extends Component  {
 
         {/*displayAttributes && (*/}
         <CatalogItemList
-          listClassName='col-3'>
+          listClassName={'col-' + featureCols}>
           {attributes.map((attribute, idx) => (<CatalogItemListItem key={idx} label={attribute.label} text={attribute.value}/>))}
         </CatalogItemList>
         {/*)*/}

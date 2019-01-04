@@ -94,9 +94,10 @@ class BaseCollectionStore extends BaseStore {
     // TODO: Alternatively we could throw an error or log this...
     // Fail silently for now, it shouldn't pose any issues
 
-    if (item.hasOwnProperty(prop)) {
-      item[prop] = value
-    }
+    //if (item.hasOwnProperty(prop)) {
+    // TODO: Maybe a notification that we are setting a property that doesn't exist?
+    item[prop] = value
+    //}
   }
 
   /**
