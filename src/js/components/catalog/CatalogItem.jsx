@@ -16,13 +16,6 @@ import CatalogItemDetailLine from '../catalog/CatalogItemDetailLine.jsx'
 import CatalogItemList from '../catalog/CatalogItemList.jsx'
 import CatalogItemListItem from '../catalog/CatalogItemListItem.jsx'
 
-const options = [
-  'View',
-  'Create',
-  'Edit',
-  'Delete'
-]
-
 const ITEM_HEIGHT = 48
 
 const CatalogItemTitleIcon = (data) => {
@@ -40,10 +33,101 @@ const CatalogItemTitleIcon = (data) => {
   )
 }
 
+const CatalogItemActions = (props) => {
+  return (
+    <div className='fixed-width'>
+      {props.menuItems && Object.keys(props.menuItems).length > 0 && (
+        <IconButton
+          //style={{ color: 'white !important' }}
+          aria-label='More'
+          aria-owns={props.open ? 'long-menu' : undefined}
+          aria-haspopup='true'
+          onClick={props.onOpen}>
+          <MoreVertIcon />
+        </IconButton>
+      )}
+      <Menu
+        id='long-menu'
+        anchorEl={props.anchorEl}
+        open={props.open}
+        onClose={props.onClose}
+        // TODO: Is this current? I don't see PaperProps in MUI docs...
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: 200,
+          },
+        }}>
+        {Object.keys(props.menuItems).map(key => (
+          <MenuItem
+            key={key}
+            selected={props.menuItems[key].selected}
+            onClick={() => {
+              if (typeof props.onMenuItemClicked === 'function') {
+                props.onMenuItemClicked(props.menuItems[key])
+              }
+
+              if (typeof props.onClose === 'function') {
+                props.onClose(props.menuItems[key])
+              }
+            }}>
+            {props.menuItems[key].text}
+          </MenuItem>
+        ))}
+      </Menu>
+    </div>
+  )
+}
+
+// TODO: Finish defining props!
+CatalogItemActions.propTypes = {
+  menuItems: PropTypes.object //.required // TODO: Make this a shape
+}
+
+CatalogItemActions.defaultProps = {
+  menuItems: {
+    CREATE: {
+      key: 'CREATE',
+      text: 'Create',
+      selected: false
+    },
+    // Default
+    VIEW: {
+      key: 'VIEW',
+      text: 'View Summary',
+      selected: true
+    },
+    DETAILS: {
+      key: 'DETAILS',
+      text: 'View Details',
+      selected: false
+    },
+    EDIT: {
+      key: 'EDIT',
+      text: 'Edit',
+      selected: false
+    },
+    DELETE: {
+      key: 'DELETE',
+      text: 'Delete',
+      selected: false
+    },
+    CANCEL: {
+      key: 'CANCEL',
+      text: 'Cancel',
+      selected: false
+    }
+  }
+}
+
 class CatalogItem extends Component  {
   static propTypes = {
     displayIcon: PropTypes.bool,
-    titleIcon: PropTypes.func,
+    titleIcon: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.object,
+      PropTypes.string
+    ]),
     featureCols: PropTypes.number
   }
 
@@ -79,8 +163,8 @@ class CatalogItem extends Component  {
     let {
       className, displayLabel, displayIcon, displayActions, displayTitle, displayPrimaryImage, //displayThumbs,
       displayModel, displayMsrp, displayPrice, displayPayment, displayDetails, displayDisclaimer, displayTools,
-      overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, data,
-      ribbonColor, style, featureCols
+      overlayTools, isSelected, isRejected, onClick, onAddToCartClicked, onMoreInfoClicked, onMenuItemClicked,
+      data, ribbonColor, style, titleIcon, menuItems, featureCols
     } = this.props
 
     let attributes = data['attributes'] || []
@@ -119,7 +203,7 @@ class CatalogItem extends Component  {
             <div className='catalog-item-buttons'>
               {displayIcon && (
                 <Fragment>
-                  {React.cloneElement(this.props.titleIcon, { data: data })}
+                  {React.cloneElement(titleIcon, { data: data })}
                 </Fragment>
               )}
               <div className='catalog-item-button-group placeholder'>
@@ -149,54 +233,14 @@ class CatalogItem extends Component  {
                 </Button>
               </div>
               {displayActions && (
-                <div className='fixed-width'>
-                  <IconButton
-                    //style={{ color: 'white !important' }}
-                    aria-label='More'
-                    aria-owns={open ? 'long-menu' : undefined}
-                    aria-haspopup='true'
-                    onClick={this.handleClick}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    id='long-menu'
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={this.handleClose}
-                    PaperProps={{
-                      style: {
-                        maxHeight: ITEM_HEIGHT * 4.5,
-                        width: 200,
-                      },
-                    }}>
-                    {options.map(option => (
-                      <MenuItem
-                        key={option}
-                        selected={option === 'View'}
-                        onClick={() => {
-                          // Trigger the view
-                          if (typeof this.props.onMenuItemClicked === 'function') {
-                            // TODO: Implement using contants, and export constants
-                            this.props.onMenuItemClicked(option.toUpperCase())
-                          }
-
-                          this.handleClose()
-                        }}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                  {/*<Button
-                   onClick={onAddToCartClicked}
-                   style={{
-                   backgroundColor: 'transparent',
-                   color: 'white'
-                   }}>
-                   <i className='fa fa-ellipsis-v'
-                   style={{color: 'white'}}
-                   />
-                   </Button>*/}
-                </div>
+                <CatalogItemActions
+                  anchorEl={anchorEl}
+                  open={open}
+                  onOpen={this.handleClick}
+                  onClose={this.handleClose}
+                  menuItems={menuItems}
+                  onMenuItemClicked={onMenuItemClicked}
+                />
               )}
             </div>
           </div>
