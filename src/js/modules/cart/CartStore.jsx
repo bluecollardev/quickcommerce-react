@@ -27,7 +27,7 @@ class CartStore extends EventEmitter {
 
     this.INSTANCE_ID = INSTANCE_COUNTER++
 
-    console.log('INITIALIZING CARTSTORE ' + this.INSTANCE_ID)
+    //console.log('INITIALIZING CARTSTORE ' + this.INSTANCE_ID)
 
     /*dispatcher = dispatcher || null
      if (dispatcher instanceof Dispatcher) {
@@ -147,7 +147,7 @@ class CartStore extends EventEmitter {
   }
 
   addItem(key, quantity, item, silent) {
-    console.log('ATTEMPTING TO ADD ITEM TO CARTSTORE ' + this.INSTANCE_ID)
+    //console.log('ATTEMPTING TO ADD ITEM TO CARTSTORE ' + this.INSTANCE_ID)
 
     // Cart store addItem
     silent = silent || false
@@ -359,7 +359,7 @@ class CartStore extends EventEmitter {
             const oldQuantity = selection[quantityKey]
             this.selection[idx][optionsKey][optionIdx][quantityKey] += Number(quantity)
 
-            console.log('option ' + selection[idKey] + ' has already been added')
+            //console.log('option ' + selection[idKey] + ' has already been added')
 
             if (createItem) {
               this.emit(CHANGE_EVENT_NAME)
