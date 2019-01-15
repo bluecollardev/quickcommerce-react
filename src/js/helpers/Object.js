@@ -20,6 +20,14 @@ class ObjectHelper {
     return true
   }
 
+  static cleanObject(obj) {
+    obj = Object.entries(obj)
+      .filter(([key, value]) => value !== undefined)
+      .reduce((obj, [key, value]) => (obj[key] = value, obj), {})
+
+    return obj
+  }
+
   static recursiveFormatKeys = (data, from, to) => {
     let clone = {}
     let modes = [
