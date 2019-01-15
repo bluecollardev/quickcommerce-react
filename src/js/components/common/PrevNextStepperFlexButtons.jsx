@@ -6,19 +6,22 @@ import { Button } from 'react-bootstrap'
 const PrevNextStepperFlexButtons = (props) => {
   const { prevButtonText, nextButtonText, prevButtonDisabled, nextButtonDisabled, onPrevClicked, onNextClicked } = props
 
-  let prevButtonBsStyle = (prevButtonDisabled === false) ? 'default' : 'disabled'
-  let nextButtonBsStyle = (nextButtonDisabled === false) ? 'success' : 'disabled'
+  let prevButtonBsStyle = (prevButtonDisabled === false) ? 'default' : 'default'
+  let nextButtonBsStyle = (nextButtonDisabled === false) ? 'success' : 'default'
+
+  let prevButtonDisabledClass = (prevButtonDisabled === false) ? '' : 'disabled'
+  let nextButtonDisabledClass = (nextButtonDisabled === false) ? '' : 'disabled'
 
   return (
     <Fragment>
       {/* TODO: Allow for a custom className */}
       <div className='flex-button-group'>
-        <Button prevButtonBsStyle={prevButtonBsStyle} onClick={onPrevClicked}>
+        <Button class={prevButtonDisabledClass} bsStyle={prevButtonBsStyle} onClick={onPrevClicked}>
           <h4 className='text-center'><i className='fa fa-arrow-circle-left'/>
             <small>{prevButtonText}</small>
           </h4>
         </Button>
-        <Button bsStyle={nextButtonBsStyle} onClick={onNextClicked}>
+        <Button class={nextButtonDisabledClass} bsStyle={nextButtonBsStyle} onClick={onNextClicked}>
           <h4 className='text-center'><i className='fa fa-arrow-circle-right'/>
             <small>{nextButtonText}</small>
           </h4>

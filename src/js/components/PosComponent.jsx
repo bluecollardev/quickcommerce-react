@@ -42,7 +42,7 @@ import TopMenu from './menu/TopMenu.jsx'
 import Stepper from './stepper/BrowserStepper.jsx'
 //import StringHelper from '../helpers/String.js'
 
-// Dirty global hack to maintain store instance until I refactor 
+// Dirty global hack to maintain store instance until I refactor
 // this component to use context or switch from flux to redux
 window.CartStore = (typeof window.CartStore === 'undefined') ? InternalCartStore : window.CartStore
 
@@ -1739,7 +1739,7 @@ class PosComponent extends Component {
         <Button bsStyle='success' data-amount={options[2]} onClick={this.selectChangePreset}>${options[2].toFixed(2)}</Button>&nbsp;
         <Button bsStyle='success' data-amount={options[3]} onClick={this.selectChangePreset}>${options[3].toFixed(2)}</Button>&nbsp;
         {/*<Button bssize data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
-        <Button bsStyle='disabled' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
+        <Button bsStyle='default' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
       </div>
     )
   }

@@ -135,7 +135,7 @@ function enhancer(WrappedComponent) {
             <Button bsStyle='success' data-amount={options[2]} onClick={this.selectChangePreset}>${options[2].toFixed(2)}</Button>&nbsp;
             <Button bsStyle='success' data-amount={options[3]} onClick={this.selectChangePreset}>${options[3].toFixed(2)}</Button>&nbsp;
             {/*<Button bsStyle='default' data-amount={options[4]} onClick={this.calculateChange}>${options[4].toFixed(2)}</Button>&nbsp;*/}
-            <Button bsStyle='disabled' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
+            <Button bsStyle='default' data-amount='custom' onClick={this.toggleCustomPaymentAmount}>Custom</Button>&nbsp;
           </div>
         )
       }
