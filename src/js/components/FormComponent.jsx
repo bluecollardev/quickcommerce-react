@@ -162,7 +162,7 @@ export default (ComposedComponent) => {
     }
 
     notifySubscribers() {
-      console.log('Warning! FormComponent.notifySubscribers is a temporary update mechanism for parent components!')
+      //console.log('Warning! FormComponent.notifySubscribers is a temporary update mechanism for parent components!')
       this.subscribers.forEach((callback) => {
         return callback(this.state.fields)
       })
