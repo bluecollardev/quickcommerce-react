@@ -157,9 +157,11 @@ class StatefulCard extends Component {
     }
 
     let cardFrontState = undefined
-    let cardFrontContent = undefined
+    // Slot content prop must be defined, use an empty element as default
+    let cardFrontContent = <div />
     let cardBackState = undefined
-    let cardBackContent = undefined
+    // Slot content prop must be defined, use an empty element as default
+    let cardBackContent = <div />
 
     React.Children.map(children, (child, idx) => {
       if (!flipped) {

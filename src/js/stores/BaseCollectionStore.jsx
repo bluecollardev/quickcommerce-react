@@ -163,8 +163,9 @@ class BaseCollectionStore extends BaseStore {
   getItems(resolveCodeTypes) {
     resolveCodeTypes = resolveCodeTypes || false
     if (resolveCodeTypes) {
-      console.log('resolving code types...')
-      console.log(this.items)
+      //console.log('resolving code types...')
+      //console.log(this.items)
+
       return Object.keys(this.items).map(key => {
         let item = this.items[key]
         return BaseCollectionStore.resolveDomainObjects(item, BaseCollectionStore.CODETYPE_NAME) // Base method

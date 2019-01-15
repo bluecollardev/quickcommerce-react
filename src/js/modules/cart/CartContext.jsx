@@ -192,8 +192,8 @@ export default (ComposedComponent) => {
 
     componentWillReceiveProps() {
       let payload = this.cartContextManager.getCartContextValue()
-      console.log('component received new props dump context val')
-      console.log(payload)
+      //console.log('component received new props dump context val')
+      //console.log(payload)
       this.cartContextManager.notifySubscribers(payload)
     }
 

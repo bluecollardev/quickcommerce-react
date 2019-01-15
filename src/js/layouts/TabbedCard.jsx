@@ -5,16 +5,20 @@ import { Tabs } from 'react-bootstrap'
 
 import DOMElementHelper from '../helpers/DOMElement.js'
 
-const TabbedCardToolbar = (props) => {
-  return (
-    <Fragment {...props} />
-  )
+class TabbedCardToolbar extends Component {
+  render() {
+    return (
+      <div className='tabbed-card-toolbar' {...this.props} />
+    )
+  }
 }
 
-const TabbedCardTab = (props) => {
-  return (
-    <Fragment {...props} />
-  )
+class TabbedCardTab extends Component {
+  render() {
+    return (
+      <div className='tabbed-card-tab' {...this.props} />
+    )
+  }
 }
 
 /**
@@ -68,15 +72,16 @@ class TabbedCard extends Component {
 
     return (
       <div className='tabbed-card'>
-        <div
-          ref={(toolbar) => this.toolbar = toolbar}
-          className='tabbed-card-toolbar'>
-          {React.Children.map(children, (child, idx) => {
-            if (child && child.type === TabbedCardToolbar) {
-              return React.cloneElement(child, { key: idx })
-            }
-          })}
-        </div>
+        {React.Children.map(children, (child, idx) => {
+          if (child && child.type === TabbedCardToolbar) {
+            return React.cloneElement(child, {
+              ref: (toolbar) => this.toolbar = toolbar,
+              key: idx
+            })
+          }
+
+          return null
+        })}
 
         <Tabs
           id={tabsId}
@@ -87,8 +92,10 @@ class TabbedCard extends Component {
 
         {React.Children.map(children, (child, idx) => {
           if (child && child.type === TabbedCardTab && child.props.name === activeTab) {
-            return React.cloneElement(child)
+            return React.cloneElement(child, { key: idx })
           }
+
+          return null
         })}
       </div>
     )
