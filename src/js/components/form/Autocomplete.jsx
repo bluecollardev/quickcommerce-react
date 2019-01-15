@@ -1,7 +1,9 @@
 import assign from 'object-assign'
 import React, { Component, Fragment } from 'react'
+
 import Autocomplete from 'react-autocomplete'
 
+import DOMElementHelper from '../../helpers/DOMElement.js'
 import FormHelper from '../../helpers/Form.js'
 
 const getMappedValue = FormHelper.getMappedValue
@@ -116,7 +118,9 @@ class AutocompleteFormControl extends Component {
           items={items}
           renderItem={(item, isHighlighted) => {
             return (
-              <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+              <div
+                key={DOMElementHelper.generateUUIDv4()}
+                style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                 {item.value}
               </div>
             )
@@ -155,7 +159,9 @@ const CountryAutocomplete = (props) => {
       items={props.settingStore.getCountries()}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {item.value}
           </div>
         )
@@ -200,7 +206,9 @@ const ZoneAutocomplete = (props) => {
       items={props.settingStore.getZones(data.default_country_id)}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {item.value}
           </div>
         )
@@ -244,7 +252,9 @@ const CustomerAutocomplete = (props) => {
       items={this.state.customers}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {[
               item.firstname,
               item.lastname
@@ -288,7 +298,9 @@ const CustomerGroupAutocomplete = (props) => {
       items={props.settingStore.customerGroups}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {item.value}
           </div>
         )
@@ -329,7 +341,9 @@ const OrderStatusAutocomplete = (props) => {
       items={props.settingStore.orderStatuses}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {item.value}
           </div>
         )
@@ -374,7 +388,9 @@ const StoreAutocomplete = (props) => {
       items={props.settingStore.stores}
       renderItem={(item, isHighlighted) => {
         return (
-          <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+          <div
+            key={DOMElementHelper.generateUUIDv4()}
+            style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
             {item.value}
           </div>
         )
