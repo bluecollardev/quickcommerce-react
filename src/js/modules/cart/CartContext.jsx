@@ -104,7 +104,7 @@ export default (ComposedComponent) => {
 
       this.INSTANCE_ID = INSTANCE_COUNTER++
 
-      console.log('INITIALIZING CARTCONTEXT ' + this.INSTANCE_ID)
+      //console.log('INITIALIZING CARTCONTEXT ' + this.INSTANCE_ID)
 
       this.getDecoratedComponentInstance = this.getDecoratedComponentInstance.bind(this)
       this.getContextManager = this.getContextManager.bind(this)
@@ -153,7 +153,7 @@ export default (ComposedComponent) => {
       const store = cartContextValue.store
 
       store.addListener('change', () => {
-        console.log('CartContext CHANGE event emitted in instance ' + this.INSTANCE_ID)
+        //console.log('CartContext CHANGE event emitted in instance ' + this.INSTANCE_ID)
         let payload = this.cartContextManager.getCartContextValue()
         this.cartContextManager.notifySubscribers(payload)
       })
@@ -184,8 +184,8 @@ export default (ComposedComponent) => {
     componentDidMount() {// CartContext.componentDidMount
       //this.context.actions.init(this.props.items, this.context.store.getSelection())
       this.cartContextManager.subscribe((data) => {
-        console.log('update CART with data')
-        console.log(data)
+        //console.log('update CART with data')
+        //console.log(data)
         this.forceUpdate()
       })
     }
@@ -239,8 +239,8 @@ export default (ComposedComponent) => {
     itemDropped(item) {}
 
     optionClicked(item) {
-      console.log('option clicked')
-      console.log(item)
+      //console.log('option clicked')
+      //console.log(item)
 
       this.forceUpdate() // Redraw, options have changed
     }
