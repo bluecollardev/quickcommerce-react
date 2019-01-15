@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import ReactDOM from 'react-dom'
 
-import Slot from 'qc-react/modules/slots/Slots.jsx'
+import Slot from '../modules/slots/Slots.jsx'
 
 const CARD_STATE_FLIP_DIRECTIONS = {
   NO_CHANGE: 'NO_CHANGE',

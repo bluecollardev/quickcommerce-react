@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 
 import { Tabs } from 'react-bootstrap'
+
+import DOMElementHelper from '../helpers/DOMElement.js'
 
 const TabbedCardToolbar = (props) => {
   return (
@@ -18,6 +21,14 @@ const TabbedCardTab = (props) => {
  * State should look something like...
  */
 class TabbedCard extends Component {
+  static propTypes = {
+    tabsId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  }
+
+  static defaultProps = {
+    tabsId: DOMElementHelper.generateUUIDv4()
+  }
+
   constructor(props) {
     super(props)
 

@@ -16,12 +16,12 @@ const PrevNextStepperFlexButtons = (props) => {
     <Fragment>
       {/* TODO: Allow for a custom className */}
       <div className='flex-button-group'>
-        <Button class={prevButtonDisabledClass} bsStyle={prevButtonBsStyle} onClick={onPrevClicked}>
+        <Button className={prevButtonDisabledClass} bsStyle={prevButtonBsStyle} onClick={onPrevClicked}>
           <h4 className='text-center'><i className='fa fa-arrow-circle-left'/>
             <small>{prevButtonText}</small>
           </h4>
         </Button>
-        <Button class={nextButtonDisabledClass} bsStyle={nextButtonBsStyle} onClick={onNextClicked}>
+        <Button className={nextButtonDisabledClass} bsStyle={nextButtonBsStyle} onClick={onNextClicked}>
           <h4 className='text-center'><i className='fa fa-arrow-circle-right'/>
             <small>{nextButtonText}</small>
           </h4>
