@@ -20,7 +20,6 @@ class UserProfile extends Component {
     displayProfile: true,
     displayBillingAddress: false,
     displayShippingAddress: false,
-    displayShippingAddress: false,
     billingAddressString: '',
     billingAddress: {},
     shippingAddressString: '',

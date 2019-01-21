@@ -44,7 +44,10 @@ const ActionButtons = (props) => {
 
         return (
           <FormGroup key={idx} className={groupClassName}>
-            <Button className='btn action-button' onClick={onButtonClicked}>
+            <Button
+              bsStyle={action.bsStyle}
+              className='btn action-button'
+              onClick={onButtonClicked}>
               <h5>{iconElement} {buttonText}</h5>
             </Button>
           </FormGroup>
