@@ -160,12 +160,12 @@ class CatalogItem extends Component  {
 
     let headingRibbonColor = ribbonColor || 'blue'
 
-    let titleTextClass = (typeof this.props.titleTextClass === 'string') ? this.props.titleTextClass : 'shop-item-title text-center'
+    let titleTextClass = (typeof this.props.titleTextClass === 'string') ? this.props.titleTextClass : 'card-title text-center'
 
     return (
       <div className={className} onClick={onClick} style={style}>
         {displayTitle && (
-          <div className={'shop-item-details flush ribbon-' + headingRibbonColor}>
+          <div className={'card-details flush ribbon-' + headingRibbonColor}>
             <div className='catalog-item-buttons'>
               {displayIcon && (
                 <Fragment>

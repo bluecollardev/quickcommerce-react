@@ -276,12 +276,12 @@ export default class ProductDetail extends Component {
          <h3 className="padding-top">You May Also Like</h3>
          <div className="row padding-top">
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <span className="shop-label text-danger">Sale</span>
          <a href="#" className="item-link" />
          <img src="img/shop/th05.jpg" alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -293,9 +293,9 @@ export default class ProductDetail extends Component {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#">Wall Clock</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#">Wall Clock</a></h3>
+         <span className="card-price">
          <span className="old-price">$69.00</span>
          $48.00
          </span>
@@ -303,11 +303,11 @@ export default class ProductDetail extends Component {
          </div>
          </div>
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <a href="#" className="item-link" />
          <img src="img/shop/th06.jpg" alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -319,20 +319,20 @@ export default class ProductDetail extends Component {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#">LED Lighting</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#">LED Lighting</a></h3>
+         <span className="card-price">
          $130.00
          </span>
          </div>
          </div>
          </div>
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <a href="#" className="item-link" />
          <img src="img/shop/th04.jpg" alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -344,20 +344,20 @@ export default class ProductDetail extends Component {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#">Alarm Clock</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#">Alarm Clock</a></h3>
+         <span className="card-price">
          $178.00
          </span>
          </div>
          </div>
          </div>
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <a href="#" className="item-link" />
          <img src="img/shop/th08.jpg" alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-whishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -369,9 +369,9 @@ export default class ProductDetail extends Component {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#">Hook Basket</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#">Hook Basket</a></h3>
+         <span className="card-price">
          $112.35
          </span>
          </div>

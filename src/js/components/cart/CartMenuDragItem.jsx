@@ -40,7 +40,7 @@ const CartMenuDragItem = createReactClass({
     const { id, isDragging, connectDragSource } = this.props
 
     return connectDragSource(
-      <div className='shop-item'
+      <div className='card'
         onClick={this.onClick}>
         {this.props.displayLabel && (<span className="shop-label text-danger">Sale</span>)}
         {this.props.displayPrimaryImage && (
@@ -48,7 +48,7 @@ const CartMenuDragItem = createReactClass({
             className='shop-thumbnail'
             src={this.props.item.image}>
             {this.props.children}
-            <div className="shop-item-tools">
+            <div className="card-tools">
               <a href="#" className="add-to-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
                 <i className="material-icons favorite_border"/>
               </a>
@@ -64,26 +64,26 @@ const CartMenuDragItem = createReactClass({
           </Thumbnail>
         )}
 
-        {/*<div className="shop-item-details">
-         <h5 className='shop-item-brand'>{this.props.item['manufacturer']}</h5>
+        {/*<div className="card-details">
+         <h5 className='card-brand'>{this.props.item['manufacturer']}</h5>
          </div>*/}
 
-        <div className="shop-item-details">
-          <h5 className="shop-item-title h6"><a href="#/product">
+        <div className="card-details">
+          <h5 className="card-title h6"><a href="#/product">
             <small><em className='cursive'>{this.props.item['model']}</em></small>
           </a></h5>
         </div>
-        <div className="shop-item-details">
-          <h3 className="shop-item-title"><a href="#/product"><strong>{this.props.item['name']}</strong></a></h3>
+        <div className="card-details">
+          <h3 className="card-title"><a href="#/product"><strong>{this.props.item['name']}</strong></a></h3>
           {this.props.item.hasOwnProperty('price') && this.props.item['price'] !== false && !isNaN(this.props.item['price']) && (
-            <span className="shop-item-price">
+            <span className="card-price">
               {/*<span className="old-price">N/A</span>*/}
               <h3>{'$' + parseFloat(this.props.item['price']).toFixed(2)}</h3>
             </span>
           )}
         </div>
 
-        {this.props.displayDetails && (<p className="shop-item-details" dangerouslySetInnerHTML={{ __html: HtmlHelper.decodeHtmlEntities(this.props.item['description']) }}></p>)}
+        {this.props.displayDetails && (<p className="card-details" dangerouslySetInnerHTML={{ __html: HtmlHelper.decodeHtmlEntities(this.props.item['description']) }}></p>)}
       </div>
     )
   }

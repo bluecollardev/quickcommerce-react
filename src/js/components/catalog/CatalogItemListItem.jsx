@@ -3,7 +3,7 @@ import React from 'react'
 const CatalogItemListItem = (props) => {
   let { label, text, className, labelClassName, textClassName } = props
 
-  className = className || 'shop-item-list-item'
+  className = className || 'card-list-item'
   labelClassName = labelClassName || 'list-item-label'
   textClassName = textClassName || 'list-item-text'
 

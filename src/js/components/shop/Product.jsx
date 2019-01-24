@@ -217,7 +217,7 @@ class Product extends Component {
                 <h2>${price}</h2>
                 {/*<div className='text-sm text-gray' dangerouslySetInnerHTML={description}></div>*/}
                 <div className='text-gray' dangerouslySetInnerHTML={description}></div>
-                <div className='product-tools shop-item'>
+                <div className='product-tools card'>
                   <div className='count-input'>
                     <a className='incr-btn' data-action='decrease' href='#'>–</a>
                     <input className='quantity' type='text' defaultValue={1}/>

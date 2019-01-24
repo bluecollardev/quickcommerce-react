@@ -3,8 +3,8 @@ import React from 'react'
 const CatalogItemDetailLine = (props) => {
   let {label, className, formattedPrice, labelClassName, priceClassName} = props
 
-  className = className || 'shop-item-details'
-  labelClassName = labelClassName || 'shop-item-title'
+  className = className || 'card-details'
+  labelClassName = labelClassName || 'card-title'
   priceClassName = priceClassName || 'average-payment'
 
   return (

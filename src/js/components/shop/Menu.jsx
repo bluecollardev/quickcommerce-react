@@ -221,12 +221,12 @@ export default class Menu extends ProductBrowser {
          <div className="row space-top-half">
          {this.props.items && this.props.items instanceof Array && this.props.items.map((item, idx) => (
          <div className="col-lg-4 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <span className="shop-label text-danger">Sale</span>
          <a href="#/product" className="item-link" />
          <img src={item.image} alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -238,9 +238,9 @@ export default class Menu extends ProductBrowser {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#/product">{item.name}</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#/product">{item.name}</a></h3>
+         <span className="card-price">
          <span className="old-price">$19.00</span>
          $15.00
          </span>
@@ -255,12 +255,12 @@ export default class Menu extends ProductBrowser {
          <div className="row space-top-half">
          {this.props.items && this.props.items instanceof Array && this.props.items.map((item, idx) => (
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <span className="shop-label text-danger">Sale</span>
          <a href="#/product" className="item-link" />
          <img src={item.image} alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -272,9 +272,9 @@ export default class Menu extends ProductBrowser {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#/product">{item.name}</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#/product">{item.name}</a></h3>
+         <span className="card-price">
          <span className="old-price">$19.00</span>
          $15.00
          </span>
@@ -289,12 +289,12 @@ export default class Menu extends ProductBrowser {
          <div className="row space-top-half">
          {this.props.items && this.props.items instanceof Array && this.props.items.map((item, idx) => (
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <span className="shop-label text-danger">Sale</span>
          <a href="#/product" className="item-link" />
          <img src={item.image} alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -306,9 +306,9 @@ export default class Menu extends ProductBrowser {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#/product">{item.name}</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#/product">{item.name}</a></h3>
+         <span className="card-price">
          <span className="old-price">$19.00</span>
          $15.00
          </span>
@@ -323,12 +323,12 @@ export default class Menu extends ProductBrowser {
          <div className="row space-top-half">
          {this.props.items && this.props.items instanceof Array && this.props.items.map((item, idx) => (
          <div className="col-lg-3 col-sm-6">
-         <div className="shop-item">
+         <div className="card">
          <div className="shop-thumbnail">
          <span className="shop-label text-danger">Sale</span>
          <a href="#/product" className="item-link" />
          <img src={item.image} alt="Shop item" />
-         <div className="shop-item-tools">
+         <div className="card-tools">
          <a href="#" className="add-to-wishlist" data-toggle="tooltip" data-placement="top" title="Wishlist">
          <i className="material-icons favorite_border" />
          </a>
@@ -340,9 +340,9 @@ export default class Menu extends ProductBrowser {
          </a>
          </div>
          </div>
-         <div className="shop-item-details">
-         <h3 className="shop-item-title"><a href="#/product">{item.name}</a></h3>
-         <span className="shop-item-price">
+         <div className="card-details">
+         <h3 className="card-title"><a href="#/product">{item.name}</a></h3>
+         <span className="card-price">
          <span className="old-price">$19.00</span>
          $15.00
          </span>

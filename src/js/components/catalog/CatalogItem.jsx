@@ -173,7 +173,7 @@ class CatalogItem extends Component  {
 
     let headingRibbonColor = ribbonColor || 'blue'
 
-    let titleTextClass = (typeof this.props.titleTextClass === 'string') ? this.props.titleTextClass : 'shop-item-title text-center'
+    let titleTextClass = (typeof this.props.titleTextClass === 'string') ? this.props.titleTextClass : 'card-title text-center'
 
     return (
       <div className={className} onClick={onClick} style={style}>
@@ -185,7 +185,7 @@ class CatalogItem extends Component  {
             src={data.thumbnail}>
             {this.props.children}
             {displayTools && overlayTools && (
-              <div className='shop-item-tools'>
+              <div className='card-tools'>
                 <a href='#' className='add-to-wishlist' data-toggle='tooltip' data-placement='top' title='Wishlist'>
                   <i className='material-icons favorite_border'/>
                 </a>
@@ -203,7 +203,7 @@ class CatalogItem extends Component  {
         )}
 
         {displayTitle && (
-          <div className={'shop-item-details flush ribbon-' + headingRibbonColor}>
+          <div className={'card-details flush ribbon-' + headingRibbonColor}>
             <div className='catalog-item-buttons'>
               {displayIcon && (
                 <Fragment>
@@ -277,8 +277,8 @@ class CatalogItem extends Component  {
         )}
 
         {displayModel && (
-          <div className='shop-item-details'>
-            <h5 className='shop-item-title'><em>{data.model}</em></h5>
+          <div className='card-details'>
+            <h5 className='card-title'><em>{data.model}</em></h5>
           </div>
         )}
 
@@ -290,13 +290,13 @@ class CatalogItem extends Component  {
         {/*)*/}
 
         {displayDetails && (
-          <p className='shop-item-details'
+          <p className='card-details'
              dangerouslySetInnerHTML={{__html: HtmlHelper.decodeHtmlEntities(data.description)}}
           />
         )}
 
         {displayDisclaimer && (
-          <div className='shop-item-details detail-trigger space-top border-top-grey-1px'>
+          <div className='card-details detail-trigger space-top border-top-grey-1px'>
             <i className='fa fa-info-circle trigger-icon'
                onClick={onMoreInfoClicked}
             />
@@ -315,7 +315,7 @@ class CatalogItem extends Component  {
           </div>
         )}
 
-        <div className='shop-item-details'>
+        <div className='card-details'>
           <ActionButtons
             className='actions space-top-half float-right'
             actions={this.props.actions}
@@ -323,7 +323,7 @@ class CatalogItem extends Component  {
         </div>
 
         {displayTools && !overlayTools && (
-          <div className='shop-item-tools block'>
+          <div className='card-tools block'>
             <Button block className='add-to-cart ghost space-top-half border-top-grey-1px' onClick={onAddToCartClicked}>
               {isSelected && (<i className='fa fa-check-square' />)}
 
