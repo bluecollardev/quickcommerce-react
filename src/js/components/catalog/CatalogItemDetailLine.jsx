@@ -1,20 +1,18 @@
 import React from 'react'
 
 const CatalogItemDetailLine = (props) => {
-  let {label, className, formattedPrice, labelClassName, priceClassName} = props
+  let {label, className, formattedValue, labelClassName, textValueClassName} = props
 
-  className = className || 'card-details'
-  labelClassName = labelClassName || 'card-title'
-  priceClassName = priceClassName || 'average-payment'
+  className = className || 'card-details value-list'
+  labelClassName = labelClassName || 'card-attribute'
+  textValueClassName = textValueClassName || 'card-attribute-value'
 
   return (
     <div className={className}>
-      <h5 className={labelClassName}>
-        <span className='float-left'>{label}</span>
-        <small className='float-right'>
-          <span className={priceClassName}>{formattedPrice}</span>
-        </small>
-      </h5>
+      <span className={labelClassName}>
+        {label}
+      </span>
+      <span className={textValueClassName}>{formattedValue}</span>
     </div>
   )
 }

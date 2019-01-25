@@ -253,26 +253,26 @@ class CatalogItem extends Component  {
         {displayMsrp && (
           <CatalogItemDetailLine
             label='MSRP'
-            formattedPrice={data.msrpFormatted}
+            formattedValue={data.msrpFormatted}
           />
         )}
 
         {displayPrice && (
           <CatalogItemDetailLine
             label='Price'
-            formattedPrice={data.priceFormatted}
+            formattedValue={data.priceFormatted}
           />
         )}
 
         {/*<ShopItemDetailLine
          label='Retail Price'
-         formattedPrice={priceFormatted}
+         formattedValue={priceFormatted}
          />*/}
 
         {displayPayment && (
           <CatalogItemDetailLine
             label='Average Payment*'
-            formattedPrice={data.averagePaymentFormatted}
+            formattedValue={data.averagePaymentFormatted}
           />
         )}
 
