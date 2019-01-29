@@ -1,0 +1,193 @@
+.exploreMore {
+    display: block;
+    width: 100%;
+    float: left;
+    margin-left: 0;
+    margin-right: 0;
+    position: relative;
+    margin: 0;
+    padding: 0
+}
+.exploreModule {
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 1.92rem 0;
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden
+}
+@media (min-width: 48em) {
+    .exploreModule {
+        padding: 2.4rem 0
+    }
+}
+.exploreModule:before {
+    position: absolute;
+    content: "";
+    width: 0%;
+    height: 1px;
+    background-color: rgba(43, 43, 43, 0.3);
+    top: 0;
+    right: 0;
+    -moz-transition: width 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -o-transition: width 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -webkit-transition: width 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: width 0.6s cubic-bezier(0.075, 0.82, 0.165, 1)
+}
+.exploreModule.isInView:before {
+    width: 80%
+}
+@media (min-width: 48em) {
+    .exploreModule.isInView:before {
+        width: 70%
+    }
+}
+@media (min-width: 64em) {
+    .exploreModule.isInView:before {
+        width: 60%
+    }
+}
+.exploreModule .exploreModule__tile {
+    position: relative;
+    width: 45%;
+    float: left;
+    margin-right: 2.6087%;
+    height: 120px
+}
+@media (min-width: 25.875em) {
+    .exploreModule .exploreModule__tile {
+        width: 45%;
+        float: left;
+        margin-right: 2.6087%;
+        height: 140px
+    }
+}
+@media (min-width: 48em) {
+    .exploreModule .exploreModule__tile {
+        height: 200px;
+        width: 52%;
+        float: left;
+        margin-right: 1.54905%
+    }
+}
+@media (min-width: 64em) {
+    .exploreModule .exploreModule__tile {
+        height: 220px;
+        width: 60%;
+        float: left;
+        margin-right: 1.28755%
+    }
+}
+@media (min-width: 73.75em) {
+    .exploreModule .exploreModule__tile {
+        height: 250px
+    }
+}
+@media (min-width: 82.5em) {
+    .exploreModule .exploreModule__tile {
+        width: 55%;
+        float: left;
+        margin-right: 2.6087%
+    }
+}
+@media (min-width: 101.5em) {
+    .exploreModule .exploreModule__tile {
+        height: 280px
+    }
+}
+@media (min-width: 112.5em) {
+    .exploreModule .exploreModule__tile {
+        width: 50%;
+        float: left;
+        margin-right: 2.6087%
+    }
+}
+@media (min-width: 137.5em) {
+    .exploreModule .exploreModule__tile {
+        width: 45%;
+        float: left;
+        margin-right: 2.6087%
+    }
+}
+.exploreModule .exploreModule__text {
+    position: relative;
+    display: block;
+    text-align: left;
+    z-index: 3;
+    margin-top: 1.6rem;
+    width: 45%;
+    float: left;
+    margin-right: 2.6087%;
+    margin-right: 0%;
+    margin-left: 3.42029%
+}
+@media (min-width: 25.875em) {
+    .exploreModule .exploreModule__text {
+        margin-left: 1.71014%;
+        margin-top: 2.24rem
+    }
+}
+@media (min-width: 48em) {
+    .exploreModule .exploreModule__text {
+        width: 40%;
+        float: left;
+        margin-right: 1.54905%;
+        margin-left: 2.03098%;
+        margin-right: 0%;
+        margin-top: 3.2rem
+    }
+}
+@media (min-width: 64em) {
+    .exploreModule .exploreModule__text {
+        width: 30%;
+        float: left;
+        margin-right: 1.28755%;
+        margin-left: 0.84406%;
+        margin-right: 0%;
+        margin-top: 3.2rem
+    }
+}
+@media (min-width: 73.75em) {
+    .exploreModule .exploreModule__text {
+        margin-top: 3.84rem
+    }
+}
+@media (min-width: 82.5em) {
+    .exploreModule .exploreModule__text {
+        margin-top: 4rem
+    }
+}
+@media (min-width: 101.5em) {
+    .exploreModule .exploreModule__text {
+        margin-top: 4.48rem;
+        margin-left: 0.72215%
+    }
+}
+.exploreModule .exploreModule__text h3,
+.exploreModule .exploreModule__text h4 {
+    text-transform: uppercase
+}
+.exploreModule .exploreModule__text h3 span,
+.exploreModule .exploreModule__text h4 span {
+    display: block
+}
+.exploreModule .exploreModule__text h4 {
+    margin-bottom: 0
+}
+.exploreModule--saloni .exploreModule__tile .tileBg {
+    background: url('../assets/images/placeholder/tile_salone_XS.jpg') no-repeat scroll center center;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover
+}
+.exploreModule--hairTrends .exploreModule__tile .tileBg {
+    background: url('../assets/images/placeholder/tile_hairTrends_catwalk.jpg') no-repeat scroll center center;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover
+}

@@ -1,0 +1,36 @@
+.detail-trigger {
+  display: flex !important;
+  padding: 0;
+  /*background: #f6f6f6;*/
+}
+
+.detail-trigger > .trigger-icon {
+  font-size: 1.5rem;
+  color: $default-theme-secondary-color; /* Indigo Dark Blue */
+  text-align: center !important;
+  /*transform: rotate(-90deg);*/
+  transition: transform 0.333s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-trigger > * {
+  flex: 2 1;
+}
+
+.detail-trigger > .trigger-icon {
+  flex: 0 0 48px;
+  padding: 0;
+}
+
+.detail-trigger > .trigger-icon:hover {
+  transform: rotate(0deg);
+  transition: transform 0.333s;
+}
+
+.detail-trigger.expanded > .trigger-icon,
+.detail-trigger.expanded > .trigger-icon:hover {
+  transform: rotate(-180deg);
+  transition: transform 0.333s;
+}

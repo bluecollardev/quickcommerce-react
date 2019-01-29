@@ -1,0 +1,28 @@
+.summary-component {
+	box-sizing: content-box;
+	/* Stretch! */
+	background: transparent;
+	border-color: transparent;
+	border: none;
+}
+
+@media all and (min-width: 48em) {
+}
+
+@media all and (min-width: 64em) {
+    .summary-component {
+		border-color: grey;
+	}
+
+	/*.page {
+		border-left: 1px solid grey;
+		border-right: 1px solid grey;
+	}*/
+}
+
+@media all and (min-width: 101.5em) {
+}
+
+.page-wrapper .summary-component {
+	display: none;
+}

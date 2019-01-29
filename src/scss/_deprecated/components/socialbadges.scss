@@ -1,0 +1,270 @@
+.socialBadges {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border: 0 none;
+    background-color: transparent
+}
+.socialBadges__trigger,
+.socialBadges__title {
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    margin: 0 auto;
+    display: inline-block;
+    position: relative;
+    width: 110px;
+    line-height: 100%
+}
+.socialBadges__trigger .socialTriggerText,
+.socialBadges__title .socialTriggerText {
+    font-size: 0.6243rem;
+    line-height: 0.96rem;
+    display: inline-block;
+    font-weight: bold;
+    letter-spacing: 1px
+}
+@media all and (min-width: 25.875em) {
+    .socialBadges__trigger .socialTriggerText,
+    .socialBadges__title .socialTriggerText {
+        font-size: 0.63169rem
+    }
+}
+@media all and (min-width: 48em) {
+    .socialBadges__trigger .socialTriggerText,
+    .socialBadges__title .socialTriggerText {
+        font-size: 0.70722rem
+    }
+}
+@media all and (min-width: 64em) {
+    .socialBadges__trigger .socialTriggerText,
+    .socialBadges__title .socialTriggerText {
+        font-size: 0.65444rem
+    }
+}
+@media all and (min-width: 101.5em) {
+    .socialBadges__trigger .socialTriggerText,
+    .socialBadges__title .socialTriggerText {
+        font-size: 0.66921rem
+    }
+}
+.socialBadges__trigger .socialTriggerLine,
+.socialBadges__title .socialTriggerLine {
+    position: relative;
+    bottom: 4px;
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background-color: #2B2B2B;
+    -moz-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+.socialBadges__trigger .socialTriggerIcon,
+.socialBadges__title .socialTriggerIcon {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    position: relative
+}
+.socialBadges__trigger .socialTriggerIcon .fi,
+.socialBadges__title .socialTriggerIcon .fi {
+    display: block;
+    font-size: 10px;
+    line-height: 100%
+}
+.socialBadges__title {
+    text-align: center;
+    right: 4px
+}
+@media (min-width: 48em) {
+    .socialBadges__title {
+        right: 2px
+    }
+}
+@media (min-width: 64em) {
+    .socialBadges__title {
+        display: none
+    }
+}
+.socialBadges__trigger {
+    text-align: left;
+    display: none;
+    right: 2px
+}
+.socialBadges__trigger:hover {
+    cursor: pointer
+}
+.socialBadges__trigger:hover .socialTriggerLine {
+    width: 25px;
+    -moz-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+@media (min-width: 64em) {
+    .socialBadges__trigger {
+        display: inline-block
+    }
+}
+.socialBadges--isActive .socialTriggerLine {
+    width: 25px
+}
+.socialBadges-ul {
+    margin: 0;
+    padding: 0;
+    display: block;
+    overflow: visible
+}
+.socialBadges-li {
+    text-align: center
+}
+.socialBadges-li a {
+    color: #2B2B2B;
+    position: relative;
+    margin: 0 auto;
+    display: inline-block;
+    -moz-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+.socialBadges-li a:hover {
+    color: #2B2B2B;
+    -moz-transform-origin: center top;
+    -ms-transform-origin: center top;
+    -webkit-transform-origin: center top;
+    transform-origin: center top;
+    -moz-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -o-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -webkit-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86)
+}
+.socialBadges--front {
+    text-align: center;
+    width: 100px;
+    position: fixed;
+    right: 0;
+    top: 6.4rem;
+    visibility: hidden;
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    -moz-transition: opacity 0.3s ease 0.5s, visibility 0.8s 0;
+    -o-transition: opacity 0.3s ease 0.5s, visibility 0.8s 0;
+    -webkit-transition: opacity 0.3s ease, visibility 0.8s 0;
+    -webkit-transition-delay: 0.5s, 0s;
+    transition: opacity 0.3s ease 0.5s, visibility 0.8s 0
+}
+@media (min-width: 25.875em) {
+    .socialBadges--front {
+        right: 4%;
+        top: 9.6rem
+    }
+}
+@media (min-width: 48em) {
+    .socialBadges--front {
+        top: 19.2rem;
+        width: 210px;
+        right: auto
+    }
+}
+@media (min-width: 64em) {
+    .socialBadges--front {
+        width: 100%;
+        position: absolute;
+        right: auto;
+        top: auto;
+        bottom: 20%;
+        visibility: visible;
+        filter: progid: DXImageTransform.Microsoft.Alpha(enabled=false);
+        opacity: 1;
+        -moz-transition: opacity 0.1s ease, visibility 0.1s ease;
+        -o-transition: opacity 0.1s ease, visibility 0.1s ease;
+        -webkit-transition: opacity 0.1s ease, visibility 0.1s ease;
+        transition: opacity 0.1s ease, visibility 0.1s ease
+    }
+}
+@media (min-width: 64em) and (max-height: 52.5em) {
+    .socialBadges--front {
+        bottom: 16%
+    }
+}
+@media (min-width: 64em) and (max-height: 40.625em) {
+    .socialBadges--front {
+        display: none
+    }
+}
+.socialBadges--front .socialBadges-ul {
+    display: block;
+    width: 20px;
+    height: 120px;
+    margin: 0 auto 60px
+}
+.socialBadges--front .socialBadges-li {
+    line-height: 100%;
+    padding: 8px 0;
+    display: block;
+    visibility: hidden;
+    opacity: 0
+}
+@media (min-width: 64em) {
+    .socialBadges--front .socialBadges-li {
+        padding: 5px 0
+    }
+}
+.socialBadges--front .socialBadges-li a .fi {
+    display: block;
+    font-size: 14px;
+    line-height: 100%
+}
+.socialBadges--footer .socialBadges-ul {
+    width: 100%;
+    height: 100%;
+    max-height: 120px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    *zoom: 1
+}
+.socialBadges--footer .socialBadges-ul li {
+    list-style-image: none;
+    list-style-type: none;
+    margin-left: 0;
+    white-space: nowrap;
+    float: left; /* Old browsers */
+    padding-left: 10px;
+    padding-right: 10px
+}
+.socialBadges--footer .socialBadges-ul li:first-child {
+    padding-left: 0
+}
+.socialBadges--footer .socialBadges-ul li:last-child {
+    padding-right: 0
+}
+.socialBadges--footer .socialBadges-ul li.last {
+    padding-right: 0
+}
+.socialBadges--footer .socialBadges-li {
+    padding: 0
+}
+.socialBadges--footer .socialBadges-li a {
+    color: #EDE5E2
+}
+.socialBadges--footer .socialBadges-li a i {
+    color: #EDE5E2
+}
+.socialBadges--footer .socialBadges-li a:hover {
+    color: #EDE5E2
+}
+.socialBadges--footer .socialBadges-li a:hover i {
+    color: #EDE5E2
+}

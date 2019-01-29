@@ -1,0 +1,79 @@
+
+/**
+scss inside this file is scoped globally and classes are reusable
+ */
+.hide-element{
+  display: none;
+}
+
+.hide-element-important{
+  display: none !important;
+}
+
+.display-block-important{
+  display: block !important;
+}
+
+.display-inline-important{
+  display: inline !important;
+}
+
+.not-visible{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.no-opacity{
+  opacity: 0;
+}
+
+.max-z-index{
+  z-index: 2147483647;
+  overflow: visible;
+}
+
+.no-padding-important{
+  padding: 0px !important;
+}
+
+.empty-field{
+  font-style: italic !important;
+  opacity: .7 !important;
+}
+
+.flex-important{
+  display: flex !important;
+}
+
+.disable-element{
+  pointer-events: none;
+}
+
+.disable-grey-element{
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.placeholder-text{
+  font-style: italic;
+  font-weight: 400;
+  color: grey;
+}
+
+.indigo-box-shadow{
+  box-shadow: 5px 5px 21px 0px rgba(0,0,0,0.42);
+}
+
+/* Don't allow text to overflow to next line */
+.no-overflow-text{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Make the background height dynamic by wrapping another div around content and applying vertical flex */
+.fit-content-vertical-flex{
+  display: flex;
+  flex-direction: column;
+}
+

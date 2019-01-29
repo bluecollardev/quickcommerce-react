@@ -1,0 +1,143 @@
+.catalog-item-buttons {
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+  flex-flow: row wrap;
+}
+
+.catalog-item-button-group {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  flex: 2 0;
+  min-width: 4em;
+}
+
+.catalog-item-button-group.placeholder {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  flex: 3;
+}
+
+/*.catalog-item-button-group.fixed-width {
+    display: flex;
+    flex-direction: column;
+    max-width: 4em;
+    flex: 0 0 4em;
+    height: 4em;
+}*/
+
+/* Fixed with above is a bit off */
+.catalog-item-button-group.fixed-width {
+  display: flex;
+  flex-direction: column;
+  max-width: 4.2em;
+  flex: 0 0 4.2em;
+  height: 4em;
+}
+
+.catalog-item-button-group.flex-row {
+  flex-direction: row !important;
+}
+
+.catalog-item-button-group.fixed-width-50 {
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  flex: 0 0 50%;
+  height: 6em;
+}
+
+.catalog-item-button-group.fixed-width-100 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+
+.catalog-item-button-group.fixed-width.catalog-item-icon {
+  flex: 0 0 64px; /* Actual size 128px */
+}
+
+.catalog-item-button-group.fixed-width button {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.catalog-item-button-group button {
+  color: white !important;
+  flex: 2; /* Stretch to fill space */
+}
+
+.catalog-item-button-group.fixed-width-100 button {
+  flex: 1;
+  width: 20%;
+}
+
+.catalog-item-button-group.fixed-width-100 button + div {
+  flex: 6.7;
+  width: 80%;
+}
+
+.catalog-item-button-group.fixed-width-100 button + div > button {
+  width: auto;
+}
+
+.catalog-item-button-group.mini {
+  display: flex;
+  flex-direction: column;
+  max-width: 7em;
+  flex: 2 0;
+  min-width: 4em;
+  flex-wrap: wrap;
+}
+
+.catalog-item-button-group.mini button {
+  height: 1rem;
+}
+
+.catalog-item-button-group.mini button + div {
+  height: 3rem;
+  width: 100%;
+  text-align: center;
+}
+
+.catalog-item-button-group.placeholder button {
+  background-color: #f6f6f6;
+  color: #222 !important; /* Override the !important above */
+}
+
+.catalog-item-button-group.add-lender button {
+  color: black !important;
+}
+
+.catalog-item-button-group select {
+  border-style: none;
+}
+
+.catalog-item-button-group.ghost button {
+  color: black !important;
+}
+
+@media screen and (max-width: 768px) {
+  .catalog-item-button-group.auto-size.ghost .btn {
+    white-space: normal;
+    font-size: 0.75rem;
+    line-height: 0.25rem;
+  }
+
+  .catalog-item-buttons .worksheet-status {
+    order: 2;
+    flex: 0 0 25%;
+  }
+
+  .catalog-item-buttons .worksheet-title {
+    order: 1;
+    flex: 0 0 100%;
+  }
+
+  .catalog-item-buttons .worksheet-program {
+    order: 3;
+  }
+}

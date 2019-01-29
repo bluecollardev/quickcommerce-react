@@ -1,0 +1,87 @@
+.actionButtons li {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.actionButtons li i.fa {
+    font-size: 1.5rem;
+    margin: 0 auto;
+    padding: 1.5rem 0;
+}
+
+.actionButtons .btn.no-bs-style {
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    border: none !important;
+    margin-top: 0;
+    margin-bottom: 0;
+    left: 0;
+}
+
+.actionButtons li a.btn:hover .buttonText,
+.actionButtons li a.btn:active .buttonText,
+.actionButtons li a.btn:focus  .buttonText,
+.actionButtons li a.btn:hover i,
+.actionButtons li a.btn:active i,
+.actionButtons li a.btn:focus i {
+    color: #fff;
+}
+
+/*TODO dave - use SASS vars */
+.actionButtons li a.btn:hover, .actionButtons li a.btn:active,
+.actionButtons li a.btn:focus {
+    background: $default-theme-primary-color;
+}
+
+.actionButtons li a.btn.standard-item {
+    background: $default-theme-accent-color-03;
+}
+
+.actionButtons li i.fa {
+    /*color: $action-button-color;*/
+}
+
+.actionButtons .btn.no-bs-style .buttonText {
+    color: white;
+    font-size: $top-menu-text-size;
+}
+
+.actionButtons li a.btn {
+    background: $default-theme-tertiary-color; /* ACE Red */
+}
+
+.actionButtons li a.btn .buttonText,
+.actionButtons li a.btn:hover .buttonText,
+.actionButtons li a.btn:active .buttonText,
+.actionButtons li a.btn:focus  .buttonText {
+    margin-bottom: auto !important; /* Kill sassed.css style */
+    line-height: $top-nav-bar-height; /* Match button height */
+}
+
+
+/* TODO: Use pixels for these buttons */
+.actionButtons li i.fa {
+    font-size: $action-button-font-size !important; /* Override SASS */
+    margin: 0 auto !important; /* todo dave add variables here custom icons must match */
+    padding: 12px 0 !important;
+}
+
+.actionButtons li a.btn .buttonText,
+.actionButtons li a.btn:hover .buttonText,
+.actionButtons li a.btn:active .buttonText,
+.actionButtons li a.btn:focus  .buttonText {
+    margin-bottom: auto !important; /* Kill sassed.css style */
+    line-height: $top-nav-bar-height; /* Match button height */
+}
+
+.actionButtons i.fa {
+    font-size: 1.3rem;
+    line-height: 2.3rem;
+}
+
+/* Ignore bootstrap dropdowns */
+.actionButtons ul:not(.dropdown-menu) {
+    display: flex;
+}

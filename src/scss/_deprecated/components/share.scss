@@ -1,0 +1,156 @@
+.shareButtons {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border: 0 none;
+    background-color: transparent;
+    text-align: left;
+    width: 100%
+}
+.shareButtons__trigger {
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    -moz-transform-origin: 10% 50%;
+    -ms-transform-origin: 10% 50%;
+    -webkit-transform-origin: 10% 50%;
+    transform-origin: 10% 50%;
+    display: inline-block;
+    position: relative;
+    width: 90px;
+    line-height: 100%
+}
+@media (min-width: 64em) {
+    .shareButtons__trigger {
+        width: 35%;
+        float: left;
+        text-align: right;
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -webkit-transform: rotate(0);
+        transform: rotate(0)
+    }
+}
+.shareButtons__trigger .shareTriggerText {
+    font-size: 0.6243rem;
+    line-height: 0.96rem;
+    display: inline-block;
+    font-weight: bold;
+    letter-spacing: 1px
+}
+@media all and (min-width: 25.875em) {
+    .shareButtons__trigger .shareTriggerText {
+        font-size: 0.63169rem
+    }
+}
+@media all and (min-width: 48em) {
+    .shareButtons__trigger .shareTriggerText {
+        font-size: 0.70722rem
+    }
+}
+@media all and (min-width: 64em) {
+    .shareButtons__trigger .shareTriggerText {
+        font-size: 0.65444rem
+    }
+}
+@media all and (min-width: 101.5em) {
+    .shareButtons__trigger .shareTriggerText {
+        font-size: 0.66921rem
+    }
+}
+.shareButtons__trigger .shareTriggerLine {
+    position: relative;
+    bottom: 4px;
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background-color: #2B2B2B;
+    -moz-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+.shareButtons__trigger .shareTriggerIcon {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    position: relative
+}
+.shareButtons__trigger .shareTriggerIcon .fi {
+    display: block;
+    font-size: 10px;
+    line-height: 100%
+}
+.shareButtons__trigger:hover {
+    cursor: pointer
+}
+.shareButtons__trigger:hover .shareTriggerLine {
+    width: 25px;
+    -moz-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: width 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+.shareButtons--isActive .shareTriggerLine {
+    width: 25px
+}
+.shareButtons-ul {
+    margin: 0;
+    padding: 0;
+    display: block;
+    overflow: visible;
+    width: 20px;
+    height: 120px;
+    margin-bottom: 60px
+}
+@media (min-width: 64em) {
+    .shareButtons-ul {
+        width: 60%;
+        float: right;
+        height: auto;
+        margin: 0
+    }
+}
+.shareButtons-li--item {
+    text-align: center;
+    line-height: 100%;
+    padding-bottom: 12px;
+    display: block;
+    visibility: hidden;
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0
+}
+@media (min-width: 64em) {
+    .shareButtons-li--item {
+        float: left;
+        padding-bottom: 0;
+        padding-right: 12px
+    }
+}
+.shareButtons-li--item a {
+    color: #2B2B2B;
+    position: relative;
+    margin: 0 auto;
+    display: inline-block;
+    -moz-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -o-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    -webkit-transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    transition: color 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+}
+.shareButtons-li--item a:hover {
+    color: #2B2B2B;
+    -moz-transform-origin: center top;
+    -ms-transform-origin: center top;
+    -webkit-transform-origin: center top;
+    transform-origin: center top;
+    -moz-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -o-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    -webkit-transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition: color 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86)
+}
+.shareButtons-li--item a .fi {
+    display: block;
+    font-size: 17px;
+    line-height: 100%
+}

@@ -1,0 +1,42 @@
+.multi-filter-panel .dropdown > .dropdown-toggle,
+.multi-filter-panel > li {
+	font-size: 1.0rem;
+	font-size: 1.0rem;
+}
+.multi-filter-panel > li {
+	padding: 0;
+}
+.multi-filter-panel > li > a {
+	padding: 2rem 0;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.multi-filter-panel .dropdown > .dropdown-menu {
+	min-width: 250px;
+}
+
+.navbar-default {
+	border-width: 1px 0 0 0;
+	/* Kill borders */
+}
+
+.category-filter-bar .navbar {
+	border-width: 0 0 1px 0;
+}
+.category-filter-bar .multi-filter-panel > li {
+	border: 0;
+}
+
+.navbar-default {
+	background-color: white;
+}
+
+.navbar {
+	margin-bottom: 0;
+	/* Override bundle style */
+}
+
+.category-filter-bar .navbar {
+	margin-bottom: 20px;
+}

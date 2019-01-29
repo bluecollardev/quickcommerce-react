@@ -1,0 +1,147 @@
+.StepIndicator {
+    position: relative;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.StepIndicator__step {
+    position: relative;
+    display: table-cell;
+    text-align: center;
+    padding: 0.5rem;
+}
+.StepIndicator__indicator {
+    position: relative;
+    display: block;
+    z-index: 2;
+}
+.StepIndicator__label {
+    position: relative;
+    display: block;
+    margin: 0.5rem 0;
+    color: #cfd7de;
+    z-index: 2;
+}
+.StepIndicator__info {
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #e3e8ec;
+    border-radius: 50%;
+    background-color: #e3e8ec;
+    font-size: 1.25rem;
+    line-height: 2.5rem;
+    text-align: center;
+    color: #fff;
+    z-index: 2;
+}
+.StepIndicator__panel {
+    display: none;
+}
+.StepIndicator .StepIndicator__step:after {
+    content: " ";
+    position: absolute;
+    left: 50%;
+    top: 1.75rem;
+    width: 100%;
+    height: 0.125rem;
+    background-color: #e3e8ec;
+    z-index: 1;
+}
+.StepIndicator .StepIndicator__step:last-child:after {
+    display: none;
+}
+.StepIndicator--inline .StepIndicator__indicator,
+.StepIndicator--inline .StepIndicator__label {
+    display: inline-block;
+    vertical-align: inherit;
+}
+.StepIndicator--inline .StepIndicator__label {
+    text-align: left;
+    padding: 0 0.5rem;
+    background: #fff;
+}
+.StepIndicator--inline.StepIndicator--bottom .StepIndicator__label {
+    vertical-align: middle;
+}
+.StepIndicator--inline.StepIndicator--bottom .StepIndicator__step:after {
+    top: auto;
+    bottom: 1.75rem;
+}
+.StepIndicator--vertical .StepIndicator__step {
+    display: block;
+    text-align: left;
+}
+.StepIndicator--vertical .StepIndicator__label {
+    padding-left: 1rem;
+}
+.StepIndicator--vertical .StepIndicator__indicator,
+.StepIndicator--vertical .StepIndicator__label {
+    display: table-cell;
+}
+.StepIndicator--vertical .StepIndicator__panel {
+    margin-left: 3.5rem;
+}
+.StepIndicator--vertical .StepIndicator__step:after {
+    content: " ";
+    position: absolute;
+    left: 1.75rem;
+    top: 2.5rem;
+    bottom: -0.5rem;
+    width: 0;
+    height: auto;
+    border-left: 0.125rem solid #e3e8ec;
+}
+.StepIndicator .StepIndicator__step.is-complete .StepIndicator__info {
+    border-color: #a6b6c3;
+    background-color: #a6b6c3;
+}
+.StepIndicator .StepIndicator__step.is-complete .StepIndicator__label {
+    color: #a6b6c3;
+}
+.StepIndicator .StepIndicator__step.is-active .StepIndicator__info {
+    border-color: #627c90;
+    background-color: #627c90;
+}
+.StepIndicator .StepIndicator__step.is-active .StepIndicator__label {
+    color: #627c90;
+}
+.StepIndicator .StepIndicator__step.is-warning .StepIndicator__info {
+    border-color: #f1c40f;
+    background-color: #f1c40f;
+}
+.StepIndicator .StepIndicator__step.is-warning .StepIndicator__label {
+    color: #f1c40f;
+}
+.StepIndicator .StepIndicator__step.is-error .StepIndicator__info {
+    border-color: #e95a4b;
+    background-color: #e95a4b;
+}
+.StepIndicator .StepIndicator__step.is-error .StepIndicator__label {
+    color: #e95a4b;
+}
+.StepIndicator {
+  margin-top: 10px;
+}
+
+.StepIndicator .StepIndicator__step.is-active .StepIndicator__info {
+  /*border-color: #A91626;*/
+  background-color: #A91626;
+  border: 1px solid grey !important;
+}
+
+.StepIndicator .StepIndicator__step.is-active .StepIndicator__label {
+  color: inherit;
+}
+
+.StepIndicator__info {
+  width: 3.5rem;
+  height: 3.5rem;
+  line-height: 3.5rem;
+}
+
+.StepIndicator__label {
+  font-size: 1.0rem !important;
+}

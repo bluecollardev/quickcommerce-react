@@ -1,0 +1,222 @@
+.page-submenu {
+  position: absolute;
+  display: inline-flex;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.page-submenu > .submenu-menu,
+.page-submenu > .submenu-title {
+  height: $top-nav-bar-height;
+}
+
+.page-submenu + .has-submenu-header {
+  margin-top: $top-nav-bar-height; /* Offset menu - shouldn't be necessary anymore */
+}
+
+.page-submenu::before {
+  display: block;
+  height: $top-nav-bar-height;
+}
+
+.page-submenu {
+  background-color: $default-theme-primary-color;
+}
+
+.page-submenu .actionButtons li a.btn {
+  background-color: $default-theme-primary-color;
+}
+
+.page-submenu .actionButtons li a.btn:hover,
+.page-submenu .actionButtons li a.btn:active,
+.page-submenu .actionButtons li a.btn:focus {
+  background-color: $default-theme-tertiary-color; /* TODO: Something is wonky */
+  border-radius: 0 0 5px 5px;
+}
+
+/* Adjust placement of lender buttons in deal submenu */
+.page-submenu .lender-buttons {
+  margin-left: -29px; /* Offset gutter */
+  height: 100%; /* Stretch vertical flex */
+}
+
+.page-submenu > .right-sidebar {
+  background-color: #D3D3D3;
+}
+
+.submenu-menu .section-heading,
+.submenu-title .section-heading {
+  margin-top: 0.4rem;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.submenu-menu .section-heading span,
+.submenu-title .section-heading span {
+  color: white;
+  align-self: center;
+  justify-self: center;
+}
+
+.submenu-menu > .menuWrapper {
+  display: flex;
+}
+
+.submenu-menu > .menuWrapper > .section-heading {
+  flex: 1 !important;
+}
+
+.submenu-menu > .menuWrapper > .menu {
+  flex: 2;
+}
+
+.react-app-wrapper > .page-submenu {
+  position: fixed;
+  display: inline-flex;
+  width: 100%;
+  left: 0;
+  top: $top-nav-bar-height;
+  z-index: 7000; /* One index higher than the shopping cart overlay */
+}
+
+/* Not too sure if this bit belongs here, in page-wrap, or in its own file */
+#page-wrap.sidebar-open .page-submenu {
+  position: relative; /* Override absolute styling when sidebar is open */
+}
+
+.page-submenu .actionButtons li a.btn:hover .buttonText,
+.page-submenu .actionButtons li a.btn:active .buttonText,
+.page-submenu .actionButtons li a.btn:focus  .buttonText,
+.page-submenu .actionButtons li a.btn:hover i,
+.page-submenu .actionButtons li a.btn:active i,
+.page-submenu .actionButtons li a.btn:focus i {
+  color: #fff;
+}
+
+.page-submenu .actionButtons li a.btn:hover,
+.page-submenu .actionButtons li a.btn:active,
+.page-submenu .actionButtons li a.btn:focus {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 0 0 5px 5px;
+  box-shadow: inset 0px -1px 7px rgba(0,0,0,0.333);
+}
+
+@media screen and (max-width: 768px) {
+  .page-submenu .lender-buttons {
+    margin-left: -15px; /* Offset gutter */
+    height: 100%; /* Stretch vertical flex */
+  }
+
+  .page-submenu + .has-submenu-header {
+    /*margin-top: 0 !important;*/
+  }
+
+  .page-submenu::before {
+    height: 0 !important;
+  }
+
+  .page-submenu .actionButtons:first-child {
+    /* Something? */
+  }
+
+  .page-submenu .actionButtons h1,
+  .page-submenu .actionButtons h2,
+  .page-submenu .actionButtons h3,
+  .page-submenu .actionButtons h4,
+  .page-submenu .actionButtons h5,
+  .page-submenu .actionButtons h6,
+  .page-submenu .actionButtons p,
+  .page-submenu .actionButtons span,
+  .page-submenu .actionButtons {
+    font-size: 0.78rem !important;
+  }
+
+  .page-submenu .actionButtons > .menuWrapper {
+    height: auto !important;
+  }
+
+  .page-submenu .actionButtons li a.btn:hover,
+  .page-submenu .actionButtons li a.btn:active,
+  .page-submenu .actionButtons li a.btn:focus {
+    background-color: $default-theme-tertiary-color !important;
+    border-radius: 0 !important;
+  }
+
+  .page-submenu .actionButtons:first-child {
+    /* Do something? */
+  }
+
+  .page-submenu .actionButtons {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .react-app-wrapper > .page-submenu {
+    position: fixed;
+    display: inline-flex;
+    width: 100%;
+    left: 0;
+    top: 144px;
+    z-index: 102; /* One index higher than the shopping cart overlay */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .page-submenu {
+    flex-flow: column nowrap !important;
+  }
+
+  .page-submenu > .submenu-menu,
+  .page-submenu > .right-sidebar {
+    height: $top-nav-bar-height;
+  }
+
+  .page-submenu + .has-submenu-header {
+    /*margin-top: 0 !important;*/
+  }
+
+  .page-submenu.height-2x-xs {
+    height: 144px;
+  }
+
+  .page-submenu + .has-submenu-header.height-2x-xs {
+    margin-top: 144px !important;
+  }
+}
+
+.page-submenu .actionButtons li a.btn.is-active {
+  /*background-color: rgba(0, 0, 0, 0.1);*/
+  border-radius: 0 !important;
+  /*box-shadow: inset 0px -1px 7px rgba(0, 0, 0, 0.333);*/
+  font-weight: 800;
+  font-size: 13.5px;
+}
+
+.page-submenu .actionButtons li a.btn.is-active span {
+  line-height: 58px;
+}
+
+.page-submenu .actionButtons li a.btn:hover,
+.page-submenu .actionButtons li a.btn:active,
+.page-submenu .actionButtons li a.btn:focus {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Kill the silly border-radius it's a relic */
+.page-submenu .actionButtons li a.btn:not(.is-active) {
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.page-submenu.flex-icon-menu {
+  overflow: visible;
+}

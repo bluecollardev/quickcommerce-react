@@ -1,0 +1,47 @@
+@media only screen and (min-width: 960px) {
+    .lt-ie9 .wrapper {
+        width: 960px;
+    }
+    .lt-ie9 .social-links a .border {
+        display: none;
+    }
+    .lt-ie9 .nav-wrapper.stuck {
+        width: 100%
+    }
+    .lt-ie9 .menu-layout {
+        border: 1px solid #d5d5d5;
+    }
+    .lt-ie8 .site-nav {
+        display: block;
+    }
+    .lt-ie8 .site-nav ul {
+        display: block;
+        width: 750px;
+    }
+    .lt-ie8 .site-nav li {
+        float: left;
+        display: block;
+    }
+    .lt-ie8 .site-nav li.bullet {
+        padding: 0 10px;
+    }
+    .lt-ie8 .site-nav a .underline {
+        display: none;
+    }
+    .lt-ie8 .menu-table {
+        width: 484px;
+    }
+    .lt-ie8 .menu-table tr td:first-child {
+        width: 434px;
+    }
+    .lt-ie8 .menu-table tr td:last-child {
+        width: 50px;
+    }
+    .lt-ie8 #copper {
+        width: 100%;
+        background: #dad7c8 url(image/copper.jpg) no-repeat fixed center top;
+    }
+    .twitter-list {
+        min-height: 419px;
+    }
+}

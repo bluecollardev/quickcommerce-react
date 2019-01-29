@@ -1,0 +1,121 @@
+/* Range Slider */
+.rangeslider-horizontal {
+  height: 1rem;
+  border-radius: 0;
+  position: relative;
+}
+.rangeslider-horizontal + .value {
+  text-align: center;
+  padding-top: 40px;
+  font-weight: 500;
+  font-size: 24px;
+}
+.rangeslider-horizontal .rangeslider__handle {
+  width: 34px;
+  height: 34px;
+  border-radius: 30px;
+  text-align: center;
+  z-index: 100;
+}
+.rangeslider-horizontal .rangeslider__handle-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 101;
+}
+.rangeslider-horizontal .rangeslider__handle:after {
+  display: none;
+  background: transparent;
+  border: none;
+  content: ''
+}
+.rangeslider-horizontal .rangeslider__fill {
+  height: 100%;
+  background-color: $default-theme-tertiary-color;
+  border-radius: 0;
+  top: 0;
+}
+.rangeslider__labels .rangeslider__label-item {
+  position: absolute;
+  cursor: pointer;
+  display: inline-block;
+  top: 0;
+  transform: translate3d(-50%,0,0);
+  font-size: 14px;
+}
+.rangeslider__labels .rangeslider__label-item::before {
+  /* position: absolute;
+   */
+  font-size: 10px;
+  display: inline-block;
+  text-align: center;
+  content: '▲';
+  width: 100%;
+}
+
+/* Input Value Slider */
+.input-value-slider {
+  overflow: visible !important;
+}
+
+.input-value-slider .rangeslider {
+  margin: -1px 0 20px;
+  z-index: 10;
+}
+
+.input-value-slider .rangeslider-horizontal {
+  height: 0.5rem;
+  border-radius: 0;
+}
+.input-value-slider .rangeslider-horizontal + .value {
+  text-align: center;
+  padding-top: 40px;
+  font-weight: 500;
+  font-size: 17px;
+}
+.input-value-slider .rangeslider-horizontal .rangeslider__handle {
+  width: 17px;
+  height: 17px;
+  border-radius: 30px;
+  text-align: center;
+}
+.input-value-slider .rangeslider-horizontal .rangeslider__handle-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 10;
+}
+.input-value-slider .rangeslider-horizontal .rangeslider__handle-tooltip {
+  display: none;
+}
+.input-value-slider .rangeslider-horizontal .rangeslider__handle:after {
+  display: none;
+  background: transparent;
+  border: none;
+  content: ''
+}
+.input-value-slider .rangeslider-horizontal .rangeslider__fill {
+  height: 100%;
+  background-color: $default-theme-tertiary-color;
+  border-radius: 0;
+  top: 0;
+}
+.input-value-slider .rangeslider__labels .rangeslider__label-item {
+  position: absolute;
+  cursor: pointer;
+  display: inline-block;
+  top: 0;
+  transform: translate3d(-50%,0,0);
+  font-size: 14px;
+}
+.input-value-slider .rangeslider__labels .rangeslider__label-item::before {
+  /* position: absolute;
+   */
+  font-size: 10px;
+  display: inline-block;
+  text-align: center;
+  content: '';
+  width: 100%;
+}

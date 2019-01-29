@@ -1,0 +1,56 @@
+.browser-menu-container {
+    padding-top: 0; }
+
+.browser-content .card {
+    text-align: center; }
+
+.browser-content .card {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; }
+
+.browser-content .thumbnail img {
+    box-sizing: content-box; }
+
+@media all and (max-width: 48em) {
+    .browser-menu-container {
+        max-width: 75% !important;
+        float: right !important; } }
+
+/* Checkout product icon (griddle) flex arrangement */
+.browser-content .griddle-container > div > div {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center; }
+
+/* Center icons in item container */
+.browser-content .griddle-container > div > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+
+.browser-content .griddle-container .thumbnail {
+    padding: 1.35rem; }
+
+.browser-content .griddle-container > div > div > div {
+    flex: 0 1 100%; }
+
+@media all and (min-width: 25.875em) {
+    .browser-content .griddle-container > div > div > div {
+        flex: 0 1 33.3%; } }
+
+@media all and (min-width: 48em) {
+    .browser-content .griddle-container > div > div > div {
+        flex: 0 1 33.3%; } }
+
+@media all and (min-width: 64em) {
+    /* Browser / checkout items */
+    .browser-content .griddle-container > div > div > div {
+        flex: 0 1 33.3%; } }
+
+@media all and (min-width: 74em) {
+    /* Center icons in item container */
+    .browser-content .griddle-container > div > div > div {
+        flex: 0 1 33.33%; } }

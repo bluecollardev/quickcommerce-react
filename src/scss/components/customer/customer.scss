@@ -1,0 +1,174 @@
+.customer-profile {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.customer-profile > .customer-profile-block {
+	flex: 1 1 100%;
+	padding: 1rem;
+}
+
+.customer-profile-block:first-child {
+	flex: 0 0 100%;
+}
+
+.customer-profile > .customer-profile-block {
+	flex: 1 1 50%;
+	padding: 1rem;
+}
+
+.customer-profile-block:first-child {
+	flex: 0 0 100%;
+}
+
+.customer-info {
+	display: flex;
+	justify-content: space-around;
+	flex-flow: row wrap;
+}
+
+.customer-info > div:first-child {
+	flex: 1 2 33%;
+}
+.customer-info > div:last-child {
+	flex: 2 1 66%;
+}
+
+.customer-profile-block.customer-info .signin-form {
+	flex: 1;
+}
+
+@media all and (min-width: 64em) {
+	.customer-profile-block.customer-info .signin-form {
+		flex: 5;
+	}
+}
+
+.customer-info .form-group {
+	text-align: center;
+	/* Center Labels */
+}
+
+.customer-info .form-group input,
+.customer-info .form-group input,
+.customer-info .form-group select,
+.customer-info .form-group textarea {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Horizontal forms, pivot layout using flex */
+.employer-profile > .employer-profile-block,
+.customer-profile > .customer-profile-block {
+	flex: 1 0 100%;
+}
+
+@media all and (min-width: 74em) {
+	.customer-profile > .customer-profile-block.address-block {
+		flex: 1 1 50%;
+	}
+}
+
+.employer-profile-block.employer-info > div,
+.customer-profile-block.customer-info > div {
+	display: flex;
+	flex-direction: column;
+}
+
+.employer-profile-block.employer-info > div > form > div,
+.customer-profile-block.customer-info > div > form > div {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+/* Style mods for indigo */
+/* Horizontal forms, pivot layout using flex */
+.employer-profile > .employer-profile-block,
+.customer-profile > .customer-profile-block {
+	flex: 1 0 100%;
+}
+
+.employer-profile-block.employer-info > div,
+.customer-profile-block.customer-info > div {
+	display: flex;
+	flex-direction: column;
+}
+
+.employer-profile-block.employer-info > div > form > div,
+.customer-profile-block.customer-info > div > form > div {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.customer-info {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+
+.customer-info > div:first-child {
+  flex: 1 2 33%;
+}
+.customer-info > div:last-child {
+  flex: 2 1 66%;
+}
+
+.customer-profile-block.customer-info .signin-form {
+  flex: 1;
+}
+
+.customer-info .form-group input,
+.customer-info .form-group input,
+.customer-info .form-group select,
+.customer-info .form-group textarea {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.customer-full-info {
+  max-width: 100%; /* Override bundle */
+  margin: 0 auto;
+}
+
+@media all and (min-width: 64em) {
+  .customer-profile-block.customer-info .signin-form {
+    flex: 5;
+  }
+}
+
+.customer-profile {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.customer-profile > .customer-profile-block {
+  flex: 1 1 100%;
+  /*padding: 1rem;*/
+  padding: 0;
+}
+
+.customer-profile-block:first-child {
+  flex: 0 0 100%;
+}
+
+/* Horizontal forms, pivot layout using flex */
+.employer-profile > .employer-profile-block,
+.customer-profile > .customer-profile-block {
+  flex: 1 0 100%;
+}
+
+@media all and (min-width: 74em) {
+  .customer-profile > .customer-profile-block.address-block {
+    flex: 1 1 50%;
+  }
+}
+
+.employer-profile-block.employer-info > div,
+.customer-profile-block.customer-info > div {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,36 @@
+.profileWidget {
+	position: absolute;
+	right: 0;
+}
+
+.profileWidget [class*=MuiListItem-gutters] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+@media screen and (max-width: 992px) {
+	.profileWidget > div > li {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	
+	.profileWidget h3 {
+		font-size: 0.92rem !important;
+	}
+	
+	.profileWidget a {
+		font-size: 0.78rem !important;
+	}
+	
+	.profileWidget {
+		top: 0;
+	}
+}
+
+@media screen and (max-width: 768px) {
+    /* Hide sign out link on small/tiny devices */
+    .profileWidget h3 + p {
+        display: none;
+    }
+}
+

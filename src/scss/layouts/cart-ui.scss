@@ -1,0 +1,27 @@
+.cart-ui {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    /*flex-direction: column;*/
+}
+
+.cart-ui > * {
+    flex: 1.5;
+}
+
+.cart-ui .container {
+    width: 100%;
+    /* Force fluid */
+}
+
+.cart-ui > .section_wrapper {
+    flex: 1;
+    align-self: stretch;
+    padding-top:5%;
+}
+
+@media screen and (max-width: 767px) {
+    .cart-ui {
+        flex-flow: column wrap;
+    }
+}

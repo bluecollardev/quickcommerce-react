@@ -1,0 +1,14 @@
+/* Pinned elements */
+
+.pinned {
+    position: fixed;
+}
+
+.pinned .col-pinned-9 {
+    width: 75%;
+}
+
+.pinned-offset-top.offset-pinned {
+    position: relative;
+    margin-top: 200px;
+}

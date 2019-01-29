@@ -1,0 +1,50 @@
+button.btn.repeater-button,
+button.btn.repeater-button:hover,
+button.btn.repeater-button:active,
+button.btn.repeater-button:focus {
+	border: none !important;
+	color: $default-theme-primary-color !important;
+	background-color: transparent;
+}
+
+button.btn.repeater-button .fa {
+	color: $default-theme-primary-color !important;
+}
+
+.repeater-button h1,
+.repeater-button h2,
+.repeater-button h3,
+.repeater-button h4,
+.repeater-button h5,
+.repeater-button h6 {
+	color: $default-theme-primary-color !important;
+}
+
+.repeater-actions {
+    justify-self: flex-end !important;
+    align-items: center;
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+.repeater-button h5 {
+    margin: 0;
+}
+
+
+@media screen and (max-width: 768px) {
+	button.btn.repeater-button, button.btn.repeater-button:hover,
+	button.btn.repeater-button:active, button.btn.repeater-button:focus {
+		border: none !important;
+		color: $default-theme-primary-color !important;
+		background-color: transparent;
+		left: -15px;
+		position: relative;
+	}
+}
+
+@media screen and (max-width: 480px) {
+    .repeater-buttons .repeater-button + .repeater-button {
+        margin-top: 0;
+    }
+}

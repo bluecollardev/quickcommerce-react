@@ -1,0 +1,9 @@
+.searchDrawer {
+	margin-top: 144px !important;
+}
+
+@media screen and (min-width: 1600px) {	
+	.searchDrawer {
+		margin-top: 72px !important; /* Sticky menu offset */
+	}
+}

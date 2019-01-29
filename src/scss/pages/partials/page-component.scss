@@ -1,0 +1,24 @@
+.indigo-page-header{
+  /* TODO dave look into making this code a mixin */
+  height: $top-nav-bar-height;
+  background-color: $default-theme-secondary-color;
+  color: white;
+
+  .page-header-text{
+    text-align: left;
+    padding: 15px;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+}
+
+.indigo-page-sub-header{
+  height: 40px;
+  color: white;
+  .page-sub-header-text{
+    text-align: left;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+}

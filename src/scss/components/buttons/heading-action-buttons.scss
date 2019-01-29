@@ -1,0 +1,83 @@
+button.btn.heading-action-button,
+button.btn.heading-action-button:hover,
+button.btn.heading-action-button:active,
+button.btn.heading-action-button:focus {
+    border: 1px solid #ddd !important;
+    color: $default-theme-primary-color !important;
+    box-shadow: 0px 0px 1px rgba(0,0,0, 0.125);
+}
+
+
+button.btn.heading-action-button {
+    background-color: #f5f5f5;
+}
+
+button.btn.heading-action-button:hover,
+button.btn.heading-action-button:active,
+button.btn.heading-action-button:focus {
+    background-color: white;
+}
+
+button.btn.heading-action-button .fa {
+	color: $default-theme-primary-color !important;
+}
+
+button.btn.heading-action-button.btn-success .fa {
+    color: white !important;
+}
+
+.heading-action-button h1,
+.heading-action-button h2,
+.heading-action-button h3,
+.heading-action-button h4,
+.heading-action-button h5,
+.heading-action-button h6 {
+	color: $default-theme-primary-color !important;
+}
+
+.heading-actions {
+    justify-self: flex-end !important;
+    align-items: center;
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+.heading-actions.justify-content-center {
+    width: 100%;
+    justify-content: center !important;
+}
+
+.heading-action-button h5,
+.heading-action-button h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.heading-actions > .btn.heading-action-button + .btn.heading-action-button {
+    border-left: 0 !important;
+}
+
+.heading-actions > .btn.heading-action-button:first-child {
+    border-radius: 3px 0 0 3px !important;
+}
+
+.heading-actions > button.btn.heading-action-button:last-child {
+    border-radius: 0 3px 3px 0 !important;
+}
+
+@media screen and (max-width: 768px) {
+	button.btn.heading-action-button, button.btn.heading-action-button:hover,
+	button.btn.heading-action-button:active, button.btn.heading-action-button:focus {
+		border: none !important;
+		color: $default-theme-primary-color !important;
+		background-color: transparent;
+		left: -15px;
+		position: relative;
+	}
+}
+
+@media screen and (max-width: 480px) {
+    .heading-action-buttons .heading-action-button + .heading-action-button {
+        margin-top: 0;
+    }
+}

@@ -1,0 +1,50 @@
+/* DealLenderWorksheet headings need their top and bottom margins removed, as we
+ usually need to wrap the text and display the info on 2 lines; without this the
+ header's height can become stretched below the lender icon, which looks terrible! */
+.card-title {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 15px;
+  white-space: normal;
+  font-size: 12px;
+  font-weight: bold;
+  /*background-color: $default-theme-accent-color-04;*/
+}
+
+.card-title {
+  &.large {
+    font-size: 15px;
+  }
+
+  .float-right {
+    color: $default-theme-secondary-color; /* Indigo Dark Blue */
+  }
+
+  .float-left {
+    color: $default-theme-accent-color-03; /* Indigo Dark Grey */
+  }
+}
+
+.card-content .card-title {
+  /*width: 50%;*/
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.standout .card-title .float-left {
+  font-weight: bold;
+}
+
+.card-title-small {
+  font-weight: bold;
+  color: white;
+}
+
+.card-title-icon {
+  max-width: 4.2em;
+  background: white;
+  display: inline-flex;
+}

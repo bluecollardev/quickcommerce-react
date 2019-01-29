@@ -1,0 +1,110 @@
+.card {
+  .card-list-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  ul .card-list-item {
+    /*align-items: flex-start !important;*/
+  }
+
+  ul.col-1 .card-list-item {
+    list-style: none;
+    flex: 0 0 100%;
+  }
+
+  ul .card-list-item,
+  ul.col-2 .card-list-item {
+    list-style: none;
+    width: 50%;
+    flex: 1 1 50%;
+  }
+
+  ul.col-3 .card-list-item {
+    list-style: none;
+    width: 33.33333%;
+    flex: 0 1 33.33333%;
+  }
+
+  ul.col-4 .card-list-item {
+    list-style: none;
+    width: 25%;
+    flex: 0 1 25%;
+  }
+
+  .card-list-item .list-item-label {
+    flex: 0;
+    /* Fix font size, it's smaller after compiling as SASS */
+    color: $default-theme-accent-color-01;
+    font-size: 100%;
+  }
+
+  .card-list-item .list-item-description {
+    flex: 1;
+    display: flex;
+    flex-flow: row;
+  }
+
+  .card-list-item .list-item-text {
+    flex: 1 1;
+    color: $default-theme-text-color;
+  }
+
+  .card-list-item .list-item-toggle {
+    flex: 0 0 auto;
+    padding-right: 1rem;
+    //(JIRA INDIGO-294 first time the toggle renders the toggle btn collapses)
+    .toggle.btn {
+      min-width: 51px !important;
+      min-height: 30px !important;
+    }
+  }
+
+  /* 2 Col */
+  ul.col-2 .card-list-item:nth-child(odd) {
+    text-align: left;
+  }
+
+  ul.col-2 .card-list-item:nth-child(even) {
+    text-align: right;
+  }
+
+  /* 3 Col */
+  ul.col-3 .card-list-item:nth-child(3n+1) {
+    text-align: left;
+  }
+
+  ul.col-3 .card-list-item:nth-child(3n+2) {
+    text-align: center;
+  }
+
+  ul.col-3 .card-list-item:nth-child(3n+0) {
+    text-align: right;
+  }
+
+  /* 4 Col */
+  ul.col-4 .card-list-item:nth-child(4n+1) {
+    text-align: left;
+  }
+
+  ul.col-4 .card-list-item:nth-child(4n+2) {
+    text-align: center;
+  }
+
+  ul.col-4 .card-list-item:nth-child(4n+3) {
+    text-align: center;
+  }
+
+  ul.col-4 .card-list-item:nth-child(4n+0) {
+    text-align: right;
+  }
+
+  /* Text alignment overrides */
+  ul[class*=col-].text-align-left .card-list-item:nth-child(n) {
+    text-align: left !important; /* Force override */
+  }
+
+  .card-details {
+
+  }
+}

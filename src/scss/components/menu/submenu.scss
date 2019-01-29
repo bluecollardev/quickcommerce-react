@@ -1,0 +1,175 @@
+.submenu-component {
+    /*position: absolute;*/
+    left: 0;
+    display: flex !important;
+    width: 100%;
+    height: auto;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.25);
+}
+
+.submenu-component + section,
+.submenu-component + div {
+	/*margin-top: 72px;*/ /* Offset menu - shouldn't be necessary anymore */
+}
+
+.submenu-component::before {
+	display: block;
+	height: $top-nav-bar-height;
+}
+
+.submenu-component {
+	background-color: #efefef;
+}
+
+.submenu-component .actionButtons li a.btn {
+	background-color: #efefef;
+	display: flex; /* horz layout */
+	align-items: center;
+	justify-content: center;
+}
+
+/* This is not quite right, but class names not supported on toolbar component */
+.ribbon-blue .submenu-component {
+	background-color: transparent;
+}
+
+/* This is not quite right, but class names not supported on toolbar component */
+.ribbon-blue .submenu-component .actionButtons li a.btn {
+    background-color: $default-theme-secondary-color;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Horz layout */
+.submenu-component .actionButtons li a.btn > * {
+	display: inline-flex;
+}
+
+/* Submenu button content (text, etc.) */
+.submenu-component .actionButtons li a.btn > * > * {
+	flex: 4;
+}
+
+/* Submenu icon */
+.submenu-component .actionButtons li a.btn > * > *:first-child {
+	flex: 1;
+	padding: 0 1rem 0 0; /* Pad icon */
+}
+
+/* Override ideal base theme */
+.submenu-component .actionButtons .btn.no-bs-style .buttonText {
+	color: $default-theme-secondary-color; /* Indigo Dark Blue */
+}
+
+.submenu-component .actionButtons li a.btn:hover,
+.submenu-component .actionButtons li a.btn:active,
+.submenu-component .actionButtons li a.btn:focus {
+	background-color: #f4f4f4; /* TODO: Something is wonky */
+	border-radius: 0 0 5px 5px;
+
+}
+
+/* Adjust placement of lender buttons in deal submenu */
+.submenu-component .lender-buttons {
+	margin-left: -30px; /* Offset gutter */
+	height: 100%; /* Stretch vertical flex */
+}
+
+.submenu-component > .right-sidebar {
+	background-color: #D3D3D3;
+}
+
+.submenu-component .submenu-menu .section-heading,
+.submenu-component .submenu-title .section-heading {
+	margin-top: 0.4rem;
+	display: flex;
+	text-align: center;
+	justify-content: space-between;
+}
+
+.submenu-component .submenu-menu .section-heading span,
+.submenu-component .submenu-title .section-heading span {
+	color: $default-theme-secondary-color; /* Indigo Dark Blue */
+	align-self: center;
+	justify-self: center;
+}
+
+.submenu-component .actionButtons li i.fa {
+	color: $default-theme-secondary-color; /* Indigo Dark Blue */
+}
+
+.submenu-component .actionButtons li a.btn:hover .buttonText,
+.submenu-component .actionButtons li a.btn:active .buttonText,
+.submenu-component .actionButtons li a.btn:focus .buttonText,
+.submenu-component .actionButtons li a.btn:hover i,
+.submenu-component .actionButtons li a.btn:active i,
+.submenu-component .actionButtons li a.btn:focus i {
+	color: $default-theme-secondary-color; /* Indigo Dark Blue */
+}
+
+.submenu-component .heading-actions .btn-group.dropdown {
+    display: inline-block;
+}
+
+
+@media screen and (max-width: 768px) {
+	.submenu-component {
+		flex-flow: column nowrap !important;
+	}
+
+	.submenu-component + section, .submenu-component + div {
+		margin-top: 0 !important;
+	}
+
+	.submenu-component::before {
+		height: 0 !important;
+	}
+
+	.submenu-component .actionButtons:first-child {
+		/* Something? */
+	}
+
+	.submenu-component .actionButtons h1,
+	.submenu-component .actionButtons h2,
+	.submenu-component .actionButtons h3,
+	.submenu-component .actionButtons h4,
+	.submenu-component .actionButtons h5,
+	.submenu-component .actionButtons h6,
+	.submenu-component .actionButtons p,
+	.submenu-component .actionButtons span,
+	.submenu-component .actionButtons {
+		font-size: 0.78rem !important;
+	}
+
+    .submenu-component .actionButtons:first-child {
+        /* Do something? */
+    }
+
+    .submenu-component .actionButtons {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+	.submenu-component .actionButtons > .menuWrapper {
+		height: auto !important;
+	}
+
+	.submenu-component .actionButtons li a.btn:hover,
+	.submenu-component .actionButtons li a.btn:active,
+	.submenu-component .actionButtons li a.btn:focus {
+		background-color: #f4f4f4 !important;
+		border-radius: 0 !important;
+	}
+
+    .submenu-component .actionButtons li a.btn .buttonText{
+        display: none;
+    }
+
+
+}

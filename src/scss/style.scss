@@ -1,0 +1,273 @@
+/* Kill Grommet styles */
+button.btn-danger {
+    color: white !important;
+}
+button.btn {
+    border: 1px solid grey !important;
+}
+
+button, button.btn, a.btn {
+    border-radius: 0 !important;
+}
+
+.cta-buttons {
+    margin-top: 2rem;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 20;
+}
+.button.cta {
+    padding: 1.5rem 3rem;
+}
+.button.cta:hover {
+    border-color: #cfa670;
+    background: #cfa670;
+    color: white;
+}
+.cta-buttons .button.cta {
+    display: table-cell;
+    vertical-align: middle;
+    color: white;
+}
+.cta-buttons .button.cta:hover {
+    /*border-color: #cfa670;*/
+
+    border-color: white;
+    background: rgba(0, 0, 0, 0.33);
+}
+
+.tel,
+.tel:visited {
+    color: #2B2B2B;
+    text-decoration: none
+}
+.tel:hover,
+.tel:focus {
+    color: #2B2B2B
+}
+
+.dark .tel,
+.dark .tel:visited {
+    color: #fff;
+    text-decoration: none
+}
+.dark .tel:hover,
+.dark .tel:focus {
+    color: #fff
+}
+
+@media (min-width: 64em) {
+    .tel,
+    .tel:visited {
+        background: none;
+        cursor: default
+    }
+    .tel:hover,
+    .tel:focus {
+        text-decoration: none;
+        color: #2B2B2B
+    }
+}
+.form-control {
+    background-color: white !important;
+}
+
+.form-control {
+    border-radius: 0 !important;
+}
+
+.thumbnail {
+    border-radius: 0;
+}
+
+.page {
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    background: white;
+}
+
+.button {
+	display: inline-block;
+	font-weight: 700;
+	border: 1px solid #111;
+	color: #fff;
+	font-size: 1.125rem;
+	line-height: 1.225;
+	margin: 0 0 0.5rem 0;
+	padding: 0.75rem 1.4rem;
+	vertical-align: middle;
+	text-shadow: none;
+	-webkit-transition: background 0.2s;
+	-moz-transition: background 0.2s;
+	transition: background 0.2s;
+}
+
+main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100%; /* Force min screen height */
+}
+
+#main > .container,
+#main > .container > .container {
+    padding: 0;
+}
+
+#content {
+    min-height: 200px !important;
+}
+
+
+
+#category-menu {
+	margin-top: 100px !important;
+	/* Override */
+}
+
+#logo img {
+    padding: 1rem 4rem;
+}
+
+#category-menu {
+	position: relative;
+	z-index: 100;
+}
+
+table.cart .thumbnail {
+    max-width: 100px;
+}
+
+.text-center.well.well-lg {
+    position: relative;
+    top: 4rem;
+}
+
+input[name=react-star-rating] {
+    display: none;
+}
+
+.top-section {
+    margin-bottom: 2rem;
+}
+
+.cart .container {
+    width: auto;
+}
+
+tfoot .total {
+    font-size: 1.35rem;
+    font-weight: bold;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+}
+
+.checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"], .radio input[type="radio"], .radio-inline input[type="radio"] {
+    position: relative;
+    margin: auto;
+}
+
+.load-more-button {
+    text-align:center;
+    margin-bottom:20px
+}
+
+.summary-component {
+    background: white;
+    border: 1px solid grey;
+    border-right: none;
+}
+
+.summary-component {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border: 1px solid grey;
+    border-right: none;
+    border-top: none;
+    z-index: 9998;
+    /*top: 60px;*/
+    top: 0;
+    left: 0;
+    width: 100%;
+
+}
+
+.summary-component i.fa-large {
+    font-size: 24px;
+    text-align: center;
+}
+
+.summary-component .summary-icon,
+.summary-component .summary-heading {
+    text-align: center;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+    height: 60px;
+}
+
+.product-title {
+    text-align: center;
+}
+
+.text-heading {
+    font-size: 18px;
+    font-family: "Ubuntu";
+    font-weight: 300;
+    color: #f4f4f4;
+}
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+.product {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    width: 200px;
+    margin-right: 10px;
+}
+.product p {
+    margin: 0;
+}
+.product span {
+    font-style: italic;
+    color: #9d9d9d;
+}
+
+.col-right {
+    margin-bottom: 30px;
+}
+.col-right img {
+    margin: 0 auto;
+}
+
+.fade {
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+    opacity: 0;
+}
+.fade.in {
+    opacity: 1;
+}
+
+.form-control,
+input.form-control,
+select.form-control,
+textarea.form-control {
+    border-radius: 5px;
+}

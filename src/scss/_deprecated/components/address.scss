@@ -1,0 +1,15 @@
+.mailing-address > div > div,
+.billing-address > div > div,
+.shipping-address > div > div {
+	display: flex;
+	flex-direction: column;
+}
+
+.mailing-address > div > div > form > div,
+.billing-address > div > div > form > div,
+.shipping-address > div > div > form > div {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+

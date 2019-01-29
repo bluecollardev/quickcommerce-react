@@ -1,0 +1,200 @@
+.card {
+  box-shadow: none;
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: $default-theme-card-background-color;
+
+  /* Temp fix to equalize item heights */
+  .shop-thumbnail {
+    max-height: 45vh;
+    object-fit: contain;
+  }
+
+  /* Override bootstrap thumbnail style */
+  .shop-thumbnail.thumbnail {
+    margin-bottom: 0;
+  }
+
+  .shop-thumbnail img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* Add a white ribbon style - this needs to be added to card.scss */
+  .ribbon-white {
+    background-color: white; /* Indigo Light Grey(?) */
+  }
+
+  .ribbon-grey {
+    background-color: $default-theme-accent-color-04; /* Indigo Light Grey(?) */
+  }
+  .ribbon-grey:hover,
+  .ribbon-grey:focus {
+    background-color: $default-theme-accent-color-04; /* Indigo Light Grey Active (?) */
+  }
+
+  .ribbon-blue {
+    background-color: $default-theme-secondary-color; /* Indigo Dark Blue */
+  }
+
+  .ribbon-blue .catalog-item-buttons button {
+    color: white;
+  }
+  .ribbon-blue .card-price,
+  .ribbon-blue .card-price .float-left,
+  .ribbon-blue .card-price .float-right,
+  .ribbon-blue .card-title,
+  .ribbon-blue .card-title .float-left,
+  .ribbon-blue .card-title .float-right {
+    color: white;
+  }
+}
+
+.card.shadow {
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
+  /* TODO: Make another util for border */
+  border: 1px solid $default-theme-accent-color-04;
+}
+
+.card-title,
+.card-price {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.card .card-price {
+  background-color: $default-theme-secondary-color; /* Indigo Dark Blue */
+}
+
+.card .card-price,
+.card .card-price a,
+.card .card-price span {
+  color: white;
+  font-weight: bold;
+}
+
+/* Hide Quick Add */
+.card .caption {
+  display: none;
+}
+
+/* Quick fix to turn off overlay of item tools */
+.card .card-tools {
+  position: static;
+}
+
+/* Disable opacity if shop item has not been configured with the overlayTools prop */
+.card .card-tools.block {
+  opacity: 1 !important;
+  visibility: initial !important;
+}
+
+.card .card-tools .add-to-cart.btn-block {
+  display: block !important;
+  width: 100% !important;
+}
+
+.card .card-tools .add-to-cart.btn-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card .add-to-cart em {
+  position: static;
+}
+
+/* Shop item overrdies some of these could be merged with or moved to base styles */
+
+/* TODO: Shadow should be removed from card... use a .shadow class instead */
+/* Card arrows indicating current expanded item in a grid */
+.card-dnd-wrapper {
+  z-index: 1;
+  width: 100%;
+}
+
+.card-dnd-wrapper .card-content {
+  display: block !important;
+}
+.card-dnd-wrapper .card-primary-photo,
+.card-dnd-wrapper .card-specs {
+  flex: 1 1 100% !important; /* Override inline flex styles */
+  width: 100%;
+}
+/* Cart overrides */
+.card .add-to-cart em {
+  position: relative;
+  top: -2px;
+}
+
+.card .add-to-cart i.fa {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+.card-label {
+  font-size: 14px !important;
+  font-weight: bold;
+}
+
+/* Quick fix for item specs alignment - I had to add a margin for other areas */
+.card-specs .list-item-text {
+  margin-left: 0rem;
+}
+
+/* Increase heading size */
+.card-detail-info .card-title {
+  font-size: 14px !important;
+}
+
+.card-summary .card-title span:first-child,
+.card-detail-info .card-title span:first-child {
+  font-size: 17px !important;
+}
+
+.card-summary .card-title {
+  width: 100%;
+}
+
+.card-stock-info-table {
+  width: 100%;
+}
+
+.card-features-table {
+  width: 100%;
+}
+
+/* Fix reset style, TODO: maybe there are other tags? */
+.card .list-item-label small {
+  color: inherit;
+  font-weight: bold;
+}
+
+.shop-label {
+  color: $default-theme-primary-color !important;
+  font-size: 9px !important;
+}
+
+.shop-label {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  height: 24px;
+  line-height: 24px;
+  top: 50px;
+  left: 15px;
+  font-size: 12px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  opacity: 0.666;
+}
+
+@import './details';
+@import './list';
+@import './list-item';
+@import './primary-photo';
+@import './thumbnails';
+@import './title';
+@import './trigger';

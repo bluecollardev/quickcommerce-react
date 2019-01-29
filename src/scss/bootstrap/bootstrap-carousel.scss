@@ -1,0 +1,43 @@
+/* TODO dave use sass vars */
+.carousel-control:focus,
+.carousel-control:hover,
+.carousel-control.right,
+.carousel-control.left {
+    background: none;
+    color: $default-theme-accent-color-03; /* Indigo Dark Grey */
+}
+
+.carousel-control.right,
+.carousel-control.left {
+    width: 10%;
+}
+
+.carousel-indicators li {
+    border: 1px solid ; /* Indigo Dark Grey */
+}
+
+
+.carousel-indicators .active {
+    color: $default-theme-accent-color-03; /* Indigo Dark Grey */
+    background-color: $default-theme-secondary-color; /* Indigo Dark Blue */
+}
+
+
+@media screen and (min-width: 768px) {
+    .carousel-indicators {
+        bottom: -30px;
+    }
+
+    .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next {
+        margin-right: -20px;
+    }
+
+    .carousel-control .glyphicon-chevron-left, .carousel-control .icon-prev {
+        margin-left: -20px;
+    }
+}
+
+.carousel-inner > .item > table {
+    max-width: 80%;
+    margin: 0 auto;
+}

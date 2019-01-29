@@ -1,0 +1,90 @@
+.modal-content {
+  border-radius: 0 !important;
+}
+
+.modal-backdrop {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.333);
+  z-index: 1000;
+}
+
+.modal .close {
+    color: rgba(255,255,255,0.777);
+    font-size: 1.5rem;
+    /*font-size: 3.5rem !important;*/
+    font-weight: bold;
+}
+
+.modal .modal-header {
+    position: relative;
+    /* Restore bootstrap default */
+    padding-right: 15px;
+    background: #efefef;
+}
+
+
+.modal .modal-content,
+.modal .modal-body {
+  background-color: rgba(255,255,255,1);
+}
+
+@media (min-width: 768px) {
+	.modal-dialog {
+		width: 600px;
+		margin: 12rem auto;
+	}
+}
+
+div[role=dialog].modal {
+    /* Kill 17px left padding (inline style) */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+
+/* Custom sizes */
+.dialog-fw {
+    width: 100%;
+    /* Same as page-wrap max-width */
+    max-width: 1400px;
+}
+
+.dialog-fw.padding-1x {
+    padding: 1rem;
+}
+
+.dialog-90 {
+    width: 90%;
+    max-width: 1400px;
+}
+
+.dialog-75 {
+    width: 75%;
+    max-width: 1400px;
+}
+
+.dialog-70 {
+    width: 70%;
+    max-width: 1400px;
+}
+
+.dialog-60 {
+  width: 60%;
+  max-width: 1400px;
+}
+
+.dialog-50 {
+  width: 50%;
+  max-width: 1400px;
+}
+
+.dialog-666 {
+    width: 66.66666%;
+    max-width: 1400px;
+}
+
+.dialog-333 {
+    width: 33.33333%;
+    max-width: 1400px;
+}

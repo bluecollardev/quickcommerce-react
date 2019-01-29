@@ -1,0 +1,40 @@
+.fullwidth-footer {
+    overflow: hidden;
+}
+
+.bottom-footer .no-payments {
+      display: block;
+  }
+  
+.copyright {
+    white-space: nowrap;
+}
+
+@media only screen and (max-width: 480px) {
+    #footer {
+        display: flex;
+    }
+}
+
+.site-footer {
+    margin-top: 60px;
+    padding-top: 35px;
+    padding-bottom: 20px;
+    border-top: 1px solid #111;
+    text-align: center;
+}
+.site-footer p {
+    margin-bottom: 90px;
+    padding: 0 20px;
+    font-size: 14px;
+    font-size: 1.4rem;
+    text-align: center;
+}
+.site-footer small {
+    font-size: 13px;
+    font-size: 1.3rem;
+    letter-spacing: 0.2em;
+}
+.site-footer .bar {
+    padding: 0 20px;
+}

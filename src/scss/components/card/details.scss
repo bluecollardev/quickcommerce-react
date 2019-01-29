@@ -1,0 +1,50 @@
+.card {
+  .card-details {
+    padding-top: 0;
+
+    &.flush {
+      padding: 0;
+    }
+
+    &.flush > * {
+      padding: 0;
+    }
+
+    &.value-list {
+      display: flex;
+      justify-content: space-between;
+
+      .card-attribute {
+        padding: 0.25rem 0.5rem;
+        flex: 1;
+        color: $default-theme-accent-color-01;
+      }
+
+      .card-attribute-value {
+        padding: 0.25rem 0.5rem;
+        flex: 1;
+        color: $default-theme-text-color;
+      }
+    }
+
+    /* Fix CatalogItemSpecs */
+    > [class*='col-'] {
+      padding: 0 1rem;
+    }
+
+    /* Fix other CatalogItem spacing */
+    > .card-price-line {
+      padding: 0 1rem;
+    }
+
+    /* May have to adjust this for mobile phones... */
+    > .card-price-line:nth-child(2) {
+      padding: 0 1rem 0 0;
+    }
+
+    .disclaimer {
+      font-size: 0.65rem;
+      color: #606060;
+    }
+  }
+}

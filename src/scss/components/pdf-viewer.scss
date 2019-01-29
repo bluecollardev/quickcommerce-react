@@ -1,0 +1,11 @@
+.pdf-viewer-modal {
+    height: 95vh;
+}
+
+.pdf-viewer-wrapper,
+.pdf-viewer {
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+	flex-direction: column;
+}

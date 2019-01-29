@@ -1,0 +1,68 @@
+.flex-icon-menu .actionButtons {
+    height: auto;
+}
+
+.flex-icon-menu .actionButtons > ul {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-icon-menu .actionButtons > ul > li {
+    width: 11.5em;
+}
+
+.actionButtons .btn.no-bs-style {
+    width: 100%;
+    height: auto;
+}
+
+/* Kill flex, use cols */
+.flex-icon-menu {
+    display: inline-flex;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.flex-icon-menu .actionButtons ul {
+    display: flex;
+}
+
+.flex-icon-menu .actionButtons ul > li {
+    width: auto;
+    flex: 1;
+}
+
+.flex-icon-menu .actionButtons ul > li a {
+    padding: 0;
+}
+
+.flex-icon-menu .actionButtons > .menuWrapper {
+    display: flex;
+    height: $top-nav-bar-height;
+    width: 100%;
+}
+
+.flex-icon-menu .actionButtons > .menuWrapper > * {
+    flex: 1;
+}
+
+.flex-icon-menu .actionButtons > .menuWrapper > .mainMenu {
+    flex: 3;
+}
+
+.flex-icon-menu{
+
+  .defaultMenu{
+    span{
+      position: relative;
+    }
+
+    .menu-text{
+      font-size: $top-menu-text-size;
+      font-weight: 600;
+      color: white;
+    }
+  }
+
+}

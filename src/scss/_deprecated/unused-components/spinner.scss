@@ -1,0 +1,181 @@
+.spinner {
+    display: none;
+    left: 50%;
+    top: 50%;
+    bottom: auto;
+    right: auto;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 100010;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    opacity: 0;
+    -moz-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease
+}
+@media (min-width: 64em) {
+    .spinner {
+        width: 80px;
+        height: 80px
+    }
+}
+.is-loadingData .spinner {
+    display: block;
+    opacity: 1;
+    -moz-transition: opacity 0.3s ease 0.4s;
+    -o-transition: opacity 0.3s ease 0.4s;
+    -webkit-transition: opacity 0.3s ease;
+    -webkit-transition-delay: 0.4s;
+    transition: opacity 0.3s ease 0.4s
+}
+.spinner .loader {
+    position: relative;
+    margin: 0px auto;
+    width: 60px;
+    height: 60px
+}
+@media (min-width: 64em) {
+    .spinner .loader {
+        width: 70px;
+        height: 70px
+    }
+}
+.spinner .loader:before {
+    content: '';
+    display: block;
+    padding-top: 100%
+}
+@-moz-keyframes rotate {
+    100% {
+        -moz-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+@-webkit-keyframes rotate {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+@keyframes rotate {
+    100% {
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+@-moz-keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px
+    }
+}
+@-webkit-keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px
+    }
+}
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1px, 200px;
+        stroke-dashoffset: 0px
+    }
+    50% {
+        stroke-dasharray: 89px, 200px;
+        stroke-dashoffset: -35px
+    }
+    100% {
+        stroke-dasharray: 89px, 200px;
+        stroke-dashoffset: -124px
+    }
+}
+@-moz-keyframes color {
+    100%, 0% {
+        stroke: #8D8380
+    }
+    40% {
+        stroke: #AC9A96
+    }
+    66% {
+        stroke: #EDE5E2
+    }
+    75%,
+    90% {
+        stroke: #AC9A96
+    }
+}
+@-webkit-keyframes color {
+    100%, 0% {
+        stroke: #8D8380
+    }
+    40% {
+        stroke: #AC9A96
+    }
+    66% {
+        stroke: #EDE5E2
+    }
+    75%,
+    90% {
+        stroke: #AC9A96
+    }
+}
+@keyframes color {
+    100%, 0% {
+        stroke: #8D8380
+    }
+    40% {
+        stroke: #AC9A96
+    }
+    66% {
+        stroke: #EDE5E2
+    }
+    75%,
+    90% {
+        stroke: #AC9A96
+    }
+}
+.spinner .circular {
+    -moz-animation: rotate 2s linear infinite;
+    -webkit-animation: rotate 2s linear infinite;
+    animation: rotate 2s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto
+}
+.spinner .path {
+    stroke-dasharray: 1px, 200px;
+    stroke-dashoffset: 0;
+    -moz-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    stroke-linecap: round;
+}

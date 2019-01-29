@@ -1,0 +1,86 @@
+table.cart thead,
+table.cart thead th,
+table.cart thead td {
+	background: none;
+	color: white;
+}
+
+.table.cart .thumbnail {
+	max-width: 106px;
+	/* Add extra pixels to account for padding */
+}
+/* TODO: Use cached thumbs */
+
+.table.cart .thumbnail img {
+	max-width: 50px !important;
+	max-height: 50px !important;
+}
+
+/* Fix now that we rearranged cart layout */
+.checkout-parts button {
+	display: block;
+	float: right !important;
+}
+
+.cart-ui .container {
+	width: 100%;
+	/* Force fluid */
+}
+
+.total {
+	font-size: 2.3rem !important;
+}
+/* 384px is set as a max-width somewhere, Grommet is usually the culprit */
+
+.cart-buttons button {
+	max-width: none !important;
+}
+
+.checkout-parts .cart-buttons button {
+	left: auto;
+}
+
+/* TODO: Mobile first yo! */
+@media all and (max-width: 48em) {
+	table.cart {
+		table-layout: fixed;
+	}
+
+	table.cart thead {
+		display: none;
+		/* Hide heading, no point we're going list style */
+	}
+
+	table.cart tbody td {
+		text-align: center;
+	}
+}
+
+.cart-ui {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	/*flex-direction: column;*/
+	align-items: stretch;
+}
+.cart-ui > * {
+	flex: 1.5;
+}
+
+.cart-ui > .section_wrapper {
+	flex: 1;
+	align-self: stretch;
+	padding-top: 5%;
+}
+
+.cart-ui.dark .form-group label,
+.cart-ui.dark .form-group label.control-label {
+	color: white !important;
+	/* Override previous important flag */
+}
+
+@media screen and (max-width: 767px) {
+	.cart-ui {
+		flex-flow: column wrap;
+	}
+}

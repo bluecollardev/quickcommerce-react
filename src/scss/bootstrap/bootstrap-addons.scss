@@ -1,0 +1,9 @@
+/* Import bootstrap 3.3.7 scss*/
+@import '../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap'; /* TODO: Make this path adjustable or something */
+/* Import bootstrap override variables, these overrides must be imported after importing bootstrap.scss */
+
+@import './bootstrap-override';
+@import './bootstrap-alerts';
+@import './bootstrap-toggles';
+@import './bootstrap-carousel';
+@import './bootstrap-dropdowns';

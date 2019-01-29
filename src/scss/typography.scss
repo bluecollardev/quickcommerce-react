@@ -1,0 +1,255 @@
+/* Override shitty sassed.css fonts */
+h1, h2, h3, h4, h5, h6, body, a, li, span, label, p {
+    font-family: Roboto, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: $default-theme-accent-color-03; /* Soft headings */
+}
+
+h1.title,
+h2.title,
+h3.title,
+h4.title {
+	text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+a.underline,
+a.underline:visited {
+	color: $default-theme-secondary-color; /* Indigo Deep Blue */
+	text-decoration: underline;
+}
+
+a.underline:hover {
+	color: $default-theme-secondary-color; /* Indigo Deep Blue */
+	text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+	small, .small {
+		font-size: 78%;
+	}
+
+	h4.section-heading,
+	.section-heading h4 {
+		font-size: 0.88rem !important;
+	}
+
+	h5.section-heading,
+	.section-heading h5 {
+		font-size: 0.78rem !important;
+	}
+}
+
+
+@media only screen and (max-width : 480px) {
+    h1, .h1 {
+        font-size: 23px;
+        font-weight: 300;
+        font-style: normal;
+        text-transform: none;
+    }
+
+    h1.cursive, .h1 .cursive {
+        font-size: 3.5rem;
+    }
+}
+
+.standout {
+	font-weight: bold;
+}
+
+/* TODO: Re-implement anything above */
+/* Temporarily prepend the body ID, so these styles override any other stuff */
+#body-page {
+  .page-heading {
+    font-weight: $page-heading-font-weight;
+    font-size: $page-heading-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .section-heading {
+    font-weight: $section-heading-font-weight;
+    font-size: $section-heading-font-size;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: $default-theme-secondary-color;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .section-subheading {
+    font-weight: $section-subheading-font-weight;
+    font-size: $section-subheading-font-size;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    color: $default-theme-secondary-color;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .form-group {
+    font-weight: $form-group-font-weight;
+    font-size: $form-group-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .form-control {
+    font-weight: $form-control-font-weight;
+    font-size: $form-control-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .control-label {
+    font-weight: $form-control-label-font-weight;
+    font-size: $form-control-label-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .option-label {
+    font-weight: $form-control-option-font-weight;
+    font-size: $form-control-option-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-heading {
+    font-weight: $card-heading-font-weight;
+    font-size: $card-heading-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-subheading {
+    font-weight: $card-subheading-font-weight;
+    font-size: $card-subheading-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-text {
+    font-weight: $card-text-font-weight;
+    font-size: $card-text-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-attribute {
+    font-weight: $card-attribute-label-font-weight;
+    font-size: $card-attribute-label-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-attribute-value {
+    font-weight: $card-attribute-value-font-weight;
+    font-size: $card-attribute-value-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-action-text {
+    font-weight: $card-action-text-font-weight;
+    font-size: $card-action-text-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-action-text.emphasize {
+    font-weight: $card-action-text-font-weight;
+    font-size: $card-action-text-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+
+  .card-action-icon {
+    font-weight: $card-action-icon-font-weight;
+    font-size: $card-action-icon-font-size;
+    &.dark {
+      color: $dark-theme-text-color;
+    }
+
+    &.light {
+      color: $default-theme-text-color;
+    }
+  }
+}

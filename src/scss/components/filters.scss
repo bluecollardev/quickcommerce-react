@@ -1,0 +1,193 @@
+.filter-panel {
+    position:relative
+}
+.multi-filter-panel {
+    display:block
+}
+.multi-filter-panel:after,
+.multi-filter-panel:before {
+    content:" ";
+    display:table
+}
+.multi-filter-panel:after {
+    clear:both
+}
+.multi-filter-panel > li {
+    height: 60px;
+    float: none;
+    background-color:#fff;
+    border-right:1px solid #f4f4f4;
+    border-left:1px solid #f4f4f4;
+    cursor:pointer
+}
+
+@media screen and (max-width: 768px) {
+    .multi-filter-panel > li {
+        height: auto;
+    }
+}
+
+.multi-filter-panel > li:first-child {
+    border-left: none;
+}
+.multi-filter-panel > li:last-child {
+    border-right: none;
+}
+.multi-filter-panel .dropdown > .dropdown-toggle {
+    height:60px;
+    padding:.5rem 1rem
+}
+.multi-filter-panel .dropdown > .dropdown-toggle,
+.multi-filter-panel > li {
+    text-transform:uppercase;
+    font-size:.8rem;
+    color:gray
+}
+.multi-filter-panel .dropdown > .dropdown-selected {
+    font-size:.7rem;
+    color:#000;
+    width:100%;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden
+}
+.multi-filter-panel .dropdown > .dropdown-menu {
+    position:absolute;
+    background:#fff;
+    border-right:1px solid #f4f4f4;
+    border-left:1px solid #f4f4f4;
+    border-bottom:1px solid #f4f4f4;
+    width:inherit;
+    /*overflow:hidden;
+    overflow-y:scroll;
+    -webkit-transition:height 0s ease-in;
+    transition:height 0s ease-in*/
+}
+
+@media screen and (max-width: 768px) {
+    .multi-filter-panel .dropdown > .dropdown-menu {
+        position: relative;
+    }
+}
+/* Could be applied to a container element too if there was one */
+.multi-filter-panel .dropdown > .dropdown-menu {
+    padding:10px;
+    border-bottom:1px solid #f4f4f4
+}
+.multi-filter-panel .dropdown > .dropdown-menu .header {
+    height:20px
+}
+.multi-filter-panel .dropdown > .dropdown-menu .title {
+    text-transform:uppercase;
+    font-size:.8rem;
+    float:left;
+    width:50%;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+    color:#000
+}
+.multi-filter-panel-section__clearable {
+    float:right;
+    width:50%;
+    font-size:.65rem;
+    padding-right:10px;
+    color:gray;
+    text-align:right;
+    text-transform:uppercase;
+    cursor:pointer
+}
+.multi-filter-panel .dropdown > .dropdown-menu li {
+    height:40px;
+    padding-top:12px;
+    width:100%;
+    cursor:pointer
+}
+.multi-filter-panel .dropdown > .dropdown-menu li:after,
+.multi-filter-panel .dropdown > .dropdown-menu li:before {
+    content:" ";
+    display:table
+}
+.multi-filter-panel .dropdown > .dropdown-menu li:after {
+    clear:both
+}
+
+.multi-filter-panel .dropdown > .dropdown-menu li.divider,
+.multi-filter-panel .dropdown > .dropdown-menu li[role=separator] {
+    height: 1px;
+    border-top: 1px solid grey;
+    margin: 0;
+    padding: 0;
+    content: '';
+    display: block;
+    position: relative;
+}
+
+.multi-filter-panel .dropdown > .dropdown-menu li a {
+    /*float:left;*/
+    font-size:14px;
+    color:#000;
+    /*display:inline-block;*/
+    /*padding-left:10px;*/
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+    /*width:85%*/
+}
+.multi-filter-panel .dropdown > .dropdown-menu li:hover {
+    background-color:#f8f8f8
+}
+.multi-filter-panel .dropdown > .dropdown-menu li input[type=checkbox] {
+    float:left;
+    height:15px;
+    width:15px;
+    margin-right:10px; /* New style */
+    border:1px solid #000;
+    background-color:#fff;
+    display:inline-block
+}
+
+.multi-filter-panel .dropdown > .dropdown-menu li input[type=checkbox].selected {
+    background-color:#000
+}
+/* Boost z-index over clouds */
+.nav-filters,
+.filters-toggle {
+  /*z-index: 10;*/
+  position: relative;
+}
+
+.filters-toggle {
+  z-index: 10;
+  position: relative;
+}
+
+/* Make the stupid filters appear why the fuck did buddy make the height 0 to hide fuckin' idiot */
+.filters {
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: height 0.4s;
+  -o-transition: height 0.4s;
+  transition: height 0.4s;
+  height: auto !important;
+}
+
+.filters-toggle {
+  cursor: pointer;
+}
+
+.filters .filters-pane.open {
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  padding-bottom: 16px;
+  /*-webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;*/
+}
+
+.filters-bar {
+  display: table;
+  width: 100%;
+  padding-bottom: 0; /* Override theme */
+}

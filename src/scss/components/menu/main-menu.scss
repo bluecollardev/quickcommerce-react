@@ -1,0 +1,22 @@
+.mainMenu ul, .mainMenu ul li {
+    list-style: none;
+    list-style-type: none;
+}
+
+.mainMenu ul {
+	justify-content: space-around;
+    align-items: center;
+}
+
+.mainMenu{
+
+  span{
+    position: relative;
+  }
+
+  .menu-text{
+    font-size: $top-menu-text-size;
+    font-weight: 400;
+    color: white;
+  }
+}

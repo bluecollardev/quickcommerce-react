@@ -1,0 +1,38 @@
+button {
+    min-width: auto !important;
+}
+
+button h4 {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+button.btn-success h4,
+button.btn-danger h4,
+button.btn-warning h4,
+button.btn-info h4 {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+button.btn-danger {
+    color: white;
+}
+
+.indigo-grid-select-btn {
+  color: #2196f3;
+}
+
+.filter-by-credit:before, .filter-by-budget:before {
+  content: '';
+  position: absolute;
+  height: 70%;
+  top: 15%;
+  border-left: 2px solid white;
+}
+
+.grid-select-btn{
+  color: white !important;
+  background-color: #4caf50 !important;
+  font-size: 13px !important;
+}

@@ -1,0 +1,39 @@
+@media screen and (max-width: 1200px) {
+	.isotope-grid.col-6 .grid-sizer, 
+	.isotope-grid.col-6 .grid-item.thumbnail, 
+	.isotope-grid.col-5 .grid-sizer, 
+	.isotope-grid.col-5 .grid-item.thumbnail, 
+	.isotope-grid.col-4 .grid-sizer, 
+	.isotope-grid.col-4 .grid-item.thumbnail, 
+	.isotope-grid.col-3 .grid-sizer, 
+	.isotope-grid.col-3 .grid-item.thumbnail, 
+	.isotope-grid.col-2 .grid-sizer, 
+	.isotope-grid.col-2 .grid-item.thumbnail {
+		width: calc((100% / 3) - 20px) !important;
+	}
+	
+	/* Override default - always have gutter */
+	.isotope-grid .gutter-sizer {
+		width: 30px !important;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.isotope-grid.col-6 .grid-sizer, 
+	.isotope-grid.col-6 .grid-item.thumbnail, 
+	.isotope-grid.col-5 .grid-sizer, 
+	.isotope-grid.col-5 .grid-item.thumbnail, 
+	.isotope-grid.col-4 .grid-sizer, 
+	.isotope-grid.col-4 .grid-item.thumbnail, 
+	.isotope-grid.col-3 .grid-sizer, 
+	.isotope-grid.col-3 .grid-item.thumbnail, 
+	.isotope-grid.col-2 .grid-sizer, 
+	.isotope-grid.col-2 .grid-item.thumbnail {
+		width: calc((100% / 2) - 15px) !important;
+	}
+	
+	/* Override default - always have gutter */
+	.isotope-grid .gutter-sizer {
+		width: 30px !important;
+	}
+}

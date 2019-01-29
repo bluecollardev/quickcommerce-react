@@ -1,0 +1,383 @@
+.burgerMenu {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: block;
+    height: 40px;
+}
+@media (min-width: 64em) {
+    .burgerMenu {
+        background-color: transparent;
+        height: 50px
+    }
+}
+@media (min-width: 101.5em) {
+    .burgerMenu {
+        height: 100px
+    }
+}
+@media (min-width: 64em) and (max-height: 52.5em) {
+    .burgerMenu {
+        height: 40px
+    }
+}
+@media (min-width: 64em) and (max-height: 40.625em) {
+    .burgerMenu {
+        height: 20px
+    }
+}
+@media (min-width: 101.5em) and (max-height: 43.75em) {
+    .burgerMenu {
+        height: 40px
+    }
+}
+.burgerMenu__button {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 13px 0;
+    color: #fff;
+}
+.burgerMenu__button.burgerMenu__button--desktop {
+    display: none
+}
+@-moz-keyframes animateBurgerPatty--former {
+    100%, 0% {
+        width: 100%;
+        left: 0%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        left: -10%
+    }
+    41% {
+        left: 70%;
+        -moz-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        left: 50%;
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-webkit-keyframes animateBurgerPatty--former {
+    100%, 0% {
+        width: 100%;
+        left: 0%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        left: -10%
+    }
+    41% {
+        left: 70%;
+        -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        left: 50%;
+        width: 10%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@keyframes animateBurgerPatty--former {
+    100%, 0% {
+        width: 100%;
+        left: 0%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        left: -10%
+    }
+    41% {
+        left: 70%;
+        -moz-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        left: 50%;
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-moz-keyframes animateBurgerPatty--latter {
+    100%, 0% {
+        width: 100%;
+        right: 0%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        right: -10%
+    }
+    41% {
+        right: 70%;
+        -moz-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        right: 50%;
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-webkit-keyframes animateBurgerPatty--latter {
+    100%, 0% {
+        width: 100%;
+        right: 0%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        right: -10%
+    }
+    41% {
+        right: 70%;
+        -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        right: 50%;
+        width: 10%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@keyframes animateBurgerPatty--latter {
+    100%, 0% {
+        width: 100%;
+        right: 0%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    40% {
+        width: 0;
+        right: -10%
+    }
+    41% {
+        right: 70%;
+        -moz-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        -webkit-animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+        animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335)
+    }
+    60% {
+        right: 50%;
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-moz-keyframes animateBurgerPatty--formerClose {
+    100%, 0% {
+        width: 100%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-webkit-keyframes animateBurgerPatty--formerClose {
+    100%, 0% {
+        width: 100%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@keyframes animateBurgerPatty--formerClose {
+    100%, 0% {
+        width: 100%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-moz-keyframes animateBurgerPatty--latterClose {
+    100%, 0% {
+        width: 100%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@-webkit-keyframes animateBurgerPatty--latterClose {
+    100%, 0% {
+        width: 100%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@keyframes animateBurgerPatty--latterClose {
+    100%, 0% {
+        width: 100%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+    55% {
+        width: 0
+    }
+    60% {
+        width: 10%;
+        -moz-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        -webkit-animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+        animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1)
+    }
+}
+@media (min-width: 22.5em) {
+    .burgerMenu__button {
+        padding: 15px 0
+    }
+}
+@media (min-width: 64em) {
+    .burgerMenu__button {
+        padding: 10px;
+        width: 50px;
+        height: 32px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        bottom: auto;
+        right: auto;
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%)
+    }
+    .burgerMenu__button.burgerMenu__button--desktop {
+        display: block
+    }
+    .burgerMenu__button.burgerMenu__button--mobile {
+        display: none
+    }
+    .burgerMenu__button:hover .burgerPatty--former {
+        -moz-animation: animateBurgerPatty--former 0.6s;
+        -webkit-animation: animateBurgerPatty--former 0.6s;
+        animation: animateBurgerPatty--former 0.6s
+    }
+    .burgerMenu__button:hover .burgerPatty--latter {
+        -moz-animation: animateBurgerPatty--latter 0.6s;
+        -webkit-animation: animateBurgerPatty--latter 0.6s;
+        animation: animateBurgerPatty--latter 0.6s
+    }
+    .burgerMenu__button.burgerMenu__button--isActive:hover .burgerPatty--former {
+        -moz-animation: animateBurgerPatty--formerClose 0.6s;
+        -webkit-animation: animateBurgerPatty--formerClose 0.6s;
+        animation: animateBurgerPatty--formerClose 0.6s
+    }
+    .burgerMenu__button.burgerMenu__button--isActive:hover .burgerPatty--latter {
+        -moz-animation: animateBurgerPatty--latterClose 0.6s;
+        -webkit-animation: animateBurgerPatty--latterClose 0.6s;
+        animation: animateBurgerPatty--latterClose 0.6s
+    }
+}
+.burgerPatty {
+    -moz-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -o-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -webkit-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 30px;
+    height: 2px;
+    max-width: 30px !important;
+    margin: 0 auto 6px;
+    background-color: #fff;
+    position: relative
+}
+@media (min-width: 22.5em) {
+    .burgerPatty {
+        width: 32px;
+        max-width: 32px !important
+    }
+}
+@media (min-width: 64em) {
+    .burgerPatty {
+        height: 3px;
+        width: 100%;
+        max-width: 100% !important;
+        background-color: #2B2B2B;
+    }
+}
+.burgerPatty--latter {
+    margin-bottom: 0
+}
+/* TODO: Use SASS vars for this */
+.burgerMenu {
+  width: 74px;
+  background: transparent !important; /* Override default styles */
+}
+/*TODO dave use media query sass vars for this*/
+@media screen and (max-width: 768px) {
+  .burgerPatty {
+    -moz-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -o-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    -webkit-transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 30px;
+    height: 2px;
+    max-width: 30px !important;
+    margin: 0 auto 6px;
+    background-color: #020202;
+    position: relative;
+  }
+
+  .burgerMenu {
+    width: 32px !important;
+    background: transparent !important;
+  }
+}

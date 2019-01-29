@@ -1,0 +1,29 @@
+/* Fix autocomplete */
+.autocomplete-control-group .form-control + div {
+	position: absolute !important; /* Stupid component uses a fixed position dropdown, wow that's stupid */
+	font-size: 1rem !important;
+	/* Kill any positioning */
+	left: auto !important;
+	bottom: auto !important;
+	top: auto !important;
+	overflow: visible !important;
+	z-index: 999 !important;
+}
+
+/* Fix items */
+.autocomplete-control-group .form-control + div > div {
+	padding: 0.5rem;
+}
+
+.autocomplete-control-group.position-relative .form-control + div > div {
+  position: relative !important;
+  width: auto;
+  padding: 1rem !important;
+}
+
+.autocomplete-control-group.position-relative .form-control + div.search-dropdown-wrapper {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  width: auto;
+}

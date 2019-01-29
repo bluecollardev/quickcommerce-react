@@ -1,0 +1,111 @@
+/* Override stupid default */
+button.btn,
+button.btn:hover,
+button.btn:active,
+button.btn:focus {
+  border: 0px solid transparent !important;
+}
+
+/* Set some MUI button styles */
+button.default {
+  background-color: #e6e6e6;
+  color: #222;
+}
+
+button.light-blue {
+  background-color: $default-theme-tertiary-color;
+  color: white;
+}
+
+button.dark-blue {
+  background-color: $default-theme-primary-color;
+  color: white;
+}
+
+button.light-green {
+  background-color: #5cb85c;
+  color: white;
+}
+
+button {
+  &.default {
+    background-color: $button-default-background-color;
+    color: $button-default-color;
+
+    #{headings(1,6)} {
+      color: $button-default-color;
+    }
+  }
+
+  &.primary {
+    background-color: $button-primary-background-color;
+    color: $button-primary-color
+
+    #{headings(1,6)} {
+      color: $button-primary-color;
+    }
+  }
+
+  &.secondary {
+    background-color: $button-secondary-background-color;
+    color: $button-secondary-color
+
+    #{headings(1,6)} {
+      color: $button-secondary-color;
+    }
+  }
+
+  &.tertiary {
+    background-color: $button-tertiary-background-color;
+    color: $button-tertiary-color
+
+    #{headings(1,6)} {
+      color: $button-tertiary-color;
+    }
+  }
+
+  &.quaternary {
+    background-color: $button-quaternary-background-color;
+    color: $button-quaternary-color
+
+    #{headings(1,6)} {
+      color: $button-quaternary-color;
+    }
+  }
+
+  &.accent-color-01 {
+    background-color: $button-accent-color-01-background-color;
+    color: $button-accent-color-01-color
+
+    #{headings(1,6)} {
+      color: $button-accent-color-01-color;
+    }
+  }
+
+  &.accent-color-02 {
+    background-color: $button-accent-color-02-background-color;
+    color: $button-accent-color-02-color
+
+    #{headings(1,6)} {
+      color: $button-accent-color-02-color;
+    }
+  }
+
+  &.accent-color-03 {
+    background-color: $button-accent-color-03-background-color;
+    color: $button-accent-color-03-color
+
+    #{headings(1,6)} {
+      color: $button-accent-color-03-color;
+    }
+  }
+
+  &.accent-color-04 {
+    background-color: $button-accent-color-04-background-color;
+    color: $button-accent-color-04-color
+
+    #{headings(1,6)} {
+      color: $button-accent-color-04-color;
+    }
+  }
+}

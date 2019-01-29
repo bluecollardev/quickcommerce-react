@@ -1,0 +1,56 @@
+.parallax_title_intro {
+    padding: 150px 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0.66+33,0+76 */
+    
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0.66) 33%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0) 100%);
+    /* FF3.6-15 */
+    
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0.66) 33%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0.66) 33%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.page_title_intro,
+.page_title_intro p,
+.parallax.title .parallax_title_intro p {
+    margin-top: 1.5rem;
+    font-weight: normal;
+    font-size: 18px;
+    letter-spacing: normal;
+    text-transform: none;
+    display: block;
+    color: #fff;
+}
+.page_title_intro p,
+.parallax.title .parallax_title_intro p {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+.parallax.title .parallax_title_intro p:first-child {
+    margin-top: 2rem;
+}
+.parallax.title .parallax_title.inline {
+    width: 100% !important;
+    text-align: center;
+    position: static;
+}
+.parallax_title.banner_title {
+    position: relative;
+}
+
+.parallax.title:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: none;
+    /* background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),color-stop(30%,transparent),color-stop(56%,rgba(0,0,0,0.1)),color-stop(83%,rgba(0,0,0,0.4)),to(rgba(0,0,0,0.59))); */
+    /* background-image: -webkit-linear-gradient(transparent 0%,transparent 50%,rgba(0,0,0,0.1) 76%,rgba(0,0,0,0.4) 93%,rgba(0,0,0,0.59) 100%); */
+    /* background-image: linear-gradient(transparent 0%,transparent 50%,rgba(0,0,0,0.1) 76%,rgba(0,0,0,0.4) 93%,rgba(0,0,0,0.59) 100%); */
+    z-index: 2;
+}

@@ -1,0 +1,17 @@
+@function insert-path($path){
+  @return $path;
+}
+
+/* gets the assets path for bootstrap-sass in node */
+@function get-node-bootstrap-path(){
+  @return '../../node_modules/bootstrap-sass/assets/'
+}
+
+@function headings($from:1, $to:6) {
+  @if $from == $to {
+    @return 'h#{$from}';
+  } @else {
+    @return 'h#{$from},' + headings($from+1, $to);
+  }
+}
+

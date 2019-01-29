@@ -1,0 +1,18 @@
+.footer .cards {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.footer .cards img {
+    object-fit: contain;
+    max-width: 100%;
+}
+
+/* Fix footer alignment */
+@media (min-width: 64em) {
+    #footer {
+        margin-left: 300px;
+    }    
+}

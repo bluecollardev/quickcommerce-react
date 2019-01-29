@@ -1,0 +1,180 @@
+/* Override input styling */
+/*input[type="date"], input[type="email"],
+input[type="number"], input[type="password"],
+input[type="search"], input[type="tel"],
+input[type="text"], input[type="url"],
+select.form-control,
+textarea.form-control,
+select, textarea {
+	color: #000 !important;
+	border-color: #222 !important;
+}*/
+
+/* Override input styling */
+/*.dark input[type="date"], .dark input[type="email"],
+.dark input[type="number"], .dark input[type="password"],
+.dark input[type="search"], .dark input[type="tel"],
+.dark input[type="text"], .dark input[type="url"],
+.dark select.form-control,
+.dark textarea.form-control,
+.dark select, .dark textarea {
+	color: #fff !important;
+	background-color: rgba(34, 34, 34, 1) !important;
+	border-color: #fff !important;
+}*/
+
+/* Override input styling */
+.form-control,
+input[type="date"], input[type="email"],
+input[type="number"], input[type="password"],
+input[type="search"], input[type="tel"],
+input[type="text"], input[type="url"],
+select.form-control,
+textarea.form-control,
+select, textarea {
+	background-color: white !important;
+	border: 1px solid #999 !important; /* Override all */
+	outline: none !important;
+}
+
+input[type="date"]:focus, input[type="email"]:focus,
+input[type="number"]:focus, input[type="password"]:focus,
+input[type="search"]:focus, input[type="tel"]:focus,
+input[type="text"]:focus, input[type="url"]:focus,
+select.form-control:focus,
+textarea.form-control:focus,
+select:focus, textarea:focus {
+	outline: none !important;
+}
+
+input.form-control,
+select.form-control {
+    font-size: 1.0rem !important;
+    line-height: 1.0rem !important;
+}
+
+input.form-control,
+select.form-control,
+.form-control option {
+	height: 2.14rem !important; /* Input font size is 1.15rem */
+}
+
+.form-control option {
+    height: 2.14rem !important; /* Input font size is 1.15rem */
+    font-size: inherit !important;
+}
+
+/* Match form-control height */
+.input-group-btn > .btn {
+    position: relative;
+    height: 2.14rem !important;
+}
+
+.input-group .input-group-btn .button {
+    border: 1px solid #999 !important; /* Override color */
+    border-right: none;
+}
+
+.input-group .input-group-btn:last-child .button {
+   border-right: 1px solid #999 !important;
+}
+
+.form-control.text-center,
+.form-control.text-center option {
+    text-align: center;
+    text-align-last: center; /* Chrome only */
+}
+
+select.form-control[multiple] {
+	height: auto !important;
+}
+
+select.form-control[multiple] {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+select.form-control[multiple] option {
+    padding-right: 16px;
+    padding-left: 16px;
+    display: flex; /* Center text */
+    align-items: center; /* Center text */
+}
+
+.form-element.form-select:before {
+    content: "\f0d7";
+    font-family: 'Font Awesome 5 Free';//NOTE when using font-awesome 5 font-family must be included
+    font-weight: 900 !important;
+    font-size: 16px;
+    margin-top: 5px;
+    color: #606060;
+    opacity: 1;
+}
+
+.form-element:before {
+    top: 1.85rem;
+    right: 18px;
+}
+
+.form-control[readonly],
+.form-control[readonly]:focus {
+	background-color: transparent !important;
+	border-width: 0 0 1px 0 !important;
+	box-shadow: none;
+	outline: none;
+}
+
+.form-control {
+	max-width: 100%; /* Not sure what's going on with this, form-controls are overflowing boundaries */
+}
+
+/* Read-only */
+input:read-only{
+  font-style: italic !important;
+  color: $default-theme-accent-color-04 !important;
+  font-size: 1rem !important;
+}
+
+input:read-only:hover{
+  cursor: not-allowed;
+}
+
+textarea:read-only{
+  font-style: italic !important;
+  color: $default-theme-accent-color-04 !important;
+  font-size: 1rem !important;
+}
+
+textarea:read-only:hover{
+  cursor: not-allowed;
+}
+
+
+
+
+/* Placeholders */
+input:-moz-placeholder{color: rgba(47,130,194,.6);}
+input:-ms-input-placeholder{color: rgba(47,130,194,.6);}
+input::-webkit-input-placeholder{color: rgba(47,130,194,.6);}
+
+input:-moz-placeholder{color: rgba(237,28,112,.6);}
+input:-ms-input-placeholder{color: rgba(237,28,112,.6);}
+input::-webkit-input-placeholder{color: rgba(237,28,112,.6);}
+
+.form-group {
+    margin-bottom: 12px; /* Cut margin in half */
+}
+
+/* Override bundle styles gawd I need to get rid of that */
+textarea {
+    height: auto;
+    min-height: auto;
+}
+
+.github-picker {
+    margin-top: 8px;
+    width: 192px !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}

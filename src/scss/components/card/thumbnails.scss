@@ -1,0 +1,38 @@
+.card .shop-thumbnail {
+  height: 20vh;
+  object-fit: contain;
+}
+
+.card .shop-thumbnail {
+  height: auto;
+  object-fit: contain;
+}
+
+/* Fix thumbnail vertical centering */
+.card .shop-thumbnail.thumbnail {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Kill the crappy faded image effect in the base theme */
+.card:hover .shop-thumbnail > img {
+  opacity: 1;
+}
+
+.card .shop-thumbnail {
+  border: none;
+  background-color: white;
+  /* TODO: Use a var */
+}
+
+.card .shop-thumbnail {
+  border-radius: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .card .shop-thumbnail {
+    height: 25vh;
+    object-fit: contain;
+  }
+}

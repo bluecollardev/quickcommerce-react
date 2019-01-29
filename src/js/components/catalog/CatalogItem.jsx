@@ -330,11 +330,6 @@ class CatalogItem extends Component  {
               {!isSelected && (<i className='fa fa-square' />)}
               &nbsp;
               <em>Select Item</em>
-              <svg x='0px' y='0px' width='32px' height='32px' viewBox='0 0 32 32'>
-                <path strokeDasharray='19.79 19.79' strokeDashoffset='19.79' fill='none' stroke='#FFFFFF' strokeWidth={2} strokeLinecap='square' strokeMiterlimit={10}
-                      d='M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11'
-                />
-              </svg>
             </Button>
           </div>
         )}

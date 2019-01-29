@@ -1,0 +1,30 @@
+/* Override MUI Table styles */
+[class*=MuiTableCell],
+[class*=MuiToolbar] {
+	border-bottom: none !important;
+}
+
+[class*=TableDetailCell] {
+	background-color: transparent !important;
+}
+
+/* AP Toolbars for grids */
+[class*=MuiToolbar] {
+    position: absolute !important;
+    right: 1rem;
+    z-index: 555;
+}
+
+[class*=MuiTableCell-paddingDefault] {
+  padding: 0px 4px 0px 4px !important;
+  vertical-align: middle !important;
+}
+
+@media screen and (max-width: 768px) {
+	/* Fixes for responsive grid display */
+	table[class^=MuiTable] {
+		min-width: unset;
+	}
+}
+
+

@@ -1,0 +1,14 @@
+/* Kill Bootstrap styles that mess with our style */
+.dropdown-menu > li > a {
+    padding: 0;
+}
+
+.dropdown-menu > li > a:hover {
+    background: transparent;
+}
+
+.dropdown-menu .checkbox, .dropdown-menu .radio,
+.dropdown-menu .checkbox label, .dropdown-menu .radio label {
+    margin: 0;
+    padding: 0;
+}

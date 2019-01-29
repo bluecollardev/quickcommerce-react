@@ -1,0 +1,96 @@
+/* Remove padding, the padding was applied via bootstrap scss */
+.top-menu {
+  .actionButtons.icon-menu, .actionButtons.logo-menu, .profileWidget.profile-menu{
+    padding: 0px !important;
+  }
+
+  .top-menu-home-icon {
+    position: relative;
+    top: 20px;
+  }
+
+  .right-side-top-menu{
+    display: flex;
+    div:nth-child(1){
+      margin-left: 5%;
+    }
+    div:nth-child(2){
+      margin-left: 5%;
+    }
+  }
+
+  .left-side-top-menu{
+    display: flex;
+    .logo{
+      margin-left: 23%;
+    }
+    .top-menu-home-icon{
+      margin-left: -8%;
+    }
+
+  }
+
+  .top-menu-toggle-btn{
+    top:8px !important;
+    position: relative !important;
+  }
+}
+
+
+/* Stretch and fix main menu */
+.top-menu.flex-icon-menu {
+	z-index: 7000;
+	/*flex-wrap: wrap;*/
+	background: white;
+	/*display: flex;
+	justify-content: space-between;*/
+	position: fixed;
+	width: 100%;
+	height: $top-nav-bar-height;
+	/*height: 144px;*/
+	left: 0;
+	top: 0;
+}
+
+@media screen and (max-device-width : 991px) {
+	h1.cursive, .h1 .cursive {
+        font-size: 5.5rem;
+    }
+
+	/* When top menu is combined with flex-icon menu we have to change some stuff */
+	.top-menu.flex-icon-menu {
+		flex-flow: row wrap;
+		height: auto !important;
+	}
+
+	.top-menu.flex-icon-menu .logo-menu {
+		order: 1;
+        .burgerMenu{
+          margin-left: 20px;
+        }
+	}
+
+    .right-side-top-menu{
+      order: 2;
+    }
+
+	.top-menu.flex-icon-menu .icon-menu {
+		order: 3;
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+    /* Move the sub menu and main content lower because the top menu has doubled in size */
+    #main-content > div > div > div.page-submenu.flex-icon-menu.column{
+       top: $top-nav-bar-height * 2;
+    }
+    #main-content{
+      top: ($top-nav-bar-height);
+      position: relative;
+    }
+}
+
+
+

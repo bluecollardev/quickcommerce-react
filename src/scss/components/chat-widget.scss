@@ -1,0 +1,82 @@
+/* Chat widget */
+.rcw-widget-container {
+  display: none;
+}
+
+@media screen and (min-width: 1200px) {
+  .rcw-widget-container {
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+.rcw-widget-container {
+  top: 50px;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin: 0 20px 20px 0;
+  /*max-width: 370px;*/
+  max-width: 340px;
+  position: fixed;
+  right: 20px;
+  z-index: 9999;
+}
+
+.rcw-widget-container:not(.rcw-opened) {
+  width: 0;
+  top: -10px;
+}
+
+.rcw-title {
+  text-align: center;
+  padding: 10px 15px !important;
+}
+
+.rcw-conversation-container {
+  top: 10px;
+  position: relative;
+  right: -40px;
+  border-radius: 0;
+}
+
+.rcw-conversation-container .rcw-header {
+  background-color: $default-theme-primary-color;
+  border-radius: 0;
+  color: #fff;
+}
+
+.rcw-new-message {
+  margin-right: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+.rcw-launcher {
+  position: relative;
+  right: -40px;
+}
+
+.rcw-send {
+  background: #f4f7f9;
+  border: 0;
+  margin-top: 0px;
+  margin-right: 0.5rem;
+}
+
+.rcw-sender {
+  -ms-flex-align: center;
+  align-items: center;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #f4f7f9;
+  height: 45px;
+  padding: 5px;
+  border-radius: 0;
+}
+
+.rcw-widget-container .rcw-launcher.rcw-hide-sm {
+  z-index: -1;
+}
+
+.rcw-conversation-container .rcw-header {
+  padding: 15px 0 14px;
+}
