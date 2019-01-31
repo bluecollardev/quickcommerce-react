@@ -123,6 +123,7 @@ export default (ComposedComponent) => {
       this.addOptionToCart = this.addOptionToCart.bind(this)
       this.addToCartClicked = this.addToCartClicked.bind(this)
       this.addOptionToCartClicked = this.addOptionToCartClicked.bind(this)
+      this.removeFromCartClicked = this.removeFromCartClicked.bind(this)
       this.refresh = this.refresh.bind(this)
       this.reset = this.reset.bind(this)
       this.getTotal = this.getTotal.bind(this)
@@ -143,6 +144,7 @@ export default (ComposedComponent) => {
         addOptionToCart: this.addOptionToCart,
         addToCartClicked: this.addToCartClicked,
         addOptionToCartClicked: this.addOptionToCartClicked,
+        removeFromCartClicked: this.removeFromCartClicked,
         getTotal: this.getTotal,
         doCheckout: this.doCheckout
       }
@@ -442,6 +444,28 @@ export default (ComposedComponent) => {
           break
         default:
           break
+      }
+    }
+
+    removeFromCartClicked(e, item) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      let itemMappings = this.props.mappings.inventoryItem
+
+      item = item || null
+
+      if (item === null) throw new Error('Attempted to add non-item to cart!')
+
+      let itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
+      //itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+
+      let selectionKey = this.cartContextManager.getCartContextValue().store.getSelectionItemKey(itemId, item)
+
+      if (selectionKey !== undefined) {
+        this.cartContextManager.getCartContextValue().actions.removeItem(selectionKey)
+      } else {
+        console.warn('Could not find item to remove!')
       }
     }
 

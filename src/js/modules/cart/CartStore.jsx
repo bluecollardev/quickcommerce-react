@@ -142,13 +142,36 @@ class CartStore extends EventEmitter {
     return !this.selection.length
   }
 
+  getSelectionItemKey(key, item) {
+    let options = []
+
+    let selectionItemKey = undefined // Reset the variable just in case
+    for (let selectionKey in this.selection) {
+      // Compare item keys to see if the item already exists in the selection array
+      if (key === this.selection[selectionKey][idKey]) {
+        // Now make sure the selected options are a match...
+        // If it isn't an exact match, we're going to assume a different
+        // configuration for the same product, so skip this and create a new item
+
+        // Consider empty options property to be an empty array
+        options = (item[optionsKey] instanceof Array) ? item[optionsKey] : options
+
+        if (ArrayHelper.jsonSameMembers(options, this.selection[selectionKey][optionsKey])) {
+          selectionItemKey = selectionKey
+
+          break
+        }
+      }
+    }
+
+    return selectionItemKey
+  }
+
   getItem(index) {
     return this.selection[index]
   }
 
   addItem(key, quantity, item, silent) {
-    //console.log('ATTEMPTING TO ADD ITEM TO CARTSTORE ' + this.INSTANCE_ID)
-
     // Cart store addItem
     silent = silent || false
     let data = null
@@ -162,35 +185,21 @@ class CartStore extends EventEmitter {
       this.items[key] = data
     }
 
-    let exists = false
-    for (let selectionKey in this.selection) {
-      exists = false // Reset the variable just in case
-      // Compare item keys to see if the item already exists in the selection array
-      if (key === this.selection[selectionKey][idKey]) {
-        // Now make sure the selected options are a match...
-        // If it isn't an exact match, we're going to assume a different
-        // configuration for the same product, so skip this and create a new item
+    let selectionKey = this.getSelectionItemKey(key, item)
 
-        // Consider empty options property to be an empty array
-        options = (item[optionsKey] instanceof Array) ? item[optionsKey] : options
+    if (selectionKey !== undefined) {
+      const oldQuantity = this.selection[key][quantityKey]
+      this.selection[selectionKey][quantityKey] += Number(quantity)
 
-        if (ArrayHelper.jsonSameMembers(options, this.selection[selectionKey][optionsKey])) {
-          exists = true
-        }
+      if (!silent) {
+        this.emit(CHANGE_EVENT_NAME)
+        this.emit(ITEM_CHANGED_EVENT_NAME, item, this.selection[selectionKey][quantityKey], oldQuantity)
       }
 
-      if (exists) {
-        const oldQuantity = this.selection[selectionKey][quantityKey]
-        this.selection[selectionKey][quantityKey] += Number(quantity)
-
-        if (!silent) {
-          this.emit(CHANGE_EVENT_NAME)
-          this.emit(ITEM_CHANGED_EVENT_NAME, item, this.selection[selectionKey][quantityKey], oldQuantity)
-        }
-
-        return // Break out
-      }
+      return // Break out
     }
+
+    options = (item[optionsKey] instanceof Array) ? item[optionsKey] : options
 
     if (data) {
       let selectionItem = {
@@ -213,7 +222,7 @@ class CartStore extends EventEmitter {
 
   updateItem(key, quantity, item, silent) {
     silent = silent || false
-    let data = (item.hasOwnProperty([dataKey])) ? item[dataKey]: null
+    let data = (item.hasOwnProperty(dataKey)) ? item[dataKey]: null
 
     if (this.items.hasOwnProperty(key)) {
       data = this.items[key]

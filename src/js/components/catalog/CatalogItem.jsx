@@ -315,11 +315,13 @@ class CatalogItem extends Component  {
           </div>
         )}
 
-        <div className='card-details'>
-          <ActionButtons
-            className='actions space-top-half float-right'
-            actions={this.props.actions}
-          />
+        <div className='card-details clearfix'>
+          <div className='container-fluid'>
+            <ActionButtons
+              className='actions space-top-half float-right'
+              actions={this.props.actions}
+            />
+          </div>
         </div>
 
         {displayTools && !overlayTools && (
