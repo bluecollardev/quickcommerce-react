@@ -13,7 +13,7 @@ class BrowserContainer extends Component {
     return (
       <main>
         <section className="container-fluid padding-bottom-3x">
-          <div className="row padding-top">
+          <div className="row padding-top-half">
             {this.props.children}
           </div>
           <hr/>
