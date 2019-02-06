@@ -171,7 +171,7 @@ class CatalogItem extends Component  {
 
     let attributes = data['attributes'] || []
 
-    let headingRibbonColor = ribbonColor || 'blue'
+    //let headingRibbonColor = ribbonColor || 'blue'
 
     let titleTextClass = (typeof this.props.titleTextClass === 'string') ? this.props.titleTextClass : 'card-title text-center'
 
@@ -203,8 +203,8 @@ class CatalogItem extends Component  {
         )}
 
         {displayTitle && (
-          <div className={'card-details flush ribbon-' + headingRibbonColor}>
-            <div className='catalog-item-buttons'>
+          <div className='card-details flush'>
+            <div className='card-title catalog-item-buttons'>
               {displayIcon && (
                 <Fragment>
                   {React.cloneElement(titleIcon, { data: data })}
