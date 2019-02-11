@@ -561,7 +561,7 @@ export default (ComposedComponent) => {
           // We're most likely dealing with a currency object
           // TODO: Multiple currency support
           this.state.fields[fieldName].value = {
-            value: targetElement.value == '0' ? Number(targetElement.value) : '',
+            value: (targetElement.value || targetElement.value == '0') ? Number(targetElement.value) : '',
             currency: 'CAD' // Pass in as special attribute
           }
         } else {
