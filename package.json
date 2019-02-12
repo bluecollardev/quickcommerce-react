@@ -5,10 +5,6 @@
   "scripts": {
     "setup": "npm install --no-bin-links",
     "postinstall": "",
-    "build": "gulp build",
-    "watch": "./node_modules/.bin/webpack --watch",
-    "pack": "webpack",
-    "packv": "webpack --display-error-details"
   },
   "author": "Lucas Lopatka",
   "license": "Proprietary",
