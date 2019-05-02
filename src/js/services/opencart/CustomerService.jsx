@@ -4,10 +4,10 @@ import assign from 'object-assign'
 //import ArrayHelper from '../helpers/Array.js'
 //import ObjectHelper from '../helpers/Object.js'
 //import StringHelper from '../helpers/String.js'
-import UrlHelper from '../helpers/URL.js'
+import UrlHelper from '../../helpers/URL.js'
 //import QcCustomerService from './CustomerService.jsx'
 import { BaseService } from '../BaseService.jsx'
-import CustomerSearchConstants from '../constants/CustomerSearchConstants'
+import CustomerSearchConstants from '../../constants/CustomerSearchConstants'
 
 const key = 'customers'
 
