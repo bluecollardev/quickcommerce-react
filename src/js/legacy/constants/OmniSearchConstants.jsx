@@ -1,0 +1,4 @@
+export default {
+    SEARCH_GENERIC: 'SEARCH_GENERIC',
+    SEARCH_URI_METHOD: 'POST'
+}
