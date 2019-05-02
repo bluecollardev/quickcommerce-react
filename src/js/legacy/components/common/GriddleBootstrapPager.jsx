@@ -1,7 +1,8 @@
 import React          from 'react'
+import createReactClass from 'create-react-class'
 import { Pagination } from 'react-bootstrap'
 
-const GriddleBootstrapPager = React.createClass({
+const GriddleBootstrapPager = createReactClass({
     getDefaultProps() {
         return {
             currentPage : 0,
@@ -14,16 +15,16 @@ const GriddleBootstrapPager = React.createClass({
         if (page > this.props.maxPage || !page) {
             return
         }
-        
+
         this.props.setPage(page)
     },
     render() {
         const maxPage = this.props.maxPage
-        
+
         if (maxPage < 2) {
             return <span />
         }
-        
+
         return (
             <Pagination
               bsSize     = 'small'

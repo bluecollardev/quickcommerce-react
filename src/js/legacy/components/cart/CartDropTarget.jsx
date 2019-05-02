@@ -1,4 +1,5 @@
 import React          from 'react'
+import createReactClass from 'create-react-class'
 import classNames     from 'classnames'
 import { DropTarget } from 'react-dnd'
 import { Well }       from 'react-bootstrap'
@@ -23,7 +24,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CartDropTarget = React.createClass({
+const CartDropTarget = createReactClass({
     getDefaultProps() {
         return {
             onItemDropped : () => {}
@@ -33,7 +34,7 @@ const CartDropTarget = React.createClass({
         const { position, isOver, canDrop, connectDropTarget } = this.props
         return connectDropTarget(
             <div>
-                <Well 
+                <Well
                   className = {classNames('text-center', {'well-is-over': isOver})}
                   style     = {{marginBottom: '.5em'}}
                   bsSize    = 'large'>

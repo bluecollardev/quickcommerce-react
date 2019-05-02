@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button }  from 'react-bootstrap'
 
@@ -23,7 +24,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CartMenuDragItem = React.createClass({
+const CartMenuDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},
@@ -39,7 +40,7 @@ const CartMenuDragItem = React.createClass({
     },
     render() {
         const { id, isDragging, connectDragSource } = this.props
-        
+
         return connectDragSource(
             <div className='shop-item'
                 onClick={this.onClick}>
@@ -47,7 +48,7 @@ const CartMenuDragItem = React.createClass({
                 <span className="shop-label text-danger">Sale</span>
                 )}
                 {this.props.displayThumbnail && (
-                <Thumbnail 
+                <Thumbnail
                     className='shop-thumbnail'
                     src={this.props.item.image}>
                     {this.props.children}
@@ -66,18 +67,18 @@ const CartMenuDragItem = React.createClass({
                 )}
 
                 {/*<div className="shop-item-details">
-                    <h5 className='shop-item-brand'>{this.props.item['manufacturer']}</h5>  
+                    <h5 className='shop-item-brand'>{this.props.item['manufacturer']}</h5>
                 </div>*/}
-                
+
                 <div className="shop-item-details">
                     <h5 className="shop-item-title h6"><a href="#/product">
                         <small><em className='cursive'>{this.props.item['model']}</em></small>
                     </a></h5>
                 </div>
-                <div className="shop-item-details">  
+                <div className="shop-item-details">
                     <h3 className="shop-item-title"><a href="#/product"><strong>{this.props.item['name']}</strong></a></h3>
-                    {this.props.item.hasOwnProperty('price') && 
-                    this.props.item['price'] !== false && 
+                    {this.props.item.hasOwnProperty('price') &&
+                    this.props.item['price'] !== false &&
                     !isNaN(this.props.item['price']) && (
                     <span className="shop-item-price">
                     {/*<span className="old-price">N/A</span>*/}
@@ -85,7 +86,7 @@ const CartMenuDragItem = React.createClass({
                     </span>
                     )}
                 </div>
-                
+
                 {this.props.displayDetails && (
                 <p className="shop-item-details" dangerouslySetInnerHTML={{ __html: HtmlHelper.decodeHtmlEntities(this.props.item['description'])}}></p>
                 )}

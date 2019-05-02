@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
@@ -21,7 +22,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CartDragItem = React.createClass({
+const CartDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},
@@ -49,8 +50,8 @@ const CartDragItem = React.createClass({
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>
-                {this.props.item.hasOwnProperty('price') && 
-                this.props.item['price'] !== false && 
+                {this.props.item.hasOwnProperty('price') &&
+                this.props.item['price'] !== false &&
                 !isNaN(this.props.item['price']) && (
                 <p className='item-price'>
                     {'$' + parseFloat(this.props.item['price']).toFixed(2)}

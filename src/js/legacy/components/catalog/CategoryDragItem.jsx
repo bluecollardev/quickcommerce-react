@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
@@ -21,7 +22,7 @@ function collect(connect, monitor) {
     }
 }
 
-const CategoryDragItem = React.createClass({
+const CategoryDragItem = createReactClass({
     getDefaultProps() {
         return {
             item : {},
@@ -43,7 +44,7 @@ const CategoryDragItem = React.createClass({
                 onClick={this.onClick}>
                 {/* Looks like these are cached... may need to rethink my approach this should be overridden */}
                 <Thumbnail src={QC_IMAGES_URI + this.props.item.image} />
-                
+
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>

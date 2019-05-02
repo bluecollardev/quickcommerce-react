@@ -1,12 +1,13 @@
 import React          from 'react'
+import createReactClass from 'create-react-class'
 import { DragSource } from 'react-dnd'
 import { Thumbnail }  from 'react-bootstrap'
 
 const mySource = {
 
     beginDrag(props) {
-        return { 
-            id : props.id 
+        return {
+            id : props.id
         }
     },
 
@@ -21,10 +22,10 @@ function collect(connect, monitor) {
     }
 }
 
-const GenericDragItem = React.createClass({
+const GenericDragItem = createReactClass({
     getDefaultProps() {
-        return { 
-            item : {} 
+        return {
+            item : {}
         }
     },
     render() {

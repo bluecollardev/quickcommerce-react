@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import { Input, Button } from 'react-bootstrap'
 
 let output
@@ -21,7 +22,7 @@ const renderTime = (offset) => {
     offset = offset || 0
     let currentTime = new Date()
     currentTime.setTime(currentTime.getTime() + offset)
-    
+
     //let diem = 'AM'
     let y = currentTime.getFullYear()
     let m = currentTime.getMonth()
@@ -30,7 +31,7 @@ const renderTime = (offset) => {
     let i = currentTime.getMinutes()
     let s = currentTime.getSeconds()
 
-    /*if (h === 0) { 
+    /*if (h === 0) {
         h = 12
     } else if (h > 12) {
         h = h - 12 diem = 'PM'
@@ -42,7 +43,7 @@ const renderTime = (offset) => {
     if (s < 10) {
         s = '0' + s
     }
-    
+
     output = {
         year: y,
         month: m,
@@ -54,7 +55,7 @@ const renderTime = (offset) => {
     return output
 }
 
-const SystemTime = React.createClass({
+const SystemTime = createReactClass({
     mixins: [SetIntervalMixin],
     getInitialState() {
         // Set the initial time
@@ -72,17 +73,17 @@ const SystemTime = React.createClass({
     },
     fastForward() {
         let date = new Date(
-            this.state.year, 
-            this.state.month, 
-            this.state.date, 
-            Number(this.state.hours), 
-            Number(this.state.minutes), 
+            this.state.year,
+            this.state.month,
+            this.state.date,
+            Number(this.state.hours),
+            Number(this.state.minutes),
             Number(this.state.seconds))
-            
+
         let offsetDate = new Date(date.getTime())
         offsetDate.setTime(offsetDate.getTime() + 1 * 60 * 60 * 1000 + this.state.offset)
         let diff = Math.abs(date - offsetDate)
-        
+
         this.setState({
             offset: diff,
             year: output.year,
@@ -107,8 +108,8 @@ const SystemTime = React.createClass({
         })
     },
     render() {
-        return ( 
-            <Button 
+        return (
+            <Button
               style = {{
                   width: '100%',
                   marginTop: '2rem'

@@ -1,6 +1,7 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
-const CartContainerComponent = React.createClass({
+const CartContainerComponent = createReactClass({
     render() {
         return (
             <table className={this.props.tableClassName}>
