@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 
 export class CodeTypeService extends BaseService {
   /**
@@ -22,7 +22,7 @@ export class CodeTypeService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         (() => {
-          //this.refetchAccount() 
+          //this.refetchAccount()
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {

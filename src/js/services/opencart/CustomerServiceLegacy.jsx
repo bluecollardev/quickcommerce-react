@@ -1,7 +1,7 @@
 import axios from 'axios'
 import assign from 'object-assign'
 
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 
 class CustomerService extends BaseService {
   // TODO: Move to consuming project

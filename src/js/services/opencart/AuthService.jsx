@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 
 export default class AuthService extends BaseService {
   login(email, password, onSuccess, onError) {

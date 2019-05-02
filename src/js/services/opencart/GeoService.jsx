@@ -5,7 +5,7 @@ import assign from 'object-assign'
 //import StringHelper from '../helpers/String.js'
 import UrlHelper from '../helpers/URL.js'
 
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 
 class GeoService extends BaseService {
   getCity(id, onSuccess, onError) {
@@ -24,7 +24,7 @@ class GeoService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         (() => {
-          //this.refetchAccount() 
+          //this.refetchAccount()
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {

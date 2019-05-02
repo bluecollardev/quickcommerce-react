@@ -6,7 +6,7 @@ import assign from 'object-assign'
 //import StringHelper from '../helpers/String.js'
 import UrlHelper from '../helpers/URL.js'
 //import QcCustomerService from './CustomerService.jsx'
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 import CustomerSearchConstants from '../constants/CustomerSearchConstants'
 
 const key = 'customers'
@@ -62,7 +62,7 @@ class CustomerService extends BaseService {
           // Set the customer
           this.actions.customer.setCustomer(data)
 
-          // Resource API data is wrapped in a data object                
+          // Resource API data is wrapped in a data object
           this.actions.customer.setBillingAddress({
             addresses: [payload.data],
             billingAddressId: addressId,
@@ -109,7 +109,7 @@ class CustomerService extends BaseService {
         }).bind(this), // Bind to current context
         // onError - fail silently
         (() => {
-          //this.refetchAccount() 
+          //this.refetchAccount()
         }).bind(this), // Use legacy API compatibility
         true)
     }).catch(err => {

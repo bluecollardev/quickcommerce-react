@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { BaseService } from './BaseService.jsx'
+import { BaseService } from '../BaseService.jsx'
 
 export default class CheckoutService extends BaseService {
   fetchOrder(id, onSuccess, onError) {
