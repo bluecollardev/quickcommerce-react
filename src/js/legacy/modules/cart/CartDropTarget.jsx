@@ -41,7 +41,7 @@ class CartDropTarget extends Component {
 }
 
 CartDropTarget.propTypes = {
-    onItemDropped: React.PropTypes.func
+    onItemDropped: PropTypes.func
 }
 
 CartDropTarget.defaultProps = {

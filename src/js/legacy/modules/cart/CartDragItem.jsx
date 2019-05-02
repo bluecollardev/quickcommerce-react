@@ -62,8 +62,8 @@ class CartDragItem extends Component {
 }
 
 CartDragItem.propTypes = {
-    item: React.PropTypes.object,
-    onItemClicked: React.PropTypes.func
+    item: PropTypes.object,
+    onItemClicked: PropTypes.func
 }
 
 CartDragItem.defaultProps = {

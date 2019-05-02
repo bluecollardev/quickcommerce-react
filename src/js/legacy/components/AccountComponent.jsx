@@ -285,10 +285,10 @@ class AccountComponent extends Component {
 }
 
 AccountComponent.propTypes = {
-    //onItemClicked: React.PropTypes.func,
-    //onFilterSelected: React.PropTypes.func,
-    //onStepClicked: React.PropTypes.func
-    signInMode: React.PropTypes.string
+    //onItemClicked: PropTypes.func,
+    //onFilterSelected: PropTypes.func,
+    //onStepClicked: PropTypes.func
+    signInMode: PropTypes.string
 }
 
 AccountComponent.defaultProps = {

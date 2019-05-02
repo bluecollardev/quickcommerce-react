@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6a5da79e-0f1f-4acb-9dbb-9d2c0ffd3fc9" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/components/AccountComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/components/AccountComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/components/browser/ProductBrowser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/components/browser/ProductBrowser.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/modules/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/modules/Cart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/modules/cart/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/modules/cart/Cart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/modules/cart/CartDragItem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/modules/cart/CartDragItem.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/js/legacy/modules/cart/CartDropTarget.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/js/legacy/modules/cart/CartDropTarget.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="6a5da79e-0f1f-4acb-9dbb-9d2c0ffd3fc9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -101,8 +94,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/js/services/opencart/CustomerService.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
+            <state relative-caret-position="300">
+              <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
                 <element signature="e#353#401#0" expanded="true" />
@@ -298,12 +291,12 @@
       <workItem from="1532406490260" duration="604000" />
       <workItem from="1532443411459" duration="676000" />
       <workItem from="1535750128438" duration="4122000" />
-      <workItem from="1556769678677" duration="3312000" />
+      <workItem from="1556769678677" duration="3574000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50129000" />
+    <option name="totallyTimeSpent" value="50391000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1674" y="44" width="1680" height="963" extended-state="0" />
@@ -537,8 +530,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/js/services/opencart/CustomerService.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
+        <state relative-caret-position="300">
+          <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
             <element signature="e#353#401#0" expanded="true" />

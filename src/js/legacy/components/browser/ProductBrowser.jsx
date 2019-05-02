@@ -614,7 +614,7 @@ export default class ProductBrowser extends Component {
 }
 
 ProductBrowser.propTypes = {
-    onItemClicked: React.PropTypes.func,
-    onFilterSelected: React.PropTypes.func,
-    onStepClicked: React.PropTypes.func
+    onItemClicked: PropTypes.func,
+    onFilterSelected: PropTypes.func,
+    onStepClicked: PropTypes.func
 }
