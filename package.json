@@ -1,7 +1,7 @@
 {
   "name": "quickcommerce-react",
   "version": "2.0.0",
-  "description": "QuickCommerce React,
+  "description": "QuickCommerce React",
   "scripts": {
     "setup": "npm install --no-bin-links",
     "build": "gulp build",
@@ -11,7 +11,7 @@
   },
   "author": "Lucas Lopatka",
   "license": "Proprietary",
-  "homepage": "http://bluecollardev.com",
+  "homepage": "https://www.bluecollardev.com",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.4.5",
