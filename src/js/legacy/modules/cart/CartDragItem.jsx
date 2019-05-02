@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { DragSource } from 'react-dnd'
 import { Thumbnail, Button } from 'react-bootstrap'
 
@@ -22,10 +23,10 @@ function collect(connect, monitor) {
 class CartDragItem extends Component {
     constructor(props) {
         super(props)
-        
+
         this.onClick = this.onClick.bind(this)
     }
-    
+
     onClick(e) {
         // onClick handler for CartDragItem
         if (typeof this.props.onItemClicked === 'function') {
@@ -33,7 +34,7 @@ class CartDragItem extends Component {
             fn(e, this.props.item)
         }
     }
-    
+
     render() {
         // CartDragItem render
         const { id, isDragging, connectDragSource } = this.props
@@ -48,8 +49,8 @@ class CartDragItem extends Component {
                 <p className='item-name'>
                     {this.props.item['name']}
                 </p>
-                {this.props.item.hasOwnProperty('price') && 
-                this.props.item['price'] !== false && 
+                {this.props.item.hasOwnProperty('price') &&
+                this.props.item['price'] !== false &&
                 !isNaN(this.props.item['price']) && (
                 <p className='item-price'>
                     {'$' + parseFloat(this.props.item['price']).toFixed(2)}
@@ -64,7 +65,7 @@ CartDragItem.propTypes = {
     item: React.PropTypes.object,
     onItemClicked: React.PropTypes.func
 }
-    
+
 CartDragItem.defaultProps = {
     item: {},
     onItemClicked: () => {}

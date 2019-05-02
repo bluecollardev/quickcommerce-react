@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import classNames from 'classnames'
 
@@ -28,7 +29,7 @@ class CartDropTarget extends Component {
         const { position, isOver, canDrop, connectDropTarget } = this.props
         return connectDropTarget(
             <div>
-                <Well 
+                <Well
                   className = {classNames('text-center', {'well-is-over': isOver})}
                   style     = {{marginBottom: '.5em'}}
                   bsSize    = 'large'>
@@ -42,7 +43,7 @@ class CartDropTarget extends Component {
 CartDropTarget.propTypes = {
     onItemDropped: React.PropTypes.func
 }
-    
+
 CartDropTarget.defaultProps = {
     onItemDropped: () => {}
 }

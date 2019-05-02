@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Dispatcher } from 'flux'
 
 import { Alert, Table, Grid, Col, Row, Thumbnail, Modal, Accordion, Panel, HelpBlock } from 'react-bootstrap'
@@ -54,7 +55,7 @@ export default class ProductBrowser extends Component {
         onFilterSelected: () => {},
         onStepClicked: () => {}
     }
-    
+
     constructor(props) {
         super(props)
 
@@ -63,21 +64,21 @@ export default class ProductBrowser extends Component {
         this.onChange = this.onChange.bind(this)
 
         this.state = this.getInitialState()
-        
+
 		// Initialize or set ProductBrowser dispatcher
 		if (!props.hasOwnProperty('dispatcher')) {
 			this.dispatcher = new Dispatcher()
 		} else {
 			this.dispatcher = props.dispatcher
 		}
-		
+
 		// Initialize or set ProductBrowser store
 		if (!props.hasOwnProperty('store')) {
 			this.store = new BrowserStore(this.dispatcher)
 		} else {
 			this.store = props.store
 		}
-		
+
 		// Initialize or set ProductBrowser actions
 		if (!props.hasOwnProperty('actions')) {
 			this.actions = BrowserActions(this.dispatcher)
@@ -85,8 +86,8 @@ export default class ProductBrowser extends Component {
 			this.actions = props.actions
 		}
     }
-	
-	// Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working 
+
+	// Need to pass in non-default actions, this component needs some work, right now it's a hassle to get it working
 	// in any manner other than with Quick Commerce endpoints
 	setActions(actions) {
 		this.actions = actions
@@ -110,39 +111,39 @@ export default class ProductBrowser extends Component {
     componentDidMount() {
         // Subscribe to BrowserStore to listen for changes when the component is mounted
         this.store.addChangeListener(this.onChange)
-        
+
         //let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
     }
-    
+
     componentDidUpdate() {
         let cards = document.getElementsByClassName('card')
         //HtmlHelper.equalHeights(cards, true)
     }
-    
+
     componentWillUnmount() {
         if (typeof this.onChange === 'function') {
             this.store.removeChangeListener(this.onChange)
-            
+
             //delete this.onChange // Don't think that's necessary
         }
     }
-    
+
     componentWillReceiveProps(newProps) {
         this.onChange()
     }
-    
+
 	// ProductBrowser.onChange
     onChange() {
         // Default sort by sort order
         // TODO: Make it configurable
         let sort = this.props.sortAlgorithm // default | numeric | unsorted | more to come
-        
+
         // Grab our items and update our component state whenever the BrowserStore is updated
         let items = this.store.getItems(sort)
         let categories = this.store.getCategories()
         let options = this.store.getOptions()
-		
+
 		/*console.log('product browser state change detected')
 		console.log(categories)
 		console.log(items)
@@ -313,7 +314,7 @@ export default class ProductBrowser extends Component {
     configureRow(rowComponent) {
         let that = this
         let fn = null
-        
+
         // Configure product browser row
         if (this.props.hasOwnProperty('onItemClicked') &&
             typeof this.props.onItemClicked === 'function') {
@@ -348,7 +349,7 @@ export default class ProductBrowser extends Component {
         // Render ProductBrowser
         let rowComponent = this.configureRow(this.props.customRowComponent)
         let item = this.props.item || null
-		
+
 		console.log('product browser render triggered')
 		console.log(this.state)
 
@@ -371,14 +372,14 @@ export default class ProductBrowser extends Component {
                         />
                     )}
                 </div>
-                
+
                 {this.props.displayTitle && (
                     <div>
-                        <hr />                
+                        <hr />
                         <h4 className='browser-product-title'>{this.props.title}</h4>
                     </div>
                 )}
-                
+
                 {Object.keys(this.state.items).length > 0 && item !== null && (
                 <div className='browser-content row'>
                     <Col xs={12}>
@@ -436,7 +437,7 @@ export default class ProductBrowser extends Component {
                     </Col>
                 </div>
                 )}
-                
+
                 {this.props.children && !(Object.keys(this.state.items).length > 0) && (
                 <div className='browser-content row'>
                     <Col sm={6}>
@@ -497,7 +498,7 @@ export default class ProductBrowser extends Component {
                     </Col>
                 </div>
                 )}
-                
+
                 {this.props.children && (Object.keys(this.state.items).length > 0) && (
                 <div className='browser-content row'>
                     <Col sm={6}>
@@ -509,7 +510,7 @@ export default class ProductBrowser extends Component {
                                     <Paragraph size='large' margin='none'>
                                         <h3>{this.props.title}</h3>
                                     </Paragraph>
-                                    
+
                                     <Box pad={{vertical: 'small'}}
                                         direction='row'
                                         align='center'
@@ -580,7 +581,7 @@ export default class ProductBrowser extends Component {
                     </Col>
                 </div>
                 )}
-                    
+
                 {!this.props.children && (
                 <div className='browser-content row'>
                     <Grid fluid={true}>

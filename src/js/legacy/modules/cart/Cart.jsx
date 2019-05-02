@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {inject, observer, Provider} from 'mobx-react'
 
 import { DropTarget } from 'react-dnd'
@@ -14,7 +15,7 @@ let cartTarget = {
         if (monitor.didDrop()) {
             return
         }
-        
+
         const item = monitor.getItem()
         component.props.onItemDropped(item.id)
     }
@@ -36,7 +37,7 @@ function collect(connect, monitor) {
 class Cart extends Component {
     constructor(props) {
         super(props)
-        
+
         this.getInitialState = this.getInitialState.bind(this)
         this.refresh = this.refresh.bind(this)
         this.onChange = this.onChange.bind(this)
@@ -47,26 +48,26 @@ class Cart extends Component {
         this.emptyCart = this.emptyCart.bind(this)
         this.clearCart = this.clearCart.bind(this)
         this.reset = this.reset.bind(this)
-        
+
         this.state = this.getInitialState()
     }
-    
+
     getInitialState() {
         return {
             selection: this.props.cartStore.getSelection()
         }
     }
-    
+
     componentDidMount() {
         this.props.actions.cart.init(this.props.items, this.props.cartStore.getSelection())
-        
+
         this.props.cartStore.on('ready', this.refresh)
         this.props.cartStore.on('change', this.onChange)
         this.props.cartStore.on('item-added', this.props.onItemAdded)
         this.props.cartStore.on('item-removed', this.props.onItemRemoved)
         this.props.cartStore.on('item-changed', this.props.onItemQtyChanged)
     }
-    
+
     componentWillUnmount() {
         this.props.cartStore.removeListener('ready', this.refresh)
         this.props.cartStore.removeListener('change', this.onChange)
@@ -74,54 +75,54 @@ class Cart extends Component {
         this.props.cartStore.removeListener('item-removed', this.props.onItemRemoved)
         this.props.cartStore.removeListener('item-changed', this.props.onItemQtyChanged)
     }
-    
+
     refresh() {
         this.setState({
             selection: this.props.cartStore.getSelection()
         })
     }
-    
+
     onChange() {
         this.refresh()
         this.props.onChange()
     }
-    
+
     addItem(key, quantity, item) {
         this.props.actions.cart.addItem(key, quantity, item)
     }
-    
+
     removeItem(index) {
         this.props.actions.cart.removeItem(index)
     }
-    
+
     updateQuantity(index, quantity) {
         this.props.actions.cart.updateQuantity(index, quantity)
     }
-    
+
     addOption(key, quantity, item, product) {
         this.props.actions.cart.addOption(key, quantity, item, product)
     }
-    
+
     emptyCart() {
         this.props.actions.cart.emptyCart()
     }
-    
+
     clearCart() {
         this.props.actions.cart.clearCart()
     }
-    
+
     reset() {
         this.props.actions.cart.reset()
     }
-    
+
     render() {
         const { position, isOver, canDrop, connectDropTarget } = this.props
-        
+
         const Container = this.props.containerComponent
         const Row = this.props.rowComponent
-        
-        let context = this.props.iterator()    
-            
+
+        let context = this.props.iterator()
+
         if (this.props.cartStore.isEmpty()) {
             return connectDropTarget(
                 <div className='dnd-target-wrapper'>
@@ -138,7 +139,7 @@ class Cart extends Component {
                 </div>
             )
         }
-        
+
         return connectDropTarget(
             <div className='dnd-target-wrapper'>
                 <Container
