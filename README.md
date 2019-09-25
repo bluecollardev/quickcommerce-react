@@ -1,5 +1,5 @@
-# quickcommerce-react by firebrandsolutions
-##### UI Framework and Component Library
+# quickcommerce-react
+##### React Components for the QuickCommerce E-commerce Platform
 ### Organization
 + src/app/js
   - Main.jsx
