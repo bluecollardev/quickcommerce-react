@@ -1,5 +1,6 @@
 # quickcommerce-react
 ##### React Components for the QuickCommerce E-commerce Platform
+This is a work in progress...
 ### Organization
 + src/app/js
   - Main.jsx
